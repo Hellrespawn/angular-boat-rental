@@ -1,0 +1,11 @@
+stages:
+  - test
+
+lint:
+  image: node:16
+  tags:
+    - hva
+  stage: test
+  script:
+    - npm install
+    - npm run check-formatting
