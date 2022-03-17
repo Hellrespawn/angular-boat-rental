@@ -1,0 +1,92 @@
+<mat-form-field appearance="fill">
+  <mat-label>Naam:</mat-label>
+  <input
+    id="naam"
+    matInput
+    [formControl]="naamControl"
+    [(ngModel)]="naam"
+    required
+  />
+  <mat-hint>Vul hier de naam van de boot in</mat-hint>
+  <mat-error *ngIf="naamControl.invalid">{{
+    getErrorMessageVoorNaamVeld()
+  }}</mat-error>
+</mat-form-field>
+<mat-form-field appearance="fill" floatLabel="always">
+  <mat-label>Prijs:</mat-label>
+  <input
+    id="prijs"
+    matInput
+    type="number"
+    [formControl]="prijsControl"
+    [(ngModel)]="prijs"
+    required
+  />
+  <span matPrefix>€</span>
+  <span matSuffix>.00</span>
+  <mat-hint>Vul hier het dagtarief in</mat-hint>
+  <mat-error *ngIf="prijsControl.invalid">{{
+    getErrorMessageVoorPrijsVeld()
+  }}</mat-error>
+</mat-form-field>
+<mat-checkbox>Schipper nodig</mat-checkbox>
+<div class="center-me" (click)="uploadFile.click()">
+  <button mat-raised-button color="primary">
+    Upload eventueel foto van boot
+  </button>
+  <input
+    #uploadFile
+    (change)="upload($event)"
+    type="file"
+    style="display: none"
+    multiple
+  />
+</div>
+<mat-form-field appearance="fill" floatLabel="always">
+  <mat-label>Lengte</mat-label>
+  <input
+    id="lengte"
+    matInput
+    type="number"
+    [formControl]="lengteControl"
+    [(ngModel)]="lengte"
+    required
+  />
+  <mat-hint>Vul hier de lengte van de boot in meters in</mat-hint>
+  <span matSuffix> meter</span>
+  <mat-error *ngIf="lengteControl.invalid">{{
+    getErrorMessageVoorLengteVeld()
+  }}</mat-error>
+</mat-form-field>
+<label>Is de boot een motor- of zeilboot: </label>
+<mat-radio-group id="motorOfZeil">
+  <mat-radio-button value="zeil" checked="true">Zeilboot </mat-radio-button>
+  <mat-radio-button value="motor">Motorboot</mat-radio-button>
+</mat-radio-group>
+<mat-form-field appearance="fill">
+  <mat-label>Max snelheid:</mat-label>
+  <input
+    id="maxSnelheid"
+    matInput
+    type="number"
+    [formControl]="maxSnelheidControl"
+    [(ngModel)]="maxSnelheid"
+    required
+  />
+  <span matSuffix> km per uur</span>
+  <mat-hint>Vul hier de maximale snelheid in van de boot</mat-hint>
+  <mat-error *ngIf="maxSnelheidControl.invalid">{{
+    getErrorMessageVoorSnelheidsVeld()
+  }}</mat-error>
+</mat-form-field>
+<button mat-raised-button color="primary" (click)="slaBootOp()">
+  Verstuur
+</button>
+<button
+  class="onderaan"
+  routerLink="/admin-panel"
+  mat-raised-button
+  color="primary"
+>
+  Terug naar admin panel
+</button>
