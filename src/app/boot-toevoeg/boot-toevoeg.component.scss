@@ -1,0 +1,25 @@
+@use '@angular/material' as mat;
+@use '../../custom-theme.scss' as theme;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: mat.get-color-from-palette(
+    theme.$dogstack-project-uml-primary,
+    'lighter'
+  );
+}
+
+mat-form-field,
+mat-checkbox,
+.center-me,
+mat-radio-group,
+label,
+button {
+  margin: 10px auto;
+}
+
+.onderaan {
+  margin-top: 40px;
+}
