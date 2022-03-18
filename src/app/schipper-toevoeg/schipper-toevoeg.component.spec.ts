@@ -8,9 +8,8 @@ describe('SchipperToevoegComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SchipperToevoegComponent ]
-    })
-    .compileComponents();
+      declarations: [SchipperToevoegComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
