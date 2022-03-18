@@ -1,12 +1,6 @@
 <mat-form-field appearance="fill">
   <mat-label>Naam:</mat-label>
-  <input
-    id="naam"
-    matInput
-    [formControl]="naamControl"
-    [(ngModel)]="naam"
-    required
-  />
+  <input id="naam" matInput [formControl]="naamControl" #naam required />
   <mat-hint>Vul hier de naam van de boot in</mat-hint>
   <mat-error *ngIf="naamControl.invalid">{{
     getErrorMessageVoorNaamVeld()
@@ -19,7 +13,7 @@
     matInput
     type="number"
     [formControl]="prijsControl"
-    [(ngModel)]="prijs"
+    #prijs
     required
   />
   <span matPrefix>€</span>
@@ -29,7 +23,7 @@
     getErrorMessageVoorPrijsVeld()
   }}</mat-error>
 </mat-form-field>
-<mat-checkbox>Schipper nodig</mat-checkbox>
+<mat-checkbox #schipperNodig id="schipperNodig">Schipper nodig</mat-checkbox>
 <div class="center-me" (click)="uploadFile.click()">
   <button mat-raised-button color="primary">
     Upload eventueel foto van boot
@@ -49,7 +43,7 @@
     matInput
     type="number"
     [formControl]="lengteControl"
-    [(ngModel)]="lengte"
+    #lengte
     required
   />
   <mat-hint>Vul hier de lengte van de boot in meters in</mat-hint>
@@ -60,8 +54,10 @@
 </mat-form-field>
 <label>Is de boot een motor- of zeilboot: </label>
 <mat-radio-group id="motorOfZeil">
-  <mat-radio-button value="zeil" checked="true">Zeilboot </mat-radio-button>
-  <mat-radio-button value="motor">Motorboot</mat-radio-button>
+  <mat-radio-button value="zeil" checked="true" #zeil id="zeil"
+    >Zeilboot
+  </mat-radio-button>
+  <mat-radio-button value="motor" #motor>Motorboot</mat-radio-button>
 </mat-radio-group>
 <mat-form-field appearance="fill">
   <mat-label>Max snelheid:</mat-label>
@@ -70,7 +66,7 @@
     matInput
     type="number"
     [formControl]="maxSnelheidControl"
-    [(ngModel)]="maxSnelheid"
+    #maxSnelheid
     required
   />
   <span matSuffix> km per uur</span>
@@ -79,7 +75,23 @@
     getErrorMessageVoorSnelheidsVeld()
   }}</mat-error>
 </mat-form-field>
-<button mat-raised-button color="primary" (click)="slaBootOp()">
+<button
+  mat-raised-button
+  id="submitKnop"
+  color="primary"
+  (click)="
+    checkVelden(
+      naam.value,
+      prijs.value,
+      lengte.value,
+      maxSnelheid.value,
+      schipperNodig.checked,
+      uploadFile.files,
+      zeil.checked,
+      motor.checked
+    )
+  "
+>
   Verstuur
 </button>
 <button

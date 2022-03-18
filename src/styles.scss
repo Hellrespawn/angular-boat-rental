@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-
+@use '@angular/material' as mat;
+@use './custom-theme.scss' as theme;
 html {
   height: 100%;
   display: flex;
@@ -12,4 +13,24 @@ body {
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.error-snackbar {
+  background-color: red;
+  color: black;
+}
+
+.error-snackbar button {
+  color: black;
+}
+
+.normal-snackbar {
+  background-color: mat.get-color-from-palette(
+    theme.$dogstack-project-uml-primary
+  );
+  color: white;
+}
+
+.normal-snackbar button {
+  color: white;
 }

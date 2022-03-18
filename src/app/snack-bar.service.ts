@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root',
@@ -7,21 +7,26 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class SnackBarService {
   constructor(private snackBar: MatSnackBar) {}
 
-  openSnackBar(message: string, action: string) {
-    return this.snackBar.open(message, action, {
-      duration: 3000,
-    });
-  }
-  maakSnackBarDieAutomatischSluit(message: string, buttonTekst: string) {
-    let snackBarRef = this.openSnackBar(message, buttonTekst);
-    snackBarRef.afterDismissed().subscribe(() => {
-      console.log('The snackbar was dismissed');
-      //snackBarRef.dismiss();
-    });
+  maakSnackBarDieAutomatischSluit(
+    message: string,
+    buttonTekst: string = 'Close',
+    duration: number = 3000,
+    error: boolean = false
+  ) {
+    let snackBarRef: MatSnackBarRef<any>;
+    if (error) {
+      snackBarRef = this.snackBar.open(message, buttonTekst, {
+        duration: duration,
+        panelClass: ['error-snackbar'],
+      });
+    } else {
+      snackBarRef = this.snackBar.open(message, buttonTekst, {
+        duration: duration,
+        panelClass: ['normal-snackbar'],
+      });
+    }
+    snackBarRef.afterDismissed().subscribe(() => {});
 
-    snackBarRef.onAction().subscribe(() => {
-      console.log('The snackbar action was triggered!');
-      //snackBarRef.dismiss();
-    });
+    snackBarRef.onAction().subscribe(() => {});
   }
 }

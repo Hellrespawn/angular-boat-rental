@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { SnackBarService } from '../snack-bar.service';
 
 @Component({
@@ -8,11 +9,6 @@ import { SnackBarService } from '../snack-bar.service';
   styleUrls: ['./boot-toevoeg.component.scss'],
 })
 export class BootToevoegComponent {
-  naam: string = '';
-  prijs: number = 0;
-  lengte: number = 0;
-  maxSnelheid: number = 0;
-
   naamControl = new FormControl(null, [Validators.required]);
   prijsControl = new FormControl(null, [
     Validators.required,
@@ -27,7 +23,7 @@ export class BootToevoegComponent {
     kleinerOfGelijkAanNul,
   ]);
 
-  constructor(private snackBService: SnackBarService) {}
+  constructor(private snackBService: SnackBarService, private router: Router) {}
 
   getErrorMessageVoorNaamVeld() {
     if (this.naamControl.hasError('required')) {
@@ -72,7 +68,16 @@ export class BootToevoegComponent {
     ];
   }
 
-  slaBootOp() {
+  checkVelden(
+    naam: string,
+    prijs: string,
+    lengte: string,
+    maxSnelheid: string,
+    schipperNodig: boolean,
+    fotos: FileList | null,
+    zeil: boolean,
+    motor: boolean
+  ) {
     for (let control of this.maakArrayVanFormControls()) {
       control.markAllAsTouched();
     }
@@ -82,17 +87,74 @@ export class BootToevoegComponent {
       !this.lengteControl.invalid &&
       !this.maxSnelheidControl.invalid
     ) {
-      console.log(this.naam);
-      this.snackBService.maakSnackBarDieAutomatischSluit(
-        'Boot toegevoegd!',
-        'Sluit'
+      this.slaNieuweBootOpInDatabase(
+        new Boot(
+          naam,
+          prijs,
+          lengte,
+          maxSnelheid,
+          schipperNodig,
+          fotos,
+          zeil,
+          motor
+        )
       );
     } else {
       this.snackBService.maakSnackBarDieAutomatischSluit(
         'Verkeerde invoer!',
-        'Sluit'
+        'Sluit',
+        3000,
+        true
       );
     }
+  }
+  slaNieuweBootOpInDatabase(boot: Boot) {
+    const submitKnop: HTMLButtonElement = <HTMLButtonElement>(
+      document.getElementById('submitKnop')
+    );
+    submitKnop.disabled = true;
+    this.resetInputVelden();
+    this.snackBService.maakSnackBarDieAutomatischSluit(
+      'Boot wordt toegevoegd!',
+      'Sluit'
+    );
+    // backend wordt later geïmplementeerd
+    setTimeout(() => {
+      submitKnop.disabled = false;
+      this.router.navigate(['/admin-panel']);
+    }, 3000);
+  }
+
+  resetInputVelden(): void {
+    (document.getElementById('naam') as HTMLInputElement).value = '';
+    (document.getElementById('prijs') as HTMLInputElement).value = '';
+    (document.getElementById('schipperNodig') as HTMLInputElement).checked =
+      false;
+    (document.getElementById('lengte') as HTMLInputElement).value = '';
+    (document.getElementById('zeil') as HTMLInputElement).checked = true;
+    (document.getElementById('maxSnelheid') as HTMLInputElement).value = '';
+  }
+}
+
+class Boot {
+  private prijs: number;
+  private lengte: number;
+  private maximaleSnelheid: number;
+  private zeilOfMotor: string;
+  constructor(
+    private naam: string,
+    prijsString: string,
+    lengteString: string,
+    maxSnelheidString: string,
+    private schipperNodig: boolean,
+    private fotos: FileList | null,
+    zeil: boolean,
+    motor: boolean
+  ) {
+    this.prijs = parseFloat(prijsString);
+    this.lengte = parseFloat(lengteString);
+    this.maximaleSnelheid = parseFloat(maxSnelheidString);
+    zeil ? (this.zeilOfMotor = 'zeil') : (this.zeilOfMotor = 'motor');
   }
 }
 
