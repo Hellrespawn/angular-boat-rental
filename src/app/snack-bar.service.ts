@@ -7,26 +7,36 @@ import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 export class SnackBarService {
   constructor(private snackBar: MatSnackBar) {}
 
-  maakSnackBarDieAutomatischSluit(
-    message: string,
-    buttonTekst: string = 'Sluit',
-    duration: number = 3000,
-    error: boolean = false
-  ) {
+  public maakSnackBarDieAutomatischSluit(inputObject: inputVoorSnackbar) {
     let snackBarRef: MatSnackBarRef<any>;
-    if (error) {
-      snackBarRef = this.snackBar.open(message, buttonTekst, {
-        duration: duration,
-        panelClass: ['error-snackbar'],
-      });
+    if (inputObject.error) {
+      snackBarRef = this.snackBar.open(
+        inputObject.message,
+        inputObject.buttonTekst,
+        {
+          duration: inputObject.duration,
+          panelClass: ['error-snackbar'],
+        }
+      );
     } else {
-      snackBarRef = this.snackBar.open(message, buttonTekst, {
-        duration: duration,
-        panelClass: ['normal-snackbar'],
-      });
+      snackBarRef = this.snackBar.open(
+        inputObject.message,
+        inputObject.buttonTekst,
+        {
+          duration: inputObject.duration,
+          panelClass: ['normal-snackbar'],
+        }
+      );
     }
     snackBarRef.afterDismissed().subscribe(() => {});
 
     snackBarRef.onAction().subscribe(() => {});
   }
+}
+
+export interface inputVoorSnackbar {
+  message: string;
+  buttonTekst: string;
+  duration: number;
+  error: boolean;
 }

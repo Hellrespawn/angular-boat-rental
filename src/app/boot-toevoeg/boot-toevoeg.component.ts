@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SnackBarService } from '../snack-bar.service';
+import { SnackBarService, inputVoorSnackbar } from '../snack-bar.service';
 
 @Component({
   selector: 'app-boot-toevoeg',
@@ -13,29 +13,43 @@ export class BootToevoegComponent {
     'voer a.u.b. een getal boven de 0 in';
   private readonly VERPLICHT: string = 'required';
   private readonly ERROR_KEY_GETAL_ONDER_EEN: string = 'kleinerOfGelijkAanNul';
-  naamControl = new FormControl(null, [Validators.required]);
-  prijsControl = new FormControl(null, [
+
+  private readonly foutieveInvoerSnackbarInput: inputVoorSnackbar = {
+    message: 'Verkeerde invoer!',
+    buttonTekst: 'Sluit',
+    duration: 3000,
+    error: true,
+  };
+  private readonly correcteInvoerSnackbarInput: inputVoorSnackbar = {
+    message: 'Boot wordt toegevoegd!',
+    buttonTekst: 'Sluit',
+    duration: 3000,
+    error: false,
+  };
+
+  public naamControl = new FormControl(null, [Validators.required]);
+  public prijsControl = new FormControl(null, [
     Validators.required,
     kleinerOfGelijkAanNul,
   ]);
-  lengteControl = new FormControl(null, [
+  public lengteControl = new FormControl(null, [
     Validators.required,
     kleinerOfGelijkAanNul,
   ]);
-  maxSnelheidControl = new FormControl(null, [
+  public maxSnelheidControl = new FormControl(null, [
     Validators.required,
     kleinerOfGelijkAanNul,
   ]);
 
   constructor(private snackBService: SnackBarService, private router: Router) {}
 
-  getErrorMessageVoorNaamVeld() {
+  public getErrorMessageVoorNaamVeld() {
     return this.naamControl.hasError(this.VERPLICHT)
       ? 'Vul a.u.b. een naam in'
       : '';
   }
 
-  getErrorMessageVoorPrijsVeld() {
+  public getErrorMessageVoorPrijsVeld() {
     return this.prijsControl.hasError(this.VERPLICHT)
       ? 'Vul a.u.b. een prijs in'
       : this.prijsControl.hasError(this.ERROR_KEY_GETAL_ONDER_EEN)
@@ -43,7 +57,7 @@ export class BootToevoegComponent {
       : '';
   }
 
-  getErrorMessageVoorLengteVeld() {
+  public getErrorMessageVoorLengteVeld() {
     return this.lengteControl.hasError(this.VERPLICHT)
       ? 'Vul a.u.b. een lengte in'
       : this.lengteControl.hasError(this.ERROR_KEY_GETAL_ONDER_EEN)
@@ -51,7 +65,7 @@ export class BootToevoegComponent {
       : '';
   }
 
-  getErrorMessageVoorSnelheidsVeld() {
+  public getErrorMessageVoorSnelheidsVeld() {
     return this.maxSnelheidControl.hasError(this.VERPLICHT)
       ? 'Vul a.u.b. een maximale snelheid in'
       : this.maxSnelheidControl.hasError(this.ERROR_KEY_GETAL_ONDER_EEN)
@@ -59,11 +73,11 @@ export class BootToevoegComponent {
       : '';
   }
 
-  upload(event: Event) {
+  public upload(event: Event) {
     console.log(event);
   }
 
-  maakArrayVanFormControls(): Array<FormControl> {
+  private maakArrayVanFormControls(): Array<FormControl> {
     return [
       this.naamControl,
       this.prijsControl,
@@ -81,7 +95,7 @@ export class BootToevoegComponent {
     );
   }
 
-  checkVelden(
+  public checkVelden(
     naam: string,
     prijs: string,
     lengte: string,
@@ -109,22 +123,18 @@ export class BootToevoegComponent {
       );
     } else {
       this.snackBService.maakSnackBarDieAutomatischSluit(
-        'Verkeerde invoer!',
-        'Sluit',
-        3000,
-        true
+        this.foutieveInvoerSnackbarInput
       );
     }
   }
-  stuurNieuweBootNaarBackend(boot: Boot) {
+  private stuurNieuweBootNaarBackend(boot: Boot) {
     const submitKnop: HTMLButtonElement = <HTMLButtonElement>(
       document.getElementById('submitKnop')
     );
     submitKnop.disabled = true;
     this.resetInputVelden();
     this.snackBService.maakSnackBarDieAutomatischSluit(
-      'Boot wordt toegevoegd!',
-      'Sluit'
+      this.correcteInvoerSnackbarInput
     );
     // backend wordt later geïmplementeerd
     setTimeout(() => {
@@ -133,7 +143,7 @@ export class BootToevoegComponent {
     }, 3000);
   }
 
-  resetInputVelden(): void {
+  private resetInputVelden(): void {
     (document.getElementById('naam') as HTMLInputElement).value = '';
     (document.getElementById('prijs') as HTMLInputElement).value = '';
     (document.getElementById('schipperNodig') as HTMLInputElement).checked =
@@ -166,7 +176,7 @@ class Boot {
   }
 }
 
-function kleinerOfGelijkAanNul(
+export function kleinerOfGelijkAanNul(
   control: AbstractControl
 ): { [key: string]: boolean } | null {
   let returnValue = null;
