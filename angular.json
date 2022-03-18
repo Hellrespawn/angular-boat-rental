@@ -116,7 +116,8 @@
 		}
 	},
 	"defaultProject": "dogstack-project-uml",
-	"cli": {
+  "cli": {
+    "analytics": false,
 		"defaultCollection": "@angular-eslint/schematics"
 	}
 }
