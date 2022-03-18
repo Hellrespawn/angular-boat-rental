@@ -16,7 +16,9 @@ body {
 }
 
 .error-snackbar {
-  background-color: red;
+  background-color: mat.get-color-from-palette(
+    theme.$dogstack-project-uml-warn
+  );
   color: black;
 }
 

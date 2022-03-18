@@ -9,7 +9,7 @@ export class SnackBarService {
 
   maakSnackBarDieAutomatischSluit(
     message: string,
-    buttonTekst: string = 'Close',
+    buttonTekst: string = 'Sluit',
     duration: number = 3000,
     error: boolean = false
   ) {

@@ -9,6 +9,10 @@ import { SnackBarService } from '../snack-bar.service';
   styleUrls: ['./boot-toevoeg.component.scss'],
 })
 export class BootToevoegComponent {
+  private readonly ERROR_MESSAGE_GETAL_ONDER_EEN: string =
+    'voer a.u.b. een getal boven de 0 in';
+  private readonly VERPLICHT: string = 'required';
+  private readonly ERROR_KEY_GETAL_ONDER_EEN: string = 'kleinerOfGelijkAanNul';
   naamControl = new FormControl(null, [Validators.required]);
   prijsControl = new FormControl(null, [
     Validators.required,
@@ -26,33 +30,33 @@ export class BootToevoegComponent {
   constructor(private snackBService: SnackBarService, private router: Router) {}
 
   getErrorMessageVoorNaamVeld() {
-    if (this.naamControl.hasError('required')) {
-      return 'Vul a.u.b. een naam in';
-    } else return '';
+    return this.naamControl.hasError(this.VERPLICHT)
+      ? 'Vul a.u.b. een naam in'
+      : '';
   }
 
   getErrorMessageVoorPrijsVeld() {
-    if (this.prijsControl.hasError('required')) {
-      return 'Vul a.u.b. een naam in';
-    } else if (this.prijsControl.hasError('kleinerOfGelijkAanNul')) {
-      return 'Voer a.u.b. een getal boven de 0 in';
-    } else return '';
+    return this.prijsControl.hasError(this.VERPLICHT)
+      ? 'Vul a.u.b. een prijs in'
+      : this.prijsControl.hasError(this.ERROR_KEY_GETAL_ONDER_EEN)
+      ? this.ERROR_MESSAGE_GETAL_ONDER_EEN
+      : '';
   }
 
   getErrorMessageVoorLengteVeld() {
-    if (this.lengteControl.hasError('required')) {
-      return 'Vul a.u.b. een lengte in';
-    } else if (this.lengteControl.hasError('kleinerOfGelijkAanNul')) {
-      return 'Voer a.u.b. een getal boven de 0 in';
-    } else return '';
+    return this.lengteControl.hasError(this.VERPLICHT)
+      ? 'Vul a.u.b. een lengte in'
+      : this.lengteControl.hasError(this.ERROR_KEY_GETAL_ONDER_EEN)
+      ? this.ERROR_MESSAGE_GETAL_ONDER_EEN
+      : '';
   }
 
   getErrorMessageVoorSnelheidsVeld() {
-    if (this.maxSnelheidControl.hasError('required')) {
-      return 'Vul a.u.b. een maximale snelheid in';
-    } else if (this.maxSnelheidControl.hasError('kleinerOfGelijkAanNul')) {
-      return 'Voer a.u.b. een getal boven de 0 in';
-    } else return '';
+    return this.maxSnelheidControl.hasError(this.VERPLICHT)
+      ? 'Vul a.u.b. een maximale snelheid in'
+      : this.maxSnelheidControl.hasError(this.ERROR_KEY_GETAL_ONDER_EEN)
+      ? this.ERROR_MESSAGE_GETAL_ONDER_EEN
+      : '';
   }
 
   upload(event: Event) {
@@ -68,6 +72,15 @@ export class BootToevoegComponent {
     ];
   }
 
+  private checkControlsValid(): boolean {
+    return (
+      !this.naamControl.invalid &&
+      !this.prijsControl.invalid &&
+      !this.lengteControl.invalid &&
+      !this.maxSnelheidControl.invalid
+    );
+  }
+
   checkVelden(
     naam: string,
     prijs: string,
@@ -81,13 +94,8 @@ export class BootToevoegComponent {
     for (let control of this.maakArrayVanFormControls()) {
       control.markAllAsTouched();
     }
-    if (
-      !this.naamControl.invalid &&
-      !this.prijsControl.invalid &&
-      !this.lengteControl.invalid &&
-      !this.maxSnelheidControl.invalid
-    ) {
-      this.slaNieuweBootOpInDatabase(
+    if (this.checkControlsValid()) {
+      this.stuurNieuweBootNaarBackend(
         new Boot(
           naam,
           prijs,
@@ -108,7 +116,7 @@ export class BootToevoegComponent {
       );
     }
   }
-  slaNieuweBootOpInDatabase(boot: Boot) {
+  stuurNieuweBootNaarBackend(boot: Boot) {
     const submitKnop: HTMLButtonElement = <HTMLButtonElement>(
       document.getElementById('submitKnop')
     );
@@ -161,8 +169,9 @@ class Boot {
 function kleinerOfGelijkAanNul(
   control: AbstractControl
 ): { [key: string]: boolean } | null {
+  let returnValue = null;
   if (parseFloat(control.value) <= 0) {
-    return { kleinerOfGelijkAanNul: true };
+    returnValue = { kleinerOfGelijkAanNul: true };
   }
-  return null;
+  return returnValue;
 }
