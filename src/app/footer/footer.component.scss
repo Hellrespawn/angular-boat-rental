@@ -1,0 +1,36 @@
+@use '@angular/material' as mat;
+@use '../../custom-theme.scss' as theme;
+
+footer {
+  display: flex;
+  background-color: mat.get-color-from-palette(
+    theme.$dogstack-project-uml-primary,
+    'default'
+  );
+  color: mat.get-color-from-palette(
+    theme.$dogstack-project-uml-primary,
+    'darker-contrast'
+  );
+}
+
+h2 {
+  color: mat.get-color-from-palette(theme.$dogstack-project-uml-accent, 'text');
+}
+
+a {
+  font-weight: 500;
+  color: inherit;
+  text-decoration: inherit;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.panel {
+  flex: 1 0;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

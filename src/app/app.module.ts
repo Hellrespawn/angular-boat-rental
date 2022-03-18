@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
@@ -11,9 +12,21 @@ import { AppComponent } from './app.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { BootToevoegComponent } from './boot-toevoeg/boot-toevoeg.component';
 import { SchipperToevoegComponent } from './schipper-toevoeg/schipper-toevoeg.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { HeaderComponent } from './header/header.component';
+import { HomeComponent } from './home/home.component';
+import { FooterComponent } from './footer/footer.component';
+import { ShortcutsComponent } from './shortcuts/shortcuts.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { HomeFeatureComponent } from './home-feature/home-feature.component';
+
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
+import { BadgeComponent } from './home-feature-badge/home-feature-badge.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +34,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     AdminPanelComponent,
     BootToevoegComponent,
     SchipperToevoegComponent,
+    HeaderComponent,
+    NavbarComponent,
+    FooterComponent,
+    ShortcutsComponent,
+    HomeComponent,
+    HomeFeatureComponent,
+    BadgeComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +54,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     BrowserAnimationsModule,
     MatButtonModule,
     MatSnackBarModule,
+    MatChipsModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    BrowserAnimationsModule,
+    MatDividerModule,
   ],
   providers: [MatSnackBarModule],
   bootstrap: [AppComponent],
