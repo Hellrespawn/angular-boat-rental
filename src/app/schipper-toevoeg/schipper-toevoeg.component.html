@@ -1,0 +1,41 @@
+<mat-form-field appearance="fill">
+  <mat-label>Naam:</mat-label>
+  <input id="naam" matInput [formControl]="naamControl" #naam required />
+  <mat-hint>Vul hier de naam van de schipper in</mat-hint>
+  <mat-error *ngIf="naamControl.invalid">{{
+    getErrorMessageVoorNaamVeld()
+  }}</mat-error>
+</mat-form-field>
+<mat-form-field appearance="fill" floatLabel="always">
+  <mat-label>Kosten per dag:</mat-label>
+  <input
+    id="prijs"
+    matInput
+    type="number"
+    [formControl]="prijsControl"
+    #prijs
+    required
+  />
+  <span matPrefix>€</span>
+  <span matSuffix>.00</span>
+  <mat-hint>Vul hier het dagtarief in</mat-hint>
+  <mat-error *ngIf="prijsControl.invalid">{{
+    getErrorMessageVoorPrijsVeld()
+  }}</mat-error>
+</mat-form-field>
+<button
+  mat-raised-button
+  id="submitKnop"
+  color="primary"
+  (click)="checkVeldenSchipperToevoegPagina(naam.value, prijs.value)"
+>
+  Verstuur
+</button>
+<button
+  class="onderaan"
+  routerLink="/admin-panel"
+  mat-raised-button
+  color="primary"
+>
+  Terug naar admin panel
+</button>
