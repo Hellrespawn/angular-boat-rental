@@ -1,0 +1,28 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+a {
+  height: 100%;
+  margin-right: 1em;
+}
+
+img {
+  display: flex;
+  object-fit: contain;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+h1.responsive {
+  display: none;
+}
+
+@media only screen and (max-width: 640px) {
+  h1 {
+    display: none;
+  }
+  h1.responsive {
+    display: unset;
+  }
+}

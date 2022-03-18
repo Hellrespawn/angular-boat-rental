@@ -1,0 +1,15 @@
+<nav>
+  <a routerLink="/" mat-button>Home</a>
+  <a routerLink="/verhuur" mat-button>Verhuur</a>
+  <button *ngIf="showUser()" mat-button [matMenuTriggerFor]="menu">
+    <mat-icon *ngIf="!showAdmin()">account_circle</mat-icon>
+    <mat-icon *ngIf="showAdmin()">admin_panel_settings</mat-icon>
+  </button>
+  <a *ngIf="!showUser()" routerLink="/" mat-button>Register</a>
+  <a *ngIf="!showUser()" routerLink="/" mat-button>Login</a>
+
+  <mat-menu #menu="matMenu">
+    <a mat-menu-item>Item 1</a>
+    <a mat-menu-item>Item 2</a>
+  </mat-menu>
+</nav>
