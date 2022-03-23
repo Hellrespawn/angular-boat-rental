@@ -2,39 +2,29 @@
   <a mat-button routerLink="/">Home</a>
   <a mat-button routerLink="/verhuur">Verhuur</a>
 
+  <!-- Menu-knop -->
   <button mat-button [matMenuTriggerFor]="menu">
-    <mat-icon *ngIf="!isLoggedIn()">menu</mat-icon>
-    <mat-icon *ngIf="isLoggedIn() && !isAdmin()">account_circle</mat-icon>
-    <mat-icon *ngIf="isLoggedIn() && isAdmin()">admin_panel_settings</mat-icon>
+    <mat-icon>{{ getIconName() }}</mat-icon>
   </button>
 
+  <!-- Menu -->
   <mat-menu #menu="matMenu">
-    <div *ngIf="!isLoggedIn()">
-      <a mat-menu-item routerLink="/">Register</a>
-      <a mat-menu-item routerLink="/">Login</a>
+    <a
+      *ngFor="let item of getNavItems()"
+      routerLink="{{ item.route }}"
+      mat-menu-item
+      >{{ item.displayName }}</a
+    >
 
-      <!-- Debug knop -->
-      <button mat-menu-item (click)="userType = 'user'">Login (Debug)</button>
-    </div>
-
-    <div *ngIf="isLoggedIn()">
-      <a mat-menu-item routerLink="/">Account</a>
-
-      <a mat-menu-item *ngIf="!isAdmin()" routerLink="/">Bestelgeschiedenis</a>
-
-      <a mat-menu-item *ngIf="isAdmin()" routerLink="/">Boot-administratie</a>
-      <a mat-menu-item *ngIf="isAdmin()" routerLink="/"
-        >Schipper-administratie</a
-      >
-      <a mat-menu-item (click)="userType = 'guest'" routerLink="/">Log uit</a>
-
-      <!-- Debug knoppen -->
-      <button *ngIf="!isAdmin()" mat-menu-item (click)="userType = 'admin'">
-        Word admin (Debug)
-      </button>
-      <button mat-menu-item (click)="userType = 'guest'">
-        Log uit (Debug)
-      </button>
-    </div>
+    <!-- Debug -->
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="debugUserType = 'guest'">
+      guest (Debug)
+    </button>
+    <button mat-menu-item (click)="debugUserType = 'user'">user (Debug)</button>
+    <button mat-menu-item (click)="debugUserType = 'admin'">
+      admin (Debug)
+    </button>
+    <!-- Debug -->
   </mat-menu>
 </nav>
