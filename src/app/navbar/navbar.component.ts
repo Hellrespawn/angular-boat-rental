@@ -9,11 +9,17 @@ export class NavbarComponent {
   userType: 'guest' | 'user' | 'admin' = 'guest';
   constructor() {}
 
-  showUser(): boolean {
-    return true;
+  /**
+   * Retourneert "true" als de huidige gebruiker ingelogd is.
+   */
+  isLoggedIn(): boolean {
+    return ['user', 'admin'].includes(this.userType);
   }
 
-  showAdmin(): boolean {
-    return true;
+  /**
+   * Retourneert "true" als de huidige gebruiker een beheerder is.
+   */
+  isAdmin(): boolean {
+    return this.userType == 'admin';
   }
 }
