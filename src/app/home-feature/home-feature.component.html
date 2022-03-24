@@ -1,0 +1,11 @@
+<div class="card">
+  <img class="{{ imageSide }}" src="{{ imageSource }}" alt="Boat" />
+  <app-badge *ngIf="badgeText" [side]="imageSide">{{ badgeText }}</app-badge>
+  <div class="content">
+    <ng-content></ng-content>
+    <div class="spacer"></div>
+    <a routerLink="{{ buttonHref }}" mat-button color="primary">{{
+      buttonText
+    }}</a>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<mat-form-field appearance="fill">
+  <mat-label>Naam:</mat-label>
+  <input id="name" matInput [formControl]="nameControl" #name required />
+  <mat-hint>Vul hier de naam van de schipper in</mat-hint>
+  <mat-error *ngIf="nameControl.invalid">{{
+    getErrorMessageForNameField()
+  }}</mat-error>
+</mat-form-field>
+<mat-form-field appearance="fill" floatLabel="always">
+  <mat-label>Kosten per dag:</mat-label>
+  <input
+    id="price"
+    matInput
+    type="number"
+    [formControl]="priceControl"
+    #price
+    required
+  />
+  <span matPrefix>€</span>
+  <span matSuffix>.00</span>
+  <mat-hint>Vul hier het dagtarief in</mat-hint>
+  <mat-error *ngIf="priceControl.invalid">{{
+    getErrorMessageForPriceField()
+  }}</mat-error>
+</mat-form-field>
+<button
+  mat-raised-button
+  id="submitKnop"
+  color="primary"
+  (click)="checkFieldsAndAddSkipper(name.value, price.value)"
+>
+  Verstuur
+</button>
+<button
+  class="onderaan"
+  routerLink="/admin-panel"
+  mat-raised-button
+  color="primary"
+>
+  Terug naar admin panel
+</button>
