@@ -101,7 +101,7 @@ export class AddBoatComponent {
     length: string,
     maxSpeed: string,
     skipperNeeded: boolean,
-    foto: File | null,
+    fotos: FileList | null,
     sail: boolean,
     motor: boolean
   ) {
@@ -116,7 +116,7 @@ export class AddBoatComponent {
           length,
           maxSpeed,
           skipperNeeded,
-          foto,
+          fotos,
           sail,
           motor
         )
@@ -165,7 +165,7 @@ class Boat {
     lengthString: string,
     maxSpeedString: string,
     private skipperNeeded: boolean,
-    private foto: File | null,
+    private fotos: FileList | null,
     sail: boolean,
     motor: boolean
   ) {
