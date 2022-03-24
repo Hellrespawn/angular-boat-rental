@@ -172,7 +172,7 @@ class Boat {
     this.price = parseFloat(priceString);
     this.length = parseFloat(lengthString);
     this.maxSpeed = parseFloat(maxSpeedString);
-    sail ? (this.sailOrMotor = 'zeil') : (this.sailOrMotor = 'motor');
+    sail ? (this.sailOrMotor = 'sail') : (this.sailOrMotor = 'motor');
   }
 }
 
