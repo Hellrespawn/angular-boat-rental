@@ -6,8 +6,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
-
-
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -27,7 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

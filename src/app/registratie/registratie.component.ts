@@ -22,8 +22,6 @@ export class RegistratieComponent implements OnInit {
 
   // code voor vereiste email
 
-  
-
   voornaam = new FormControl('', [Validators.required]);
   achternaam = new FormControl('', [Validators.required]);
   email = new FormControl('', [Validators.required]);
@@ -40,7 +38,9 @@ export class RegistratieComponent implements OnInit {
     if (this.achternaam.hasError('required')) {
       return 'Voer uw achternaam in';
     }
-    return this.achternaam.hasError('achternaam') ? 'Voer uw achternaam in' : '';
+    return this.achternaam.hasError('achternaam')
+      ? 'Voer uw achternaam in'
+      : '';
   }
 
   emailErrorMessage() {
@@ -54,7 +54,9 @@ export class RegistratieComponent implements OnInit {
     if (this.wachtwoord.hasError('required')) {
       return 'Je moet een wachtwoord invoeren';
     }
-    return this.wachtwoord.hasError('wachtwoord') ? 'Voer uw wachtwoord in' : '';
+    return this.wachtwoord.hasError('wachtwoord')
+      ? 'Voer uw wachtwoord in'
+      : '';
   }
   validateUser(): void {
     document
@@ -94,9 +96,9 @@ export class RegistratieComponent implements OnInit {
     // location.reload();
   }
 
-//    reload() {
-//     location.reload();
-//   }
+  //    reload() {
+  //     location.reload();
+  //   }
   //   checkWachtwoordValue() {
   //     let input = (
   //       document.getElementById('wachtwoord-input') as HTMLTextAreaElement
@@ -112,29 +114,29 @@ export class RegistratieComponent implements OnInit {
   //     }
   //   }
 
-//   checkEmailValue() {
-//     let input = (
-//       document.getElementById('emailadres-input') as HTMLTextAreaElement
-//     ).value;
-//     if (input.search(/[@]/)) {
-//       alert('Voer een geldig emailadres in!');
-//     }
+  //   checkEmailValue() {
+  //     let input = (
+  //       document.getElementById('emailadres-input') as HTMLTextAreaElement
+  //     ).value;
+  //     if (input.search(/[@]/)) {
+  //       alert('Voer een geldig emailadres in!');
+  //     }
 
-//     const emailPatroon = /^[^]+@[^]+\.[a-z]{2,3}$/;
-//     if (input.match(emailPatroon)) {
-//       alert('Voer een geldig emailadres in');
-//     }
+  //     const emailPatroon = /^[^]+@[^]+\.[a-z]{2,3}$/;
+  //     if (input.match(emailPatroon)) {
+  //       alert('Voer een geldig emailadres in');
+  //     }
 
-//     let existingLS = JSON.parse(localStorage.getItem('UserInput')!);
-//     for (let i = 0; i < existingLS!.length; i++) {
-//       const inputEmail = (
-//         document.getElementById('emailadres-input') as HTMLTextAreaElement
-//       ).value;
-//       if (inputEmail === existingLS.email) {
-//         alert('Emailadres is al in gebruik');
-//       }
-//     }
-//   }
+  //     let existingLS = JSON.parse(localStorage.getItem('UserInput')!);
+  //     for (let i = 0; i < existingLS!.length; i++) {
+  //       const inputEmail = (
+  //         document.getElementById('emailadres-input') as HTMLTextAreaElement
+  //       ).value;
+  //       if (inputEmail === existingLS.email) {
+  //         alert('Emailadres is al in gebruik');
+  //       }
+  //     }
+  //   }
 
   //   checkAge() {
   //       const leeftijd = (document.getElementById('leeftijd-input') as HTMLTextAreaElement).value
