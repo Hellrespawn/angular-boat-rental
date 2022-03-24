@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { SnackBarService, inputVoorSnackbar } from '../snack-bar.service';
+import { SnackBarService, snackBarInput } from '../snack-bar.service';
 import { kleinerOfGelijkAanNul } from '../boot-toevoeg/boot-toevoeg.component';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -15,15 +15,15 @@ export class SchipperToevoegComponent {
   private readonly VERPLICHT: string = 'required';
   private readonly ERROR_KEY_GETAL_ONDER_EEN: string = 'kleinerOfGelijkAanNul';
 
-  private readonly foutieveInvoerSnackbarInput: inputVoorSnackbar = {
+  private readonly foutieveInvoerSnackbarInput: snackBarInput = {
     message: 'Verkeerde invoer!',
-    buttonTekst: 'Sluit',
+    buttonText: 'Sluit',
     duration: 3000,
     error: true,
   };
-  private readonly correcteInvoerSnackbarInput: inputVoorSnackbar = {
+  private readonly correcteInvoerSnackbarInput: snackBarInput = {
     message: 'Schipper wordt toegevoegd!',
-    buttonTekst: 'Sluit',
+    buttonText: 'Sluit',
     duration: 3000,
     error: false,
   };
@@ -64,7 +64,7 @@ export class SchipperToevoegComponent {
     if (this.checkControlsValid()) {
       this.stuurNieuweSchipperNaarBackend(new Schipper(naam, prijs));
     } else {
-      this.snackBService.maakSnackBarDieAutomatischSluit(
+      this.snackBService.makeSnackbarThatClosesAutomatically(
         this.foutieveInvoerSnackbarInput
       );
     }
@@ -75,7 +75,7 @@ export class SchipperToevoegComponent {
     );
     submitKnop.disabled = true;
     this.resetInputVelden();
-    this.snackBService.maakSnackBarDieAutomatischSluit(
+    this.snackBService.makeSnackbarThatClosesAutomatically(
       this.correcteInvoerSnackbarInput
     );
     // backend wordt later geïmplementeerd

@@ -7,12 +7,12 @@ import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 export class SnackBarService {
   constructor(private snackBar: MatSnackBar) {}
 
-  public maakSnackBarDieAutomatischSluit(inputObject: inputVoorSnackbar) {
+  public makeSnackbarThatClosesAutomatically(inputObject: snackBarInput) {
     let snackBarRef: MatSnackBarRef<any>;
     if (inputObject.error) {
       snackBarRef = this.snackBar.open(
         inputObject.message,
-        inputObject.buttonTekst,
+        inputObject.buttonText,
         {
           duration: inputObject.duration,
           panelClass: ['error-snackbar'],
@@ -21,7 +21,7 @@ export class SnackBarService {
     } else {
       snackBarRef = this.snackBar.open(
         inputObject.message,
-        inputObject.buttonTekst,
+        inputObject.buttonText,
         {
           duration: inputObject.duration,
           panelClass: ['normal-snackbar'],
@@ -34,9 +34,9 @@ export class SnackBarService {
   }
 }
 
-export interface inputVoorSnackbar {
+export interface snackBarInput {
   message: string;
-  buttonTekst: string;
+  buttonText: string;
   duration: number;
   error: boolean;
 }
