@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BootToevoegComponent } from './boot-toevoeg.component';
+import { AddBoatComponent } from './add-boat.component';
 
 describe('BootToevoegComponent', () => {
-  let component: BootToevoegComponent;
-  let fixture: ComponentFixture<BootToevoegComponent>;
+  let component: AddBoatComponent;
+  let fixture: ComponentFixture<AddBoatComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BootToevoegComponent],
+      declarations: [AddBoatComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BootToevoegComponent);
+    fixture = TestBed.createComponent(AddBoatComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { SnackBarService, snackBarInput } from '../snack-bar.service';
-import { kleinerOfGelijkAanNul } from '../boot-toevoeg/boot-toevoeg.component';
+import { kleinerOfGelijkAanNul } from '../add-boat/add-boat.component';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({

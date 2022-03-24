@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
-import { BootToevoegComponent } from './boot-toevoeg/boot-toevoeg.component';
+import { AddBoatComponent } from './add-boat/add-boat.component';
 import { SchipperToevoegComponent } from './schipper-toevoeg/schipper-toevoeg.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HeaderComponent } from './header/header.component';
@@ -32,7 +32,7 @@ import { BadgeComponent } from './home-feature-badge/home-feature-badge.componen
   declarations: [
     AppComponent,
     AdminPanelComponent,
-    BootToevoegComponent,
+    AddBoatComponent,
     SchipperToevoegComponent,
     HeaderComponent,
     NavbarComponent,

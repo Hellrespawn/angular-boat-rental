@@ -1,29 +1,29 @@
 <mat-form-field appearance="fill">
   <mat-label>Naam:</mat-label>
-  <input id="naam" matInput [formControl]="naamControl" #naam required />
+  <input id="name" matInput [formControl]="nameControl" #name required />
   <mat-hint>Vul hier de naam van de boot in</mat-hint>
-  <mat-error *ngIf="naamControl.invalid">{{
-    getErrorMessageVoorNaamVeld()
+  <mat-error *ngIf="nameControl.invalid">{{
+    getErrorMessageForNameField()
   }}</mat-error>
 </mat-form-field>
 <mat-form-field appearance="fill" floatLabel="always">
   <mat-label>Prijs:</mat-label>
   <input
-    id="prijs"
+    id="price"
     matInput
     type="number"
-    [formControl]="prijsControl"
-    #prijs
+    [formControl]="priceControl"
+    #price
     required
   />
   <span matPrefix>€</span>
   <span matSuffix>.00</span>
   <mat-hint>Vul hier het dagtarief in</mat-hint>
-  <mat-error *ngIf="prijsControl.invalid">{{
-    getErrorMessageVoorPrijsVeld()
+  <mat-error *ngIf="priceControl.invalid">{{
+    getErrorMessageForPriceField()
   }}</mat-error>
 </mat-form-field>
-<mat-checkbox #schipperNodig id="schipperNodig">Schipper nodig</mat-checkbox>
+<mat-checkbox #skipperNeeded id="skipperNeeded">Schipper nodig</mat-checkbox>
 <div class="center-me" (click)="uploadFile.click()">
   <button mat-raised-button color="primary">
     Upload eventueel foto van boot
@@ -39,22 +39,22 @@
 <mat-form-field appearance="fill" floatLabel="always">
   <mat-label>Lengte</mat-label>
   <input
-    id="lengte"
+    id="length"
     matInput
     type="number"
-    [formControl]="lengteControl"
+    [formControl]="lengthControl"
     #lengte
     required
   />
   <mat-hint>Vul hier de lengte van de boot in meters in</mat-hint>
   <span matSuffix> meter</span>
-  <mat-error *ngIf="lengteControl.invalid">{{
-    getErrorMessageVoorLengteVeld()
+  <mat-error *ngIf="lengthControl.invalid">{{
+    getErrorMessageForLengthField()
   }}</mat-error>
 </mat-form-field>
 <label>Is de boot een motor- of zeilboot: </label>
-<mat-radio-group id="motorOfZeil">
-  <mat-radio-button value="zeil" checked="true" #zeil id="zeil"
+<mat-radio-group id="motorOrSail">
+  <mat-radio-button value="zeil" checked="true" #sail id="zeil"
     >Zeilboot
   </mat-radio-button>
   <mat-radio-button value="motor" #motor>Motorboot</mat-radio-button>
@@ -62,17 +62,17 @@
 <mat-form-field appearance="fill">
   <mat-label>Max snelheid:</mat-label>
   <input
-    id="maxSnelheid"
+    id="maxSpeed"
     matInput
     type="number"
-    [formControl]="maxSnelheidControl"
+    [formControl]="maxSpeedControl"
     #maxSnelheid
     required
   />
   <span matSuffix> km per uur</span>
   <mat-hint>Vul hier de maximale snelheid in van de boot</mat-hint>
-  <mat-error *ngIf="maxSnelheidControl.invalid">{{
-    getErrorMessageVoorSnelheidsVeld()
+  <mat-error *ngIf="maxSpeedControl.invalid">{{
+    getErrorMessageForSpeedField()
   }}</mat-error>
 </mat-form-field>
 <button
@@ -80,14 +80,14 @@
   id="submitKnop"
   color="primary"
   (click)="
-    checkVelden(
-      naam.value,
-      prijs.value,
+    checkFields(
+      name.value,
+      price.value,
       lengte.value,
       maxSnelheid.value,
-      schipperNodig.checked,
+      skipperNeeded.checked,
       uploadFile.files,
-      zeil.checked,
+      sail.checked,
       motor.checked
     )
   "
