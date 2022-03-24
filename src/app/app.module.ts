@@ -46,7 +46,7 @@ import { RegistratieComponent } from './registratie/registratie.component';
     HomeComponent,
     HomeFeatureComponent,
     BadgeComponent,
-    RegistratieComponent
+    RegistratieComponent,
   ],
   imports: [
     BrowserModule,
