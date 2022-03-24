@@ -10,10 +10,10 @@
   <!-- Menu -->
   <mat-menu #menu="matMenu">
     <a
-      *ngFor="let item of getNavItems()"
+      *ngFor="let item of getNavigationItems()"
       routerLink="{{ item.route }}"
       mat-menu-item
-      >{{ item.displayName }}</a
+      >{{ item.name }}</a
     >
 
     <!-- Debug -->

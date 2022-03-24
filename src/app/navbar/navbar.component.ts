@@ -1,41 +1,24 @@
-import { Component } from '@angular/core';
-
-type CurrentUserType = 'guest' | 'user' | 'admin';
-
-type NavItem = {
-  displayName: string; // Naam om weer te geven.
-  route: string; // Route om naar te navigeren.
-  userTypes: CurrentUserType[]; // UserTypes waar dit item zichtbaar voor is.
-};
-
-const NAVIGATION: NavItem[] = [
-  { displayName: 'Register', route: '/register', userTypes: ['guest'] },
-  { displayName: 'Log In', route: '/login', userTypes: ['guest'] },
-  {
-    displayName: 'Account-opties',
-    route: '/user',
-    userTypes: ['user', 'admin'],
-  },
-  { displayName: 'Bestelgeschiedenis', route: '/history', userTypes: ['user'] },
-  { displayName: 'Boot-administratie', route: '/boat', userTypes: ['admin'] },
-  {
-    displayName: 'Schipper-administratie',
-    route: '/skipper',
-    userTypes: ['admin'],
-  },
-  { displayName: 'Log Uit', route: '/logout', userTypes: ['user', 'admin'] },
-];
+import { Component, OnInit } from '@angular/core';
+import { NavigationService, NavItem, UserType } from '../navigation.service';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent {
-  debugUserType: CurrentUserType = 'guest';
-  constructor() {}
+export class NavbarComponent implements OnInit {
+  debugUserType: UserType = 'guest';
+  private navItems: NavItem[] = [];
 
-  getCurrentUserType(): CurrentUserType {
+  constructor(private navigationService: NavigationService) {}
+
+  ngOnInit(): void {
+    this.navigationService
+      .getNavigationItems()
+      .subscribe((navItems) => (this.navItems = navItems));
+  }
+
+  getCurrentUserType(): UserType {
     // FIXME Maak echte versie van deze functie.
     return this.debugUserType;
   }
@@ -47,6 +30,7 @@ export class NavbarComponent {
    */
   getIconName(): string {
     const currentUserType = this.getCurrentUserType();
+
     switch (currentUserType) {
       case 'guest':
         return 'menu';
@@ -62,9 +46,11 @@ export class NavbarComponent {
   /**
    * Retourneert alle NavItems op basis van het huidige UserType
    */
-  getNavItems(): NavItem[] {
-    return NAVIGATION.filter((i) =>
-      i.userTypes.includes(this.getCurrentUserType())
+  getNavigationItems(): NavItem[] {
+    let items = this.navItems.filter((item) =>
+      item.userTypes.includes(this.getCurrentUserType())
     );
+    items.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    return items;
   }
 }
