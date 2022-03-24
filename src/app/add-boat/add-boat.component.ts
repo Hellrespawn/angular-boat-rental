@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { SnackBarService, snackBarInput } from '../snack-bar.service';
 
 @Component({
-  selector: 'app-boot-toevoeg',
+  selector: 'app-add-boat',
   templateUrl: './add_boat.component.html',
   styleUrls: ['./add-boat.component.scss'],
 })
@@ -30,15 +30,15 @@ export class AddBoatComponent {
   public nameControl = new FormControl(null, [Validators.required]);
   public priceControl = new FormControl(null, [
     Validators.required,
-    kleinerOfGelijkAanNul,
+    smallerOrEqualToZero,
   ]);
   public lengthControl = new FormControl(null, [
     Validators.required,
-    kleinerOfGelijkAanNul,
+    smallerOrEqualToZero,
   ]);
   public maxSpeedControl = new FormControl(null, [
     Validators.required,
-    kleinerOfGelijkAanNul,
+    smallerOrEqualToZero,
   ]);
 
   constructor(private snackBService: SnackBarService, private router: Router) {}
@@ -155,28 +155,28 @@ export class AddBoatComponent {
 }
 
 class Boat {
-  private prijs: number;
-  private lengte: number;
-  private maximaleSnelheid: number;
-  private zeilOfMotor: string;
+  private price: number;
+  private length: number;
+  private maxSpeed: number;
+  private sailOrMotor: string;
   constructor(
-    private naam: string,
-    prijsString: string,
-    lengteString: string,
-    maxSnelheidString: string,
-    private schipperNodig: boolean,
+    private name: string,
+    priceString: string,
+    lengthString: string,
+    maxSpeedString: string,
+    private skipperNeeded: boolean,
     private fotos: FileList | null,
-    zeil: boolean,
+    sail: boolean,
     motor: boolean
   ) {
-    this.prijs = parseFloat(prijsString);
-    this.lengte = parseFloat(lengteString);
-    this.maximaleSnelheid = parseFloat(maxSnelheidString);
-    zeil ? (this.zeilOfMotor = 'zeil') : (this.zeilOfMotor = 'motor');
+    this.price = parseFloat(priceString);
+    this.length = parseFloat(lengthString);
+    this.maxSpeed = parseFloat(maxSpeedString);
+    sail ? (this.sailOrMotor = 'zeil') : (this.sailOrMotor = 'motor');
   }
 }
 
-export function kleinerOfGelijkAanNul(
+export function smallerOrEqualToZero(
   control: AbstractControl
 ): { [key: string]: boolean } | null {
   let returnValue = null;

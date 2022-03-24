@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SchipperToevoegComponent } from './schipper-toevoeg.component';
+import { AddSkipperComponent } from './add-skipper.component';
 
 describe('SchipperToevoegComponent', () => {
-  let component: SchipperToevoegComponent;
-  let fixture: ComponentFixture<SchipperToevoegComponent>;
+  let component: AddSkipperComponent;
+  let fixture: ComponentFixture<AddSkipperComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SchipperToevoegComponent],
+      declarations: [AddSkipperComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SchipperToevoegComponent);
+    fixture = TestBed.createComponent(AddSkipperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

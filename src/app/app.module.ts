@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { AddBoatComponent } from './add-boat/add-boat.component';
-import { SchipperToevoegComponent } from './schipper-toevoeg/schipper-toevoeg.component';
+import { AddSkipperComponent } from './add-skipper/add-skipper.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
@@ -33,7 +33,7 @@ import { BadgeComponent } from './home-feature-badge/home-feature-badge.componen
     AppComponent,
     AdminPanelComponent,
     AddBoatComponent,
-    SchipperToevoegComponent,
+    AddSkipperComponent,
     HeaderComponent,
     NavbarComponent,
     FooterComponent,
