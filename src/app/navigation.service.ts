@@ -35,6 +35,16 @@ export const NAVIGATION: NavItem[] = [
  * Decorator om item aan navbar toe te voegen. Deze moet buiten de
  * `NavigationService` class bestaan, want deze mag niet afhankelijk zijn van
  * een instance van een class.
+ *
+ * ```ts
+ * @addToNavBar({
+ *   name: 'Boot-administratie',
+ *   route: '/boat',
+ *   userTypes: ['admin'],
+ * })
+ * @Component({ ... })
+ * export class BootToevoegComponent { ... }
+ * ```
  */
 export function addToNavBar(navItem: NavItem) {
   return function (_: any) {
