@@ -1,0 +1,106 @@
+<p>registratie pagina DogStack-bootverhuur</p>
+<section class="registratie-sectie">
+  <form class="form">
+    <mat-form-field class="form-field" appearance="fill">
+      <mat-label>Voornaam</mat-label>
+      <input
+        type="name"
+        matInput
+        [formControl]="voornaam"
+        placeholder="Voornaam"
+        id="voornaam-input"
+      />
+
+      <mat-error *ngIf="voornaam.invalid"
+        >{{ voornaamErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+  </form>
+
+  <form class="form">
+    <mat-form-field class="form-field" appearance="fill">
+      <mat-label>Achternaam</mat-label>
+      <input
+        type="name"
+        matInput
+        [formControl]="achternaam"
+        placeholder="Achternaam"
+        id="achternaam-input"
+      />
+      <mat-error *ngIf="achternaam.invalid"
+        >{{ achternaamErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+  </form>
+
+  <form class="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Geboortedatum*</mat-label>
+      <input matInput [matDatepicker]="picker" id="leeftijd-input" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </form>
+
+  <!-- <form class="form">
+    <mat-form-field class="form-field" appearance="fill">
+      <mat-label>Leeftijd</mat-label>
+      <input
+        type="number"
+        matInput
+        [formControl]="emailFormControl"
+        placeholder="Leeftijd"
+        id="leeftijd-input"
+      />
+      <mat-error
+        *ngIf="
+          emailFormControl.hasError('email') &&
+          !emailFormControl.hasError('required')
+        "
+      >
+        Voer uw leeftijd in
+      </mat-error>
+      <mat-error *ngIf="emailFormControl.hasError('required')">
+        Leeftijd is <strong>vereist</strong>
+      </mat-error>
+    </mat-form-field>
+  </form> -->
+
+  <section class="registratie-sectie">
+    <form class="form">
+      <mat-form-field class="form-field" appearance="fill">
+        <mat-label>Emailadress</mat-label>
+        <input
+          type="name"
+          matInput
+          [formControl]="email"
+          placeholder="Emailadress"
+          id="emailadres-input"
+        />
+
+        <mat-error *ngIf="email.invalid">{{ emailErrorMessage() }} </mat-error>
+      </mat-form-field>
+    </form>
+
+    <form class="form">
+      <mat-form-field class="form-field" appearance="fill">
+        <mat-label>Wachtwoord</mat-label>
+        <input
+          type="password"
+          matInput
+          placeholder="Wachtwoord"
+          id="wachtwoord-input"
+        />
+        <!-- [formControl]="emailFormControl" -->
+        <!-- ^ deze na 'matInput' bij het <inputlabel> -->
+
+        <mat-error *ngIf="wachtwoord.invalid"
+          >{{ wachtwoordErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" id="registratie-btn">
+        Registreer!
+      </button>
+    </form>
+  </section>
+</section>

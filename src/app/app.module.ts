@@ -23,10 +23,15 @@ import { HomeFeatureComponent } from './home-feature/home-feature.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { BadgeComponent } from './home-feature-badge/home-feature-badge.component';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
+import { RegistratieComponent } from './registratie/registratie.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +46,7 @@ import { BadgeComponent } from './home-feature-badge/home-feature-badge.componen
     HomeComponent,
     HomeFeatureComponent,
     BadgeComponent,
+    RegistratieComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,6 +67,16 @@ import { BadgeComponent } from './home-feature-badge/home-feature-badge.componen
     MatMenuModule,
     BrowserAnimationsModule,
     MatDividerModule,
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [MatSnackBarModule],
   bootstrap: [AppComponent],
