@@ -30,9 +30,7 @@ body {
 }
 
 .normal-snackbar {
-  background-color: mat.get-color-from-palette(
-    theme.$dogstack-project-uml-primary
-  );
+  background-color: green;
   color: white;
 }
 

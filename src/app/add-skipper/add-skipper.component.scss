@@ -5,11 +5,11 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  background-color: mat.get-color-from-palette(
-    theme.$dogstack-project-uml-primary,
-    'lighter'
+  background-color: rgba(
+    $color:
+      mat.get-color-from-palette(theme.$dogstack-project-uml-primary, 'lighter'),
+    $alpha: 0.8
   );
-  opacity: 0.8;
 }
 
 mat-form-field,
