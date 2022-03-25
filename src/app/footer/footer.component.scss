@@ -34,3 +34,21 @@ a:hover {
   flex-direction: column;
   align-items: center;
 }
+
+mat-divider.responsive {
+  display: none;
+}
+
+@media only screen and (max-width: 640px) {
+  footer {
+    flex-direction: column;
+  }
+
+  mat-divider {
+    display: none;
+  }
+
+  mat-divider.responsive {
+    display: unset;
+  }
+}

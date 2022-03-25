@@ -2,7 +2,13 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SnackBarService, snackBarInput } from '../snack-bar.service';
+import { addToNavBar } from '../navigation.service';
 
+@addToNavBar({
+  name: 'Boot-administratie',
+  route: '/boat',
+  userTypes: ['admin'],
+})
 @Component({
   selector: 'app-add-boat',
   templateUrl: './add_boat.component.html',

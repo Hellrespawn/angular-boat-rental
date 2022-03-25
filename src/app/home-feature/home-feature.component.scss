@@ -10,11 +10,12 @@
   );
   box-shadow: 0px 4px 4px #00000044;
   border-radius: 4px;
+  gap: 2em;
+  padding: 2em;
 }
 
 img,
 .content {
-  padding: 2em;
   width: 50%;
 }
 
@@ -44,13 +45,16 @@ img.right {
 }
 
 @media only screen and (max-width: 640px) {
-  .card,
-  .content {
+  .card {
     flex-direction: column;
+    overflow-x: clip;
+    gap: 1em;
+    padding: 1em;
   }
 
-  .card > * {
-    width: unset;
+  img,
+  .content {
+    width: 100%;
   }
 
   img.left,
