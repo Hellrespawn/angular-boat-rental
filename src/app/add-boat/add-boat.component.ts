@@ -6,7 +6,7 @@ import { addToNavBar } from '../navigation.service';
 
 @addToNavBar({
   name: 'Boot-administratie',
-  route: '/boat',
+  route: '/add-boat',
   userTypes: ['admin'],
 })
 @Component({

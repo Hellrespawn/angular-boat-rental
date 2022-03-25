@@ -7,7 +7,7 @@ import { addToNavBar } from '../navigation.service';
 
 @addToNavBar({
   name: 'Schipper-administratie',
-  route: '/skipper',
+  route: '/add-skipper',
   userTypes: ['admin'],
 })
 @Component({
