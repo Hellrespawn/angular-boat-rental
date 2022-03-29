@@ -156,7 +156,7 @@ export class AddBoatComponent {
     }
     (<HTMLButtonElement>document.getElementById('submitKnop')).disabled = false;
     return throwError(
-      () => new Error('Something bad happened; please try again later.')
+      () => new Error('Something bad happened; please try again.')
     );
   }
 
