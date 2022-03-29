@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 import { SnackBarService, snackBarInput } from '../snack-bar.service';
 import { addToNavBar } from '../navigation.service';
+import { BoatService } from '../boat-service.service';
 
 @addToNavBar({
   name: 'Boot-administratie',
@@ -26,10 +29,16 @@ export class AddBoatComponent {
     duration: 3000,
     error: true,
   };
-  private readonly correctSnackBarInput: snackBarInput = {
-    message: 'Boot wordt toegevoegd!',
+  private readonly duplicateNameErrorSnackBarInput: snackBarInput = {
+    message: 'Deze naam is al in gebruik!',
     buttonText: 'Sluit',
     duration: 3000,
+    error: true,
+  };
+  private readonly succesSnackbarInput: snackBarInput = {
+    message: 'Boot is toegevoegd!',
+    buttonText: 'Sluit',
+    duration: 2000,
     error: false,
   };
 
@@ -47,7 +56,11 @@ export class AddBoatComponent {
     smallerOrEqualToZero,
   ]);
 
-  constructor(private snackBService: SnackBarService, private router: Router) {}
+  constructor(
+    private snackBService: SnackBarService,
+    private router: Router,
+    private boatService: BoatService
+  ) {}
 
   public getErrorMessageForNameField() {
     return this.nameControl.hasError(this.REQUIRED)
@@ -133,20 +146,39 @@ export class AddBoatComponent {
       );
     }
   }
-  private sendNieuwBoatToBackend(boot: Boat) {
+
+  private handleError(error: HttpErrorResponse) {
+    const errorArray: Array<string> = error.error;
+    for (let error of errorArray) {
+      if (error === 'name must be unique') {
+        this.snackBService.makeSnackbarThatClosesAutomatically(
+          this.duplicateNameErrorSnackBarInput
+        );
+      }
+    }
+    (<HTMLButtonElement>document.getElementById('submitKnop')).disabled = false;
+    return throwError(
+      () => new Error('Something bad happened; please try again later.')
+    );
+  }
+
+  private sendNieuwBoatToBackend(boat: Boat) {
     const submitButton: HTMLButtonElement = <HTMLButtonElement>(
       document.getElementById('submitKnop')
     );
     submitButton.disabled = true;
-    this.resetInputFields();
-    this.snackBService.makeSnackbarThatClosesAutomatically(
-      this.correctSnackBarInput
-    );
-    // backend wordt later geïmplementeerd
-    setTimeout(() => {
-      submitButton.disabled = false;
-      this.router.navigate(['/admin-panel']);
-    }, 3000);
+    this.boatService
+      .addBoat(boat)
+      .pipe(catchError((error) => this.handleError(error)))
+      .subscribe(() => {
+        this.snackBService.makeSnackbarThatClosesAutomatically(
+          this.succesSnackbarInput
+        );
+        this.resetInputFields();
+        setTimeout(() => {
+          window.location.replace('/admin-panel');
+        }, 2000);
+      });
   }
 
   private resetInputFields(): void {
