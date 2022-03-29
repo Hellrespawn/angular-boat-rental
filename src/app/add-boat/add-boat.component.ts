@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackBarService, snackBarInput } from '../snack-bar.service';
@@ -58,7 +57,6 @@ export class AddBoatComponent {
 
   constructor(
     private snackBService: SnackBarService,
-    private router: Router,
     private boatService: BoatService
   ) {}
 
