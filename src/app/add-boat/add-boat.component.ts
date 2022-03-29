@@ -38,7 +38,7 @@ export class AddBoatComponent {
   private readonly succesSnackbarInput: snackBarInput = {
     message: 'Boot is toegevoegd!',
     buttonText: 'Sluit',
-    duration: 2000,
+    duration: 1000,
     error: false,
   };
 
@@ -177,7 +177,7 @@ export class AddBoatComponent {
         this.resetInputFields();
         setTimeout(() => {
           window.location.replace('/admin-panel');
-        }, 2000);
+        }, 1000);
       });
   }
 
