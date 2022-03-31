@@ -1,9 +1,9 @@
-<div>
+<div [ngClass]="{ 'mat-chip-list-stacked': isMobile() }">
   <h2>De béste bootverhuur van Nederland!</h2>
-  <!-- TODO conditonally apply mat-chip-list-stacked on small screens -->
   <mat-chip-list
-    [ngClass]="{ 'mat-chip-list-stacked': isMobile() }"
-    aria-label="Populaire bootjes"
+    #chipList
+    (window:resize)="onResize($event)"
+    aria-label="Populaire opties"
   >
     <mat-chip color="primary" selected>Bekijk de bedrijfsuitjes</mat-chip>
     <mat-chip color="accent" selected>Huur een partyboot</mat-chip>

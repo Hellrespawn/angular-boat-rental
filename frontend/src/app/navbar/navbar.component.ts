@@ -7,7 +7,7 @@ import { NavigationService, NavItem, UserType } from '../navigation.service';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
-  debugUserType: UserType = 'guest';
+  debugUserType: UserType = 'user';
   private navItems: NavItem[] = [];
 
   constructor(private navigationService: NavigationService) {}
@@ -45,6 +45,10 @@ export class NavbarComponent implements OnInit {
       default:
         throw `Unknown user type ${currentUserType}`;
     }
+  }
+
+  showMenuButton(): boolean {
+    return Boolean(this.getNavigationItems().length);
   }
 
   /**
