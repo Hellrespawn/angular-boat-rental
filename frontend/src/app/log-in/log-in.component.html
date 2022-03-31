@@ -1,0 +1,35 @@
+<h2><p>Log In</p></h2>
+
+<section class="LogIn-sectie">
+  <form class="form">
+    <mat-form-field class="form-field" appearance="fill">
+      <mat-label>Emailadress</mat-label>
+      <input
+        type="name"
+        matInput
+        [formControl]="email"
+        placeholder="Emailadress"
+        id="emailadres-input"
+      />
+
+      <mat-error *ngIf="email.invalid">{{ emailErrorMessage() }} </mat-error>
+    </mat-form-field>
+  </form>
+
+  <form class="form">
+    <mat-form-field class="form-field" appearance="fill">
+      <mat-label>Wachtwoord</mat-label>
+      <input
+        type="password"
+        matInput
+        placeholder="Wachtwoord"
+        id="wachtwoord-input"
+      />
+
+      <mat-error *ngIf="wachtwoord.invalid"
+        >{{ wachtwoordErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" id="LogIn-btn">Log In!</button>
+  </form>
+</section>

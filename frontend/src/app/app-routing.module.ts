@@ -5,6 +5,7 @@ import { AddBoatComponent } from './add-boat/add-boat.component';
 import { AddSkipperComponent } from './add-skipper/add-skipper.component';
 import { HomeComponent } from './home/home.component';
 import { RegistratieComponent } from './registratie/registratie.component';
+import { LoginComponent } from './log-in/log-in.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'add-boat', component: AddBoatComponent },
   { path: 'add-skipper', component: AddSkipperComponent },
   { path: 'registratie-pagina', component: RegistratieComponent },
+  { path: 'log-in.component', component: LoginComponent },
 ];
 
 @NgModule({
