@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'add-boat', component: AddBoatComponent },
   { path: 'add-skipper', component: AddSkipperComponent },
   { path: 'registratie-pagina', component: RegistratieComponent },
-  { path: 'log-in.component', component: LoginComponent },
+  { path: 'log-In', component: LoginComponent },
 ];
 
 @NgModule({
