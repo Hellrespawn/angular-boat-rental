@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class ShortcutsComponent {
   constructor() {}
+
+  isMobile(): boolean {
+    const query = window.matchMedia('(max-width: 640px)');
+    return query.matches;
+  }
 }

@@ -7,7 +7,7 @@ import { NavigationService, NavItem, UserType } from '../navigation.service';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
-  debugUserType: UserType = 'user';
+  debugUserType: UserType = 'guest';
   private navItems: NavItem[] = [];
 
   constructor(private navigationService: NavigationService) {}
@@ -23,9 +23,8 @@ export class NavbarComponent implements OnInit {
     return this.debugUserType;
   }
 
-  setCurrentUserType(userType: UserType): void {
-    // FIXME Maak echte versie van deze functie.
-    this.debugUserType = userType;
+  isGuest(): boolean {
+    return this.debugUserType === 'guest';
   }
 
   /**
