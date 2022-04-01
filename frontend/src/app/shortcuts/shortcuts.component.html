@@ -1,7 +1,12 @@
-<div>
-  <mat-chip-list aria-label="Populaire bootjes">
-    <mat-chip color="primary" selected>Bedrijfsuitjes</mat-chip>
-    <mat-chip color="accent" selected>Partyboot</mat-chip>
-    <mat-chip>Solo Zeilen</mat-chip>
+<div [ngClass]="{ 'mat-chip-list-stacked': isMobile() }">
+  <h2>De béste bootverhuur van Nederland!</h2>
+  <mat-chip-list
+    #chipList
+    (window:resize)="onResize($event)"
+    aria-label="Populaire opties"
+  >
+    <mat-chip color="primary" selected>Bekijk de bedrijfsuitjes</mat-chip>
+    <mat-chip color="accent" selected>Huur een partyboot</mat-chip>
+    <mat-chip>Lekker zelf zeilen</mat-chip>
   </mat-chip-list>
 </div>

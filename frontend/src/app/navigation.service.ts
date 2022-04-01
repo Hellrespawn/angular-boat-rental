@@ -11,8 +11,6 @@ export type NavItem = {
 };
 
 export const NAVIGATION: NavItem[] = [
-  { name: 'Register', route: '/registratie-pagina', userTypes: ['guest'] },
-  { name: 'Log In', route: '/login', userTypes: ['guest'] },
   {
     name: 'Account-opties',
     route: '/user',
