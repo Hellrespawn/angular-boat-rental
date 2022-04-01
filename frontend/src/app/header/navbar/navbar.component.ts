@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationService, NavItem, UserType } from '../navigation.service';
+import { NavigationService, NavItem, UserType } from '../../navigation.service';
 
 @Component({
   selector: 'app-navbar',

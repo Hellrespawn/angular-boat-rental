@@ -14,26 +14,27 @@ import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { AddBoatComponent } from './add-boat/add-boat.component';
 import { AddSkipperComponent } from './add-skipper/add-skipper.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { HeaderComponent } from './header/header.component';
-import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
-import { ShortcutsComponent } from './shortcuts/shortcuts.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { HomeFeatureComponent } from './home-feature/home-feature.component';
-
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
-import { BadgeComponent } from './home-feature-badge/home-feature-badge.component';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-
 import { RegistratieComponent } from './registratie/registratie.component';
 import { LoginComponent } from './log-in/log-in.component';
+
+// Home components
+import { HomeComponent } from './home/home.component';
+import { HomeFeatureComponent } from './home/home-feature/home-feature.component';
+import { BadgeComponent } from './home/home-feature/home-feature-badge/home-feature-badge.component';
+import { ShortcutsComponent } from './home/shortcuts/shortcuts.component';
+
+// Header components
+import { HeaderComponent } from './header/header.component';
+import { NavbarComponent } from './header/navbar/navbar.component';
 
 @NgModule({
   declarations: [
