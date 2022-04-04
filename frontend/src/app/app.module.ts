@@ -25,6 +25,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { RegistratieComponent } from './registratie/registratie.component';
 import { LoginComponent } from './log-in/log-in.component';
+import { RentalComponent } from './rental/rental.component';
+import { FiltersComponent } from './rental/filters/filters.component';
+import { LicenseComponent } from './rental/filters/license/license.component';
+import { BoatTypeComponent } from './rental/filters/boat-type/boat-type.component';
+import { BoatCardComponent } from './rental/boat-card/boat-card.component';
 
 // Home components
 import { HomeComponent } from './home/home.component';
@@ -51,6 +56,11 @@ import { NavbarComponent } from './header/navbar/navbar.component';
     FeatureBadgeComponent,
     RegistratieComponent,
     LoginComponent,
+    RentalComponent,
+    FiltersComponent,
+    LicenseComponent,
+    BoatTypeComponent,
+    BoatCardComponent,
   ],
   imports: [
     BrowserModule,

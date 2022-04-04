@@ -1,0 +1,13 @@
+@use '@angular/material' as mat;
+@use 'src/custom-theme.scss' as theme;
+
+.custom-card {
+  background-color: mat.get-color-from-palette(
+    theme.$dogstack-project-uml-accent,
+    'default'
+  );
+
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
