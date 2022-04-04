@@ -48,19 +48,17 @@
       <input
         type="number"
         matInput
-        [formControl]="emailFormControl"
         placeholder="Leeftijd"
         id="leeftijd-input"
       />
       <mat-error
         *ngIf="
-          emailFormControl.hasError('email') &&
-          !emailFormControl.hasError('required')
+        
         "
       >
         Voer uw leeftijd in
       </mat-error>
-      <mat-error *ngIf="emailFormControl.hasError('required')">
+      <mat-error *ngIf="">
         Leeftijd is <strong>vereist</strong>
       </mat-error>
     </mat-form-field>
@@ -69,12 +67,12 @@
   <section class="registratie-sectie">
     <form class="form">
       <mat-form-field class="form-field" appearance="fill">
-        <mat-label>Emailadress</mat-label>
+        <mat-label>Emailadres</mat-label>
         <input
           type="name"
           matInput
           [formControl]="email"
-          placeholder="Emailadress"
+          placeholder="Emailadres"
           id="emailadres-input"
         />
 
@@ -88,11 +86,9 @@
         <input
           type="password"
           matInput
-          placeholder="Wachtwoord"
+          placeholder="wachtwoord"
           id="wachtwoord-input"
         />
-        <!-- [formControl]="emailFormControl" -->
-        <!-- ^ deze na 'matInput' bij het <inputlabel> -->
 
         <mat-error *ngIf="wachtwoord.invalid"
           >{{ wachtwoordErrorMessage() }}
