@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./license.component.scss'],
 })
 export class LicenseComponent implements OnInit {
+  selectedOption = 'both';
+
   constructor() {}
 
   ngOnInit(): void {}

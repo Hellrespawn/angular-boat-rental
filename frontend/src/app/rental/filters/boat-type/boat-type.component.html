@@ -1,1 +1,8 @@
-<p>boat-type works!</p>
+<mat-form-field appearance="fill">
+  <mat-label>Type Boot</mat-label>
+  <mat-select [(ngModel)]="selectedOption">
+    <mat-option value="all"> Alle </mat-option>
+    <mat-option value="sailboat"> Motorboot </mat-option>
+    <mat-option value="motorboat"> Zeilboot </mat-option>
+  </mat-select>
+</mat-form-field>

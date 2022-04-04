@@ -20,6 +20,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSelectModule } from '@angular/material/select';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -92,6 +94,7 @@ import { NavbarComponent } from './header/navbar/navbar.component';
     MatDatepickerModule,
     MatNativeDateModule,
     HttpClientModule,
+    MatSelectModule,
   ],
   providers: [MatSnackBarModule],
   bootstrap: [AppComponent],

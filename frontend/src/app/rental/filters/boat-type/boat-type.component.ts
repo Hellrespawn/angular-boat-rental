@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./boat-type.component.scss'],
 })
 export class BoatTypeComponent implements OnInit {
+  selectedOption = 'all';
+
   constructor() {}
 
   ngOnInit(): void {}
