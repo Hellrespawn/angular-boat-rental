@@ -18,7 +18,7 @@ export class NavbarComponent implements OnInit {
       .subscribe((navItems) => (this.navItems = navItems));
   }
 
-  getCurrentUserType(): UserType {
+  private getCurrentUserType(): UserType {
     // FIXME Maak echte versie van deze functie.
     return this.debugUserType;
   }
