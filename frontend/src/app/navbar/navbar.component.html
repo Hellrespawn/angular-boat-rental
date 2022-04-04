@@ -1,7 +1,7 @@
 <nav>
   <a mat-button routerLink="/">Home</a>
   <a mat-button routerLink="/verhuur">Verhuur</a>
-  <a *ngIf="isGuest()" mat-button routerLink="/login">Login</a>
+  <a *ngIf="isGuest()" mat-button routerLink="/log-In">Login</a>
 
   <!-- Menu-knop -->
   <button *ngIf="showMenuButton()" mat-button [matMenuTriggerFor]="menu">
