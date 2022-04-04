@@ -30,6 +30,15 @@
         >{{ wachtwoordErrorMessage() }}
       </mat-error>
     </mat-form-field>
-    <button mat-raised-button color="primary" id="LogIn-btn">Log In!</button>
+    <div id="button-holder">
+      <button mat-raised-button color="primary" id="LogIn-btn">Log In!</button>
+      <button
+        routerLink="/registratie-pagina"
+        mat-raised-button
+        color="primary"
+      >
+        Nog geen account? Registreer hier!
+      </button>
+    </div>
   </form>
 </section>
