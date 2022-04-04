@@ -28,8 +28,8 @@ import { LoginComponent } from './log-in/log-in.component';
 
 // Home components
 import { HomeComponent } from './home/home.component';
-import { HomeFeatureComponent } from './home/home-feature/home-feature.component';
-import { BadgeComponent } from './home/home-feature/home-feature-badge/home-feature-badge.component';
+import { HomeFeatureComponent } from './home/feature/feature.component';
+import { FeatureBadgeComponent } from './home/feature/badge/badge.component';
 import { ShortcutsComponent } from './home/shortcuts/shortcuts.component';
 
 // Header components
@@ -48,7 +48,7 @@ import { NavbarComponent } from './header/navbar/navbar.component';
     ShortcutsComponent,
     HomeComponent,
     HomeFeatureComponent,
-    BadgeComponent,
+    FeatureBadgeComponent,
     RegistratieComponent,
     LoginComponent,
   ],
