@@ -7,7 +7,7 @@ import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
 export class SnackBarService {
   constructor(private snackBar: MatSnackBar) {}
 
-  public makeSnackbarThatClosesAutomatically(inputObject: snackBarInput) {
+  public makeSnackbarThatClosesAutomatically(inputObject: SnackBarInput) {
     let snackBarRef: MatSnackBarRef<any>;
     if (inputObject.error) {
       snackBarRef = this.snackBar.open(
@@ -34,7 +34,7 @@ export class SnackBarService {
   }
 }
 
-export interface snackBarInput {
+export interface SnackBarInput {
   message: string;
   buttonText: string;
   duration: number;

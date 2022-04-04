@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormControl, Validators } from '@angular/forms';
 import { catchError, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { SnackBarService, snackBarInput } from '../snack-bar.service';
+import { SnackBarService, SnackBarInput } from '../snack-bar.service';
 import { addToNavBar } from '../navigation.service';
 import { BoatService } from '../boat-service.service';
 
@@ -22,19 +22,19 @@ export class AddBoatComponent {
   private readonly REQUIRED: string = 'required';
   private readonly ERROR_KEY_NUMBER_UNDER_ONE: string = 'kleinerOfGelijkAanNul';
 
-  private readonly errorSnackBarInput: snackBarInput = {
+  private readonly errorSnackBarInput: SnackBarInput = {
     message: 'Verkeerde invoer!',
     buttonText: 'Sluit',
     duration: 3000,
     error: true,
   };
-  private readonly duplicateNameErrorSnackBarInput: snackBarInput = {
+  private readonly duplicateNameErrorSnackBarInput: SnackBarInput = {
     message: 'Deze naam is al in gebruik!',
     buttonText: 'Sluit',
     duration: 3000,
     error: true,
   };
-  private readonly succesSnackbarInput: snackBarInput = {
+  private readonly succesSnackbarInput: SnackBarInput = {
     message: 'Boot is toegevoegd!',
     buttonText: 'Sluit',
     duration: 1000,
