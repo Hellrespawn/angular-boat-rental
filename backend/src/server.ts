@@ -3,6 +3,7 @@ import { initSequelize } from "./util/database";
 
 import { BoatController } from "./controllers/boat-controller";
 import { SkipperController } from "./controllers/skipper-controller";
+import { addCorsHeaders } from "./middleware/cors";
 
 initSequelize();
 
@@ -12,19 +13,7 @@ const skipperController: SkipperController = new SkipperController();
 const app: Application = express();
 const port = 3000;
 
-app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  next();
-});
+app.use(addCorsHeaders);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
