@@ -1,5 +1,5 @@
-import Ajv from "ajv";
-import { NextFunction, Request, Response } from "express";
+import Ajv from 'ajv';
+import { NextFunction, Request, Response } from 'express';
 
 // Initialize single Ajv instance
 // allErrors reports all errors, not just the first.
@@ -43,7 +43,7 @@ export function validateIdInUrlParams(
   if (isNaN(+req.params.id)) {
     res
       .status(400)
-      .json({ message: "ID is not a valid number!", id: req.params.id });
+      .json({ message: 'ID is not a valid number!', id: req.params.id });
   } else {
     next();
   }

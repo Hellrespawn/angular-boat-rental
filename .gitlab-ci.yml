@@ -1,12 +1,22 @@
 stages:
-  - test
+  - check
 
-lint:
+lint-frontend:
   image: node:16
   tags:
     - hva
-  stage: test
+  stage: check
   script:
     - cd frontend
+    - npm install
+    - npm run check-formatting
+
+lint-backend:
+  image: node:16
+  tags:
+    - hva
+  stage: check
+  script:
+    - cd backend
     - npm install
     - npm run check-formatting
