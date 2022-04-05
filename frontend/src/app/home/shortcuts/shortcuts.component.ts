@@ -8,11 +8,12 @@ import { map, Observable } from 'rxjs';
   styleUrls: ['./shortcuts.component.scss'],
 })
 export class ShortcutsComponent {
-  @ViewChild('chipList') chipList!: ElementRef;
+  @ViewChild('chipList') public chipList!: ElementRef;
 
   constructor(private breakpointObserver: BreakpointObserver) {}
 
-  isMobile$: Observable<boolean> = this.breakpointObserver
+  /** Observable that checks whether or not we're on mobile. */
+  public isMobile$: Observable<boolean> = this.breakpointObserver
     .observe(['(max-width: 640px)'])
     .pipe(map((state) => state.matches));
 }

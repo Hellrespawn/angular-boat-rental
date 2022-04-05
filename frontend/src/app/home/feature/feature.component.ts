@@ -6,10 +6,10 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./feature.component.scss'],
 })
 export class HomeFeatureComponent {
-  @Input() badgeText = '';
-  @Input() buttonHref = '/';
-  @Input() buttonText = 'Meer Informatie';
-  @Input() imageSource = '/assets/notfound.jpg';
-  @Input() imageSide: 'left' | 'right' = 'left';
+  @Input() public badgeText = '';
+  @Input() public buttonHref = '/';
+  @Input() public buttonText = 'Meer Informatie';
+  @Input() public imageSource = '/assets/notfound.jpg';
+  @Input() public imageSide: 'left' | 'right' = 'left';
   constructor() {}
 }
