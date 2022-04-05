@@ -54,7 +54,7 @@ export function addToNavBar(navItem: NavItem) {
   providedIn: 'root',
 })
 export class NavigationService {
-  getNavigationItems(): Observable<NavItem[]> {
+  public getNavigationItems(): Observable<NavItem[]> {
     const navigation = of(NAVIGATION);
     return navigation;
   }

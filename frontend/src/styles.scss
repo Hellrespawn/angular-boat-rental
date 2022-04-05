@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
-@use './custom-theme.scss' as theme;
+@use '/src/custom-theme.scss' as theme;
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -16,6 +16,7 @@ html {
   height: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
   background-image: url('assets/background.jpg');
   background-position: center;
   background-size: cover;
@@ -24,6 +25,8 @@ html {
 
 body {
   height: 100%;
+  max-width: 960px;
+  width: 100%;
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }

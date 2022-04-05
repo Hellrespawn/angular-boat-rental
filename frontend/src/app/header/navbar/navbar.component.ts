@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationService, NavItem, UserType } from '../navigation.service';
+import { NavigationService, NavItem, UserType } from '../../navigation.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,7 +7,7 @@ import { NavigationService, NavItem, UserType } from '../navigation.service';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
-  debugUserType: UserType = 'user';
+  public debugUserType: UserType = 'user';
   private navItems: NavItem[] = [];
 
   constructor(private navigationService: NavigationService) {}
@@ -18,12 +18,12 @@ export class NavbarComponent implements OnInit {
       .subscribe((navItems) => (this.navItems = navItems));
   }
 
-  getCurrentUserType(): UserType {
+  private getCurrentUserType(): UserType {
     // FIXME Maak echte versie van deze functie.
     return this.debugUserType;
   }
 
-  isGuest(): boolean {
+  public isGuest(): boolean {
     return this.debugUserType === 'guest';
   }
 
@@ -32,7 +32,7 @@ export class NavbarComponent implements OnInit {
    *
    * Wordt vastgesteld op basis van het huidige UserType.
    */
-  getIconName(): string {
+  public getIconName(): string {
     const currentUserType = this.getCurrentUserType();
 
     switch (currentUserType) {
@@ -47,14 +47,14 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  showMenuButton(): boolean {
+  public showMenuButton(): boolean {
     return Boolean(this.getNavigationItems().length);
   }
 
   /**
    * Retourneert alle NavItems op basis van het huidige UserType
    */
-  getNavigationItems(): NavItem[] {
+  public getNavigationItems(): NavItem[] {
     let items = this.navItems.filter((item) =>
       item.userTypes.includes(this.getCurrentUserType())
     );
