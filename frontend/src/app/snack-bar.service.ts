@@ -10,13 +10,15 @@ export class SnackBarService {
   public makeSnackbarThatClosesAutomatically(inputObject: SnackBarInput) {
     let snackBarRef: MatSnackBarRef<any>;
     snackBarRef = this.snackBar.open(
-        inputObject.message,
-        inputObject.buttonText,
-        {
-          duration: inputObject.duration,
-          panelClass: inputObject.error ? ['error-snackbar'] : ['normal-snackbar']
-        }
-      );
+      inputObject.message,
+      inputObject.buttonText,
+      {
+        duration: inputObject.duration,
+        panelClass: inputObject.error
+          ? ['error-snackbar']
+          : ['normal-snackbar'],
+      }
+    );
     snackBarRef.afterDismissed().subscribe(() => {});
 
     snackBarRef.onAction().subscribe(() => {});
