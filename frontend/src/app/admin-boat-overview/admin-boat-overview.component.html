@@ -1,10 +1,10 @@
 <p *ngIf="arrayOfBoats.length === 0">Er zijn nog geen boten geregistreerd!</p>
 <mat-card *ngFor="let boat of arrayOfBoats">
   <mat-card-title>{{ boat.name }}</mat-card-title>
-  <mat-card-subtitle>€{{ boat.price }},00</mat-card-subtitle>
+  <mat-card-subtitle>€{{ boat.pricePerDay }},00</mat-card-subtitle>
   <mat-card-actions>
     <button mat-button (click)="deleteBoatById(boat.id)">Verwijder</button>
-    <button *ngIf="!boat.onMaintenance" mat-button>Zet op onderhoud</button>
-    <button *ngIf="boat.onMaintenance" mat-button>Haal van onderhoud af</button>
+    <button *ngIf="!boat.maintenance" mat-button>Zet op onderhoud</button>
+    <button *ngIf="boat.maintenance" mat-button>Haal van onderhoud af</button>
   </mat-card-actions>
 </mat-card>

@@ -32,6 +32,6 @@ export class AdminBoatOverviewComponent implements OnInit {
 interface BoatForAdmin {
   id: number,
   name: string,
-  price: number,
-  onMaintenance: boolean
+  pricePerDay: number,
+  maintenance: boolean
 }
