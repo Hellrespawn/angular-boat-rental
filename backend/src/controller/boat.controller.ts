@@ -9,8 +9,8 @@ export class BoatController {
     res: express.Response
   ): Promise<void> {
     try {
-      const result = await this.boatService.returnAllBoats();
-      res.status(200).json(result);
+      const boats = await this.boatService.returnAllBoats();
+      res.status(200).json({ boats });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Something went wrong!' });

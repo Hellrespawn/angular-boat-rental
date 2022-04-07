@@ -1,3 +1,16 @@
+export interface Boat {
+  name: string;
+  pricePerDay: number;
+  skipperRequired: boolean;
+  maintenance: boolean;
+  photo?: Buffer;
+  lengthInM: number;
+  maxOccupants: number;
+  boatType: string;
+  maxSpeedInKmH: number;
+  sailAreaInM2: number;
+}
+
 export enum BoatFeature {
   // TODO voeg hier meer aan toe.
   Catering,
