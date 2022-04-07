@@ -35,6 +35,7 @@ import { ShortcutsComponent } from './home/shortcuts/shortcuts.component';
 // Header components
 import { HeaderComponent } from './header/header.component';
 import { NavbarComponent } from './header/navbar/navbar.component';
+import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { NavbarComponent } from './header/navbar/navbar.component';
     FeatureBadgeComponent,
     RegistratieComponent,
     LoginComponent,
+    AdminBoatOverviewComponent,
   ],
   imports: [
     BrowserModule,
