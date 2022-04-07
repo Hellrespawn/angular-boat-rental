@@ -9,25 +9,14 @@ export class SnackBarService {
 
   public makeSnackbarThatClosesAutomatically(inputObject: SnackBarInput) {
     let snackBarRef: MatSnackBarRef<any>;
-    if (inputObject.error) {
-      snackBarRef = this.snackBar.open(
+    snackBarRef = this.snackBar.open(
         inputObject.message,
         inputObject.buttonText,
         {
           duration: inputObject.duration,
-          panelClass: ['error-snackbar'],
+          panelClass: inputObject.error ? ['error-snackbar'] : ['normal-snackbar']
         }
       );
-    } else {
-      snackBarRef = this.snackBar.open(
-        inputObject.message,
-        inputObject.buttonText,
-        {
-          duration: inputObject.duration,
-          panelClass: ['normal-snackbar'],
-        }
-      );
-    }
     snackBarRef.afterDismissed().subscribe(() => {});
 
     snackBarRef.onAction().subscribe(() => {});
