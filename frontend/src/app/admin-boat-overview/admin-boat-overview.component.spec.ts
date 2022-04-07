@@ -8,9 +8,8 @@ describe('AdminBoatOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminBoatOverviewComponent ]
-    })
-    .compileComponents();
+      declarations: [AdminBoatOverviewComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

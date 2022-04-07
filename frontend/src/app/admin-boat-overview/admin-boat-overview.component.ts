@@ -5,19 +5,17 @@ import { SnackBarService } from '../snack-bar.service';
 @Component({
   selector: 'app-admin-boat-overview',
   templateUrl: './admin-boat-overview.component.html',
-  styleUrls: ['./admin-boat-overview.component.scss']
+  styleUrls: ['./admin-boat-overview.component.scss'],
 })
 export class AdminBoatOverviewComponent implements OnInit {
   public arrayOfBoats: Array<BoatForAdmin> = [];
-  constructor(
-    private boatService: BoatService
-    ) { }
+  constructor(private boatService: BoatService) {}
 
   ngOnInit(): void {
     this.getBoatsFromDatabase();
   }
   private async getBoatsFromDatabase(): Promise<void> {
-    this.boatService.getBoats().subscribe(result => {
+    this.boatService.getBoats().subscribe((result) => {
       this.arrayOfBoats = result;
     });
   }
@@ -26,7 +24,10 @@ export class AdminBoatOverviewComponent implements OnInit {
       window.location.reload();
     });
   }
-  public async updateMaintenance(id: number, updatedValue: boolean): Promise<void> {
+  public async updateMaintenance(
+    id: number,
+    updatedValue: boolean
+  ): Promise<void> {
     this.boatService.updateMaintenanceStatus(id, updatedValue).subscribe(() => {
       window.location.reload();
     });
@@ -34,8 +35,8 @@ export class AdminBoatOverviewComponent implements OnInit {
 }
 
 interface BoatForAdmin {
-  id: number,
-  name: string,
-  pricePerDay: number,
-  maintenance: boolean
+  id: number;
+  name: string;
+  pricePerDay: number;
+  maintenance: boolean;
 }
