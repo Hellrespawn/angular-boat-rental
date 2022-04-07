@@ -25,6 +25,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { RegistratieComponent } from './registratie/registratie.component';
 import { LoginComponent } from './log-in/log-in.component';
+import { MatCardModule } from '@angular/material/card';
 
 // Home components
 import { HomeComponent } from './home/home.component';
@@ -84,6 +85,7 @@ import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-ove
     MatDatepickerModule,
     MatNativeDateModule,
     HttpClientModule,
+    MatCardModule,
   ],
   providers: [MatSnackBarModule],
   bootstrap: [AppComponent],
