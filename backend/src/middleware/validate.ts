@@ -1,26 +1,15 @@
-import Ajv from 'ajv';
+import Ajv, { JSONSchemaType } from 'ajv';
 import { NextFunction, Request, Response } from 'express';
 
 // Initialize single Ajv instance
 // allErrors reports all errors, not just the first.
 const ajv = new Ajv({ allErrors: true });
 
-// Quick type definition for JSON schema. Avoids the generic with Ajv's built-
-// in JSONSchemaType.
-type JSONPrimitive =
-  | string
-  | number
-  | boolean
-  | JSONPrimitive[]
-  | { [key: string]: JSONPrimitive };
-
-export type JSONSchema = { [key: string]: JSONPrimitive };
-
 /**
  * Create validator middleware from schema. Use the output of this function in
  * your route.
  */
-export function createValidatorFromSchema(schema: JSONSchema) {
+export function createValidatorFromSchema<T>(schema: JSONSchemaType<T>) {
   const validate = ajv.compile(schema);
 
   return (req: Request, res: Response, next: NextFunction) => {
@@ -40,7 +29,8 @@ export function validateIdInUrlParams(
   res: Response,
   next: NextFunction
 ) {
-  if (isNaN(+req.params.id)) {
+  const id = parseInt(req.params.id);
+  if (isNaN(id) || id < 0) {
     res
       .status(400)
       .json({ message: 'ID is not a valid number!', id: req.params.id });
