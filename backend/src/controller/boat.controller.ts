@@ -11,8 +11,8 @@ export class BoatController {
     try {
       const result = await this.boatService.returnAllBoats();
       res.status(200).json(result);
-    } catch {
-      console.error();
+    } catch (error) {
+      console.error(error);
       res.status(500).json({ error: 'Something went wrong!' });
     }
   }

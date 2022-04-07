@@ -5,4 +5,6 @@ import { createDatabase, initSequelize } from '../util/database';
   const sequelize = await initSequelize();
   await createDatabase();
   await sequelize.sync();
+
+  process.exit();
 })();

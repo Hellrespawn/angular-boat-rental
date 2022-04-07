@@ -6,7 +6,7 @@ const database = process.env.DB_NAME ?? 'dogstack-het-vrolijke-avontuur';
 const user = process.env.DB_USER ?? 'root';
 const password = process.env.DB_PASSWORD ?? 'password';
 const host = process.env.DB_HOST ?? 'localhost';
-const port = +(process.env.DB_PORT ?? 3000);
+const port = +(process.env.DB_PORT ?? 3306);
 
 export async function initSequelize(): Promise<Sequelize> {
   const sequelize = new Sequelize(database, user, password, {
@@ -28,5 +28,7 @@ export async function createDatabase(): Promise<void> {
     password,
   });
 
-  await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
+  console.log(
+    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`)
+  );
 }
