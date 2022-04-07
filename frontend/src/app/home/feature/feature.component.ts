@@ -10,6 +10,6 @@ export class HomeFeatureComponent {
   @Input() public buttonHref = '/';
   @Input() public buttonText = 'Meer Informatie';
   @Input() public imageSource = '/assets/notfound.jpg';
-  @Input() public imageSide: 'left' | 'right' = 'left';
+  @Input() public imageOrder: 'first' | 'last' = 'first';
   constructor() {}
 }

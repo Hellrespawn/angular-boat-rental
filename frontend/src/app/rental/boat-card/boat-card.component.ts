@@ -1,4 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { BoatRequirements } from 'src/app/boat';
+import { BoatOverviewData } from '../rental.component';
+
+const PLACEHOLDER = {
+  imageUrl: '/assets/notfound.jpg',
+  name: 'placeholder',
+  requirements: BoatRequirements.None,
+  maxOccupants: 6,
+};
 
 @Component({
   selector: 'app-rental-boat-card',
@@ -6,5 +15,20 @@ import { Component } from '@angular/core';
   styleUrls: ['./boat-card.component.scss'],
 })
 export class BoatCardComponent {
+  @Input() public boat: BoatOverviewData = PLACEHOLDER;
+
+  public requirementsToString(): string {
+    switch (this.boat.requirements) {
+      case BoatRequirements.None:
+        return 'Zelf varen';
+
+      case BoatRequirements.License:
+        return 'Vaarbewijs vereist';
+
+      case BoatRequirements.Skipper:
+        return 'Schipper vereist';
+    }
+  }
+
   constructor() {}
 }

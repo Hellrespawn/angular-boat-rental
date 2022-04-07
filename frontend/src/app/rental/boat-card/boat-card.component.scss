@@ -1,0 +1,32 @@
+.custom-card {
+  overflow: hidden;
+  max-width: 300px;
+}
+
+img {
+  object-fit: contain;
+}
+
+.boat-features {
+  padding: 1em;
+}
+
+#description {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#requirements {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+#button {
+  padding-top: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
