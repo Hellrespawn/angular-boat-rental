@@ -7,19 +7,27 @@ import {
   Unique,
 } from 'sequelize-typescript';
 
+const BOAT_TYPE = DataType.ENUM('sail', 'motor');
+
 @Table
 export class Boat extends Model {
   @Unique @Column public name!: string;
 
-  @Column public price!: number;
+  @Column public pricePerDay!: number;
 
-  @Column public skipperNeeded!: boolean;
+  @Column(DataType.BOOLEAN) public skipperNeeded = true;
 
-  @AllowNull @Column(DataType.BLOB) public photo?: Blob | null;
+  @Column(DataType.BOOLEAN) public maintenance = false;
 
-  @Column public length!: number;
+  @AllowNull @Column(DataType.BLOB) public photo?: Buffer | null;
 
-  @Column public maxSpeed!: number;
+  @Column public lengthInM!: number;
 
-  @Column(DataType.ENUM('sail', 'motor')) public sailOrMotor!: string;
+  @Column public maxOccupants!: number;
+
+  @Column(BOAT_TYPE) public boatType!: string;
+
+  @AllowNull @Column public maxSpeedInKmH?: number;
+
+  @AllowNull @Column public sailAreaInM2?: number;
 }
