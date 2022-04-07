@@ -10,7 +10,6 @@ import { SnackBarService } from '../snack-bar.service';
 export class AdminBoatOverviewComponent implements OnInit {
   public arrayOfBoats: Array<BoatForAdmin> = [];
   constructor(
-    private snackBService: SnackBarService,
     private boatService: BoatService
     ) { }
 
@@ -24,6 +23,11 @@ export class AdminBoatOverviewComponent implements OnInit {
   }
   public async deleteBoatById(id: number): Promise<void> {
     this.boatService.deleteBoatById(id).subscribe(() => {
+      window.location.reload();
+    });
+  }
+  public async updateMaintenance(id: number, updatedValue: boolean): Promise<void> {
+    this.boatService.updateMaintenanceStatus(id, updatedValue).subscribe(() => {
       window.location.reload();
     });
   }

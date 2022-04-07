@@ -16,4 +16,7 @@ export class BoatService {
   deleteBoatById(id: number): Observable<Object>{
     return this.httpClient.post('http://127.0.0.1:3000/delete-boat', {id})
   }
+  updateMaintenanceStatus(id: number, updatedValue: boolean): Observable<Object>{
+    return this.httpClient.post('http://127.0.0.1:3000/update-boat', {id, updatedValue})
+  }
 }
