@@ -25,20 +25,20 @@ export class AdminBoatOverviewComponent implements OnInit {
       console.log(result);
     });
   }
-  public async deleteBoatById(id: number): Promise<void> {
+  public async deleteBoatById(id: number, index: number): Promise<void> {
     this.boatService.deleteBoatById(id).subscribe(() => {
-      window.location.reload();
+      this.arrayOfBoats.splice(index, 1);
     });
   }
   public async updateMaintenance(
     id: number,
-    updatedValue: boolean
+    updatedValue: boolean,
+    index: number
   ): Promise<void> {
     this.boatService
       .updateMaintenanceStatus(id, updatedValue)
-      .subscribe((result) => {
-        console.log(result);
-        window.location.reload();
+      .subscribe(() => {
+        this.arrayOfBoats[index].maintenance = updatedValue;
       });
   }
 }
