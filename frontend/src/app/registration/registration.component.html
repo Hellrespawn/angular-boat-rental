@@ -1,18 +1,18 @@
 <h2><p>registratie pagina DogStack-bootverhuur</p></h2>
-<section class="registratie-sectie">
+<section class="registration-section">
   <form class="form">
     <mat-form-field class="form-field" appearance="fill">
       <mat-label>Voornaam</mat-label>
       <input
         type="name"
         matInput
-        [formControl]="voornaam"
+        [formControl]="firstName"
         placeholder="Voornaam"
-        id="voornaam-input"
+        id="firstname-input"
       />
 
-      <mat-error *ngIf="voornaam.invalid"
-        >{{ voornaamErrorMessage() }}
+      <mat-error *ngIf="firstName.invalid"
+        >{{ firstNameErrorMessage() }}
       </mat-error>
     </mat-form-field>
   </form>
@@ -23,12 +23,12 @@
       <input
         type="name"
         matInput
-        [formControl]="achternaam"
+        [formControl]="lastName"
         placeholder="Achternaam"
-        id="achternaam-input"
+        id="lastName-input"
       />
-      <mat-error *ngIf="achternaam.invalid"
-        >{{ achternaamErrorMessage() }}
+      <mat-error *ngIf="lastName.invalid"
+        >{{ lastNameErrorMessage() }}
       </mat-error>
     </mat-form-field>
   </form>
@@ -36,7 +36,7 @@
   <form class="form">
     <mat-form-field appearance="fill">
       <mat-label>Geboortedatum*</mat-label>
-      <input matInput [matDatepicker]="picker" id="leeftijd-input" />
+      <input matInput [matDatepicker]="picker" id="age-input" />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
@@ -86,15 +86,15 @@
         <input
           type="password"
           matInput
-          placeholder="wachtwoord"
-          id="wachtwoord-input"
+          placeholder="password"
+          id="password-input"
         />
 
-        <mat-error *ngIf="wachtwoord.invalid"
-          >{{ wachtwoordErrorMessage() }}
+        <mat-error *ngIf="password.invalid"
+          >{{ passwordErrorMessage() }}
         </mat-error>
       </mat-form-field>
-      <button mat-raised-button color="primary" id="registratie-btn">
+      <button mat-raised-button color="primary" id="registration-btn" (click)="validatePassword()">
         Registreer!
       </button>
     </form>
