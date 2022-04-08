@@ -13,14 +13,14 @@ export function addBoatRoutes(
     controller.addBoat(req, res);
   });
 
-  app.post(
-    '/delete-boat',
+  app.delete(
+    '/delete-boat/:id',
     async (req: Request, res: Response): Promise<void> => {
       controller.deleteBoat(req, res);
     }
   );
 
-  app.post(
+  app.patch(
     '/update-boat',
     async (req: Request, res: Response): Promise<void> => {
       controller.updateBoat(req, res);

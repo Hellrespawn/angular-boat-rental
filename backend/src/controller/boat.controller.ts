@@ -47,7 +47,7 @@ export class BoatController {
     req: express.Request,
     res: express.Response
   ): Promise<void> {
-    const idOfBoat: number = +req.body.id;
+    const idOfBoat: number = +req.params.id;
     const boatToDelete: Boat | null = await Boat.findByPk(idOfBoat);
     if (boatToDelete !== null) {
       try {

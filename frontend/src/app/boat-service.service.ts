@@ -14,13 +14,13 @@ export class BoatService {
     return this.httpClient.get('http://127.0.0.1:3000/boat');
   }
   public deleteBoatById(id: number): Observable<Object> {
-    return this.httpClient.post('http://127.0.0.1:3000/delete-boat', { id });
+    return this.httpClient.delete(`http://127.0.0.1:3000/delete-boat/${id}`);
   }
   public updateMaintenanceStatus(
     id: number,
     updatedValue: boolean
   ): Observable<Object> {
-    return this.httpClient.post('http://127.0.0.1:3000/update-boat', {
+    return this.httpClient.patch('http://127.0.0.1:3000/update-boat', {
       id,
       updatedValue,
     });
