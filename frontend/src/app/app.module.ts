@@ -32,8 +32,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
-import { RegistratieComponent } from './registratie/registratie.component';
+import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './log-in/log-in.component';
+import { FaqComponent } from './faq/faq.component';
 
 @NgModule({
   declarations: [
@@ -48,8 +49,9 @@ import { LoginComponent } from './log-in/log-in.component';
     HomeComponent,
     HomeFeatureComponent,
     BadgeComponent,
-    RegistratieComponent,
+    RegistrationComponent,
     LoginComponent,
+    FaqComponent,
   ],
   imports: [
     BrowserModule,
