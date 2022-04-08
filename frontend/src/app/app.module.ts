@@ -32,6 +32,7 @@ import { FiltersComponent } from './rental/filters/filters.component';
 import { LicenseComponent } from './rental/filters/license/license.component';
 import { BoatTypeComponent } from './rental/filters/boat-type/boat-type.component';
 import { BoatCardComponent } from './rental/boat-card/boat-card.component';
+import { MatCardModule } from '@angular/material/card';
 
 // Home components
 import { HomeComponent } from './home/home.component';
@@ -42,6 +43,7 @@ import { ShortcutsComponent } from './home/shortcuts/shortcuts.component';
 // Header components
 import { HeaderComponent } from './header/header.component';
 import { NavbarComponent } from './header/navbar/navbar.component';
+import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import { NavbarComponent } from './header/navbar/navbar.component';
     LicenseComponent,
     BoatTypeComponent,
     BoatCardComponent,
+    AdminBoatOverviewComponent,
   ],
   imports: [
     BrowserModule,
@@ -95,6 +98,7 @@ import { NavbarComponent } from './header/navbar/navbar.component';
     MatNativeDateModule,
     HttpClientModule,
     MatSelectModule,
+    MatCardModule,
   ],
   providers: [MatSnackBarModule],
   bootstrap: [AppComponent],
