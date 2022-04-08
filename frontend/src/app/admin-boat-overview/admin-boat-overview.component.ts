@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { BoatService } from '../boat-service.service';
-import { SnackBarService } from '../snack-bar.service';
+import { addToNavBar } from '../navigation.service';
 
+@addToNavBar({
+  name: 'Boot-administratie',
+  route: '/boat-overview-admin',
+  userTypes: ['admin'],
+})
 @Component({
   selector: 'app-admin-boat-overview',
   templateUrl: './admin-boat-overview.component.html',

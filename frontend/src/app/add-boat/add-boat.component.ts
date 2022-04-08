@@ -3,14 +3,8 @@ import { AbstractControl, FormControl, Validators } from '@angular/forms';
 import { catchError, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
-import { addToNavBar } from '../navigation.service';
 import { BoatService } from '../boat-service.service';
 
-@addToNavBar({
-  name: 'Boot-administratie',
-  route: '/add-boat',
-  userTypes: ['admin'],
-})
 @Component({
   selector: 'app-add-boat',
   templateUrl: './add_boat.component.html',
