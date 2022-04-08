@@ -1,7 +1,11 @@
 import 'dotenv/config';
-import { Boat } from '../model/boat.model';
+import { Boat, BoatData } from '../model/boat.model';
 import '../util/database';
 import { initSequelize } from '../util/database';
+
+const MOTORBOAT_PLACEHOLDER_PATH = 'motorboot-placeholder.jpg';
+
+const SAILBOAT_PLACEHOLDER_PATH = 'zeilboot-placeholder.jpg';
 
 const NAMES = [
   'The Holstein',
@@ -22,18 +26,25 @@ function randomInt(min: number, max: number): number {
 }
 
 async function insertMockBoats() {
-  const boats = NAMES.map((name) => {
+  const boats = NAMES.map((name): BoatData => {
     const boatType = randomInt(0, 1) ? 'sail' : 'motor';
+
+    const imageRoute =
+      boatType == 'sail'
+        ? SAILBOAT_PLACEHOLDER_PATH
+        : MOTORBOAT_PLACEHOLDER_PATH;
+
     let boat;
+
     if (boatType == 'sail') {
       boat = {
         name,
-        registrationNumber: randomInt(100, 10000),
+        registrationNumber: randomInt(1, 10000),
+        imageRoute,
         pricePerDay: randomInt(200, 500),
-        skipperNeeded: Boolean(randomInt(0, 1)),
-        maintenance: false,
-        photo: null,
-        length: randomInt(10, 30),
+        skipperRequired: Boolean(randomInt(0, 1)),
+        maintenance: Boolean(randomInt(0, 1)),
+        lengthInM: randomInt(10, 30),
         maxOccupants: randomInt(8, 16),
         boatType,
         sailAreaInM2: randomInt(100, 200),
@@ -41,12 +52,12 @@ async function insertMockBoats() {
     } else {
       boat = {
         name,
-        registrationNumber: randomInt(100, 10000),
+        registrationNumber: randomInt(1, 10000),
+        imageRoute,
         pricePerDay: randomInt(200, 500),
-        skipperNeeded: Boolean(randomInt(0, 1)),
-        maintenance: false,
-        photo: null,
-        length: randomInt(10, 30),
+        skipperRequired: Boolean(randomInt(0, 1)),
+        maintenance: Boolean(randomInt(0, 1)),
+        lengthInM: randomInt(10, 30),
         maxOccupants: randomInt(8, 16),
         boatType,
         maxSpeedInKmH: randomInt(10, 30),
@@ -56,7 +67,14 @@ async function insertMockBoats() {
     return boat;
   });
 
-  return Promise.all(boats.map((boat) => Boat.create(boat)));
+  for (const boat of boats) {
+    try {
+      await Boat.create(boat);
+    } catch (error) {
+      console.log(error);
+      process.exit(1);
+    }
+  }
 }
 
 (async () => {

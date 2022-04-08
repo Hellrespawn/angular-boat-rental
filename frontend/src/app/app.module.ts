@@ -20,11 +20,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSelectModule } from '@angular/material/select';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { RegistratieComponent } from './registratie/registratie.component';
 import { LoginComponent } from './log-in/log-in.component';
+import { RentalComponent } from './rental/rental.component';
+import { FiltersComponent } from './rental/filters/filters.component';
+import { LicenseComponent } from './rental/filters/license/license.component';
+import { BoatTypeComponent } from './rental/filters/boat-type/boat-type.component';
+import { BoatCardComponent } from './rental/boat-card/boat-card.component';
 import { MatCardModule } from '@angular/material/card';
 
 // Home components
@@ -53,6 +60,11 @@ import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-ove
     FeatureBadgeComponent,
     RegistratieComponent,
     LoginComponent,
+    RentalComponent,
+    FiltersComponent,
+    LicenseComponent,
+    BoatTypeComponent,
+    BoatCardComponent,
     AdminBoatOverviewComponent,
   ],
   imports: [
@@ -85,6 +97,7 @@ import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-ove
     MatDatepickerModule,
     MatNativeDateModule,
     HttpClientModule,
+    MatSelectModule,
     MatCardModule,
   ],
   providers: [MatSnackBarModule],

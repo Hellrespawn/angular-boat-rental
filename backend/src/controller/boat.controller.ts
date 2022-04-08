@@ -4,13 +4,14 @@ import express from 'express';
 
 export class BoatController {
   constructor(private boatService: BoatService = new BoatService()) {}
+
   public async getBoats(
     req: express.Request,
     res: express.Response
   ): Promise<void> {
     try {
-      const result = await this.boatService.returnAllBoats();
-      res.status(200).json(result);
+      const boats = await this.boatService.returnAllBoats();
+      res.status(200).json({ boats });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Something went wrong!' });
@@ -23,7 +24,8 @@ export class BoatController {
   ): Promise<void> {
     const name: string = req.body.name;
     const price: number = +req.body.price;
-    const skipperNeeded: boolean = req.body.skipperNeeded;
+    const skipperRequired: boolean = req.body.skipperRequired;
+    // FIXME Change to ImageRoute
     const photo: Blob | undefined | null = <Blob>req.body.photo;
     const length: number = +req.body.length;
     const maxSpeed: number = +req.body.maxSpeed;
@@ -32,7 +34,7 @@ export class BoatController {
       const result = await Boat.create({
         name,
         price,
-        skipperNeeded,
+        skipperRequired,
         photo,
         length,
         maxSpeed,
