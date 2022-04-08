@@ -28,7 +28,5 @@ export async function createDatabase(): Promise<void> {
     password,
   });
 
-  console.log(
-    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`)
-  );
+  await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
 }
