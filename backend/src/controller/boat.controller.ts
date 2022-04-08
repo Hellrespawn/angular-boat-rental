@@ -1,7 +1,6 @@
 import { BoatService } from '../services/boat.service';
 import { Boat } from '../model/boat.model';
 import express from 'express';
-import { Model } from 'sequelize-typescript';
 
 export class BoatController {
   constructor(private boatService: BoatService = new BoatService()) {}
