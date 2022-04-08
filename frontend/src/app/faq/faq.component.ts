@@ -6,8 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './faq.component.html',
   styleUrls: ['./faq.component.scss'],
 })
-export class FaqComponent implements OnInit {
+export class FaqComponent {
   constructor() {}
-
-  ngOnInit(): void {}
 }
