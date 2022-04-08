@@ -12,4 +12,18 @@ export function addBoatRoutes(
   app.post('/boat', async (req: Request, res: Response): Promise<void> => {
     controller.addBoat(req, res);
   });
+
+  app.delete(
+    '/delete-boat/:id',
+    async (req: Request, res: Response): Promise<void> => {
+      controller.deleteBoat(req, res);
+    }
+  );
+
+  app.patch(
+    '/update-boat',
+    async (req: Request, res: Response): Promise<void> => {
+      controller.updateBoat(req, res);
+    }
+  );
 }

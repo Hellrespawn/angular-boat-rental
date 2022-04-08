@@ -28,8 +28,10 @@ async function insertMockBoats() {
     if (boatType == 'sail') {
       boat = {
         name,
+        registrationNumber: randomInt(100, 10000),
         pricePerDay: randomInt(200, 500),
         skipperNeeded: Boolean(randomInt(0, 1)),
+        maintenance: false,
         photo: null,
         length: randomInt(10, 30),
         maxOccupants: randomInt(8, 16),
@@ -39,8 +41,10 @@ async function insertMockBoats() {
     } else {
       boat = {
         name,
+        registrationNumber: randomInt(100, 10000),
         pricePerDay: randomInt(200, 500),
         skipperNeeded: Boolean(randomInt(0, 1)),
+        maintenance: false,
         photo: null,
         length: randomInt(10, 30),
         maxOccupants: randomInt(8, 16),
