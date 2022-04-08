@@ -15,9 +15,9 @@ export class Boat extends Model {
 
   @Column public pricePerDay!: number;
 
-  @Column(DataType.BOOLEAN) public skipperNeeded = true;
+  @Column(DataType.BOOLEAN) public skipperNeeded!: boolean;
 
-  @Column(DataType.BOOLEAN) public maintenance = false;
+  @Column(DataType.BOOLEAN) public maintenance!: boolean;
 
   @AllowNull @Column(DataType.BLOB) public photo?: Buffer | null;
 

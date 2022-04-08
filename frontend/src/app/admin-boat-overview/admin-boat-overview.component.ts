@@ -17,6 +17,7 @@ export class AdminBoatOverviewComponent implements OnInit {
   private async getBoatsFromDatabase(): Promise<void> {
     this.boatService.getBoats().subscribe((result) => {
       this.arrayOfBoats = result;
+      console.log(result);
     });
   }
   public async deleteBoatById(id: number): Promise<void> {
@@ -28,7 +29,8 @@ export class AdminBoatOverviewComponent implements OnInit {
     id: number,
     updatedValue: boolean
   ): Promise<void> {
-    this.boatService.updateMaintenanceStatus(id, updatedValue).subscribe(() => {
+    this.boatService.updateMaintenanceStatus(id, updatedValue).subscribe((result) => {
+      console.log(result);
       window.location.reload();
     });
   }
