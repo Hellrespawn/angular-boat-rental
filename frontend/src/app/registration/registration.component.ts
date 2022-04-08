@@ -48,12 +48,14 @@ export class RegistrationComponent {
   }
 
   public validatePassword(): void {
-    const regex =  /([0-9])+([A-Z])+([a-z])/
+    const regex = /([0-9])+([A-Z])+([a-z])/;
     let password = (
       document.getElementById('password-input') as HTMLTextAreaElement
     ).value;
     if (!regex.test(password)) {
-      console.log('Wachtwoord heeft minimaal 1 hoofdletter, 1 kleine letter en 1 cijfer nodig!');
+      console.log(
+        'Wachtwoord heeft minimaal 1 hoofdletter, 1 kleine letter en 1 cijfer nodig!'
+      );
     }
     // if (!regexNormal.test(password)) {
     //   console.log('Wachtwoord heeft minimaal 1 kleine letter nodig!');
@@ -63,28 +65,3 @@ export class RegistrationComponent {
     // }
   }
 }
-//  setLS() {
-
-//     let existingLS = JSON.parse(localStorage.getItem('UserInput')!);
-//     if (existingLS === null) existingLS = [];
-
-//     let input = {
-//       voornaam: (
-//         document.getElementById('firstname-input') as HTMLTextAreaElement
-//       ).value,
-//       achternaam: (
-//         document.getElementById('lastname-input') as HTMLTextAreaElement
-//       ).value,
-//       email: (document.getElementById('emailadres-input') as HTMLInputElement)
-//         .value,
-//       leeftijd: (document.getElementById('age-input') as HTMLDataElement)
-//         .value,
-//       wachtwoord: (
-//         document.getElementById('password-input') as HTMLTextAreaElement
-//       ).value,
-//     };
-
-//     localStorage.setItem('UserInput', JSON.stringify(input));
-//     existingLS.push(input);
-//     localStorage.setItem('UserInput', JSON.stringify(existingLS));
-// }
