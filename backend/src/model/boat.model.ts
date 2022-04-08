@@ -13,6 +13,8 @@ const BOAT_TYPE = DataType.ENUM('sail', 'motor');
 export class Boat extends Model {
   @Unique @Column public name!: string;
 
+  @Column public registrationNumber!: number;
+
   @Column public pricePerDay!: number;
 
   @Column(DataType.BOOLEAN) public skipperNeeded!: boolean;

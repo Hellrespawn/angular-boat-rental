@@ -41,6 +41,7 @@ export class AdminBoatOverviewComponent implements OnInit {
 interface BoatForAdmin {
   id: number;
   name: string;
+  registrationNumber: number;
   pricePerDay: number;
   maintenance: boolean;
 }
