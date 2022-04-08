@@ -29,10 +29,12 @@ export class AdminBoatOverviewComponent implements OnInit {
     id: number,
     updatedValue: boolean
   ): Promise<void> {
-    this.boatService.updateMaintenanceStatus(id, updatedValue).subscribe((result) => {
-      console.log(result);
-      window.location.reload();
-    });
+    this.boatService
+      .updateMaintenanceStatus(id, updatedValue)
+      .subscribe((result) => {
+        console.log(result);
+        window.location.reload();
+      });
   }
 }
 

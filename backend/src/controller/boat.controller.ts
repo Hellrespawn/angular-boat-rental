@@ -44,23 +44,28 @@ export class BoatController {
       res.status(400).send(makeArrayOfErrorMessages(error));
     }
   }
-  public async deleteBoat(req: express.Request, res: express.Response): Promise<void>{
+  public async deleteBoat(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
     const idOfBoat: number = +req.body.id;
     const boatToDelete: Boat | null = await Boat.findByPk(idOfBoat);
     if (boatToDelete !== null) {
       try {
         await boatToDelete.destroy();
-        res.status(200).json({result: 'Boat deleted'});
-      }
-      catch (error: any) {
+        res.status(200).json({ result: 'Boat deleted' });
+      } catch (error: any) {
         res.status(400).send(makeArrayOfErrorMessages(error));
       }
     } else {
-      res.status(400).json({result: 'Boat not found'});
+      res.status(400).json({ result: 'Boat not found' });
     }
   }
 
-  public async updateBoat(req: express.Request, res: express.Response): Promise<void>{
+  public async updateBoat(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
     const idOfBoat: number = +req.body.id;
     const updatedValue: boolean = req.body.updatedValue;
     try {
@@ -68,16 +73,14 @@ export class BoatController {
       if (boatToUpdate !== null) {
         boatToUpdate.maintenance = updatedValue;
         await boatToUpdate.save();
-        res.status(200).json({result: "Boat Updated"});
+        res.status(200).json({ result: 'Boat Updated' });
       } else {
-        res.status(400).json({result: 'Boat not found'});
+        res.status(400).json({ result: 'Boat not found' });
       }
-    }
-    catch (error: any) {
+    } catch (error: any) {
       res.status(400).send(makeArrayOfErrorMessages(error));
     }
   }
-
 }
 
 export function makeArrayOfErrorMessages(error: any): Array<string> {

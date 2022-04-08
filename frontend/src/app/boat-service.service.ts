@@ -22,7 +22,7 @@ export class BoatService {
   ): Observable<Object> {
     return this.httpClient.post('http://127.0.0.1:3000/update-boat', {
       id,
-      updatedValue
+      updatedValue,
     });
   }
 }
