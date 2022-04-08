@@ -4,6 +4,7 @@ import express from 'express';
 
 export class BoatController {
   constructor(private boatService: BoatService = new BoatService()) {}
+
   public async getBoats(
     req: express.Request,
     res: express.Response

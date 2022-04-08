@@ -65,15 +65,14 @@ async function insertMockBoats() {
     return boat;
   });
 
-  return Promise.all(
-    boats.map((boat) => {
-      try {
-        Boat.create(boat);
-      } catch (error) {
-        console.log(error);
-      }
-    })
-  );
+  for (const boat of boats) {
+    try {
+      await Boat.create(boat);
+    } catch (error) {
+      console.log(error);
+      process.exit(1);
+    }
+  }
 }
 
 (async () => {

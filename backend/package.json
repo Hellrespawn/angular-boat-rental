@@ -10,7 +10,8 @@
     "fix-formatting": "npx prettier ./src --write",
     "sync": "ts-node ./src/scripts/sync.ts",
     "drop": "ts-node ./src/scripts/drop.ts",
-    "seed": "ts-node ./src/scripts/seed.ts"
+    "seed": "ts-node ./src/scripts/seed.ts",
+    "debug": "npm run drop && npm run sync && npm run seed"
   },
   "author": "",
   "license": "ISC",
