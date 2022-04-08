@@ -34,7 +34,8 @@ export class RegistrationComponent {
   public emailErrorMessage(): string {
     let errorMessage: string = '';
     if (this.email.hasError('required')) {
-      return 'Je moet een geldig emailadres invullen, bijvoorbeeld: naam@domein.nl';
+      errorMessage =
+        'Je moet een geldig emailadres invullen, bijvoorbeeld: naam@domein.nl';
     }
     return errorMessage;
   }
@@ -42,7 +43,7 @@ export class RegistrationComponent {
   public passwordErrorMessage(): string {
     let errorMessage: string = '';
     if (this.password.hasError('required')) {
-      return 'Je moet een wachtwoord invoeren';
+      errorMessage = 'Je moet een wachtwoord invoeren';
     }
     return errorMessage;
   }
