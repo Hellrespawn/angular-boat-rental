@@ -12,4 +12,8 @@ export function addBoatRoutes(
   app.post('/boat', async (req: Request, res: Response): Promise<void> => {
     controller.addBoat(req, res);
   });
+
+  app.post('/delete-boat', async (req: Request, res: Response): Promise<void> => {
+    controller.deleteBoat(req, res);
+  });
 }

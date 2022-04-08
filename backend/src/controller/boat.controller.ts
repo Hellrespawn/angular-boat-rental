@@ -43,6 +43,16 @@ export class BoatController {
       res.status(400).send(makeArrayOfErrorMessages(error));
     }
   }
+  public async deleteBoat(req: express.Request, res: express.Response): Promise<void>{
+    const idOfBoat: number = +req.body.id;
+    const boatToDelete: Boat | null = await Boat.findByPk(idOfBoat);
+    if (boatToDelete !== null) {
+      await boatToDelete.destroy();
+      res.status(200).json({result: 'Boat deleted'});
+    } else {
+      res.status(400).json({result: 'Boat not found'});
+    }
+  }
 }
 
 export function makeArrayOfErrorMessages(error: any): Array<string> {
