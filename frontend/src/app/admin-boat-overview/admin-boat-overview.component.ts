@@ -35,11 +35,9 @@ export class AdminBoatOverviewComponent implements OnInit {
     updatedValue: boolean,
     index: number
   ): Promise<void> {
-    this.boatService
-      .updateMaintenanceStatus(id, updatedValue)
-      .subscribe(() => {
-        this.arrayOfBoats[index].maintenance = updatedValue;
-      });
+    this.boatService.updateMaintenanceStatus(id, updatedValue).subscribe(() => {
+      this.arrayOfBoats[index].maintenance = updatedValue;
+    });
   }
 }
 
