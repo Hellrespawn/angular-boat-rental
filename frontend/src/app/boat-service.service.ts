@@ -34,16 +34,20 @@ export class BoatService {
       );
   }
   public getBoats(): Observable<any> {
-    return this.httpClient.get('http://127.0.0.1:3000/boat');
+    return this.httpClient.get<{ boats: Boat[] }>(
+      `${environment.backendUrl}/boat`
+    );
   }
   public deleteBoatById(id: number): Observable<Object> {
-    return this.httpClient.delete(`http://127.0.0.1:3000/delete-boat/${id}`);
+    return this.httpClient.delete(
+      `${environment.backendUrl}/delete-boat/${id}`
+    );
   }
   public updateMaintenanceStatus(
     id: number,
     updatedValue: boolean
   ): Observable<Object> {
-    return this.httpClient.patch('http://127.0.0.1:3000/update-boat', {
+    return this.httpClient.patch(`${environment.backendUrl}/update-boat`, {
       id,
       updatedValue,
     });
