@@ -24,7 +24,8 @@ export class BoatController {
   ): Promise<void> {
     const name: string = req.body.name;
     const price: number = +req.body.price;
-    const skipperNeeded: boolean = req.body.skipperNeeded;
+    const skipperRequired: boolean = req.body.skipperRequired;
+    // FIXME Change to ImageRoute
     const photo: Blob | undefined | null = <Blob>req.body.photo;
     const length: number = +req.body.length;
     const maxSpeed: number = +req.body.maxSpeed;
@@ -33,7 +34,7 @@ export class BoatController {
       const result = await Boat.create({
         name,
         price,
-        skipperNeeded,
+        skipperRequired,
         photo,
         length,
         maxSpeed,

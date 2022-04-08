@@ -17,6 +17,7 @@ import { IMAGE_ROUTE } from '../routes/image.routes';
 // If it's an interface.
 export type BoatData = {
   name: string;
+  registrationNumber: number;
   pricePerDay: number;
   skipperRequired: boolean;
   maintenance: boolean;

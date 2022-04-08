@@ -111,7 +111,7 @@ export class AddBoatComponent {
     price: string,
     length: string,
     maxSpeed: string,
-    skipperNeeded: boolean,
+    skipperRequired: boolean,
     fotos: FileList | null,
     sail: boolean,
     motor: boolean
@@ -126,7 +126,7 @@ export class AddBoatComponent {
           price,
           length,
           maxSpeed,
-          skipperNeeded,
+          skipperRequired,
           fotos?.item(0),
           sail,
           motor
@@ -176,7 +176,7 @@ export class AddBoatComponent {
   private resetInputFields(): void {
     (document.getElementById('name') as HTMLInputElement).value = '';
     (document.getElementById('price') as HTMLInputElement).value = '';
-    (document.getElementById('skipperNeeded') as HTMLInputElement).checked =
+    (document.getElementById('skipperRequired') as HTMLInputElement).checked =
       false;
     (document.getElementById('length') as HTMLInputElement).value = '';
     (document.getElementById('sail') as HTMLInputElement).checked = true;
@@ -194,7 +194,7 @@ class Boat {
     priceString: string,
     lengthString: string,
     maxSpeedString: string,
-    private skipperNeeded: boolean,
+    private skipperRequired: boolean,
     private foto: File | null | undefined,
     sail: boolean,
     motor: boolean
