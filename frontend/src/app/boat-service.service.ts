@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { BoatOverviewData } from './rental/rental.component';
 import { Boat, getRequirements } from './boat';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -11,20 +12,22 @@ export class BoatService {
   constructor(private httpClient: HttpClient) {}
 
   public addBoat(boatObject: {}) {
-    return this.httpClient.post('http://127.0.0.1:3000/boat', boatObject);
+    return this.httpClient.post(`${environment.backendUrl}/boat`, boatObject);
   }
 
-  public getBoats(): Observable<BoatOverviewData[]> {
+  public getBoatOverviewData(): Observable<BoatOverviewData[]> {
     return this.httpClient
-      .get<Boat[]>('http://127.0.0.1:3000/boat/rental')
+      .get<{ boats: Boat[] }>(`${environment.backendUrl}/boat`)
       .pipe(
-        map((boats) =>
+        map(({ boats }) =>
           boats.map((boat) => {
             return {
+              enabled: true,
               name: boat.name,
+              boatType: boat.boatType,
+              imageRoute: `${environment.backendUrl}${boat.imageRoute}`,
               requirements: getRequirements(boat),
               maxOccupants: boat.maxOccupants,
-              imageUrl: '',
             };
           })
         )

@@ -3,7 +3,9 @@ import { BoatRequirements } from 'src/app/boat';
 import { BoatOverviewData } from '../rental.component';
 
 const PLACEHOLDER = {
-  imageUrl: '/assets/notfound.jpg',
+  enabled: true,
+  boatType: 'motor',
+  imageRoute: '/assets/notfound.jpg',
   name: 'placeholder',
   requirements: BoatRequirements.None,
   maxOccupants: 6,

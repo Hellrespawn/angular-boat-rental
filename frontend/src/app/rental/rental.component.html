@@ -1,7 +1,14 @@
 <div>
-  <app-rental-filters></app-rental-filters>
+  <app-rental-filters
+    (filterChangedEvent)="filtersChanged($event)"
+  ></app-rental-filters>
 
-  <ul>
+  <div *ngIf="!boats.length" class="custom-card with-padding">
+    <h2>Op dit moment zijn er geen boten beschikbaar</h2>
+    <p>Probeer het later nog eens.</p>
+  </div>
+
+  <ul *ngIf="boats.length">
     <li *ngFor="let boat of boats">
       <app-rental-boat-card [boat]="boat"></app-rental-boat-card>
     </li>

@@ -1,5 +1,5 @@
 <div class="custom-card vertical">
-  <img src="{{ boat.imageUrl }}" alt="" />
+  <img src="{{ boat.imageRoute }}" alt="" />
   <div id="description">
     <h2>{{ boat.name }}</h2>
     <div id="requirements">
@@ -8,6 +8,7 @@
         >{{ requirementsToString() }}, max.
         {{ boat.maxOccupants }} personen</span
       >
+      {{ boat.enabled }}
     </div>
 
     <div id="button">

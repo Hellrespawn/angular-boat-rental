@@ -1,9 +1,10 @@
 export interface Boat {
   name: string;
+  imageName: string;
   pricePerDay: number;
   skipperRequired: boolean;
   maintenance: boolean;
-  photo?: Buffer;
+  imageRoute: string;
   lengthInM: number;
   maxOccupants: number;
   boatType: string;
