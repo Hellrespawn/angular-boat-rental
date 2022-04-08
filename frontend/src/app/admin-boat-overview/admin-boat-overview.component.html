@@ -8,6 +8,9 @@
     >Registratie nummer: {{ boat.registrationNumber }}</mat-card-subtitle
   >
   <mat-card-subtitle>€{{ boat.pricePerDay }},00 per dag</mat-card-subtitle>
+  <mat-card-subtitle *ngIf="boat.maintenance" style="color: red"
+    >In onderhoud!</mat-card-subtitle
+  >
   <mat-card-actions>
     <button mat-raised-button color="primary" (click)="deleteBoatById(boat.id)">
       Verwijder
