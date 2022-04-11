@@ -34,6 +34,10 @@ function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+function randomDate(start: Date, end: Date): Date {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
+
 async function insertMockBoats() {
   const boats = BOAT_NAMES.map((name): BoatData => {
     const boatType = randomInt(0, 1) ? 'sail' : 'motor';
@@ -92,7 +96,7 @@ async function insertMockSkippers() {
       skipper = {
         name,
         pricePerDay: randomInt(100, 500),
-        birthDate: new Date()
+        birthDate: randomDate(new Date(1980, 1, 1), new Date())
       }
     return skipper;
   });
