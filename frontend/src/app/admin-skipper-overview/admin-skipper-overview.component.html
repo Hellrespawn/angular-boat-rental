@@ -7,9 +7,11 @@
 <mat-card *ngFor="let skipper of arrayOfSkippers; index as i">
   <mat-card-title>{{ skipper.name }}</mat-card-title>
   <mat-card-subtitle
-    >Geboorte datum: {{ skipper.birthDate.getDay() }}-{{
-      skipper.birthDate.getMonth()
-    }}-{{ skipper.birthDate.getFullYear() }}</mat-card-subtitle
+    >Geboorte datum: {{ parseDateStringToDate(skipper.birthDate).getDate() }}-{{
+      parseDateStringToDate(skipper.birthDate).getMonth()
+    }}-{{
+      parseDateStringToDate(skipper.birthDate).getFullYear()
+    }}</mat-card-subtitle
   >
   <mat-card-subtitle>€{{ skipper.pricePerDay }},00 per dag</mat-card-subtitle>
   <mat-card-actions>

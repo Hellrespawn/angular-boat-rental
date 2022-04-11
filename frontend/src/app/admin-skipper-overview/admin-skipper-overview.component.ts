@@ -20,7 +20,7 @@ export class AdminSkipperOverviewComponent implements OnInit {
     this.getSkippersFromDatabase();
   }
   private async getSkippersFromDatabase(): Promise<void> {
-    this.skipperService.getSkippers().subscribe(({ skippers }) => {
+    this.skipperService.getSkippers().subscribe((skippers) => {
       this.arrayOfSkippers = skippers;
     });
   }
@@ -29,11 +29,14 @@ export class AdminSkipperOverviewComponent implements OnInit {
       this.arrayOfSkippers.splice(index, 1);
     });
   }
+  public parseDateStringToDate(dateString: string | Date): Date {
+    return new Date(dateString);
+  }
 }
 
 interface SkipperForAdmin {
   id: number;
   name: string;
   pricePerDay: number;
-  birthDate: Date;
+  birthDate: Date | string;
 }

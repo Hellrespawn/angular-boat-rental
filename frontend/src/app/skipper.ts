@@ -1,5 +1,5 @@
 export interface Skipper {
-    name: string;
-    pricePerDay: number;
-    birthDate: Date;
+  name: string;
+  pricePerDay: number;
+  birthDate: Date;
 }

@@ -1,4 +1,4 @@
-import { Table, Column, Model, Unique } from 'sequelize-typescript';
+import { Table, Column, Model, Unique, DataType } from 'sequelize-typescript';
 
 export type SkipperData = {
   name: string,
@@ -12,5 +12,5 @@ export class Skipper extends Model implements SkipperData{
 
   @Column public pricePerDay!: number;
 
-  @Column public birthDate!: Date;
+  @Column(DataType.DATE) public birthDate!: Date;
 }
