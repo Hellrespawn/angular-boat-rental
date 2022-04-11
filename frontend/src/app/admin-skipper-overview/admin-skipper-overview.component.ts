@@ -1,33 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import { BoatService } from '../boat-service.service';
 import { addToNavBar } from '../navigation.service';
+import { SkipperService } from '../skipper.service';
 
 @addToNavBar({
-  name: 'Boot-administratie',
-  route: '/boat-overview-admin',
+  name: 'Skipper-administratie',
+  route: '/skipper-overview-admin',
   userTypes: ['admin'],
 })
 @Component({
-  selector: 'app-admin-boat-overview',
-  templateUrl: './admin-boat-overview.component.html',
-  styleUrls: ['./admin-boat-overview.component.scss'],
+  selector: 'app-admin-skipper-overview',
+  templateUrl: './admin-skipper-overview.component.html',
+  styleUrls: ['./admin-skipper-overview.component.scss'],
 })
-export class AdminBoatOverviewComponent implements OnInit {
-  public arrayOfBoats: Array<BoatForAdmin> = [];
-  constructor(private boatService: BoatService) {}
+export class AdminSkipperOverviewComponent implements OnInit {
+  public arrayOfSkippers: Array<SkipperForAdmin> = [];
+  constructor(private skipperService: SkipperService) {}
 
   ngOnInit(): void {
-    this.getBoatsFromDatabase();
+    this.getSkippersFromDatabase();
   }
-  private async getBoatsFromDatabase(): Promise<void> {
-    this.boatService.getBoats().subscribe(({ boats }) => {
-      this.arrayOfBoats = boats;
-      console.log(boats);
+  private async getSkippersFromDatabase(): Promise<void> {
+    this.skipperService.getSkippers().subscribe(({ skippers }) => {
+      this.arrayOfSkippers = skippers;
     });
   }
   public async deleteBoatById(id: number, index: number): Promise<void> {
-    this.boatService.deleteBoatById(id).subscribe(() => {
-      this.arrayOfBoats.splice(index, 1);
+    this.skipperService.deleteSkipperById(id).subscribe(() => {
+      this.arrayOfSkippers.splice(index, 1);
     });
   }
+}
+
+interface SkipperForAdmin {
+  id: number;
+  name: string;
+  pricePerDay: number;
+  birthDate: Date;
 }

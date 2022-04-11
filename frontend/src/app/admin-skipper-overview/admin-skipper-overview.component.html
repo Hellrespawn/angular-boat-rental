@@ -1,1 +1,24 @@
-<p>admin-skipper-overview works!</p>
+<p *ngIf="arrayOfSkippers.length === 0">
+  Er zijn nog geen schippers geregistreerd!
+</p>
+<button routerLink="/add-skipper" mat-raised-button color="primary">
+  Voeg een schipper toe
+</button>
+<mat-card *ngFor="let skipper of arrayOfSkippers; index as i">
+  <mat-card-title>{{ skipper.name }}</mat-card-title>
+  <mat-card-subtitle
+    >Geboorte datum: {{ skipper.birthDate.getDay() }}-{{
+      skipper.birthDate.getMonth()
+    }}-{{ skipper.birthDate.getFullYear() }}</mat-card-subtitle
+  >
+  <mat-card-subtitle>€{{ skipper.pricePerDay }},00 per dag</mat-card-subtitle>
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="deleteBoatById(skipper.id, i)"
+    >
+      Verwijder
+    </button>
+  </mat-card-actions>
+</mat-card>
