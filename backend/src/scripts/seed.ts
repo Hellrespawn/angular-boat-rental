@@ -27,7 +27,8 @@ const SKIPPER_NAMES = [
   'Klaasje de Koning',
   'Henkie Aardenburg',
   'Peter Mijnen',
-  'Bert Buwalda',];
+  'Bert Buwalda',
+];
 
 function randomInt(min: number, max: number): number {
   // min and max included
@@ -35,7 +36,9 @@ function randomInt(min: number, max: number): number {
 }
 
 function randomDate(start: Date, end: Date): Date {
-  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  );
 }
 
 async function insertMockBoats() {
@@ -93,11 +96,11 @@ async function insertMockBoats() {
 async function insertMockSkippers() {
   const skippers = SKIPPER_NAMES.map((name): SkipperData => {
     let skipper;
-      skipper = {
-        name,
-        pricePerDay: randomInt(100, 500),
-        birthDate: randomDate(new Date(1980, 1, 1), new Date())
-      }
+    skipper = {
+      name,
+      pricePerDay: randomInt(100, 500),
+      birthDate: randomDate(new Date(1980, 1, 1), new Date()),
+    };
     return skipper;
   });
 

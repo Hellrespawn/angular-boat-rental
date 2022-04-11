@@ -8,9 +8,8 @@ describe('AdminSkipperOverviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminSkipperOverviewComponent ]
-    })
-    .compileComponents();
+      declarations: [AdminSkipperOverviewComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -4,7 +4,6 @@ import express from 'express';
 import { makeArrayOfErrorMessages } from './boat.controller';
 
 export class SkipperController {
-
   constructor(private skipperService: SkipperService = new SkipperService()) {}
 
   public async getSkippers(
@@ -45,7 +44,10 @@ export class SkipperController {
     }
   }
 
-  public async deleteSkipper(req: express.Request, res: express.Response): Promise<void> {
+  public async deleteSkipper(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
     const idOfSkipper: number = +req.params.id;
     const skipperToDelete: Skipper | null = await Skipper.findByPk(idOfSkipper);
     if (skipperToDelete !== null) {
