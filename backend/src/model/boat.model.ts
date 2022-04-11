@@ -5,8 +5,10 @@ import {
   DataType,
   AllowNull,
   Unique,
+  HasMany,
 } from 'sequelize-typescript';
 import { IMAGE_ROUTE } from '../routes/image.routes';
+import { Rental } from './rental.model';
 
 // This is a type instead of an interface because Sequelize complains with:
 //
@@ -29,24 +31,31 @@ export type BoatData = {
   sailAreaInM2?: number;
 };
 
-const BOAT_TYPE = DataType.ENUM('sail', 'motor');
+const BOAT_TYPES = ['sail', 'motor'];
 
-// const IMAGE_TYPE = DataType.ENUM('jpg', 'png');
+export enum BoatRequirements {
+  None,
+  License,
+  Skipper,
+}
+
+const BOAT_TYPE = DataType.ENUM(...BOAT_TYPES);
 
 @Table
 export class Boat extends Model implements BoatData {
-  @Unique @Column public name!: string;
+  @AllowNull(false) @Unique @Column public name!: string;
 
-  @Column public registrationNumber!: number;
+  @AllowNull(false) @Column public registrationNumber!: number;
 
-  @Column public pricePerDay!: number;
+  @AllowNull(false) @Column public pricePerDay!: number;
 
-  @Column public skipperRequired!: boolean;
+  @AllowNull(false) @Column public skipperRequired!: boolean;
 
-  @Column public maintenance!: boolean;
+  @AllowNull(false) @Column public maintenance!: boolean;
 
   // Could not get this to work with the getter being transformed, so the
   // transformed value is saved in the database.
+  @AllowNull(false)
   @Column
   public get imageRoute(): string {
     return this.getDataValue('imageRoute');
@@ -56,13 +65,32 @@ export class Boat extends Model implements BoatData {
     this.setDataValue('imageRoute', `/${IMAGE_ROUTE}/${imageRoute}`);
   }
 
-  @Column public lengthInM!: number;
+  @AllowNull(false) @Column public lengthInM!: number;
 
-  @Column public maxOccupants!: number;
+  @AllowNull(false) @Column public maxOccupants!: number;
 
-  @Column(BOAT_TYPE) public boatType!: string;
+  @AllowNull(false) @Column(BOAT_TYPE) public boatType!: string;
 
-  @AllowNull @Column public maxSpeedInKmH?: number;
+  @Column public maxSpeedInKmH?: number;
 
-  @AllowNull @Column public sailAreaInM2?: number;
+  @Column public sailAreaInM2?: number;
+
+  @HasMany(() => Rental)
+  public rentals!: Rental[];
+
+  public getRequirements(): string {
+    let requirements = 'none';
+
+    if (this.skipperRequired) {
+      requirements = 'skipper';
+    } else if (this.maxOccupants > 12) {
+      requirements = 'license';
+    } else if (this.boatType == 'sail' && this.sailAreaInM2! > 150) {
+      requirements = 'license';
+    } else if (this.boatType == 'motor' && this.maxSpeedInKmH! > 20) {
+      requirements = 'license';
+    }
+
+    return requirements;
+  }
 }

@@ -1,22 +1,33 @@
-import Ajv, { JSONSchemaType } from 'ajv';
+import Ajv, { JSONSchemaType, ValidateFunction } from 'ajv';
 import { NextFunction, Request, Response } from 'express';
 
-// Initialize single Ajv instance
-// allErrors reports all errors, not just the first.
-const ajv = new Ajv({ allErrors: true });
+type Middleware = (req: Request, res: Response, next: NextFunction) => void;
+
+/**
+ * Initialize single, central Ajv instance.
+ *
+ * allErrors reports all errors, not just the first.
+ */
+const AJV = new Ajv({ allErrors: true });
+
+export function createValidatorFromSchema<T>(
+  schema: JSONSchemaType<T>
+): ValidateFunction<T> {
+  return AJV.compile(schema);
+}
 
 /**
  * Create validator middleware from schema. Use the output of this function in
  * your route.
  */
-export function createValidatorFromSchema<T>(schema: JSONSchemaType<T>) {
-  const validate = ajv.compile(schema);
-
+export function createMiddlewareFromValidator<T>(
+  validator: ValidateFunction<T>
+): Middleware {
   return (req: Request, res: Response, next: NextFunction) => {
-    if (validate(req.body)) {
+    if (validator(req.body)) {
       next();
     } else {
-      res.status(400).json(validate.errors);
+      res.status(400).json(validator.errors);
     }
   };
 }
@@ -33,7 +44,7 @@ export function validateIdInUrlParams(
   if (isNaN(id) || id < 0) {
     res
       .status(400)
-      .json({ message: 'ID is not a valid number!', id: req.params.id });
+      .json({ message: 'ID must be a positive integer!', id: req.params.id });
   } else {
     next();
   }
