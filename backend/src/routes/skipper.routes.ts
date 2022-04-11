@@ -12,4 +12,11 @@ export function addSkipperRoutes(
   app.post('/skipper', async (req: Request, res: Response): Promise<void> => {
     controller.addSkipper(req, res);
   });
+  
+  app.delete(
+    '/delete-skipper/:id',
+    async (req: Request, res: Response): Promise<void> => {
+      controller.deleteSkipper(req, res);
+    }
+  );
 }
