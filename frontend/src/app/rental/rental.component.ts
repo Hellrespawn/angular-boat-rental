@@ -1,8 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { BoatRequirements } from '../boat';
+import { map } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { BoatRequirements, BoatType } from '../boat';
 import { BoatService } from '../boat-service.service';
 import { BoatTypeFilter } from './filters/boat-type/boat-type.component';
 import { FilterType } from './filters/filters.component';
+
+export type BoatOverviewData = {
+  imageRoute: string;
+  name: string;
+  requirements: BoatRequirements;
+  boatType: BoatType;
+  maxOccupants: number;
+};
+
+export type OverviewBoat = BoatOverviewData & { enabled: boolean };
 
 @Component({
   selector: 'app-rental',
@@ -10,7 +22,7 @@ import { FilterType } from './filters/filters.component';
   styleUrls: ['./rental.component.scss'],
 })
 export class RentalComponent implements OnInit {
-  public boats: BoatOverviewData[] = [];
+  public boats: OverviewBoat[] = [];
 
   constructor(private boatService: BoatService) {}
 
@@ -21,6 +33,14 @@ export class RentalComponent implements OnInit {
   private getBoats() {
     this.boatService
       .getBoatOverviewData()
+      .pipe(
+        map((boats) =>
+          boats.map((boat) => {
+            boat.imageRoute = `${environment.backendUrl}${boat.imageRoute}`;
+            return { ...boat, enabled: true };
+          })
+        )
+      )
       .subscribe((boats) => (this.boats = this.filterBoats(boats)));
   }
 
@@ -29,9 +49,9 @@ export class RentalComponent implements OnInit {
   }
 
   private filterBoats(
-    boats: BoatOverviewData[],
+    boats: OverviewBoat[],
     change?: [FilterType, string]
-  ): BoatOverviewData[] {
+  ): OverviewBoat[] {
     if (change) {
       const [filter, value] = change;
       if (filter === 'boat-type') {
@@ -44,9 +64,9 @@ export class RentalComponent implements OnInit {
   }
 
   private filterBoatType(
-    boats: BoatOverviewData[],
+    boats: OverviewBoat[],
     value: BoatTypeFilter
-  ): BoatOverviewData[] {
+  ): OverviewBoat[] {
     for (let boat of boats) {
       switch (value) {
         case 'all':
@@ -63,13 +83,4 @@ export class RentalComponent implements OnInit {
 
     return boats;
   }
-}
-
-export interface BoatOverviewData {
-  enabled: boolean;
-  imageRoute: string;
-  name: string;
-  requirements: BoatRequirements;
-  boatType: string;
-  maxOccupants: number;
 }

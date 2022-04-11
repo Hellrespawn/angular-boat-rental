@@ -1,13 +1,14 @@
 import { Component, Input } from '@angular/core';
-import { BoatRequirements } from 'src/app/boat';
-import { BoatOverviewData } from '../rental.component';
+import { BoatRequirements, BoatType } from 'src/app/boat';
+import { OverviewBoat } from '../rental.component';
 
 const PLACEHOLDER = {
   enabled: true,
-  boatType: 'motor',
+
+  boatType: 'motor' as BoatType,
   imageRoute: '/assets/notfound.jpg',
   name: 'placeholder',
-  requirements: BoatRequirements.None,
+  requirements: 'none' as BoatRequirements,
   maxOccupants: 6,
 };
 
@@ -17,18 +18,21 @@ const PLACEHOLDER = {
   styleUrls: ['./boat-card.component.scss'],
 })
 export class BoatCardComponent {
-  @Input() public boat: BoatOverviewData = PLACEHOLDER;
+  @Input() public boat: OverviewBoat = PLACEHOLDER;
 
   public requirementsToString(): string {
     switch (this.boat.requirements) {
-      case BoatRequirements.None:
+      case 'none':
         return 'Zelf varen';
 
-      case BoatRequirements.License:
+      case 'license':
         return 'Vaarbewijs vereist';
 
-      case BoatRequirements.Skipper:
+      case 'skipper':
         return 'Schipper vereist';
+
+      default:
+        throw `Invalid boat.requirements: ${this.boat.requirements}`;
     }
   }
 

@@ -13,6 +13,7 @@ export async function initSequelize(): Promise<Sequelize> {
     dialect: 'mysql',
     host,
     port,
+    omitNull: true,
   });
 
   sequelize.addModels(MODELS);

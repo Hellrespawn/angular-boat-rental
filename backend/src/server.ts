@@ -31,5 +31,5 @@ try {
     console.log(`Connected successfully on port ${port}`);
   });
 } catch (error: unknown) {
-  console.error(`Error occured: ${(error as Error).message}`);
+  console.error(`Error occurred: ${(error as Error).message}`);
 }
