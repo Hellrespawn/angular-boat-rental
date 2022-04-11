@@ -36,10 +36,15 @@ interface SailboatRequirementsData {
   sailAreaInM2: number;
 }
 
+// Type predicate that narrows data in getRequirements.
 function isSailboatRequirements(data: any): data is SailboatRequirementsData {
   return data.sailAreaInM2 && typeof data.sailAreaInM2 === 'number';
 }
 
+/**
+ * Calculate requirements of boat.
+ * @param data
+ */
 export function getRequirements(
   data: MotorboatRequirementsData
 ): BoatRequirements;

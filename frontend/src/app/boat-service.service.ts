@@ -33,6 +33,7 @@ export class BoatService {
         )
       );
   }
+  
   public getBoats(): Observable<any> {
     return this.httpClient.get<{ boats: Boat[] }>(
       `${environment.backendUrl}/boat`

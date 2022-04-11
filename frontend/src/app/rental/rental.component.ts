@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Boat, BoatRequirements } from '../boat';
+import { BoatRequirements } from '../boat';
 import { BoatService } from '../boat-service.service';
 import { BoatTypeFilter } from './filters/boat-type/boat-type.component';
 import { FilterType } from './filters/filters.component';
