@@ -95,8 +95,7 @@ async function insertMockBoats() {
 
 async function insertMockSkippers() {
   const skippers = SKIPPER_NAMES.map((name): SkipperData => {
-    let skipper;
-    skipper = {
+    const skipper = {
       name,
       pricePerDay: randomInt(100, 500),
       birthDate: randomDate(new Date(1980, 1, 1), new Date()),

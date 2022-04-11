@@ -1,7 +1,6 @@
 import { SkipperService } from '../services/skipper.service';
 import { Skipper } from '../model/skipper.model';
 import express from 'express';
-import { makeArrayOfErrorMessages } from './boat.controller';
 
 export class SkipperController {
   constructor(private skipperService: SkipperService = new SkipperService()) {}
@@ -11,7 +10,7 @@ export class SkipperController {
     res: express.Response
   ): Promise<void> {
     try {
-      const result = await this.skipperService.returnAllSkippers();
+      const result: Skipper[] = await this.skipperService.returnAllSkippers();
       res.status(200).json(result);
     } catch {
       console.error();
@@ -54,8 +53,8 @@ export class SkipperController {
       try {
         await skipperToDelete.destroy();
         res.status(200).json({ result: 'Boat deleted' });
-      } catch (error: any) {
-        res.status(400).send(makeArrayOfErrorMessages(error));
+      } catch (error) {
+        res.status(400).send(error);
       }
     } else {
       res.status(400).json({ result: 'Skipper not found' });
