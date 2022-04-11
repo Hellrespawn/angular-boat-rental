@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { Boat, BoatData } from '../model/boat.model';
+import { Skipper, SkipperData } from '../model/skipper.model';
 import '../util/database';
 import { initSequelize } from '../util/database';
 
@@ -7,7 +8,7 @@ const MOTORBOAT_PLACEHOLDER_PATH = 'motorboot-placeholder.jpg';
 
 const SAILBOAT_PLACEHOLDER_PATH = 'zeilboot-placeholder.jpg';
 
-const NAMES = [
+const BOAT_NAMES = [
   'The Holstein',
   'Grindall',
   'Ipswich',
@@ -20,13 +21,21 @@ const NAMES = [
   'Sturgeon',
 ];
 
+const SKIPPER_NAMES = [
+  'Jantje de Wit',
+  'Pietje van Vlugt',
+  'Klaasje de Koning',
+  'Henkie Aardenburg',
+  'Peter Mijnen',
+  'Bert Buwalda',];
+
 function randomInt(min: number, max: number): number {
   // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 async function insertMockBoats() {
-  const boats = NAMES.map((name): BoatData => {
+  const boats = BOAT_NAMES.map((name): BoatData => {
     const boatType = randomInt(0, 1) ? 'sail' : 'motor';
 
     const imageRoute =
@@ -77,8 +86,30 @@ async function insertMockBoats() {
   }
 }
 
+async function insertMockSkippers() {
+  const skippers = SKIPPER_NAMES.map((name): SkipperData => {
+    let skipper;
+      skipper = {
+        name,
+        pricePerDay: randomInt(100, 500),
+        birthDate: new Date()
+      }
+    return skipper;
+  });
+
+  for (const skipper of skippers) {
+    try {
+      await Skipper.create(skipper);
+    } catch (error) {
+      console.log(error);
+      process.exit(1);
+    }
+  }
+}
+
 (async () => {
   await initSequelize();
   await insertMockBoats();
+  await insertMockSkippers();
   process.exit();
 })();
