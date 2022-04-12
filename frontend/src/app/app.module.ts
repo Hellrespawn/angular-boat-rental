@@ -25,8 +25,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { RegistratieComponent } from './registratie/registratie.component';
+
+import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './log-in/log-in.component';
+import { FaqComponent } from './faq/faq.component';
+
 import { RentalComponent } from './rental/rental.component';
 import { FiltersComponent } from './rental/filters/filters.component';
 import { LicenseComponent } from './rental/filters/license/license.component';
@@ -58,8 +61,12 @@ import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-sk
     ShortcutsComponent,
     HomeComponent,
     HomeFeatureComponent,
+    HeaderComponent,
+    RegistrationComponent,
+    LoginComponent,
+    FaqComponent,
     FeatureBadgeComponent,
-    RegistratieComponent,
+    RegistrationComponent,
     LoginComponent,
     RentalComponent,
     FiltersComponent,
