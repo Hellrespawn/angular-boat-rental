@@ -8,6 +8,7 @@ import { addBoatRoutes as boatRoutes } from './routes/boat.routes';
 import { addSkipperRoutes as skipperRoutes } from './routes/skipper.routes';
 import { ImageController } from './controller/image.controller';
 import { imageRoutes } from './routes/image.routes';
+import * as path from 'path';
 
 initSequelize();
 
@@ -21,6 +22,9 @@ const port = +(process.env.SRV_PORT ?? 3000);
 app.use(addCorsHeaders);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Statically serve images.
+app.use('/image', express.static(path.join(__dirname, '..', 'media')));
 
 // Routes
 app.use(boatRoutes(boatController));
