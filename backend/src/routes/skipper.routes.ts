@@ -1,5 +1,6 @@
 import { Application, Request, Response } from 'express';
 import { SkipperController } from '../controller/skipper.controller';
+import { validateIdInUrlParams } from '../middleware/validate';
 
 export function addSkipperRoutes(
   app: Application,
@@ -15,6 +16,7 @@ export function addSkipperRoutes(
 
   app.delete(
     '/delete-skipper/:id',
+    validateIdInUrlParams,
     async (req: Request, res: Response): Promise<void> => {
       controller.deleteSkipper(req, res);
     }
