@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
-import { FilterType } from '../filters.component';
 
 export type BoatTypeFilter = 'all' | 'sailboat' | 'motorboat';
 
@@ -10,14 +9,12 @@ export type BoatTypeFilter = 'all' | 'sailboat' | 'motorboat';
   styleUrls: ['./boat-type.component.scss'],
 })
 export class BoatTypeComponent {
-  @Output() public filterChangedEvent = new EventEmitter<
-    [FilterType, BoatTypeFilter]
-  >();
+  @Output() public typeFilterChangedEvent = new EventEmitter<BoatTypeFilter>();
 
   public selectedOption: BoatTypeFilter = 'all';
 
   public changeFilter(): void {
-    this.filterChangedEvent.emit(['boat-type', this.selectedOption]);
+    this.typeFilterChangedEvent.emit(this.selectedOption);
   }
 
   constructor() {}

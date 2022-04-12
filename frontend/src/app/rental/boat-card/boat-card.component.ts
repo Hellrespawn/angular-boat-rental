@@ -3,7 +3,10 @@ import { BoatRequirements, BoatType } from 'src/app/boat';
 import { OverviewBoat } from '../rental.component';
 
 const PLACEHOLDER = {
-  enabled: true,
+  filters: {
+    typeFiltered: true,
+    licenseFiltered: true,
+  },
 
   boatType: 'motor' as BoatType,
   imageRoute: '/assets/notfound.jpg',
@@ -34,6 +37,10 @@ export class BoatCardComponent {
       default:
         throw `Invalid boat.requirements: ${this.boat.requirements}`;
     }
+  }
+
+  public enabled(): boolean {
+    return Object.values(this.boat.filters).every((v) => v);
   }
 
   constructor() {}
