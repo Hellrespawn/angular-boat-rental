@@ -1,13 +1,35 @@
-import { Component, Input } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { BoatService } from 'src/app/boat-service.service';
 import { BoatOverviewData } from '../../rental.component';
+
+export type BoatDetailData = BoatOverviewData & {
+  pricePerDay: number;
+  lengthInM: number;
+  maxSpeedInKmH?: number;
+  sailAreaInM2?: number;
+};
 
 @Component({
   selector: 'app-boat-details',
   templateUrl: './boat-details.component.html',
   styleUrls: ['./boat-details.component.scss'],
 })
-export class BoatDetailsComponent {
-  @Input() public boat!: BoatOverviewData;
+export class BoatDetailsComponent implements OnInit {
+  public boat!: BoatDetailData;
 
-  constructor() {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { id: number },
+    private boatService: BoatService
+  ) {}
+
+  ngOnInit(): void {
+    this.getBoat();
+  }
+
+  private getBoat() {
+    this.boatService
+      .getBoatDetailData(this.data.id)
+      .subscribe((boat) => (this.boat = boat));
+  }
 }

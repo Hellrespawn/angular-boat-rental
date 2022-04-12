@@ -7,6 +7,7 @@ import { BoatTypeFilter } from './filters/boat-type/boat-type.component';
 import { LicenseFilter } from './filters/license/license.component';
 
 export type BoatOverviewData = {
+  id: number;
   imageRoute: string;
   name: string;
   requirements: BoatRequirements;

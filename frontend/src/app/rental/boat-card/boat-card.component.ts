@@ -15,7 +15,9 @@ export class BoatCardComponent {
   constructor(private dialog: MatDialog) {}
 
   public openDialog(): void {
-    const dialogRef = this.dialog.open(BoatDetailsComponent, {});
+    const dialogRef = this.dialog.open(BoatDetailsComponent, {
+      data: { id: this.boat.id },
+    });
   }
 
   public requirementsToString(): string {

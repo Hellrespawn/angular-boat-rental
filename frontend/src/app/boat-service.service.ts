@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 import { BoatOverviewData } from './rental/rental.component';
 import { Boat } from './boat';
 import { environment } from 'src/environments/environment';
+import { BoatDetailData } from './rental/boat-card/boat-details/boat-details.component';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,14 @@ export class BoatService {
     return this.httpClient.get<{ boats: Boat[] }>(
       `${environment.backendUrl}/boat`
     );
+  }
+
+  public getBoatDetailData(id: number): Observable<BoatDetailData> {
+    return this.httpClient
+      .get<{ boat: BoatDetailData }>(
+        `${environment.backendUrl}/boat/rental/${id}`
+      )
+      .pipe(map(({ boat }) => boat));
   }
 
   public getBoatOverviewData(): Observable<BoatOverviewData[]> {
