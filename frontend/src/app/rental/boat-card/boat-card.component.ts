@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { BoatRequirements, BoatType } from 'src/app/boat';
+import { MatDialog } from '@angular/material/dialog';
 import { BoatOverviewData } from '../rental.component';
+import { BoatDetailsComponent } from './boat-details/boat-details.component';
 
 @Component({
   selector: 'app-rental-boat-card',
@@ -10,6 +11,12 @@ import { BoatOverviewData } from '../rental.component';
 export class BoatCardComponent {
   @Input() public boat!: BoatOverviewData;
   @Input() public enabled!: boolean;
+
+  constructor(private dialog: MatDialog) {}
+
+  public openDialog(): void {
+    const dialogRef = this.dialog.open(BoatDetailsComponent, {});
+  }
 
   public requirementsToString(): string {
     switch (this.boat.requirements) {
@@ -26,6 +33,4 @@ export class BoatCardComponent {
         throw `Invalid boat.requirements: ${this.boat.requirements}`;
     }
   }
-
-  constructor() {}
 }

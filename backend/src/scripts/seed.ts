@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { Boat, BoatData } from '../model/boat.model';
+import { Boat } from '../model/boat.model';
 import { Customer } from '../model/customer.model';
 import { Skipper, SkipperData } from '../model/skipper.model';
 import { initSequelize } from '../util/database';

@@ -11,7 +11,12 @@
     </div>
 
     <div id="button">
-      <button mat-raised-button color="primary" [disabled]="!enabled">
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="!enabled"
+        (click)="openDialog()"
+      >
         Meer informatie
       </button>
     </div>
