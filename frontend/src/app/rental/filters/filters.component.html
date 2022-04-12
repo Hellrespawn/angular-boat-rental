@@ -1,9 +1,9 @@
 <section class="custom-card">
   <app-filters-boat-type
-    (filterChangedEvent)="changeFilter($event)"
+    (typeFilterChangedEvent)="changeTypeFilter($event)"
   ></app-filters-boat-type>
   <mat-divider [vertical]="true"></mat-divider>
   <app-filters-license
-    (filterChangedEvent)="changeFilter($event)"
+    (licenseFilterChangedEvent)="changeLicenseFilter($event)"
   ></app-filters-license>
 </section>

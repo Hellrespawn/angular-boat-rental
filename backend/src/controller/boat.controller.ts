@@ -18,6 +18,19 @@ export class BoatController {
     }
   }
 
+  public async getBoatOverviewData(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
+    try {
+      const boats = await this.boatService.getBoatOverviewData();
+      res.status(200).json({ boats });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error });
+    }
+  }
+
   public async addBoat(
     req: express.Request,
     res: express.Response

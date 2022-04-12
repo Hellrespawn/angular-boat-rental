@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
-
-export type FilterType = 'license' | 'boat-type';
+import { BoatTypeFilter } from './boat-type/boat-type.component';
+import { LicenseFilter } from './license/license.component';
 
 @Component({
   selector: 'app-rental-filters',
@@ -9,13 +9,17 @@ export type FilterType = 'license' | 'boat-type';
   styleUrls: ['./filters.component.scss'],
 })
 export class FiltersComponent {
-  @Output() public filterChangedEvent = new EventEmitter<
-    [FilterType, string]
-  >();
+  @Output() public typeFilterChangedEvent = new EventEmitter<BoatTypeFilter>();
+  @Output() public licenseFilterChangedEvent =
+    new EventEmitter<LicenseFilter>();
 
   constructor() {}
 
-  public changeFilter(change: [FilterType, string]): void {
-    this.filterChangedEvent.emit(change);
+  public changeTypeFilter(change: BoatTypeFilter): void {
+    this.typeFilterChangedEvent.emit(change);
+  }
+
+  public changeLicenseFilter(change: LicenseFilter): void {
+    this.licenseFilterChangedEvent.emit(change);
   }
 }

@@ -8,11 +8,12 @@
         >{{ requirementsToString() }}, max.
         {{ boat.maxOccupants }} personen</span
       >
-      {{ boat.enabled }}
     </div>
 
     <div id="button">
-      <button mat-raised-button color="primary">Meer informatie</button>
+      <button mat-raised-button color="primary" [disabled]="!enabled">
+        Meer informatie
+      </button>
     </div>
   </div>
 </div>

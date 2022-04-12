@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
-import mysql from 'mysql2/promise';
+import mysql, { Connection } from 'mysql2/promise';
 import { MODELS } from '../model';
 
 const database = process.env.DB_NAME ?? 'dogstack-het-vrolijke-avontuur';
@@ -13,6 +13,7 @@ export async function initSequelize(): Promise<Sequelize> {
     dialect: 'mysql',
     host,
     port,
+    omitNull: true,
   });
 
   sequelize.addModels(MODELS);
@@ -20,13 +21,21 @@ export async function initSequelize(): Promise<Sequelize> {
   return sequelize;
 }
 
-export async function createDatabase(): Promise<void> {
-  const connection = await mysql.createConnection({
+async function createConnection(): Promise<Connection> {
+  return mysql.createConnection({
     host,
     port,
     user,
     password,
   });
+}
 
+export async function createDatabase(): Promise<void> {
+  const connection = await createConnection();
   await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
+}
+
+export async function dropDatabase(): Promise<void> {
+  const connection = await createConnection();
+  await connection.query(`DROP DATABASE IF EXISTS \`${database}\`;`);
 }
