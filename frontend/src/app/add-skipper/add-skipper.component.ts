@@ -136,7 +136,7 @@ export class AddSkipperComponent {
         );
         this.resetInputFields();
         setTimeout(() => {
-          window.location.replace('/skipper-overview-admin');
+          this.router.navigateByUrl('/skipper-overview-admin');
         }, 1000);
       });
   }

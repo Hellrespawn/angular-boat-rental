@@ -4,6 +4,7 @@ import { catchError, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
 import { BoatService } from '../boat-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-boat',
@@ -70,7 +71,8 @@ export class AddBoatComponent {
 
   constructor(
     private snackBService: SnackBarService,
-    private boatService: BoatService
+    private boatService: BoatService,
+    private router: Router
   ) {}
 
   public getErrorMessageForNameField() {
@@ -234,7 +236,7 @@ export class AddBoatComponent {
         );
         this.resetInputFields();
         setTimeout(() => {
-          window.location.replace('/boat-overview-admin');
+          this.router.navigateByUrl('/boat-overview-admin');
         }, 1000);
       });
   }
