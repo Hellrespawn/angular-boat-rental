@@ -1,0 +1,19 @@
+<div class="custom-card vertical">
+  <img src="{{ boat.imageRoute }}" alt="" />
+  <div id="description">
+    <h2>{{ boat.name }}</h2>
+    <div id="requirements">
+      <mat-icon>directions_boat</mat-icon>
+      <span
+        >{{ requirementsToString() }}, max.
+        {{ boat.maxOccupants }} personen</span
+      >
+    </div>
+
+    <div id="button">
+      <button mat-raised-button color="primary" [disabled]="!enabled">
+        Meer informatie
+      </button>
+    </div>
+  </div>
+</div>

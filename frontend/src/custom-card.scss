@@ -1,0 +1,71 @@
+@use '@angular/material' as mat;
+@use './custom-theme.scss' as theme;
+
+.custom-card {
+  position: relative;
+  display: flex;
+  background-color: mat.get-color-from-palette(
+    theme.$dogstack-project-uml-primary,
+    'darker-contrast'
+  );
+  box-shadow: 0px 4px 4px #00000044;
+  border-radius: 4px;
+}
+
+.custom-card.vertical {
+  flex-direction: column;
+}
+
+.custom-card.with-padding {
+  gap: 2em;
+  padding: 2em;
+}
+
+.custom-card.side-by-side img,
+.custom-card.side-by-side .content {
+  width: 50%;
+}
+
+.custom-card img {
+  object-fit: contain;
+}
+
+.custom-card .content {
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-card .content a[mat-button] {
+  align-self: flex-end;
+}
+
+.custom-card img.first {
+  order: -1;
+}
+
+.custom-card img.last {
+  order: 1;
+}
+
+.custom-card .spacer {
+  flex-grow: 1;
+}
+
+@media only screen and (max-width: 640px) {
+  .custom-card .card {
+    flex-direction: column;
+    overflow-x: clip;
+    gap: 1em;
+    padding: 1em;
+  }
+
+  .custom-card.side-by-side img,
+  .custom-card.side-by-side .content {
+    width: 100%;
+  }
+
+  .custom-card img.first,
+  .custom-card img.last {
+    order: 0;
+  }
+}

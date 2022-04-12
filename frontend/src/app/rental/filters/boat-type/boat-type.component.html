@@ -1,0 +1,8 @@
+<mat-form-field appearance="fill">
+  <mat-label>Type Boot</mat-label>
+  <mat-select [(ngModel)]="selectedOption" (ngModelChange)="changeFilter()">
+    <mat-option value="all"> Alle </mat-option>
+    <mat-option value="motorboat"> Motorboot </mat-option>
+    <mat-option value="sailboat"> Zeilboot </mat-option>
+  </mat-select>
+</mat-form-field>

@@ -1,15 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { SnackBarService, snackBarInput } from '../snack-bar.service';
+import { SnackBarService, SnackBarInput } from '../snack-bar.service';
 import { smallerOrEqualToZero as smallerOrEqualToZero } from '../add-boat/add-boat.component';
 import { FormControl, Validators } from '@angular/forms';
-import { addToNavBar } from '../navigation.service';
-
-@addToNavBar({
-  name: 'Schipper-administratie',
-  route: '/add-skipper',
-  userTypes: ['admin'],
-})
 @Component({
   selector: 'app-schipper-toevoeg',
   templateUrl: './add-skipper.component.html',
@@ -21,13 +14,13 @@ export class AddSkipperComponent {
   private readonly REQUIRED: string = 'required';
   private readonly ERROR_KEY_NUMBER_UNDER_ONE: string = 'kleinerOfGelijkAanNul';
 
-  private readonly incorrectInputSnackBarInput: snackBarInput = {
+  private readonly incorrectInputSnackBarInput: SnackBarInput = {
     message: 'Verkeerde invoer!',
     buttonText: 'Sluit',
     duration: 3000,
     error: true,
   };
-  private readonly correctInputSnackBarInput: snackBarInput = {
+  private readonly correctInputSnackBarInput: SnackBarInput = {
     message: 'Schipper wordt toegevoegd!',
     buttonText: 'Sluit',
     duration: 3000,

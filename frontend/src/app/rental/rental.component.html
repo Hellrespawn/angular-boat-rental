@@ -1,0 +1,20 @@
+<div>
+  <app-rental-filters
+    (typeFilterChangedEvent)="typeFilterChanged($event)"
+    (licenseFilterChangedEvent)="licenseFilterChanged($event)"
+  ></app-rental-filters>
+
+  <div *ngIf="!boats.length" class="custom-card with-padding">
+    <h2>Op dit moment zijn er geen boten beschikbaar</h2>
+    <p>Probeer het later nog eens.</p>
+  </div>
+
+  <ul *ngIf="boats.length">
+    <li *ngFor="let boat of boats" [ngClass]="{ disabled: !enabled(boat) }">
+      <app-rental-boat-card
+        [boat]="boat"
+        [enabled]="enabled(boat)"
+      ></app-rental-boat-card>
+    </li>
+  </ul>
+</div>

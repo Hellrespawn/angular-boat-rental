@@ -1,12 +1,45 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { BoatOverviewData } from './rental/rental.component';
+import { Boat } from './boat';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BoatService {
   constructor(private httpClient: HttpClient) {}
-  addBoat(boatObject: {}) {
-    return this.httpClient.post('http://127.0.0.1:3000/boat', boatObject);
+
+  public addBoat(boatObject: {}) {
+    return this.httpClient.post(`${environment.backendUrl}/boat`, boatObject);
+  }
+  public getBoats(): Observable<any> {
+    return this.httpClient.get<{ boats: Boat[] }>(
+      `${environment.backendUrl}/boat`
+    );
+  }
+
+  public getBoatOverviewData(): Observable<BoatOverviewData[]> {
+    return this.httpClient
+      .get<{ boats: BoatOverviewData[] }>(
+        `${environment.backendUrl}/boat/rental`
+      )
+      .pipe(map(({ boats }) => boats));
+  }
+
+  public deleteBoatById(id: number): Observable<Object> {
+    return this.httpClient.delete(
+      `${environment.backendUrl}/delete-boat/${id}`
+    );
+  }
+  public updateMaintenanceStatus(
+    id: number,
+    updatedValue: boolean
+  ): Observable<Object> {
+    return this.httpClient.patch(`${environment.backendUrl}/update-boat`, {
+      id,
+      updatedValue,
+    });
   }
 }

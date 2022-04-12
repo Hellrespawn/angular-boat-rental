@@ -1,0 +1,25 @@
+div {
+  display: flex;
+  flex-direction: column;
+  gap: 4em;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2em;
+}
+
+.disabled {
+  filter: saturate(0);
+  order: 999;
+}
+
+@media only screen and (max-width: 640px) {
+  ul {
+    justify-content: space-around;
+  }
+}

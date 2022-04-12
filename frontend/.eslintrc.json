@@ -29,6 +29,24 @@
             "prefix": "app",
             "style": "kebab-case"
           }
+        ],
+        "@typescript-eslint/explicit-member-accessibility": [
+          "warn",
+          {
+            "overrides": {
+              "constructors": "no-public"
+            },
+            "ignoredMethodNames": [
+              "ngOnInit",
+              "ngOnChanges",
+              "ngOnCheck",
+              "ngAfterContentInit",
+              "ngAfterContentChecked",
+              "ngAfterViewInit",
+              "ngAfterViewChecked",
+              "ngOnDestroy"
+            ]
+          }
         ]
       }
     },

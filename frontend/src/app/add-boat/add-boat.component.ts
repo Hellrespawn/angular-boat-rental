@@ -2,15 +2,9 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormControl, Validators } from '@angular/forms';
 import { catchError, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
-import { SnackBarService, snackBarInput } from '../snack-bar.service';
-import { addToNavBar } from '../navigation.service';
+import { SnackBarService, SnackBarInput } from '../snack-bar.service';
 import { BoatService } from '../boat-service.service';
 
-@addToNavBar({
-  name: 'Boot-administratie',
-  route: '/add-boat',
-  userTypes: ['admin'],
-})
 @Component({
   selector: 'app-add-boat',
   templateUrl: './add_boat.component.html',
@@ -22,19 +16,19 @@ export class AddBoatComponent {
   private readonly REQUIRED: string = 'required';
   private readonly ERROR_KEY_NUMBER_UNDER_ONE: string = 'kleinerOfGelijkAanNul';
 
-  private readonly errorSnackBarInput: snackBarInput = {
+  private readonly errorSnackBarInput: SnackBarInput = {
     message: 'Verkeerde invoer!',
     buttonText: 'Sluit',
     duration: 3000,
     error: true,
   };
-  private readonly duplicateNameErrorSnackBarInput: snackBarInput = {
+  private readonly duplicateNameErrorSnackBarInput: SnackBarInput = {
     message: 'Deze naam is al in gebruik!',
     buttonText: 'Sluit',
     duration: 3000,
     error: true,
   };
-  private readonly succesSnackbarInput: snackBarInput = {
+  private readonly succesSnackbarInput: SnackBarInput = {
     message: 'Boot is toegevoegd!',
     buttonText: 'Sluit',
     duration: 1000,
@@ -117,7 +111,7 @@ export class AddBoatComponent {
     price: string,
     length: string,
     maxSpeed: string,
-    skipperNeeded: boolean,
+    skipperRequired: boolean,
     fotos: FileList | null,
     sail: boolean,
     motor: boolean
@@ -132,7 +126,7 @@ export class AddBoatComponent {
           price,
           length,
           maxSpeed,
-          skipperNeeded,
+          skipperRequired,
           fotos?.item(0),
           sail,
           motor
@@ -182,7 +176,7 @@ export class AddBoatComponent {
   private resetInputFields(): void {
     (document.getElementById('name') as HTMLInputElement).value = '';
     (document.getElementById('price') as HTMLInputElement).value = '';
-    (document.getElementById('skipperNeeded') as HTMLInputElement).checked =
+    (document.getElementById('skipperRequired') as HTMLInputElement).checked =
       false;
     (document.getElementById('length') as HTMLInputElement).value = '';
     (document.getElementById('sail') as HTMLInputElement).checked = true;
@@ -200,7 +194,7 @@ class Boat {
     priceString: string,
     lengthString: string,
     maxSpeedString: string,
-    private skipperNeeded: boolean,
+    private skipperRequired: boolean,
     private foto: File | null | undefined,
     sail: boolean,
     motor: boolean

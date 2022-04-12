@@ -1,5 +1,5 @@
 @use '@angular/material' as mat;
-@use '../../custom-theme.scss' as theme;
+@use '/src/custom-theme.scss' as theme;
 
 .main {
   display: flex;
@@ -21,6 +21,6 @@ button {
   margin: 10px;
 }
 
-.onderaan {
+.bottom {
   margin-top: 40px;
 }

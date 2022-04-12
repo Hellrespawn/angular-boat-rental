@@ -24,7 +24,9 @@
       getErrorMessageForPriceField()
     }}</mat-error>
   </mat-form-field>
-  <mat-checkbox #skipperNeeded id="skipperNeeded">Schipper nodig</mat-checkbox>
+  <mat-checkbox #skipperRequired id="skipperRequired"
+    >Schipper nodig</mat-checkbox
+  >
   <div class="center-me" (click)="uploadFile.click()">
     <button mat-raised-button color="primary" class="button">
       Upload foto van de boot
@@ -86,7 +88,7 @@
         price.value,
         lengte.value,
         maxSnelheid.value,
-        skipperNeeded.checked,
+        skipperRequired.checked,
         uploadFile.files,
         sail.checked,
         motor.checked
@@ -97,8 +99,8 @@
     Verstuur
   </button>
   <button
-    class="onderaan"
-    routerLink="/admin-panel"
+    class="bottom"
+    routerLink="/boat-overview-admin"
     mat-raised-button
     color="primary"
   >
