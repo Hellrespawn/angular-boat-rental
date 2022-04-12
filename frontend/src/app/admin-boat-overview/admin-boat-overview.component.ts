@@ -22,7 +22,6 @@ export class AdminBoatOverviewComponent implements OnInit {
   private async getBoatsFromDatabase(): Promise<void> {
     this.boatService.getBoats().subscribe(({ boats }) => {
       this.arrayOfBoats = boats;
-      console.log(boats);
     });
   }
   public async deleteBoatById(id: number, index: number): Promise<void> {

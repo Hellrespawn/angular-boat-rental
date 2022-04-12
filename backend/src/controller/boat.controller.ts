@@ -10,11 +10,11 @@ export class BoatController {
     res: express.Response
   ): Promise<void> {
     try {
-      const boats = await this.boatService.returnAllBoats();
+      const boats: Boat[] = await this.boatService.returnAllBoats();
       res.status(200).json({ boats });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Something went wrong!' });
+      res.status(500).send(error);
     }
   }
 
@@ -54,8 +54,8 @@ export class BoatController {
         sailOrMotor,
       });
       res.status(200).json(result);
-    } catch (error: any) {
-      res.status(400).send(makeArrayOfErrorMessages(error));
+    } catch (error) {
+      res.status(400).send(error);
     }
   }
   public async deleteBoat(
@@ -68,8 +68,8 @@ export class BoatController {
       try {
         await boatToDelete.destroy();
         res.status(200).json({ result: 'Boat deleted' });
-      } catch (error: any) {
-        res.status(400).send(makeArrayOfErrorMessages(error));
+      } catch (error) {
+        res.status(400).send(error);
       }
     } else {
       res.status(400).json({ result: 'Boat not found' });
@@ -91,19 +91,8 @@ export class BoatController {
       } else {
         res.status(400).json({ result: 'Boat not found' });
       }
-    } catch (error: any) {
-      res.status(400).send(makeArrayOfErrorMessages(error));
+    } catch (error) {
+      res.status(400).send(error);
     }
   }
-}
-
-export function makeArrayOfErrorMessages(error: any): Array<string> {
-  const errors = error.errors;
-  const arrayOfErrorMessages = [];
-  if (errors.length !== undefined) {
-    for (const error of errors) {
-      arrayOfErrorMessages.push(error.message);
-    }
-  }
-  return arrayOfErrorMessages;
 }

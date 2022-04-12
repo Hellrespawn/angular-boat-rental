@@ -1,8 +1,7 @@
 import 'dotenv/config';
 import { Boat, BoatData } from '../model/boat.model';
 import { Customer } from '../model/customer.model';
-import { Skipper } from '../model/skipper.model';
-import '../util/database';
+import { Skipper, SkipperData } from '../model/skipper.model';
 import { initSequelize } from '../util/database';
 
 const MOTORBOAT_PLACEHOLDER_PATH = 'motorboot-placeholder.jpg';
@@ -20,13 +19,6 @@ const BOAT_NAMES = [
   'Terrible',
 ];
 
-const SKIPPER_NAMES = [
-  'Elle-May Dunlop',
-  'Katy Lowery',
-  'Lorenzo Adam',
-  'Misty Munoz',
-];
-
 const CUSTOMER_NAMES = [
   'Baran Enriquez',
   'Chloe-Ann Bryant',
@@ -34,9 +26,24 @@ const CUSTOMER_NAMES = [
   'Deacon Mays',
 ];
 
+const SKIPPER_NAMES = [
+  'Jantje de Wit',
+  'Pietje van Vlugt',
+  'Klaasje de Koning',
+  'Henkie Aardenburg',
+  'Peter Mijnen',
+  'Bert Buwalda',
+];
+
 function randomInt(min: number, max: number): number {
   // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function randomDate(start: Date, end: Date): Date {
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  );
 }
 
 async function insertMockBoats() {
@@ -68,12 +75,6 @@ async function insertMockBoats() {
   }
 }
 
-async function insertMockSkippers() {
-  for (const name of SKIPPER_NAMES) {
-    await Skipper.create({ name, price: randomInt(100, 200) });
-  }
-}
-
 async function insertMockCustomers() {
   for (const name of CUSTOMER_NAMES) {
     const [firstName, lastName] = name.split(' ');
@@ -85,6 +86,26 @@ async function insertMockCustomers() {
       emailAddress: 'test@test.test',
       password: 'password',
     });
+  }
+}
+
+async function insertMockSkippers() {
+  const skippers = SKIPPER_NAMES.map((name): SkipperData => {
+    const skipper = {
+      name,
+      pricePerDay: randomInt(100, 500),
+      birthDate: randomDate(new Date(1980, 1, 1), new Date()),
+    };
+    return skipper;
+  });
+
+  for (const skipper of skippers) {
+    try {
+      await Skipper.create(skipper);
+    } catch (error) {
+      console.log(error);
+      process.exit(1);
+    }
   }
 }
 
