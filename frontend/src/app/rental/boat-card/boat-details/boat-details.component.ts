@@ -27,7 +27,7 @@ export class BoatDetailsComponent implements OnInit {
     this.getBoat();
   }
 
-  private getBoat() {
+  private getBoat(): void {
     this.boatService
       .getBoatDetailData(this.data.id)
       .subscribe((boat) => (this.boat = boat));
