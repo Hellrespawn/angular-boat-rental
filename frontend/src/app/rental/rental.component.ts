@@ -14,12 +14,14 @@ export type BoatOverviewData = {
   maxOccupants: number;
 };
 
-export type OverviewBoat = BoatOverviewData & {
+export type BoatOverviewFilters = {
   filters: {
     typeFiltered: boolean;
     licenseFiltered: boolean;
   };
 };
+
+export type OverviewBoat = BoatOverviewData & BoatOverviewFilters;
 
 @Component({
   selector: 'app-rental',
@@ -35,12 +37,12 @@ export class RentalComponent implements OnInit {
     this.getBoats();
   }
 
-  private getBoats() {
+  private getBoats(): void {
     this.boatService
       .getBoatOverviewData()
       .pipe(
-        map((boats) =>
-          boats.map((boat) => {
+        map((boats: BoatOverviewData[]): OverviewBoat[] =>
+          boats.map((boat: BoatOverviewData): OverviewBoat => {
             boat.imageRoute = `${environment.backendUrl}${boat.imageRoute}`;
             return {
               ...boat,
@@ -52,6 +54,10 @@ export class RentalComponent implements OnInit {
       .subscribe(
         (boats: OverviewBoat[]): OverviewBoat[] => (this.boats = boats)
       );
+  }
+
+  public enabled(boat: OverviewBoat): boolean {
+    return Object.values(boat.filters).every((v) => v);
   }
 
   public typeFilterChanged(change: BoatTypeFilter): void {

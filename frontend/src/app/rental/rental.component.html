@@ -10,8 +10,11 @@
   </div>
 
   <ul *ngIf="boats.length">
-    <li *ngFor="let boat of boats">
-      <app-rental-boat-card [boat]="boat"></app-rental-boat-card>
+    <li *ngFor="let boat of boats" [ngClass]="{ disabled: !enabled(boat) }">
+      <app-rental-boat-card
+        [boat]="boat"
+        [enabled]="enabled(boat)"
+      ></app-rental-boat-card>
     </li>
   </ul>
 </div>
