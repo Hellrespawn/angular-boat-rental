@@ -109,7 +109,7 @@ async function insertMockSkippers() {
   }
 }
 
-(async () => {
+async function seed(): Promise<void> {
   try {
     await initSequelize();
     await insertMockBoats();
@@ -120,4 +120,6 @@ async function insertMockSkippers() {
     console.log(error);
     process.exit(1);
   }
-})();
+}
+
+seed();
