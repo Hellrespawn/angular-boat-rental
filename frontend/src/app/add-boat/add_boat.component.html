@@ -7,6 +7,20 @@
       getErrorMessageForNameField()
     }}</mat-error>
   </mat-form-field>
+  <mat-form-field>
+    <mat-label>Registratie nummer:</mat-label>
+    <input
+      id="registrationNumber"
+      matInput
+      [formControl]="registrationNumberControl"
+      #registrationNumber
+      required
+    />
+    <mat-hint>Vul hier het registratie nummer van de boot in</mat-hint>
+    <mat-error *ngIf="registrationNumberControl.invalid">{{
+      getErrorMessageForRegistrationNumber()
+    }}</mat-error>
+  </mat-form-field>
   <mat-form-field appearance="fill" floatLabel="always">
     <mat-label>Prijs:</mat-label>
     <input
@@ -22,6 +36,20 @@
     <mat-hint>Vul hier het dagtarief in</mat-hint>
     <mat-error *ngIf="priceControl.invalid">{{
       getErrorMessageForPriceField()
+    }}</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Maximaal aantal gasten:</mat-label>
+    <input
+      id="maxOccupants"
+      matInput
+      [formControl]="maxOccupantsControl"
+      #maxOccupants
+      required
+    />
+    <mat-hint>Vul hier het maximale aantal gasten van de boot in</mat-hint>
+    <mat-error *ngIf="maxOccupantsControl.invalid">{{
+      getErrorMessageForMaxOccupants()
     }}</mat-error>
   </mat-form-field>
   <mat-checkbox #skipperRequired id="skipperRequired"
@@ -62,7 +90,7 @@
     </mat-radio-button>
     <mat-radio-button value="motor" #motor>Motorboot</mat-radio-button>
   </mat-radio-group>
-  <mat-form-field appearance="fill">
+  <mat-form-field *ngIf="!sail.checked" appearance="fill">
     <mat-label>Max snelheid:</mat-label>
     <input
       id="maxSpeed"
@@ -76,6 +104,22 @@
     <mat-hint>Vul hier de maximale snelheid in van de boot</mat-hint>
     <mat-error *ngIf="maxSpeedControl.invalid">{{
       getErrorMessageForSpeedField()
+    }}</mat-error>
+  </mat-form-field>
+  <mat-form-field *ngIf="sail.checked" appearance="fill">
+    <mat-label>Oppervlak van het zeil:</mat-label>
+    <input
+      id="sailInM2"
+      matInput
+      type="number"
+      [formControl]="sailAreaInM2Control"
+      #sailInM2
+      required
+    />
+    <span matSuffix> vierkante meter</span>
+    <mat-hint>Vul hier het oppervlak van het zeil in</mat-hint>
+    <mat-error *ngIf="sailAreaInM2Control.invalid">{{
+      getErrorMessageForSailAreaInM2()
     }}</mat-error>
   </mat-form-field>
   <button

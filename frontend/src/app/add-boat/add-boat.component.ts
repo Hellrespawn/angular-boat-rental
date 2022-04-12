@@ -28,6 +28,13 @@ export class AddBoatComponent {
     duration: 3000,
     error: true,
   };
+  private readonly duplicateRegistrationNumberErrorSnackBarInput: SnackBarInput =
+    {
+      message: 'Dit registratie nummer is al in gebruik!',
+      buttonText: 'Sluit',
+      duration: 3000,
+      error: true,
+    };
   private readonly succesSnackbarInput: SnackBarInput = {
     message: 'Boot is toegevoegd!',
     buttonText: 'Sluit',
@@ -45,6 +52,18 @@ export class AddBoatComponent {
     smallerOrEqualToZero,
   ]);
   public maxSpeedControl = new FormControl(null, [
+    Validators.required,
+    smallerOrEqualToZero,
+  ]);
+  public registrationNumberControl = new FormControl(null, [
+    Validators.required,
+    smallerOrEqualToZero,
+  ]);
+  public maxOccupantsControl = new FormControl(null, [
+    Validators.required,
+    smallerOrEqualToZero,
+  ]);
+  public sailAreaInM2Control = new FormControl(null, [
     Validators.required,
     smallerOrEqualToZero,
   ]);
@@ -83,7 +102,29 @@ export class AddBoatComponent {
       ? this.ERROR_MESSAGE_NUMBER_UNDER_ONE
       : '';
   }
+  public getErrorMessageForRegistrationNumber() {
+    return this.maxSpeedControl.hasError(this.REQUIRED)
+      ? 'Vul a.u.b. een registratie nummer in'
+      : this.maxSpeedControl.hasError(this.ERROR_KEY_NUMBER_UNDER_ONE)
+      ? this.ERROR_MESSAGE_NUMBER_UNDER_ONE
+      : '';
+  }
+  public getErrorMessageForMaxOccupants() {
+    return this.maxSpeedControl.hasError(this.REQUIRED)
+      ? 'Vul a.u.b. een maximaal aantal gasten in'
+      : this.maxSpeedControl.hasError(this.ERROR_KEY_NUMBER_UNDER_ONE)
+      ? this.ERROR_MESSAGE_NUMBER_UNDER_ONE
+      : '';
+  }
+  public getErrorMessageForSailAreaInM2() {
+    return this.maxSpeedControl.hasError(this.REQUIRED)
+      ? 'Vul a.u.b. een zeil oppervlak in'
+      : this.maxSpeedControl.hasError(this.ERROR_KEY_NUMBER_UNDER_ONE)
+      ? this.ERROR_MESSAGE_NUMBER_UNDER_ONE
+      : '';
+  }
 
+  // moet nog worden geïmplementeerd
   public upload(event: Event) {
     console.log(event);
   }
@@ -94,6 +135,9 @@ export class AddBoatComponent {
       this.priceControl,
       this.lengthControl,
       this.maxSpeedControl,
+      this.sailAreaInM2Control,
+      this.registrationNumberControl,
+      this.maxOccupantsControl,
     ];
   }
 
@@ -102,8 +146,17 @@ export class AddBoatComponent {
       !this.nameControl.invalid &&
       !this.priceControl.invalid &&
       !this.lengthControl.invalid &&
-      !this.maxSpeedControl.invalid
+      !this.maxSpeedControl.invalid &&
+      !this.maxOccupantsControl.invalid &&
+      !this.sailAreaInM2Control.invalid &&
+      !this.registrationNumberControl
     );
+  }
+
+  private markFormControlsAsTouched(): void {
+    for (let control of this.makeArrayOfFormControls()) {
+      control.markAsTouched();
+    }
   }
 
   public checkFields(
@@ -116,9 +169,7 @@ export class AddBoatComponent {
     sail: boolean,
     motor: boolean
   ) {
-    for (let control of this.makeArrayOfFormControls()) {
-      control.markAllAsTouched();
-    }
+    this.markFormControlsAsTouched();
     if (this.checkControlsValid()) {
       this.sendNieuwBoatToBackend(
         new Boat(
@@ -139,10 +190,17 @@ export class AddBoatComponent {
     }
   }
 
+  private resetFormControls(): void {
+    for (let control of this.makeArrayOfFormControls()) {
+      control.reset();
+    }
+  }
+
   private handleError(error: HttpErrorResponse) {
     const errorArray: Array<string> = error.error;
     for (let error of errorArray) {
       if (error === 'name must be unique') {
+        this.resetFormControls();
         this.snackBService.makeSnackbarThatClosesAutomatically(
           this.duplicateNameErrorSnackBarInput
         );
