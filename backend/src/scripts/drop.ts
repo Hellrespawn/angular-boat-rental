@@ -1,10 +1,9 @@
 import 'dotenv/config';
-import { initSequelize } from '../util/database';
+import { dropDatabase } from '../util/database';
 
 (async () => {
   try {
-    const sequelize = await initSequelize();
-    await sequelize.drop();
+    await dropDatabase();
     process.exit();
   } catch (error) {
     console.error(error);
