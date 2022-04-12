@@ -1,12 +1,20 @@
 import { Boat } from '../model/boat.model';
 
-export interface BoatOverviewData {
+export type BoatOverviewData = {
+  id: number;
   imageRoute: string;
   name: string;
   requirements: 'none' | 'license' | 'skipper';
   boatType: 'motor' | 'sail';
   maxOccupants: number;
-}
+};
+
+export type BoatDetailData = BoatOverviewData & {
+  pricePerDay: number;
+  lengthInM: number;
+  maxSpeedInKmH?: number;
+  sailAreaInM2?: number;
+};
 
 export class BoatService {
   private boatArray: Array<Boat> = [];
@@ -20,18 +28,40 @@ export class BoatService {
     return this.boatArray;
   }
 
+  public async getBoatDetailData(id: number): Promise<BoatDetailData | null> {
+    const boat = await Boat.findByPk(id);
+
+    if (boat) {
+      const overviewData = this.boatInstanceToOverviewData(boat);
+
+      const detailData = {
+        pricePerDay: boat.pricePerDay,
+        lengthInM: boat.lengthInM,
+        // These constraints are enforced at object creation.
+        maxSpeedInKmH: boat.maxSpeedInKmH,
+        sailAreaInM2: boat.sailAreaInM2,
+      };
+
+      return { ...overviewData, ...detailData };
+    } else {
+      return null;
+    }
+  }
+
+  private boatInstanceToOverviewData(boat: Boat): BoatOverviewData {
+    return {
+      id: boat.id,
+      name: boat.name,
+      imageRoute: boat.imageRoute,
+      requirements: boat.getRequirements(),
+      boatType: boat.boatType,
+      maxOccupants: boat.maxOccupants,
+    } as BoatOverviewData;
+  }
+
   public async getBoatOverviewData(): Promise<BoatOverviewData[]> {
     const boats = await this.returnAllBoats();
 
-    return boats.map((boat) => {
-      return {
-        name: boat.name,
-        imageRoute: boat.imageRoute,
-        requirements: boat.getRequirements(),
-        boatType: boat.boatType,
-        maxOccupants: boat.maxOccupants,
-      } as BoatOverviewData;
-      // Explicit cast for string to string union.
-    });
+    return boats.map(this.boatInstanceToOverviewData);
   }
 }

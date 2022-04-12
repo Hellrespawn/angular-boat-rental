@@ -14,7 +14,7 @@ export function addBoatRoutes(controller: BoatController): Router {
   });
 
   boatRouter.get(
-    '/boat/rental.:id',
+    '/boat/rental/:id',
     validateIdInUrlParams,
     (req: Request, res: Response): void => {
       controller.getBoatDetailData(req, res);
