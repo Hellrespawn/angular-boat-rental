@@ -9,6 +9,10 @@ export function addBoatRoutes(
     controller.getBoats(req, res);
   });
 
+  app.get('/boat/rental', (req: Request, res: Response): void => {
+    controller.getBoatOverviewData(req, res);
+  });
+
   app.post('/boat', async (req: Request, res: Response): Promise<void> => {
     controller.addBoat(req, res);
   });

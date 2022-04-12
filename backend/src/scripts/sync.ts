@@ -2,9 +2,13 @@ import 'dotenv/config';
 import { createDatabase, initSequelize } from '../util/database';
 
 (async () => {
-  const sequelize = await initSequelize();
-  await createDatabase();
-  await sequelize.sync();
+  try {
+    const sequelize = await initSequelize();
+    await createDatabase();
+    await sequelize.sync({ force: true });
+  } catch (error) {
+    console.error(error);
+  }
 
   process.exit();
 })();

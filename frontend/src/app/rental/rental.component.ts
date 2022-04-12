@@ -1,8 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { Boat, BoatRequirements } from '../boat';
+import { map } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { BoatRequirements, BoatType } from '../boat';
 import { BoatService } from '../boat-service.service';
 import { BoatTypeFilter } from './filters/boat-type/boat-type.component';
-import { FilterType } from './filters/filters.component';
+import { LicenseFilter } from './filters/license/license.component';
+
+export type BoatOverviewData = {
+  imageRoute: string;
+  name: string;
+  requirements: BoatRequirements;
+  boatType: BoatType;
+  maxOccupants: number;
+};
+
+export type BoatOverviewFilters = {
+  filters: {
+    typeFiltered: boolean;
+    licenseFiltered: boolean;
+  };
+};
+
+export type OverviewBoat = BoatOverviewData & BoatOverviewFilters;
 
 @Component({
   selector: 'app-rental',
@@ -10,7 +29,7 @@ import { FilterType } from './filters/filters.component';
   styleUrls: ['./rental.component.scss'],
 })
 export class RentalComponent implements OnInit {
-  public boats: BoatOverviewData[] = [];
+  public boats: OverviewBoat[] = [];
 
   constructor(private boatService: BoatService) {}
 
@@ -18,58 +37,58 @@ export class RentalComponent implements OnInit {
     this.getBoats();
   }
 
-  private getBoats() {
+  private getBoats(): void {
     this.boatService
       .getBoatOverviewData()
-      .subscribe((boats) => (this.boats = this.filterBoats(boats)));
+      .pipe(
+        map((boats: BoatOverviewData[]): OverviewBoat[] =>
+          boats.map((boat: BoatOverviewData): OverviewBoat => {
+            boat.imageRoute = `${environment.backendUrl}${boat.imageRoute}`;
+            return {
+              ...boat,
+              filters: { typeFiltered: true, licenseFiltered: true },
+            };
+          })
+        )
+      )
+      .subscribe(
+        (boats: OverviewBoat[]): OverviewBoat[] => (this.boats = boats)
+      );
   }
 
-  public filtersChanged(change: [FilterType, string]): void {
-    this.filterBoats(this.boats, change);
+  public enabled(boat: OverviewBoat): boolean {
+    return Object.values(boat.filters).every((v) => v);
   }
 
-  private filterBoats(
-    boats: BoatOverviewData[],
-    change?: [FilterType, string]
-  ): BoatOverviewData[] {
-    if (change) {
-      const [filter, value] = change;
-      if (filter === 'boat-type') {
-        // FIXME Make this neater.
-        this.filterBoatType(boats, value as BoatTypeFilter);
-      }
-    }
-
-    return boats;
-  }
-
-  private filterBoatType(
-    boats: BoatOverviewData[],
-    value: BoatTypeFilter
-  ): BoatOverviewData[] {
-    for (let boat of boats) {
-      switch (value) {
+  public typeFilterChanged(change: BoatTypeFilter): void {
+    for (const boat of this.boats) {
+      switch (change) {
         case 'all':
-          boat.enabled = true;
+          boat.filters.typeFiltered = true;
           break;
         case 'motorboat':
-          boat.enabled = boat.boatType == 'motor';
+          boat.filters.typeFiltered = boat.boatType == 'motor';
           break;
         case 'sailboat':
-          boat.enabled = boat.boatType == 'sail';
+          boat.filters.typeFiltered = boat.boatType == 'sail';
           break;
       }
     }
-
-    return boats;
   }
-}
 
-export interface BoatOverviewData {
-  enabled: boolean;
-  imageRoute: string;
-  name: string;
-  requirements: BoatRequirements;
-  boatType: string;
-  maxOccupants: number;
+  public licenseFilterChanged(change: LicenseFilter): void {
+    for (const boat of this.boats) {
+      switch (change) {
+        case 'both':
+          boat.filters.licenseFiltered = true;
+          break;
+        case 'required':
+          boat.filters.licenseFiltered = boat.requirements == 'license';
+          break;
+        case 'not-required':
+          boat.filters.licenseFiltered = boat.requirements == 'none';
+          break;
+      }
+    }
+  }
 }

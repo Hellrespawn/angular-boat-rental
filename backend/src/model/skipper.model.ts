@@ -1,5 +1,5 @@
-import { Table, Column, Model, Unique, DataType } from 'sequelize-typescript';
-
+import { Table, Column, Model, Unique, HasMany } from 'sequelize-typescript';
+import { Rental } from './rental.model';
 export type SkipperData = {
   name: string;
   pricePerDay: number;
@@ -12,5 +12,8 @@ export class Skipper extends Model implements SkipperData {
 
   @Column public pricePerDay!: number;
 
-  @Column(DataType.DATE) public birthDate!: Date;
+  @Column public birthDate!: Date;
+
+  @HasMany(() => Rental)
+  public rentals!: Rental[];
 }
