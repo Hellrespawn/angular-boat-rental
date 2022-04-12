@@ -172,20 +172,6 @@ export class AddBoatComponent {
   ) {
     this.markFormControlsAsTouched();
     if (this.checkControlsValid()) {
-      console.log(
-        new Boat(
-          name,
-          registrationNumber,
-          price,
-          false,
-          length,
-          maxOccupants,
-          skipperRequired,
-          './motorboot-placeholder.jpg',
-          sail,
-          motor
-        )
-      );
       this.sendNieuwBoatToBackend(
         new Boat(
           name,
@@ -247,9 +233,9 @@ export class AddBoatComponent {
           this.succesSnackbarInput
         );
         this.resetInputFields();
-        // setTimeout(() => {
-        //   window.location.replace('/admin-panel');
-        // }, 1000);
+        setTimeout(() => {
+          window.location.replace('/boat-overview-admin');
+        }, 1000);
       });
   }
 
