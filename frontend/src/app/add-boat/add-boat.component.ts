@@ -146,10 +146,9 @@ export class AddBoatComponent {
       !this.nameControl.invalid &&
       !this.priceControl.invalid &&
       !this.lengthControl.invalid &&
-      !this.maxSpeedControl.invalid &&
+      (!this.maxSpeedControl.invalid || !this.sailAreaInM2Control.invalid) &&
       !this.maxOccupantsControl.invalid &&
-      !this.sailAreaInM2Control.invalid &&
-      !this.registrationNumberControl
+      !this.registrationNumberControl.invalid
     );
   }
 
@@ -161,24 +160,42 @@ export class AddBoatComponent {
 
   public checkFields(
     name: string,
+    registrationNumber: string,
     price: string,
     length: string,
-    maxSpeed: string,
     skipperRequired: boolean,
-    fotos: FileList | null,
+    maxOccupants: string,
     sail: boolean,
-    motor: boolean
+    motor: boolean,
+    maxSpeed?: string,
+    sailM2?: string
   ) {
     this.markFormControlsAsTouched();
     if (this.checkControlsValid()) {
+      console.log(
+        new Boat(
+          name,
+          registrationNumber,
+          price,
+          false,
+          length,
+          maxOccupants,
+          skipperRequired,
+          './motorboot-placeholder.jpg',
+          sail,
+          motor
+        )
+      );
       this.sendNieuwBoatToBackend(
         new Boat(
           name,
+          registrationNumber,
           price,
+          false,
           length,
-          maxSpeed,
+          maxOccupants,
           skipperRequired,
-          fotos?.item(0),
+          './motorboot-placeholder.jpg',
           sail,
           motor
         )
@@ -197,12 +214,17 @@ export class AddBoatComponent {
   }
 
   private handleError(error: HttpErrorResponse) {
-    const errorArray: Array<string> = error.error;
+    console.log(error);
+    const errorArray: Array<any> = error.error.errors;
+    this.resetFormControls();
     for (let error of errorArray) {
-      if (error === 'name must be unique') {
-        this.resetFormControls();
+      if (error.message === 'name must be unique') {
         this.snackBService.makeSnackbarThatClosesAutomatically(
           this.duplicateNameErrorSnackBarInput
+        );
+      } else if (error.message === 'registrationNumber must be unique') {
+        this.snackBService.makeSnackbarThatClosesAutomatically(
+          this.duplicateRegistrationNumberErrorSnackBarInput
         );
       }
     }
@@ -225,9 +247,9 @@ export class AddBoatComponent {
           this.succesSnackbarInput
         );
         this.resetInputFields();
-        setTimeout(() => {
-          window.location.replace('/admin-panel');
-        }, 1000);
+        // setTimeout(() => {
+        //   window.location.replace('/admin-panel');
+        // }, 1000);
       });
   }
 
@@ -238,29 +260,47 @@ export class AddBoatComponent {
       false;
     (document.getElementById('length') as HTMLInputElement).value = '';
     (document.getElementById('sail') as HTMLInputElement).checked = true;
-    (document.getElementById('maxSpeed') as HTMLInputElement).value = '';
+    (document.getElementById('sail') as HTMLInputElement).checked
+      ? ((document.getElementById('sailInM2') as HTMLInputElement).value = '')
+      : ((document.getElementById('maxSpeed') as HTMLInputElement).value = '');
   }
 }
 
 class Boat {
-  private price: number;
-  private length: number;
-  private maxSpeed: number;
-  private sailOrMotor: string;
+  private pricePerDay: number;
+  private registrationNumber: number;
+  private lengthInM: number;
+  private maxOccupants: number;
+  private maxSpeedInKmH?: number;
+  private sailAreaInM2?: number;
+  private boatType: string;
   constructor(
     private name: string,
+    registrationNumberString: string,
     priceString: string,
+    maintenance: boolean = false,
     lengthString: string,
-    maxSpeedString: string,
+    maxOccupantsString: string,
     private skipperRequired: boolean,
-    private foto: File | null | undefined,
+    private imageRoute: string = 'motorboot-placeholder.jpg',
     sail: boolean,
     motor: boolean
   ) {
-    this.price = parseFloat(priceString);
-    this.length = parseFloat(lengthString);
-    this.maxSpeed = parseFloat(maxSpeedString);
-    sail ? (this.sailOrMotor = 'sail') : (this.sailOrMotor = 'motor');
+    this.registrationNumber = parseFloat(registrationNumberString);
+    this.maxOccupants = parseFloat(maxOccupantsString);
+    this.pricePerDay = parseFloat(priceString);
+    this.lengthInM = parseFloat(lengthString);
+    sail
+      ? (this.sailAreaInM2 = parseFloat(
+          (<HTMLInputElement>document.getElementById('sailInM2')!).value
+        ))
+      : (this.sailAreaInM2 = undefined);
+    motor
+      ? (this.maxSpeedInKmH = parseFloat(
+          (<HTMLInputElement>document.getElementById('maxSpeed')!).value
+        ))
+      : (this.maxSpeedInKmH = undefined);
+    sail ? (this.boatType = 'sail') : (this.boatType = 'motor');
   }
 }
 

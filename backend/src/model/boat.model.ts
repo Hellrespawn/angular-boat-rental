@@ -35,18 +35,19 @@ const BOAT_TYPE = DataType.ENUM('sail', 'motor');
 
 @Table
 export class Boat extends Model implements BoatData {
-  @Unique @Column public name!: string;
+  @AllowNull(false) @Unique @Column public name!: string;
 
-  @Unique @Column public registrationNumber!: number;
+  @AllowNull(false) @Unique @Column public registrationNumber!: number;
 
-  @Column public pricePerDay!: number;
+  @AllowNull(false) @Column public pricePerDay!: number;
 
-  @Column public skipperRequired!: boolean;
+  @AllowNull(false) @Column public skipperRequired!: boolean;
 
-  @Column public maintenance!: boolean;
+  @AllowNull(false) @Column public maintenance!: boolean;
 
   // Could not get this to work with the getter being transformed, so the
   // transformed value is saved in the database.
+  @AllowNull(false)
   @Column
   public get imageRoute(): string {
     return this.getDataValue('imageRoute');
@@ -56,11 +57,11 @@ export class Boat extends Model implements BoatData {
     this.setDataValue('imageRoute', `/${IMAGE_ROUTE}/${imageRoute}`);
   }
 
-  @Column public lengthInM!: number;
+  @AllowNull(false) @Column public lengthInM!: number;
 
-  @Column public maxOccupants!: number;
+  @AllowNull(false) @Column public maxOccupants!: number;
 
-  @Column(BOAT_TYPE) public boatType!: string;
+  @AllowNull(false) @Column(BOAT_TYPE) public boatType!: string;
 
   @AllowNull @Column public maxSpeedInKmH?: number;
 

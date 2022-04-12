@@ -23,22 +23,28 @@ export class BoatController {
     res: express.Response
   ): Promise<void> {
     const name: string = req.body.name;
-    const price: number = +req.body.price;
+    const registrationNumber: number = req.body.registrationNumber;
+    const pricePerDay: number = +req.body.pricePerDay;
     const skipperRequired: boolean = req.body.skipperRequired;
-    // FIXME Change to ImageRoute
-    const photo: Blob | undefined | null = <Blob>req.body.photo;
-    const length: number = +req.body.length;
-    const maxSpeed: number = +req.body.maxSpeed;
-    const sailOrMotor: 'sail' | 'motor' = req.body.sailOrMotor;
+    const imageRoute: string = req.body.imageRoute;
+    const lengthInM: number = +req.body.lengthInM;
+    const maxOccupants: number = req.body.maxOccupants;
+    const boatType: 'sail' | 'motor' = req.body.boatType;
+    const maxSpeedInKmH: number = req.body.maxSpeedInKmH;
+    const sailAreaInM2: number = req.body.sailAreaInM2;
     try {
       const result = await Boat.create({
         name,
-        price,
+        registrationNumber,
+        pricePerDay,
         skipperRequired,
-        photo,
-        length,
-        maxSpeed,
-        sailOrMotor,
+        maintenance: false,
+        imageRoute,
+        lengthInM,
+        maxOccupants,
+        boatType,
+        maxSpeedInKmH,
+        sailAreaInM2,
       });
       res.status(200).json(result);
     } catch (error) {

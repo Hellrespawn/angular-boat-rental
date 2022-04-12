@@ -7,7 +7,7 @@
       getErrorMessageForNameField()
     }}</mat-error>
   </mat-form-field>
-  <mat-form-field>
+  <mat-form-field appearance="fill">
     <mat-label>Registratie nummer:</mat-label>
     <input
       id="registrationNumber"
@@ -97,7 +97,7 @@
       matInput
       type="number"
       [formControl]="maxSpeedControl"
-      #maxSnelheid
+      #maxSpeed
       required
     />
     <span matSuffix> km per uur</span>
@@ -129,11 +129,11 @@
     (click)="
       checkFields(
         name.value,
+        registrationNumber.value,
         price.value,
         lengte.value,
-        maxSnelheid.value,
         skipperRequired.checked,
-        uploadFile.files,
+        maxOccupants.value,
         sail.checked,
         motor.checked
       )
