@@ -66,12 +66,6 @@ export class Boat extends Model implements BoatData {
   }
 
   @AllowNull(false) @Column public lengthInM!: number;
-<<<<<<< HEAD
-
-  @AllowNull(false) @Column public maxOccupants!: number;
-
-  @AllowNull(false) @Column(BOAT_TYPE) public boatType!: string;
-=======
 
   @AllowNull(false) @Column public maxOccupants!: number;
 
@@ -80,7 +74,6 @@ export class Boat extends Model implements BoatData {
   @Column public maxSpeedInKmH?: number;
 
   @Column public sailAreaInM2?: number;
->>>>>>> origin/main
 
   @HasMany(() => Rental)
   public rentals!: Rental[];
