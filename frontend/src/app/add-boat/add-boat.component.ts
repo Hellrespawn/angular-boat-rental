@@ -4,6 +4,7 @@ import { catchError, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
 import { BoatService } from '../boat-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-boat',
@@ -28,6 +29,13 @@ export class AddBoatComponent {
     duration: 3000,
     error: true,
   };
+  private readonly duplicateRegistrationNumberErrorSnackBarInput: SnackBarInput =
+    {
+      message: 'Dit registratie nummer is al in gebruik!',
+      buttonText: 'Sluit',
+      duration: 3000,
+      error: true,
+    };
   private readonly succesSnackbarInput: SnackBarInput = {
     message: 'Boot is toegevoegd!',
     buttonText: 'Sluit',
@@ -48,10 +56,23 @@ export class AddBoatComponent {
     Validators.required,
     smallerOrEqualToZero,
   ]);
+  public registrationNumberControl = new FormControl(null, [
+    Validators.required,
+    smallerOrEqualToZero,
+  ]);
+  public maxOccupantsControl = new FormControl(null, [
+    Validators.required,
+    smallerOrEqualToZero,
+  ]);
+  public sailAreaInM2Control = new FormControl(null, [
+    Validators.required,
+    smallerOrEqualToZero,
+  ]);
 
   constructor(
     private snackBService: SnackBarService,
-    private boatService: BoatService
+    private boatService: BoatService,
+    private router: Router
   ) {}
 
   public getErrorMessageForNameField() {
@@ -83,7 +104,29 @@ export class AddBoatComponent {
       ? this.ERROR_MESSAGE_NUMBER_UNDER_ONE
       : '';
   }
+  public getErrorMessageForRegistrationNumber() {
+    return this.maxSpeedControl.hasError(this.REQUIRED)
+      ? 'Vul a.u.b. een registratie nummer in'
+      : this.maxSpeedControl.hasError(this.ERROR_KEY_NUMBER_UNDER_ONE)
+      ? this.ERROR_MESSAGE_NUMBER_UNDER_ONE
+      : '';
+  }
+  public getErrorMessageForMaxOccupants() {
+    return this.maxSpeedControl.hasError(this.REQUIRED)
+      ? 'Vul a.u.b. een maximaal aantal gasten in'
+      : this.maxSpeedControl.hasError(this.ERROR_KEY_NUMBER_UNDER_ONE)
+      ? this.ERROR_MESSAGE_NUMBER_UNDER_ONE
+      : '';
+  }
+  public getErrorMessageForSailAreaInM2() {
+    return this.maxSpeedControl.hasError(this.REQUIRED)
+      ? 'Vul a.u.b. een zeil oppervlak in'
+      : this.maxSpeedControl.hasError(this.ERROR_KEY_NUMBER_UNDER_ONE)
+      ? this.ERROR_MESSAGE_NUMBER_UNDER_ONE
+      : '';
+  }
 
+  // moet nog worden geïmplementeerd
   public upload(event: Event) {
     console.log(event);
   }
@@ -94,6 +137,9 @@ export class AddBoatComponent {
       this.priceControl,
       this.lengthControl,
       this.maxSpeedControl,
+      this.sailAreaInM2Control,
+      this.registrationNumberControl,
+      this.maxOccupantsControl,
     ];
   }
 
@@ -102,32 +148,42 @@ export class AddBoatComponent {
       !this.nameControl.invalid &&
       !this.priceControl.invalid &&
       !this.lengthControl.invalid &&
-      !this.maxSpeedControl.invalid
+      (!this.maxSpeedControl.invalid || !this.sailAreaInM2Control.invalid) &&
+      !this.maxOccupantsControl.invalid &&
+      !this.registrationNumberControl.invalid
     );
+  }
+
+  private markFormControlsAsTouched(): void {
+    for (let control of this.makeArrayOfFormControls()) {
+      control.markAsTouched();
+    }
   }
 
   public checkFields(
     name: string,
+    registrationNumber: string,
     price: string,
     length: string,
-    maxSpeed: string,
     skipperRequired: boolean,
-    fotos: FileList | null,
+    maxOccupants: string,
     sail: boolean,
-    motor: boolean
+    motor: boolean,
+    maxSpeed?: string,
+    sailM2?: string
   ) {
-    for (let control of this.makeArrayOfFormControls()) {
-      control.markAllAsTouched();
-    }
+    this.markFormControlsAsTouched();
     if (this.checkControlsValid()) {
       this.sendNieuwBoatToBackend(
         new Boat(
           name,
+          registrationNumber,
           price,
+          false,
           length,
-          maxSpeed,
+          maxOccupants,
           skipperRequired,
-          fotos?.item(0),
+          './motorboot-placeholder.jpg',
           sail,
           motor
         )
@@ -139,12 +195,24 @@ export class AddBoatComponent {
     }
   }
 
+  private resetFormControls(): void {
+    for (let control of this.makeArrayOfFormControls()) {
+      control.reset();
+    }
+  }
+
   private handleError(error: HttpErrorResponse) {
-    const errorArray: Array<string> = error.error;
+    console.log(error);
+    const errorArray: Array<any> = error.error.errors;
+    this.resetFormControls();
     for (let error of errorArray) {
-      if (error === 'name must be unique') {
+      if (error.message === 'name must be unique') {
         this.snackBService.makeSnackbarThatClosesAutomatically(
           this.duplicateNameErrorSnackBarInput
+        );
+      } else if (error.message === 'registrationNumber must be unique') {
+        this.snackBService.makeSnackbarThatClosesAutomatically(
+          this.duplicateRegistrationNumberErrorSnackBarInput
         );
       }
     }
@@ -168,7 +236,7 @@ export class AddBoatComponent {
         );
         this.resetInputFields();
         setTimeout(() => {
-          window.location.replace('/admin-panel');
+          this.router.navigateByUrl('/boat-overview-admin');
         }, 1000);
       });
   }
@@ -179,30 +247,48 @@ export class AddBoatComponent {
     (document.getElementById('skipperRequired') as HTMLInputElement).checked =
       false;
     (document.getElementById('length') as HTMLInputElement).value = '';
+    (document.getElementById('sail') as HTMLInputElement).checked
+      ? ((document.getElementById('sailInM2') as HTMLInputElement).value = '')
+      : ((document.getElementById('maxSpeed') as HTMLInputElement).value = '');
     (document.getElementById('sail') as HTMLInputElement).checked = true;
-    (document.getElementById('maxSpeed') as HTMLInputElement).value = '';
   }
 }
 
 class Boat {
-  private price: number;
-  private length: number;
-  private maxSpeed: number;
-  private sailOrMotor: string;
+  private pricePerDay: number;
+  private registrationNumber: number;
+  private lengthInM: number;
+  private maxOccupants: number;
+  private maxSpeedInKmH?: number;
+  private sailAreaInM2?: number;
+  private boatType: string;
   constructor(
     private name: string,
+    registrationNumberString: string,
     priceString: string,
+    maintenance: boolean = false,
     lengthString: string,
-    maxSpeedString: string,
+    maxOccupantsString: string,
     private skipperRequired: boolean,
-    private foto: File | null | undefined,
+    private imageRoute: string = 'motorboot-placeholder.jpg',
     sail: boolean,
     motor: boolean
   ) {
-    this.price = parseFloat(priceString);
-    this.length = parseFloat(lengthString);
-    this.maxSpeed = parseFloat(maxSpeedString);
-    sail ? (this.sailOrMotor = 'sail') : (this.sailOrMotor = 'motor');
+    this.registrationNumber = parseFloat(registrationNumberString);
+    this.maxOccupants = parseFloat(maxOccupantsString);
+    this.pricePerDay = parseFloat(priceString);
+    this.lengthInM = parseFloat(lengthString);
+    sail
+      ? (this.sailAreaInM2 = parseFloat(
+          (<HTMLInputElement>document.getElementById('sailInM2')!).value
+        ))
+      : (this.sailAreaInM2 = undefined);
+    motor
+      ? (this.maxSpeedInKmH = parseFloat(
+          (<HTMLInputElement>document.getElementById('maxSpeed')!).value
+        ))
+      : (this.maxSpeedInKmH = undefined);
+    sail ? (this.boatType = 'sail') : (this.boatType = 'motor');
   }
 }
 
