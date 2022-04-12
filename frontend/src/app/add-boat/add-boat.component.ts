@@ -245,10 +245,10 @@ export class AddBoatComponent {
     (document.getElementById('skipperRequired') as HTMLInputElement).checked =
       false;
     (document.getElementById('length') as HTMLInputElement).value = '';
-    (document.getElementById('sail') as HTMLInputElement).checked = true;
     (document.getElementById('sail') as HTMLInputElement).checked
       ? ((document.getElementById('sailInM2') as HTMLInputElement).value = '')
       : ((document.getElementById('maxSpeed') as HTMLInputElement).value = '');
+    (document.getElementById('sail') as HTMLInputElement).checked = true;
   }
 }
 
