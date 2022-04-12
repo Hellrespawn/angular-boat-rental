@@ -44,6 +44,7 @@ import { ShortcutsComponent } from './home/shortcuts/shortcuts.component';
 import { HeaderComponent } from './header/header.component';
 import { NavbarComponent } from './header/navbar/navbar.component';
 import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
+import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-skipper-overview.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-ove
     BoatTypeComponent,
     BoatCardComponent,
     AdminBoatOverviewComponent,
+    AdminSkipperOverviewComponent,
   ],
   imports: [
     BrowserModule,

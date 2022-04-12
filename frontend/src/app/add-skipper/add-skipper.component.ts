@@ -3,13 +3,6 @@ import { Router } from '@angular/router';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
 import { smallerOrEqualToZero as smallerOrEqualToZero } from '../add-boat/add-boat.component';
 import { FormControl, Validators } from '@angular/forms';
-import { addToNavBar } from '../navigation.service';
-
-@addToNavBar({
-  name: 'Schipper-administratie',
-  route: '/add-skipper',
-  userTypes: ['admin'],
-})
 @Component({
   selector: 'app-schipper-toevoeg',
   templateUrl: './add-skipper.component.html',

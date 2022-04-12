@@ -8,6 +8,7 @@ import { RegistratieComponent } from './registratie/registratie.component';
 import { LoginComponent } from './log-in/log-in.component';
 import { RentalComponent } from './rental/rental.component';
 import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
+import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-skipper-overview.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'log-In', component: LoginComponent },
   { path: 'verhuur', component: RentalComponent },
   { path: 'boat-overview-admin', component: AdminBoatOverviewComponent },
+  { path: 'skipper-overview-admin', component: AdminSkipperOverviewComponent },
 ];
 
 @NgModule({
