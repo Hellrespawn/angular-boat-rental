@@ -47,7 +47,8 @@
               "ngOnDestroy"
             ]
           }
-        ]
+        ],
+        "@typescript-eslint/explicit-function-return-type": ["warn"]
       }
     },
     {

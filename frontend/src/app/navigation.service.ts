@@ -44,7 +44,7 @@ export const NAVIGATION: NavItem[] = [
  * export class BootToevoegComponent { ... }
  * ```
  */
-export function addToNavBar(navItem: NavItem) {
+export function addToNavBar(navItem: NavItem): (_: any) => void {
   return function (_: any) {
     NAVIGATION.push(navItem);
   };

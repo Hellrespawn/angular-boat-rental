@@ -21,11 +21,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
-
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './log-in/log-in.component';
 import { FaqComponent } from './faq/faq.component';
@@ -48,6 +48,7 @@ import { HeaderComponent } from './header/header.component';
 import { NavbarComponent } from './header/navbar/navbar.component';
 import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
 import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-skipper-overview.component';
+import { BoatDetailsComponent } from './rental/boat-card/boat-details/boat-details.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-sk
     BoatCardComponent,
     AdminBoatOverviewComponent,
     AdminSkipperOverviewComponent,
+    BoatDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -108,6 +110,8 @@ import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-sk
     HttpClientModule,
     MatSelectModule,
     MatCardModule,
+    MatDialogModule,
+    MatProgressSpinnerModule,
   ],
   providers: [MatSnackBarModule],
   bootstrap: [AppComponent],

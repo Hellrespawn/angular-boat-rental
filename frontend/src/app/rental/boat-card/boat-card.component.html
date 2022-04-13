@@ -1,5 +1,5 @@
 <div class="custom-card vertical">
-  <img src="{{ boat.imageRoute }}" alt="" />
+  <img src="{{ boat.imageRoute }}" alt="{{ boat.name }}" />
   <div id="description">
     <h2>{{ boat.name }}</h2>
     <div id="requirements">
@@ -11,7 +11,12 @@
     </div>
 
     <div id="button">
-      <button mat-raised-button color="primary" [disabled]="!enabled">
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="!enabled"
+        (click)="openDialog()"
+      >
         Meer informatie
       </button>
     </div>
