@@ -9,7 +9,8 @@ export type BoatOverviewData = {
   maxOccupants: number;
 };
 
-export type BoatDetailData = BoatOverviewData & {
+export type BoatDetailData = {
+  registrationNumber: number;
   pricePerDay: number;
   lengthInM: number;
   maxSpeedInKmH?: number;
@@ -28,13 +29,16 @@ export class BoatService {
     return this.boatArray;
   }
 
-  public async getBoatDetailData(id: number): Promise<BoatDetailData | null> {
+  public async getBoatDetailData(
+    id: number
+  ): Promise<(BoatOverviewData & BoatDetailData) | null> {
     const boat = await Boat.findByPk(id);
 
     if (boat) {
       const overviewData = this.boatInstanceToOverviewData(boat);
 
-      const detailData = {
+      const detailData: BoatDetailData = {
+        registrationNumber: boat.registrationNumber,
         pricePerDay: boat.pricePerDay,
         lengthInM: boat.lengthInM,
         // These constraints are enforced at object creation.
