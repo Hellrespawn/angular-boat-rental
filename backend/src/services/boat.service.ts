@@ -1,11 +1,11 @@
-import { Boat } from '../model/boat.model';
+import { Boat, BoatRequirements, BoatType } from '../model/boat.model';
 
 export type BoatOverviewData = {
   id: number;
   imageRoute: string;
   name: string;
-  requirements: 'none' | 'license' | 'skipper';
-  boatType: 'motor' | 'sail';
+  requirements: BoatRequirements;
+  boatType: BoatType;
   maxOccupants: number;
 };
 
@@ -60,7 +60,7 @@ export class BoatService {
       requirements: boat.getRequirements(),
       boatType: boat.boatType,
       maxOccupants: boat.maxOccupants,
-    } as BoatOverviewData;
+    };
   }
 
   public async getBoatOverviewData(): Promise<BoatOverviewData[]> {

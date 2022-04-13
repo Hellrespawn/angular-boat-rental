@@ -23,6 +23,7 @@ export class BoatController {
     res: express.Response
   ): Promise<void> {
     try {
+      // ID is checked by middleware in route.
       const id = +req.params.id;
       const boat = await this.boatService.getBoatDetailData(id);
       res.status(200).json({ boat });
