@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BoatOverviewData } from '../rental.component';
 import { BoatDetailsComponent } from './boat-details/boat-details.component';
+import { requirementsToString } from 'src/app/boat';
 
 @Component({
   selector: 'app-rental-boat-card',
@@ -21,18 +22,6 @@ export class BoatCardComponent {
   }
 
   public requirementsToString(): string {
-    switch (this.boat.requirements) {
-      case 'none':
-        return 'Zelf varen';
-
-      case 'license':
-        return 'Vaarbewijs vereist';
-
-      case 'skipper':
-        return 'Schipper vereist';
-
-      default:
-        throw `Invalid boat.requirements: ${this.boat.requirements}`;
-    }
+    return requirementsToString(this.boat);
   }
 }
