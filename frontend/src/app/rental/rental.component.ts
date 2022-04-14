@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { BoatRequirements, BoatType } from '../boat';
 import { BoatService } from '../boat-service.service';
 import { BoatTypeFilter } from './filters/boat-type/boat-type.component';
 import { LicenseFilter } from './filters/license/license.component';
 
 export type BoatOverviewData = {
+  id: number;
   imageRoute: string;
   name: string;
   requirements: BoatRequirements;
@@ -43,7 +43,6 @@ export class RentalComponent implements OnInit {
       .pipe(
         map((boats: BoatOverviewData[]): OverviewBoat[] =>
           boats.map((boat: BoatOverviewData): OverviewBoat => {
-            boat.imageRoute = `${environment.backendUrl}${boat.imageRoute}`;
             return {
               ...boat,
               filters: { typeFiltered: true, licenseFiltered: true },

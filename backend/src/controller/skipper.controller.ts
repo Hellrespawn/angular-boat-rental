@@ -23,23 +23,13 @@ export class SkipperController {
     res: express.Response
   ): Promise<void> {
     const name: string = req.body.name;
-    const price: number = req.body.price;
-    if (
-      name &&
-      price &&
-      typeof name == 'string' &&
-      typeof price == 'number' &&
-      price > 0
-    ) {
-      try {
-        const result = await Skipper.create({ name, price });
-        res.status(200).json(result);
-      } catch {
-        console.error();
-        res.status(400).json('This name is already in use');
-      }
-    } else {
-      res.status(400).json('Invalid input');
+    const pricePerDay: number = req.body.pricePerDay;
+    const birthDate: Date = req.body.birthDate;
+    try {
+      const result = await Skipper.create({ name, pricePerDay, birthDate });
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(400).send(error);
     }
   }
 

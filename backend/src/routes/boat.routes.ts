@@ -1,33 +1,46 @@
-import { Application, Request, Response } from 'express';
+import { Request, Response, Router } from 'express';
 import { BoatController } from '../controller/boat.controller';
+import { validateIdInUrlParams } from '../middleware/validate';
 
-export function addBoatRoutes(
-  app: Application,
-  controller: BoatController
-): void {
-  app.get('/boat', (req: Request, res: Response): void => {
+export function boatRoutes(controller: BoatController): Router {
+  const boatRouter = Router();
+
+  boatRouter.get('/boat', (req: Request, res: Response): void => {
     controller.getBoats(req, res);
   });
 
-  app.get('/boat/rental', (req: Request, res: Response): void => {
+  boatRouter.get('/boat/rental', (req: Request, res: Response): void => {
     controller.getBoatOverviewData(req, res);
   });
 
-  app.post('/boat', async (req: Request, res: Response): Promise<void> => {
-    controller.addBoat(req, res);
-  });
+  boatRouter.get(
+    '/boat/rental/:id',
+    validateIdInUrlParams,
+    (req: Request, res: Response): void => {
+      controller.getBoatDetailData(req, res);
+    }
+  );
 
-  app.delete(
+  boatRouter.post(
+    '/boat',
+    async (req: Request, res: Response): Promise<void> => {
+      controller.addBoat(req, res);
+    }
+  );
+
+  boatRouter.delete(
     '/delete-boat/:id',
     async (req: Request, res: Response): Promise<void> => {
       controller.deleteBoat(req, res);
     }
   );
 
-  app.patch(
+  boatRouter.patch(
     '/update-boat',
     async (req: Request, res: Response): Promise<void> => {
       controller.updateBoat(req, res);
     }
   );
+
+  return boatRouter;
 }

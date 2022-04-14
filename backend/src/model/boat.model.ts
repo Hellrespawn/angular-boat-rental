@@ -31,26 +31,18 @@ export type BoatData = {
   sailAreaInM2?: number;
 };
 
+export type BoatRequirements = 'none' | 'license' | 'skipper';
+export type BoatType = 'sail' | 'motor';
+
+// Not familiar with a way to construct this from the above type.
 const BOAT_TYPES = ['sail', 'motor'];
-
-export enum BoatRequirements {
-  None,
-  License,
-  Skipper,
-}
-
-const BOAT_TYPE = DataType.ENUM(...BOAT_TYPES);
 
 @Table
 export class Boat extends Model implements BoatData {
   @AllowNull(false) @Unique @Column public name!: string;
-
-  @AllowNull(false) @Column public registrationNumber!: number;
-
+  @AllowNull(false) @Unique @Column public registrationNumber!: number;
   @AllowNull(false) @Column public pricePerDay!: number;
-
   @AllowNull(false) @Column public skipperRequired!: boolean;
-
   @AllowNull(false) @Column public maintenance!: boolean;
 
   // Could not get this to work with the getter being transformed, so the
@@ -66,20 +58,20 @@ export class Boat extends Model implements BoatData {
   }
 
   @AllowNull(false) @Column public lengthInM!: number;
-
   @AllowNull(false) @Column public maxOccupants!: number;
 
-  @AllowNull(false) @Column(BOAT_TYPE) public boatType!: string;
+  @AllowNull(false)
+  @Column(DataType.ENUM(...BOAT_TYPES))
+  public boatType!: BoatType;
 
   @Column public maxSpeedInKmH?: number;
-
   @Column public sailAreaInM2?: number;
 
   @HasMany(() => Rental)
   public rentals!: Rental[];
 
-  public getRequirements(): string {
-    let requirements = 'none';
+  public getRequirements(): BoatRequirements {
+    let requirements: BoatRequirements = 'none';
 
     if (this.skipperRequired) {
       requirements = 'skipper';

@@ -8,8 +8,6 @@ import { map, Observable } from 'rxjs';
   styleUrls: ['./shortcuts.component.scss'],
 })
 export class ShortcutsComponent {
-  @ViewChild('chipList') public chipList!: ElementRef;
-
   constructor(private breakpointObserver: BreakpointObserver) {}
 
   /** Observable that checks whether or not we're on mobile. */

@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { Boat, BoatData } from '../model/boat.model';
+import { Boat } from '../model/boat.model';
 import { Customer } from '../model/customer.model';
 import { Skipper, SkipperData } from '../model/skipper.model';
 import { initSequelize } from '../util/database';
@@ -109,7 +109,7 @@ async function insertMockSkippers() {
   }
 }
 
-(async () => {
+async function seed(): Promise<void> {
   try {
     await initSequelize();
     await insertMockBoats();
@@ -120,4 +120,6 @@ async function insertMockSkippers() {
     console.log(error);
     process.exit(1);
   }
-})();
+}
+
+seed();

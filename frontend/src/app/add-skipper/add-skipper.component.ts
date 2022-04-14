@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
 import { smallerOrEqualToZero as smallerOrEqualToZero } from '../add-boat/add-boat.component';
 import { FormControl, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError, throwError } from 'rxjs';
+import { SkipperService } from '../skipper.service';
 @Component({
   selector: 'app-schipper-toevoeg',
   templateUrl: './add-skipper.component.html',
@@ -21,78 +24,139 @@ export class AddSkipperComponent {
     error: true,
   };
   private readonly correctInputSnackBarInput: SnackBarInput = {
-    message: 'Schipper wordt toegevoegd!',
+    message: 'Schipper is toegevoegd!',
     buttonText: 'Sluit',
-    duration: 3000,
+    duration: 1000,
     error: false,
   };
 
+  private readonly duplicateNameErrorSnackBarInput: SnackBarInput = {
+    message: 'Deze naam is al in gebruik!',
+    buttonText: 'Sluit',
+    duration: 3000,
+    error: true,
+  };
+
   public nameControl = new FormControl(null, [Validators.required]);
+  public birthDateControl = new FormControl(null, [Validators.required]);
   public priceControl = new FormControl(null, [
     Validators.required,
     smallerOrEqualToZero,
   ]);
 
-  constructor(private snackBService: SnackBarService, private router: Router) {}
+  constructor(
+    private snackBService: SnackBarService,
+    private router: Router,
+    private skipperService: SkipperService
+  ) {}
 
-  public getErrorMessageForNameField() {
+  public getErrorMessageForNameField(): string {
     return this.nameControl.hasError(this.REQUIRED)
       ? 'Vul a.u.b. een naam in'
       : '';
   }
 
-  public getErrorMessageForPriceField() {
+  public getErrorMessageForPriceField(): string {
     return this.priceControl.hasError(this.REQUIRED)
       ? 'Vul a.u.b. een prijs in'
       : this.priceControl.hasError(this.ERROR_KEY_NUMBER_UNDER_ONE)
       ? this.ERROR_MESSAGE_NUMER_UNDER_ONE
       : '';
   }
+
+  public getErrorMessageForBirthDateField() {
+    return this.birthDateControl.hasError(this.REQUIRED)
+      ? 'Vul a.u.b. een geboorte datum in'
+      : '';
+  }
+
   private makeArrayOfFormControls(): Array<FormControl> {
-    return [this.nameControl, this.priceControl];
+    return [this.nameControl, this.priceControl, this.birthDateControl];
   }
 
   private checkControlsValid(): boolean {
-    return !this.nameControl.invalid && !this.priceControl.invalid;
+    return (
+      !this.nameControl.invalid &&
+      !this.priceControl.invalid &&
+      !this.birthDateControl.invalid
+    );
   }
 
-  public checkFieldsAndAddSkipper(name: string, price: string) {
+  public checkFieldsAndAddSkipper(
+    name: string,
+    price: string,
+    birthDate: string
+  ) {
     for (let control of this.makeArrayOfFormControls()) {
-      control.markAllAsTouched();
+      control.markAsTouched();
     }
     if (this.checkControlsValid()) {
-      this.sendNewSkipperToBackend(new Skipper(name, price));
+      this.sendNewSkipperToBackend(new Skipper(name, price, birthDate));
     } else {
       this.snackBService.makeSnackbarThatClosesAutomatically(
         this.incorrectInputSnackBarInput
       );
     }
   }
-  private sendNewSkipperToBackend(skipper: Skipper) {
+
+  private resetFormControls(): void {
+    for (let control of this.makeArrayOfFormControls()) {
+      control.reset();
+    }
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.log(error);
+    const errorArray: Array<any> = error.error.errors;
+    this.resetFormControls();
+    for (let error of errorArray) {
+      if (error.message === 'name must be unique') {
+        this.snackBService.makeSnackbarThatClosesAutomatically(
+          this.duplicateNameErrorSnackBarInput
+        );
+      }
+    }
+    (<HTMLButtonElement>document.getElementById('submitKnop')).disabled = false;
+    return throwError(
+      () => new Error('Something bad happened; please try again.')
+    );
+  }
+
+  private sendNewSkipperToBackend(skipper: Skipper): void {
     const submitButton: HTMLButtonElement = <HTMLButtonElement>(
       document.getElementById('submitKnop')
     );
     submitButton.disabled = true;
-    this.resetInputFields();
-    this.snackBService.makeSnackbarThatClosesAutomatically(
-      this.correctInputSnackBarInput
-    );
-    // backend will be implemented later on
-    setTimeout(() => {
-      submitButton.disabled = false;
-      this.router.navigate(['/admin-panel']);
-    }, 3000);
+    this.skipperService
+      .addSkipper(skipper)
+      .pipe(catchError((error) => this.handleError(error)))
+      .subscribe(() => {
+        this.snackBService.makeSnackbarThatClosesAutomatically(
+          this.correctInputSnackBarInput
+        );
+        this.resetInputFields();
+        setTimeout(() => {
+          this.router.navigateByUrl('/skipper-overview-admin');
+        }, 1000);
+      });
   }
 
   private resetInputFields(): void {
     (document.getElementById('name') as HTMLInputElement).value = '';
     (document.getElementById('price') as HTMLInputElement).value = '';
+    (document.getElementById('birthdate') as HTMLInputElement).value = '';
   }
 }
 
 class Skipper {
-  private price: number;
-  constructor(private name: string, priceString: string) {
-    this.price = parseFloat(priceString);
+  private pricePerDay: number;
+  private birthDate: Date;
+  constructor(
+    private name: string,
+    priceString: string,
+    birthDateString: string
+  ) {
+    this.pricePerDay = parseFloat(priceString);
+    this.birthDate = new Date(birthDateString);
   }
 }

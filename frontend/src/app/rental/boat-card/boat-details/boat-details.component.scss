@@ -1,0 +1,33 @@
+@use '@angular/material' as mat;
+@use '/src/custom-theme.scss' as theme;
+
+#modal {
+  display: flex;
+  gap: 1em;
+}
+
+#details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+h2 {
+  margin: 0;
+}
+
+h3 {
+  color: mat.get-color-from-palette(
+    theme.$dogstack-project-uml-primary,
+    'default'
+  );
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+}
+
+.icon :first-child {
+  margin-right: 0.5em;
+}

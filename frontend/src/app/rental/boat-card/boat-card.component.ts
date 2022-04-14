@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { BoatRequirements, BoatType } from 'src/app/boat';
+import { MatDialog } from '@angular/material/dialog';
 import { BoatOverviewData } from '../rental.component';
+import { BoatDetailsComponent } from './boat-details/boat-details.component';
+import { requirementsToString } from 'src/app/boat';
 
 @Component({
   selector: 'app-rental-boat-card',
@@ -11,21 +13,15 @@ export class BoatCardComponent {
   @Input() public boat!: BoatOverviewData;
   @Input() public enabled!: boolean;
 
-  public requirementsToString(): string {
-    switch (this.boat.requirements) {
-      case 'none':
-        return 'Zelf varen';
+  constructor(private dialog: MatDialog) {}
 
-      case 'license':
-        return 'Vaarbewijs vereist';
-
-      case 'skipper':
-        return 'Schipper vereist';
-
-      default:
-        throw `Invalid boat.requirements: ${this.boat.requirements}`;
-    }
+  public openDialog(): void {
+    const dialogRef = this.dialog.open(BoatDetailsComponent, {
+      data: { id: this.boat.id },
+    });
   }
 
-  constructor() {}
+  public requirementsToString(): string {
+    return requirementsToString(this.boat);
+  }
 }

@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { createDatabase, initSequelize } from '../util/database';
 
-(async () => {
+async function sync(): Promise<void> {
   try {
     const sequelize = await initSequelize();
     await createDatabase();
@@ -11,4 +11,6 @@ import { createDatabase, initSequelize } from '../util/database';
   }
 
   process.exit();
-})();
+}
+
+sync();

@@ -4,12 +4,13 @@ import { initSequelize } from './util/database';
 import { BoatController } from './controller/boat.controller';
 import { SkipperController } from './controller/skipper.controller';
 import { addCorsHeaders } from './middleware/cors';
-import { addBoatRoutes } from './routes/boat.routes';
-import { addSkipperRoutes } from './routes/skipper.routes';
+import { boatRoutes } from './routes/boat.routes';
+import { skipperRoutes } from './routes/skipper.routes';
 import { ImageController } from './controller/image.controller';
-import { addImageRoutes } from './routes/image.routes';
+import { imageRoutes } from './routes/image.routes';
 import { MessageController } from './controller/message.controller';
 import { addMessageRoute } from './routes/message.routes';
+import * as path from 'path';
 
 initSequelize();
 
@@ -25,9 +26,13 @@ app.use(addCorsHeaders);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-addBoatRoutes(app, boatController);
-addSkipperRoutes(app, skipperController);
-addImageRoutes(app, imageController);
+// Statically serve images.
+app.use('/image', express.static(path.join(__dirname, '..', 'media')));
+
+// Routes
+app.use(boatRoutes(boatController));
+app.use(skipperRoutes(skipperController));
+app.use(imageRoutes(imageController));
 addMessageRoute(app, messageController);
 
 try {

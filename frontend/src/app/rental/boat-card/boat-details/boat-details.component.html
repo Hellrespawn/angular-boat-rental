@@ -1,0 +1,37 @@
+<div *ngIf="boat" id="modal">
+  <img src="{{ boat.imageRoute }}" alt="{{ boat.name }}" />
+
+  <section id="details">
+    <div>
+      <h2>{{ boat.name }}</h2>
+      <h3>#{{ boat.registrationNumber }}</h3>
+    </div>
+
+    <div>
+      <span *ngIf="boat.boatType === 'sail'" class="icon"
+        ><mat-icon>sailing</mat-icon>{{ boat.sailAreaInM2 }} m<sup>2</sup></span
+      >
+      <span *ngIf="boat.boatType === 'motor'" class="icon"
+        ><mat-icon>speed</mat-icon>{{ boat.maxSpeedInKmH }} km/h</span
+      >
+      <span class="icon"
+        ><mat-icon>square_foot</mat-icon>{{ boat.lengthInM }} meter</span
+      >
+      <span class="icon"
+        ><mat-icon>directions_boat</mat-icon>{{ requirementsToString() }}</span
+      >
+      <span class="icon"
+        ><mat-icon>bed</mat-icon>Maximaal {{ boat.maxOccupants }} personen</span
+      >
+      <span class="icon"
+        ><mat-icon>euro</mat-icon>{{ boat.pricePerDay }} per dag</span
+      >
+    </div>
+
+    <button mat-raised-button color="primary">Boek {{ boat.name }} nu!</button>
+  </section>
+</div>
+<div *ngIf="!boat">
+  <mat-spinner></mat-spinner>
+</div>
+<!-- <pre>{{ boat | json }}</pre> -->
