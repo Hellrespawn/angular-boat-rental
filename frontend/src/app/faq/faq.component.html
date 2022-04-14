@@ -1,4 +1,4 @@
-<div class="col">
+<section class="col">
   <h2><b>Veel gestelde vragen</b></h2>
   <section class="tabs">
     <section class="tab">
@@ -22,13 +22,72 @@
       <label for="close-box" class="tab-close">Close &times;</label>
     </section>
   </section>
-
-  <section class="question-input">
+  <br />
+  <!-- <section class="question-input">
     <h2>Stel hier jouw vraag aan de beheerders!</h2>
     <textarea id="textarea-input"></textarea>
     <br />
-    <button mat-raised-button color="primary" id="send-question-btn">
-      Verstuur bericht!
-    </button>
+   
+  </section> -->
+  <h3>Laat een bericht achter</h3>
+  <section class="input-section">
+    <form class="question-form">
+      <mat-form-field class="question-full-width" appearance="fill">
+        <mat-label>Naam</mat-label>
+        <input
+          matInput
+          [formControl]="nameFormControl"
+          placeholder="Naam"
+          value="Naam"
+          id="naam-form"
+        />
+
+        <mat-error *ngIf="nameFormControl.invalid"
+          >{{ nameErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+      <br />
+
+      <mat-form-field class="question-full-width" appearance="fill">
+        <mat-label>Email</mat-label>
+        <input
+          type="email"
+          matInput
+          [formControl]="emailFormControl"
+          placeholder=""
+          id="email-form"
+        />
+
+        <mat-error
+          *ngIf="emailFormControl.invalid"
+        >{{ emailErrorMessage() }} 
+        
+        </mat-error>
+
+      </mat-form-field>
+      <br />
+
+      <mat-form-field class="question-full-width" appearance="fill">
+        <mat-label>Stel uw vraag!</mat-label>
+        <textarea
+          matInput
+          placeholder=""
+          [formControl]="textFormControl"
+          id="textarea-form"
+        ></textarea>
+        <mat-error *ngIf="textFormControl.invalid">
+            {{ textErrorMessage() }}
+        </mat-error>
+      </mat-form-field>
+      <br />
+      <button
+        mat-raised-button
+        color="primary"
+        id="send-question-btn"
+        (click)="getMessage()"
+      >
+        Verstuur bericht!
+      </button>
+    </form>
   </section>
-</div>
+</section>

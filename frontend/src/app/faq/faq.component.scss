@@ -98,3 +98,24 @@ input:checked {
     padding: 1em;
   }
 }
+
+// css for input fields
+
+.question-form {
+  width: 97%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: rgba(
+    $color:
+      mat.get-color-from-palette(theme.$dogstack-project-uml-primary, 'lighter'),
+    $alpha: 0.8
+  );
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.question-full-width {
+  width: 50%;
+}
