@@ -6,12 +6,12 @@ import { Message } from '../model/message.model';
 export class MessageController {
   constructor(private messageService: MessageService = new MessageService()) {}
 
-  public async getMessage(req: express.Request, res: express.Response) {
+  public async getMessages(req: express.Request, res: express.Response) {
     const message = await this.messageService.returnAllMessages();
-    res.json(await { message });
+    res.json({ message });
   }
 
-  public async addMessage(
+  public async addMessages(
     req: express.Request,
     res: express.Response
   ): Promise<void> {

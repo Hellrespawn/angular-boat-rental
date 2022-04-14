@@ -6,13 +6,13 @@ export function addMessageRoute(
   controller: MessageController
 ): void {
   app.get('/faq', (req: Request, res: Response): void => {
-    controller.getMessage(req, res);
+    controller.getMessages(req, res);
   });
 
   app.post(
     '/veel-gestelde-vragen',
     async (req: Request, res: Response): Promise<void> => {
-      controller.addMessage(req, res);
+      controller.addMessages(req, res);
     }
   );
 }
