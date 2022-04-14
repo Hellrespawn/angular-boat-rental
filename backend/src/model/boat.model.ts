@@ -85,4 +85,8 @@ export class Boat extends Model implements BoatData {
 
     return requirements;
   }
+
+  public isAvailable(date_start: Date, date_end: Date): boolean {
+    return this.rentals.every((r) => r.isAvailable(date_start, date_end));
+  }
 }
