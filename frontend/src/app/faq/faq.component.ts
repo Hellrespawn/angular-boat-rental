@@ -16,10 +16,10 @@ export class FaqComponent {
   public nameFormControl = new FormControl('', [Validators.required]);
   public textFormControl = new FormControl('', [Validators.required]);
 
-  ngOnInit(): void {
-    this.getMessage();
-  }
-  getMessage() {
+  //   ngOnInit(): void {
+  //     this.getMessage();
+  //   }
+  public getMessage() {
     let message = (
       document.getElementById('textarea-input') as HTMLTextAreaElement
     ).value;

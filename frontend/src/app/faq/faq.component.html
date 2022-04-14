@@ -58,12 +58,9 @@
           id="email-form"
         />
 
-        <mat-error
-          *ngIf="emailFormControl.invalid"
-        >{{ emailErrorMessage() }} 
-        
+        <mat-error *ngIf="emailFormControl.invalid"
+          >{{ emailErrorMessage() }}
         </mat-error>
-
       </mat-form-field>
       <br />
 
@@ -76,7 +73,7 @@
           id="textarea-form"
         ></textarea>
         <mat-error *ngIf="textFormControl.invalid">
-            {{ textErrorMessage() }}
+          {{ textErrorMessage() }}
         </mat-error>
       </mat-form-field>
       <br />
