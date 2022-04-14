@@ -7,7 +7,8 @@ export class MessageController {
   constructor(private messageService: MessageService = new MessageService()) {}
 
   public async getMessage(req: express.Request, res: express.Response) {
-    res.json(await Message.findAll());
+    const message = await this.messageService.returnAllMessages();
+    res.json(await { message });
   }
 
   public async addMessage(

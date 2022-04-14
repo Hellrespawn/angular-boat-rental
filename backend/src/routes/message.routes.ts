@@ -5,7 +5,7 @@ export function addMessageRoute(
   app: Application,
   controller: MessageController
 ): void {
-  app.get('/veel-gestelde-vragen', (req: Request, res: Response): void => {
+  app.get('/faq', (req: Request, res: Response): void => {
     controller.getMessage(req, res);
   });
 
