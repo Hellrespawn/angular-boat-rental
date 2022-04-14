@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express';
 import { BoatController } from '../controller/boat.controller';
 import { validateIdInUrlParams } from '../middleware/validate';
 
-export function addBoatRoutes(controller: BoatController): Router {
+export function boatRoutes(controller: BoatController): Router {
   const boatRouter = Router();
 
   boatRouter.get('/boat', (req: Request, res: Response): void => {

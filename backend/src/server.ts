@@ -4,10 +4,12 @@ import { initSequelize } from './util/database';
 import { BoatController } from './controller/boat.controller';
 import { SkipperController } from './controller/skipper.controller';
 import { addCorsHeaders } from './middleware/cors';
-import { addBoatRoutes as boatRoutes } from './routes/boat.routes';
-import { addSkipperRoutes as skipperRoutes } from './routes/skipper.routes';
+import { boatRoutes } from './routes/boat.routes';
+import { skipperRoutes } from './routes/skipper.routes';
 import { ImageController } from './controller/image.controller';
 import { imageRoutes } from './routes/image.routes';
+import { MessageController } from './controller/message.controller';
+import { addMessageRoute } from './routes/message.routes';
 import * as path from 'path';
 
 initSequelize();
@@ -15,6 +17,7 @@ initSequelize();
 const boatController: BoatController = new BoatController();
 const skipperController: SkipperController = new SkipperController();
 const imageController: ImageController = new ImageController();
+const messageController: MessageController = new MessageController();
 
 const app: Application = express();
 const port = +(process.env.SRV_PORT ?? 3000);
@@ -30,6 +33,7 @@ app.use('/image', express.static(path.join(__dirname, '..', 'media')));
 app.use(boatRoutes(boatController));
 app.use(skipperRoutes(skipperController));
 app.use(imageRoutes(imageController));
+addMessageRoute(app, messageController);
 
 try {
   app.listen(port, (): void => {

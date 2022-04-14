@@ -44,14 +44,21 @@ input {
 }
 .tab {
   width: 100%;
-  color: white;
+  color: black;
   overflow: hidden;
   &-label {
     display: flex;
     justify-content: space-between;
     padding: 1em;
-    background: $midnight;
-    font-weight: bold;
+    background: rgba(
+      $color:
+        mat.get-color-from-palette(
+          theme.$dogstack-project-uml-primary,
+          'lighter'
+        ),
+      $alpha: 0.8
+    );
+    font-weight: normal;
     cursor: pointer;
     /* Icon */
     &:hover {
@@ -68,8 +75,15 @@ input {
   &-content {
     max-height: 0;
     padding: 0 1em;
-    color: $midnight;
-    background: white;
+    color: black;
+    background-color: rgba(
+      $color:
+        mat.get-color-from-palette(
+          theme.$dogstack-project-uml-primary,
+          'lighter'
+        ),
+      $alpha: 0.8
+    );
     transition: all 0.35s;
   }
   &-close {
@@ -97,4 +111,25 @@ input:checked {
     max-height: 100vh;
     padding: 1em;
   }
+}
+
+// css for input fields
+
+.question-form {
+  width: 97%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: rgba(
+    $color:
+      mat.get-color-from-palette(theme.$dogstack-project-uml-primary, 'lighter'),
+    $alpha: 0.8
+  );
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.question-full-width {
+  width: 50%;
 }

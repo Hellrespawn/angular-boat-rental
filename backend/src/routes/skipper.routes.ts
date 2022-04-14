@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express';
 import { SkipperController } from '../controller/skipper.controller';
 import { validateIdInUrlParams } from '../middleware/validate';
 
-export function addSkipperRoutes(controller: SkipperController): Router {
+export function skipperRoutes(controller: SkipperController): Router {
   const router = Router();
 
   router.get('/skipper', (req: Request, res: Response): void => {
