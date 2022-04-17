@@ -22,7 +22,13 @@ export function boatRoutes(controller: BoatController): Router {
   );
 
   // TODO Check if boat available between dates
-  router.get('/boat/:id/:date_start/:date_end', validateIdInUrlParams);
+  router.get(
+    '/boat/:id/available/:date_start/:date_end',
+    validateIdInUrlParams,
+    async (req: Request, res: Response): Promise<void> => {
+      controller.isBoatAvailable(req, res);
+    }
+  );
 
   // TODO Get availability for all boats
   router.get('/boat/:date_start/:date_end');

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node-dev ./src/server.ts",
-    "test": "mocha -r ts-node/register 'tests/**/*.test.ts' --file tests/mocha-setup.ts",
+    "test": "mocha --exit -r ts-node/register 'tests/**/*.test.ts' --file tests/mocha-setup.ts",
     "lint": "eslint ./src",
     "check-formatting": "npx prettier ./src --check && npm run lint",
     "fix-formatting": "npx prettier ./src --write",

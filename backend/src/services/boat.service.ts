@@ -1,4 +1,5 @@
 import { Boat, BoatRequirements, BoatType } from '../model/boat.model';
+import { Rental } from '../model/rental.model';
 
 export type BoatOverviewData = {
   id: number;
@@ -67,5 +68,19 @@ export class BoatService {
     const boats = await this.returnAllBoats();
 
     return boats.map(this.boatInstanceToOverviewData);
+  }
+
+  public async isBoatAvailable(
+    id: number,
+    date_start: Date,
+    date_end: Date
+  ): Promise<boolean> {
+    const boat = await Boat.findByPk(id, { include: Rental });
+
+    if (!boat) {
+      throw `Boat with id ${id} doesn't exist!`;
+    }
+
+    return boat.isAvailable(date_start, date_end);
   }
 }

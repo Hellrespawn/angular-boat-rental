@@ -1,14 +1,13 @@
 import { BoatService } from '../services/boat.service';
 import { Boat } from '../model/boat.model';
-import express from 'express';
+import { Request, Response } from 'express';
 
 export class BoatController {
+  public static dateRegex = /\d{4}-\d{2}-\d{2}/;
+
   constructor(private boatService: BoatService = new BoatService()) {}
 
-  public async getBoats(
-    req: express.Request,
-    res: express.Response
-  ): Promise<void> {
+  public async getBoats(req: Request, res: Response): Promise<void> {
     try {
       const boats: Boat[] = await this.boatService.returnAllBoats();
       res.status(200).json({ boats });
@@ -18,10 +17,7 @@ export class BoatController {
     }
   }
 
-  public async getBoatDetailData(
-    req: express.Request,
-    res: express.Response
-  ): Promise<void> {
+  public async getBoatDetailData(req: Request, res: Response): Promise<void> {
     try {
       // ID is checked by middleware in route.
       const id = +req.params.id;
@@ -33,10 +29,7 @@ export class BoatController {
     }
   }
 
-  public async getBoatOverviewData(
-    req: express.Request,
-    res: express.Response
-  ): Promise<void> {
+  public async getBoatOverviewData(req: Request, res: Response): Promise<void> {
     try {
       const boats = await this.boatService.getBoatOverviewData();
       res.status(200).json({ boats });
@@ -46,10 +39,36 @@ export class BoatController {
     }
   }
 
-  public async addBoat(
-    req: express.Request,
-    res: express.Response
-  ): Promise<void> {
+  public async isBoatAvailable(req: Request, res: Response): Promise<void> {
+    try {
+      // Validated by middleware
+      const id = parseInt(req.params.id);
+
+      const date_start = req.params.date_start;
+      const date_end = req.params.date_end;
+
+      if (!date_start.match(BoatController.dateRegex)) {
+        throw `Invalid start date: "${date_start}"`;
+      }
+
+      if (!date_end.match(BoatController.dateRegex)) {
+        throw `Invalid end date: "${date_end}"`;
+      }
+
+      const available = await this.boatService.isBoatAvailable(
+        id,
+        new Date(date_start),
+        new Date(date_end)
+      );
+
+      res.json({ available });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error });
+    }
+  }
+
+  public async addBoat(req: Request, res: Response): Promise<void> {
     const name: string = req.body.name;
     const registrationNumber: number = req.body.registrationNumber;
     const pricePerDay: number = +req.body.pricePerDay;
@@ -79,10 +98,7 @@ export class BoatController {
       res.status(400).send(error);
     }
   }
-  public async deleteBoat(
-    req: express.Request,
-    res: express.Response
-  ): Promise<void> {
+  public async deleteBoat(req: Request, res: Response): Promise<void> {
     const idOfBoat: number = +req.params.id;
     const boatToDelete: Boat | null = await Boat.findByPk(idOfBoat);
     if (boatToDelete !== null) {
@@ -97,10 +113,7 @@ export class BoatController {
     }
   }
 
-  public async updateBoat(
-    req: express.Request,
-    res: express.Response
-  ): Promise<void> {
+  public async updateBoat(req: Request, res: Response): Promise<void> {
     const idOfBoat: number = +req.body.id;
     const updatedValue: boolean = req.body.updatedValue;
     try {

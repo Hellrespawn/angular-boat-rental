@@ -10,6 +10,8 @@ import {
 import { IMAGE_ROUTE } from '../routes/image.routes';
 import { Rental } from './rental.model';
 
+export type BoatType = 'sail' | 'motor';
+
 // This is a type instead of an interface because Sequelize complains with:
 //
 // Argument of type 'BoatData' is not assignable to parameter of type 'Optional<any, string>'.
@@ -26,13 +28,12 @@ export type BoatData = {
   imageRoute: string;
   lengthInM: number;
   maxOccupants: number;
-  boatType: string;
+  boatType: BoatType;
   maxSpeedInKmH?: number;
   sailAreaInM2?: number;
 };
 
 export type BoatRequirements = 'none' | 'license' | 'skipper';
-export type BoatType = 'sail' | 'motor';
 
 // Not familiar with a way to construct this from the above type.
 const BOAT_TYPES = ['sail', 'motor'];
@@ -86,6 +87,12 @@ export class Boat extends Model implements BoatData {
     return requirements;
   }
 
+  /**
+   * Checks all rentals for this boat to see if it's available.
+   *
+   * Requires the boat instance to be eagerly loaded,
+   * e.g. `{include: Rental}`
+   */
   public isAvailable(date_start: Date, date_end: Date): boolean {
     return this.rentals.every((r) => r.isAvailable(date_start, date_end));
   }
