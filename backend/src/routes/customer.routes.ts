@@ -6,10 +6,10 @@ export function customerRoutes(controller: CustomerController): Router {
   const router = Router();
 
   // TODO Check if boat available between dates
-  router.get('/boat/:id/:date_start/:date_end', validateIdInUrlParams);
+  router.get('/boat/:id/:dateStart/:dateEnd', validateIdInUrlParams);
 
   // TODO Get availability for all boats
-  router.get('/boat/:date_start/:date_end');
+  router.get('/boat/:dateStart/:dateEnd');
 
   return router;
 }

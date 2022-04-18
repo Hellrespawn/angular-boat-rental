@@ -6,10 +6,10 @@ export function skipperRoutes(controller: SkipperController): Router {
   const router = Router();
 
   // TODO Check if skipper available between dates
-  router.get('/skipper/:id/:date_start/:date_end', validateIdInUrlParams);
+  router.get('/skipper/:id/:dateStart/:dateEnd', validateIdInUrlParams);
 
   // TODO Get availability for all skippers
-  router.get('/skipper/:date_start/:date_end');
+  router.get('/skipper/:dateStart/:dateEnd');
 
   router.get('/skipper', (req: Request, res: Response): void => {
     controller.getSkippers(req, res);

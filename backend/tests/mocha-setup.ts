@@ -1,4 +1,4 @@
-import regenerator from 'regenerator-runtime';
+import 'regenerator-runtime';
 import { Sequelize } from 'sequelize-typescript';
 import {
   createDatabase,

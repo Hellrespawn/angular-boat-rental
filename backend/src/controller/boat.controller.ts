@@ -3,9 +3,25 @@ import { Boat } from '../model/boat.model';
 import { Request, Response } from 'express';
 
 export class BoatController {
+  // YYYY-MM-DD
   public static dateRegex = /\d{4}-\d{2}-\d{2}/;
 
   constructor(private boatService: BoatService = new BoatService()) {}
+
+  private getAndValidateDate(dateString: string): Date {
+    if (!dateString.match(BoatController.dateRegex)) {
+      throw `Invalid date: "${dateString}", required format is YYYY-MM-DD`;
+    }
+
+    return new Date(dateString);
+  }
+
+  private getAndValidateDates(req: Request): [Date, Date] {
+    return [
+      this.getAndValidateDate(req.params.dateStart),
+      this.getAndValidateDate(req.params.dateEnd),
+    ];
+  }
 
   public async getBoats(req: Request, res: Response): Promise<void> {
     try {
@@ -31,7 +47,7 @@ export class BoatController {
 
   public async getBoatOverviewData(req: Request, res: Response): Promise<void> {
     try {
-      const boats = await this.boatService.getBoatOverviewData();
+      const boats = await this.boatService.getBoatsOverviewData();
       res.status(200).json({ boats });
     } catch (error) {
       console.error(error);
@@ -39,32 +55,39 @@ export class BoatController {
     }
   }
 
+  public async getAvailableBoatsOverviewData(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const [dateStart, dateEnd] = this.getAndValidateDates(req);
+
+      const boats = await this.boatService.getAvailableBoatsOverviewData(
+        new Date(dateStart),
+        new Date(dateEnd)
+      );
+
+      res.json({ boats });
+    } catch (error) {
+      res.status(400).json({ error });
+    }
+  }
+
   public async isBoatAvailable(req: Request, res: Response): Promise<void> {
     try {
       // Validated by middleware
       const id = parseInt(req.params.id);
-
-      const date_start = req.params.date_start;
-      const date_end = req.params.date_end;
-
-      if (!date_start.match(BoatController.dateRegex)) {
-        throw `Invalid start date: "${date_start}"`;
-      }
-
-      if (!date_end.match(BoatController.dateRegex)) {
-        throw `Invalid end date: "${date_end}"`;
-      }
+      const [dateStart, dateEnd] = this.getAndValidateDates(req);
 
       const available = await this.boatService.isBoatAvailable(
         id,
-        new Date(date_start),
-        new Date(date_end)
+        new Date(dateStart),
+        new Date(dateEnd)
       );
 
       res.json({ available });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error });
+      res.status(400).json({ error });
     }
   }
 

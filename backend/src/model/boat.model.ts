@@ -89,11 +89,12 @@ export class Boat extends Model implements BoatData {
 
   /**
    * Checks all rentals for this boat to see if it's available.
-   *
-   * Requires the boat instance to be eagerly loaded,
-   * e.g. `{include: Rental}`
    */
-  public isAvailable(date_start: Date, date_end: Date): boolean {
-    return this.rentals.every((r) => r.isAvailable(date_start, date_end));
+  public async isAvailable(dateStart: Date, dateEnd: Date): Promise<boolean> {
+    // If the boat instance was eagerly loaded, this.rentals will be defined,
+    // else, it loads it here.
+    const rentals = this.rentals ?? (await this.$get('rentals'));
+
+    return rentals.every((r) => !r.areDatesOverlapping(dateStart, dateEnd));
   }
 }

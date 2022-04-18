@@ -37,18 +37,18 @@ export class Rental extends Model {
 
   @AllowNull(false)
   @Column
-  public date_start!: Date;
+  public dateStart!: Date;
 
   @AllowNull(false)
   @Column
-  public date_end!: Date;
+  public dateEnd!: Date;
 
   @AllowNull(false)
   @Column
   public paid!: boolean;
 
   private days(): number {
-    const ms = this.date_end.getTime() - this.date_start.getTime();
+    const ms = this.dateEnd.getTime() - this.dateStart.getTime();
     return Math.ceil(ms / 1000 / 60 / 60 / 24);
   }
 
@@ -64,23 +64,23 @@ export class Rental extends Model {
   }
 
   private isDateDuringRental(date: Date): boolean {
-    return date >= this.date_start && date <= this.date_end;
+    return date >= this.dateStart && date <= this.dateEnd;
   }
 
-  private isRentalBetweenDates(date_start: Date, date_end: Date): boolean {
-    return this.date_start >= date_start && this.date_end <= date_end;
+  private isRentalBetweenDates(dateStart: Date, dateEnd: Date): boolean {
+    return this.dateStart >= dateStart && this.dateEnd <= dateEnd;
   }
 
-  public isAvailable(date_start: Date, date_end: Date): boolean {
+  public areDatesOverlapping(dateStart: Date, dateEnd: Date): boolean {
     return (
-      !this.isDateDuringRental(date_start) &&
-      !this.isDateDuringRental(date_end) &&
-      !this.isRentalBetweenDates(date_start, date_end)
+      this.isDateDuringRental(dateStart) ||
+      this.isDateDuringRental(dateEnd) ||
+      this.isRentalBetweenDates(dateStart, dateEnd)
     );
   }
 
   public isUpcoming(): boolean {
-    return this.date_start > new Date();
+    return this.dateStart > new Date();
   }
 
   public isCurrent(): boolean {

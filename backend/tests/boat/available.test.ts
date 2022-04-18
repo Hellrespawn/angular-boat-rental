@@ -2,7 +2,7 @@ import request from 'supertest';
 import { Boat } from '../../src/model/boat.model';
 import { app } from '../../src/server';
 import { expect } from 'chai';
-import { initDatabase } from '../mocha-setup';
+import { closeDatabase, initDatabase } from '../mocha-setup';
 import { Customer } from '../../src/model/customer.model';
 import { Rental } from '../../src/model/rental.model';
 
@@ -39,14 +39,16 @@ describe('Test Boat', () => {
     await Rental.create({
       boatId: boat.id,
       customerId: customer.id,
-      date_start: new Date('2022-01-01'),
-      date_end: new Date('2022-01-10'),
+      dateStart: new Date('2022-01-01'),
+      dateEnd: new Date('2022-01-10'),
       paid: true,
     });
   });
 
+  after(closeDatabase);
+
   describe('boat.isAvailable', () => {
-    it('Responds unavailable', async () => {
+    it('Responds `{ available: false }` when boat is unavailable', async () => {
       const res = await request(app).get(
         `/boat/${boat.id}/available/2022-01-01/2022-01-10`
       );
@@ -55,13 +57,49 @@ describe('Test Boat', () => {
       expect(res.body).to.deep.equal({ available: false });
     });
 
-    it('Responds available', async () => {
+    it('Responds `{ available: true }` when boat is available', async () => {
       const res = await request(app).get(
         `/boat/${boat.id}/available/2022-02-01/2022-02-10`
       );
 
       expect(res.status).to.equal(200);
       expect(res.body).to.deep.equal({ available: true });
+    });
+  });
+
+  describe('getAvailableBoatsOverviewData', () => {
+    it('Responds empty array when boats are unavailable', async () => {
+      const res = await request(app).get(
+        '/boat/available/2022-01-01/2022-01-10'
+      );
+
+      expect(res.status).to.equal(200);
+      expect(res.body).to.deep.equal({ boats: [] });
+    });
+
+    it('Responds with BoatOverviewData when boats are available', async () => {
+      const res = await request(app).get(
+        '/boat/available/2022-02-01/2022-02-10'
+      );
+
+      expect(res.status).to.equal(200);
+
+      const { boats } = res.body;
+
+      expect(boats.length).to.equal(1);
+      expect(boats[0].id).to.equal(boat.id);
+    });
+
+    it('Responds with an error on a malformed date', async () => {
+      const res = await request(app).get(
+        '/boat/available/2022-02-01/2022-02-0'
+      );
+
+      expect(res.status).to.equal(400);
+
+      const { error } = res.body;
+
+      expect(error).to.contain('Invalid date');
     });
   });
 });

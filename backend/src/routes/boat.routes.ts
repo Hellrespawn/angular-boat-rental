@@ -21,17 +21,22 @@ export function boatRoutes(controller: BoatController): Router {
     }
   );
 
-  // TODO Check if boat available between dates
+  // Get all available boats between dates.
   router.get(
-    '/boat/:id/available/:date_start/:date_end',
+    '/boat/available/:dateStart/:dateEnd',
+    async (req: Request, res: Response): Promise<void> => {
+      controller.getAvailableBoatsOverviewData(req, res);
+    }
+  );
+
+  // Check if boat is available between dates.
+  router.get(
+    '/boat/:id/available/:dateStart/:dateEnd',
     validateIdInUrlParams,
     async (req: Request, res: Response): Promise<void> => {
       controller.isBoatAvailable(req, res);
     }
   );
-
-  // TODO Get availability for all boats
-  router.get('/boat/:date_start/:date_end');
 
   router.post('/boat', async (req: Request, res: Response): Promise<void> => {
     controller.addBoat(req, res);
