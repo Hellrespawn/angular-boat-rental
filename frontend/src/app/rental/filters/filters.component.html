@@ -1,13 +1,7 @@
 <section class="custom-card">
-  <app-filters-boat-type
-    (typeFilterChangedEvent)="changeTypeFilter($event)"
-  ></app-filters-boat-type>
+  <app-filters-boat-type></app-filters-boat-type>
   <mat-divider [vertical]="true"></mat-divider>
-  <app-filters-license
-    (licenseFilterChangedEvent)="changeLicenseFilter($event)"
-  ></app-filters-license>
+  <app-filters-license></app-filters-license>
   <mat-divider [vertical]="true"></mat-divider>
-  <app-filters-date
-    (dateFilterChangedEvent)="changeDateFilter($event)"
-  ></app-filters-date>
+  <app-filters-date></app-filters-date>
 </section>

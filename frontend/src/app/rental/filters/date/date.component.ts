@@ -1,7 +1,5 @@
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { MatDateRangePicker } from '@angular/material/datepicker';
-
-export type DateFilter = [Date, Date];
+import { Component } from '@angular/core';
+import { FilterService } from '../../filter.service';
 
 @Component({
   selector: 'app-filters-date',
@@ -9,8 +7,6 @@ export type DateFilter = [Date, Date];
   styleUrls: ['./date.component.scss'],
 })
 export class DateComponent {
-  @Output() public dateFilterChangedEvent = new EventEmitter<DateFilter>();
-
   public lastStartDate: Date | null = null;
   public selectedStartDate: Date | null = null;
   public selectedEndDate: Date | null = null;
@@ -28,12 +24,12 @@ export class DateComponent {
 
     // Only emit event if both are filled in
     if (this.selectedStartDate && this.selectedEndDate) {
-      this.dateFilterChangedEvent.emit([
+      this.filterService.setDateFilter([
         this.selectedStartDate,
         this.selectedEndDate,
       ]);
     }
   }
 
-  constructor() {}
+  constructor(private filterService: FilterService) {}
 }
