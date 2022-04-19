@@ -9,16 +9,20 @@ import {
 
 export let sequelize: Sequelize;
 
-const DB_NAME = 'TEST_DB';
-
 export async function initDatabase(): Promise<Sequelize> {
-  await dropDatabase(DB_NAME);
-  await createDatabase(DB_NAME);
-  sequelize = await initSequelize('TEST_DB', { logging: false });
+  // Writes without newline
+  process.stdout.write('Initializing test database... ');
+  process.env.DB_NAME = 'TEST_DB';
+  await dropDatabase();
+  await createDatabase();
+  sequelize = await initSequelize({ logging: false });
   await sequelize.sync();
+  console.log('Done.');
   return sequelize;
 }
 
 export async function closeDatabase(): Promise<void> {
-  await dropDatabase(DB_NAME);
+  process.stdout.write('Dropping test database... ');
+  await dropDatabase();
+  console.log('Done.');
 }
