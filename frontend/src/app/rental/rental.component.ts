@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs';
 import { BoatRequirements, BoatType } from '../boat';
 import { BoatService } from '../boat-service.service';
-import { BoatTypeFilter } from './filters/boat-type/boat-type.component';
-import { DateFilter } from './filters/date/date.component';
-import { LicenseFilter } from './filters/license/license.component';
+import {
+  BoatTypeFilter,
+  DateFilter,
+  FilterService,
+  LicenseFilter,
+} from './filter.service';
 
 export type BoatOverviewData = {
   id: number;
@@ -32,10 +35,14 @@ export type OverviewBoat = BoatOverviewData & BoatOverviewFilters;
 export class RentalComponent implements OnInit {
   public boats: OverviewBoat[] = [];
 
-  constructor(private boatService: BoatService) {}
+  constructor(
+    private boatService: BoatService,
+    private filterService: FilterService
+  ) {}
 
   ngOnInit(): void {
     this.getBoats();
+    this.getFilters();
   }
 
   private getBoats(dateRange?: [Date, Date]): void {
@@ -54,6 +61,20 @@ export class RentalComponent implements OnInit {
       .subscribe(
         (boats: OverviewBoat[]): OverviewBoat[] => (this.boats = boats)
       );
+  }
+
+  private getFilters(): void {
+    this.filterService
+      .getDateFilter()
+      .subscribe(this.dateFilterChanged.bind(this));
+
+    this.filterService
+      .getLicenseFilter()
+      .subscribe(this.licenseFilterChanged.bind(this));
+
+    this.filterService
+      .getTypeFilter()
+      .subscribe(this.typeFilterChanged.bind(this));
   }
 
   public enabled(boat: OverviewBoat): boolean {
@@ -92,7 +113,9 @@ export class RentalComponent implements OnInit {
     }
   }
 
-  public dateFilterChanged(change: DateFilter): void {
-    this.getBoats(change);
+  public dateFilterChanged(change: DateFilter | null): void {
+    if (change) {
+      this.getBoats(change);
+    }
   }
 }
