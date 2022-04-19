@@ -49,6 +49,7 @@ import { NavbarComponent } from './header/navbar/navbar.component';
 import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
 import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-skipper-overview.component';
 import { BoatDetailsComponent } from './rental/boat-card/boat-details/boat-details.component';
+import { DateComponent } from './rental/filters/date/date.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { BoatDetailsComponent } from './rental/boat-card/boat-details/boat-detai
     AdminBoatOverviewComponent,
     AdminSkipperOverviewComponent,
     BoatDetailsComponent,
+    DateComponent,
   ],
   imports: [
     BrowserModule,

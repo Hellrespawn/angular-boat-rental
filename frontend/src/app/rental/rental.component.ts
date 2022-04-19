@@ -3,6 +3,7 @@ import { map } from 'rxjs';
 import { BoatRequirements, BoatType } from '../boat';
 import { BoatService } from '../boat-service.service';
 import { BoatTypeFilter } from './filters/boat-type/boat-type.component';
+import { DateFilter } from './filters/date/date.component';
 import { LicenseFilter } from './filters/license/license.component';
 
 export type BoatOverviewData = {
@@ -37,9 +38,9 @@ export class RentalComponent implements OnInit {
     this.getBoats();
   }
 
-  private getBoats(): void {
+  private getBoats(dateRange?: [Date, Date]): void {
     this.boatService
-      .getBoatOverviewData()
+      .getBoatOverviewData(dateRange)
       .pipe(
         map((boats: BoatOverviewData[]): OverviewBoat[] =>
           boats.map((boat: BoatOverviewData): OverviewBoat => {
@@ -89,5 +90,9 @@ export class RentalComponent implements OnInit {
           break;
       }
     }
+  }
+
+  public dateFilterChanged(change: DateFilter): void {
+    this.getBoats(change);
   }
 }

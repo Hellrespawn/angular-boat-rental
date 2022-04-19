@@ -6,4 +6,8 @@
   <app-filters-license
     (licenseFilterChangedEvent)="changeLicenseFilter($event)"
   ></app-filters-license>
+  <mat-divider [vertical]="true"></mat-divider>
+  <app-filters-date
+    (dateFilterChangedEvent)="changeDateFilter($event)"
+  ></app-filters-date>
 </section>
