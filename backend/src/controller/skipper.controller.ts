@@ -50,4 +50,26 @@ export class SkipperController {
       res.status(400).json({ result: 'Skipper not found' });
     }
   }
+
+  public async updateSkipper(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
+    const idOfSkipper: number = +req.body.id;
+    const updatedValue: boolean = req.body.updatedValue;
+    try {
+      const skipperToUpdate: Skipper | null = await Skipper.findByPk(
+        idOfSkipper
+      );
+      if (skipperToUpdate !== null) {
+        skipperToUpdate.leave = updatedValue;
+        await skipperToUpdate.save();
+        res.status(200).json({ result: 'Boat Updated' });
+      } else {
+        res.status(400).json({ result: 'Boat not found' });
+      }
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  }
 }

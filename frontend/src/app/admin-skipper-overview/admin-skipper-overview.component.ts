@@ -34,12 +34,21 @@ export class AdminSkipperOverviewComponent implements OnInit {
       this.arrayOfSkippers = skippers;
     });
   }
-  public async deleteBoatById(id: number, index: number): Promise<void> {
+  public async deleteSkipperById(id: number, index: number): Promise<void> {
     this.skipperService.deleteSkipperById(id).subscribe(() => {
       this.arrayOfSkippers.splice(index, 1);
       this.snackBarService.makeSnackbarThatClosesAutomatically(
         this.succesSnackbarInput
       );
+    });
+  }
+  public async updateLeave(
+    id: number,
+    updatedValue: boolean,
+    index: number
+  ): Promise<void> {
+    this.skipperService.updateLeaveStatus(id, updatedValue).subscribe(() => {
+      this.arrayOfSkippers[index].leave = updatedValue;
     });
   }
   public parseDateStringToDate(dateString: string | Date): Date {
@@ -52,4 +61,5 @@ interface SkipperForAdmin {
   name: string;
   pricePerDay: number;
   birthDate: Date | string;
+  leave: boolean;
 }

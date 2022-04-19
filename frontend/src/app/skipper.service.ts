@@ -27,4 +27,13 @@ export class SkipperService {
       `${environment.backendUrl}/delete-skipper/${id}`
     );
   }
+  public updateLeaveStatus(
+    id: number,
+    updatedValue: boolean
+  ): Observable<Object> {
+    return this.httpClient.patch(`${environment.backendUrl}/update-skipper`, {
+      id,
+      updatedValue,
+    });
+  }
 }

@@ -14,13 +14,32 @@
     }}</mat-card-subtitle
   >
   <mat-card-subtitle>€{{ skipper.pricePerDay }},00 per dag</mat-card-subtitle>
+  <mat-card-subtitle *ngIf="skipper.leave" style="color: red"
+    >Op verlof!</mat-card-subtitle
+  >
   <mat-card-actions>
     <button
       mat-raised-button
       color="primary"
-      (click)="deleteBoatById(skipper.id, i)"
+      (click)="deleteSkipperById(skipper.id, i)"
     >
       Verwijder
+    </button>
+    <button
+      *ngIf="!skipper.leave"
+      mat-raised-button
+      color="primary"
+      (click)="updateLeave(skipper.id, true, i)"
+    >
+      Zet op verlof
+    </button>
+    <button
+      *ngIf="skipper.leave"
+      mat-raised-button
+      color="primary"
+      (click)="updateLeave(skipper.id, false, i)"
+    >
+      Haal van verlof af
     </button>
   </mat-card-actions>
 </mat-card>

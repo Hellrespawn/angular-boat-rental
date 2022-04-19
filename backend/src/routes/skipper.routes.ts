@@ -24,5 +24,12 @@ export function skipperRoutes(controller: SkipperController): Router {
     }
   );
 
+  router.patch(
+    '/update-skipper',
+    async (req: Request, res: Response): Promise<void> => {
+      controller.updateSkipper(req, res);
+    }
+  );
+
   return router;
 }
