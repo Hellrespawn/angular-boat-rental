@@ -2,6 +2,7 @@
   <app-rental-filters
     (typeFilterChangedEvent)="typeFilterChanged($event)"
     (licenseFilterChangedEvent)="licenseFilterChanged($event)"
+    (dateFilterChangedEvent)="dateFilterChanged($event)"
   ></app-rental-filters>
 
   <div *ngIf="!boats.length" class="custom-card with-padding">

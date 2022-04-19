@@ -30,16 +30,60 @@ export class Rental extends Model {
 
   @ForeignKey(() => Skipper)
   @Column
-  public skipperId!: number;
+  public skipperId?: number;
 
   @BelongsTo(() => Skipper)
-  public skipper!: Skipper;
+  public skipper?: Skipper;
 
   @AllowNull(false)
   @Column
-  public date_start!: Date;
+  public dateStart!: Date;
 
   @AllowNull(false)
   @Column
-  public date_end!: Date;
+  public dateEnd!: Date;
+
+  @AllowNull(false)
+  @Column
+  public paid!: boolean;
+
+  private days(): number {
+    const ms = this.dateEnd.getTime() - this.dateStart.getTime();
+    return Math.ceil(ms / 1000 / 60 / 60 / 24);
+  }
+
+  public priceTotal(): number {
+    const days = this.days();
+
+    let total = days * this.boat.pricePerDay;
+    if (this.skipper) {
+      total += days * this.skipper.pricePerDay;
+    }
+
+    return total;
+  }
+
+  private isDateDuringRental(date: Date): boolean {
+    return date >= this.dateStart && date <= this.dateEnd;
+  }
+
+  private isRentalBetweenDates(dateStart: Date, dateEnd: Date): boolean {
+    return this.dateStart >= dateStart && this.dateEnd <= dateEnd;
+  }
+
+  public areDatesOverlapping(dateStart: Date, dateEnd: Date): boolean {
+    return (
+      this.isDateDuringRental(dateStart) ||
+      this.isDateDuringRental(dateEnd) ||
+      this.isRentalBetweenDates(dateStart, dateEnd)
+    );
+  }
+
+  public isUpcoming(): boolean {
+    return this.dateStart > new Date();
+  }
+
+  public isCurrent(): boolean {
+    return !this.isDateDuringRental(new Date());
+  }
 }

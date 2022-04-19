@@ -1,5 +1,6 @@
 stages:
   - check
+  # - test
 
 lint-frontend:
   image: node:16
@@ -20,3 +21,14 @@ lint-backend:
     - cd backend
     - npm install
     - npm run check-formatting
+
+# FIXME MySQL nodig
+# test-backend:
+#   image: node:16
+#   tags:
+#     - hva
+#   stage: test
+#   script:
+#     - cd backend
+#     - npm install
+#     - npm run test
