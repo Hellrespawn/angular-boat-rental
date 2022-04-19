@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FilterService } from '../../filter.service';
+import { RentalService } from '../../rental.service';
 
 @Component({
   selector: 'app-filters-date',
@@ -24,12 +24,19 @@ export class DateComponent {
 
     // Only emit event if both are filled in
     if (this.selectedStartDate && this.selectedEndDate) {
-      this.filterService.setDateFilter([
+      this.rentalService.dateFilter = [
         this.selectedStartDate,
         this.selectedEndDate,
-      ]);
+      ];
     }
   }
 
-  constructor(private filterService: FilterService) {}
+  constructor(private rentalService: RentalService) {
+    const dateRange = rentalService.dateFilter;
+    if (dateRange) {
+      const [startDate, endDate] = dateRange;
+      this.selectedStartDate = this.lastStartDate = startDate;
+      this.selectedEndDate = endDate;
+    }
+  }
 }

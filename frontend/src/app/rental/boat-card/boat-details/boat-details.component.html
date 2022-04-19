@@ -28,12 +28,7 @@
       >
     </div>
 
-    <button
-      mat-raised-button
-      color="primary"
-      routerLink="/verhuur/bevestig"
-      [queryParams]="{ id: this.boat.id }"
-    >
+    <button mat-raised-button color="primary" (click)="selectBoat()">
       Boek {{ boat.name }} nu!
     </button>
   </section>

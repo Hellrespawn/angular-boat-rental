@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BoatTypeFilter, FilterService } from '../../filter.service';
+import { BoatTypeFilter, RentalService } from '../../rental.service';
 
 @Component({
   selector: 'app-filters-boat-type',
@@ -7,11 +7,13 @@ import { BoatTypeFilter, FilterService } from '../../filter.service';
   styleUrls: ['./boat-type.component.scss'],
 })
 export class BoatTypeComponent {
-  public selectedOption: BoatTypeFilter = 'all';
+  public selectedOption: BoatTypeFilter;
 
   public changeFilter(): void {
-    this.filterService.setTypeFilter(this.selectedOption);
+    this.rentalService.typeFilter = this.selectedOption;
   }
 
-  constructor(private filterService: FilterService) {}
+  constructor(private rentalService: RentalService) {
+    this.selectedOption = rentalService.typeFilter;
+  }
 }

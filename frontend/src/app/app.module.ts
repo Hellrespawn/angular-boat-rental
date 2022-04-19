@@ -31,7 +31,6 @@ import { LoginComponent } from './log-in/log-in.component';
 import { FaqComponent } from './faq/faq.component';
 
 import { RentalComponent } from './rental/rental.component';
-import { FiltersComponent } from './rental/filters/filters.component';
 import { LicenseComponent } from './rental/filters/license/license.component';
 import { BoatTypeComponent } from './rental/filters/boat-type/boat-type.component';
 import { BoatCardComponent } from './rental/boat-card/boat-card.component';
@@ -72,7 +71,6 @@ import { ConfirmComponent } from './rental/confirm/confirm.component';
     RegistrationComponent,
     LoginComponent,
     RentalComponent,
-    FiltersComponent,
     LicenseComponent,
     BoatTypeComponent,
     BoatCardComponent,

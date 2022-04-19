@@ -5,9 +5,9 @@ import { BoatService } from '../boat-service.service';
 import {
   BoatTypeFilter,
   DateFilter,
-  FilterService,
+  RentalService,
   LicenseFilter,
-} from './filter.service';
+} from './rental.service';
 
 export type BoatOverviewData = {
   id: number;
@@ -37,12 +37,12 @@ export class RentalComponent implements OnInit {
 
   constructor(
     private boatService: BoatService,
-    private filterService: FilterService
+    private rentalService: RentalService
   ) {}
 
   ngOnInit(): void {
     this.getBoats();
-    this.getFilters();
+    this.subscribeToFilters();
   }
 
   private getBoats(dateRange?: [Date, Date]): void {
@@ -58,23 +58,26 @@ export class RentalComponent implements OnInit {
           })
         )
       )
-      .subscribe(
-        (boats: OverviewBoat[]): OverviewBoat[] => (this.boats = boats)
-      );
+      .subscribe((boats: OverviewBoat[]): OverviewBoat[] => {
+        this.boats = boats;
+        this.typeFilterChanged(this.rentalService.typeFilter);
+        this.licenseFilterChanged(this.rentalService.licenseFilter);
+        return this.boats;
+      });
   }
 
-  private getFilters(): void {
-    this.filterService
-      .getDateFilter()
-      .subscribe(this.dateFilterChanged.bind(this));
+  private subscribeToFilters(): void {
+    this.rentalService.dateFilterSubject.subscribe(
+      this.dateFilterChanged.bind(this)
+    );
 
-    this.filterService
-      .getLicenseFilter()
-      .subscribe(this.licenseFilterChanged.bind(this));
+    this.rentalService.licenseFilterSubject.subscribe(
+      this.licenseFilterChanged.bind(this)
+    );
 
-    this.filterService
-      .getTypeFilter()
-      .subscribe(this.typeFilterChanged.bind(this));
+    this.rentalService.typeFilterSubject.subscribe(
+      this.typeFilterChanged.bind(this)
+    );
   }
 
   public enabled(boat: OverviewBoat): boolean {
@@ -87,10 +90,10 @@ export class RentalComponent implements OnInit {
         case 'all':
           boat.filters.typeFiltered = true;
           break;
-        case 'motorboat':
+        case 'motor':
           boat.filters.typeFiltered = boat.boatType == 'motor';
           break;
-        case 'sailboat':
+        case 'sail':
           boat.filters.typeFiltered = boat.boatType == 'sail';
           break;
       }
