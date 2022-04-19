@@ -96,24 +96,15 @@ export class BoatService {
       sailAreaInM2,
     });
   }
-  public async deleteBoat(
-    res: express.Response,
-    idOfBoat: number
-  ): Promise<void> {
+  public async deleteBoat(idOfBoat: number): Promise<void> {
     const boatToDelete: Boat | null = await Boat.findByPk(idOfBoat);
     if (boatToDelete !== null) {
-      try {
-        await boatToDelete.destroy();
-        res.status(200).json({ result: 'Boat deleted' });
-      } catch (error) {
-        res.status(400).send(error);
-      }
+      await boatToDelete.destroy();
     } else {
-      res.status(400).json({ result: 'Boat not found' });
+      throw 'Boat not found';
     }
   }
   public async updateBoat(
-    res: express.Response,
     idOfBoat: number,
     updatedValue: boolean
   ): Promise<void> {
@@ -121,9 +112,8 @@ export class BoatService {
     if (boatToUpdate !== null) {
       boatToUpdate.maintenance = updatedValue;
       await boatToUpdate.save();
-      res.status(200).json({ result: 'Boat Updated' });
     } else {
-      res.status(400).json({ result: 'Boat not found' });
+      throw 'Boat not found';
     }
   }
 }

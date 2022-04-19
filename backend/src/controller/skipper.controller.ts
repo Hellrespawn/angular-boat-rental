@@ -25,7 +25,16 @@ export class SkipperController {
     const name: string = req.body.name;
     const pricePerDay: number = req.body.pricePerDay;
     const birthDate: Date = req.body.birthDate;
-    this.skipperService.addSkipper(res, name, pricePerDay, birthDate);
+    try {
+      const result = await this.skipperService.addSkipper(
+        name,
+        pricePerDay,
+        birthDate
+      );
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(400).json(error);
+    }
   }
 
   public async deleteSkipper(
@@ -33,7 +42,12 @@ export class SkipperController {
     res: express.Response
   ): Promise<void> {
     const idOfSkipper: number = +req.params.id;
-    this.skipperService.deleteSkipper(res, idOfSkipper);
+    try {
+      const result = await this.skipperService.deleteSkipper(idOfSkipper);
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(400).json(error);
+    }
   }
 
   public async updateSkipper(
@@ -43,7 +57,11 @@ export class SkipperController {
     const idOfSkipper: number = +req.body.id;
     const updatedValue: boolean = req.body.updatedValue;
     try {
-      this.skipperService.updateSkipper(res, idOfSkipper, updatedValue);
+      const result = await this.skipperService.updateSkipper(
+        idOfSkipper,
+        updatedValue
+      );
+      res.status(200).json(result);
     } catch (error) {
       res.status(400).send(error);
     }

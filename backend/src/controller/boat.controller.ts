@@ -83,7 +83,12 @@ export class BoatController {
     res: express.Response
   ): Promise<void> {
     const idOfBoat: number = +req.params.id;
-    this.boatService.deleteBoat(res, idOfBoat);
+    try {
+      const result = await this.boatService.deleteBoat(idOfBoat);
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(400).send(error);
+    }
   }
 
   public async updateBoat(
@@ -93,7 +98,8 @@ export class BoatController {
     const idOfBoat: number = +req.body.id;
     const updatedValue: boolean = req.body.updatedValue;
     try {
-      this.boatService.updateBoat(res, idOfBoat, updatedValue);
+      const result = await this.boatService.updateBoat(idOfBoat, updatedValue);
+      res.status(200).json(result);
     } catch (error) {
       res.status(400).send(error);
     }
