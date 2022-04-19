@@ -3,7 +3,9 @@ stages:
   - test
 
 variables:
-  MYSQL_ROOT_PASSWORD: password
+  MYSQL_ROOT_PASSWORD: abcd
+  DB_HOST: mysql
+  DB_PASSWORD: abcd
 
 lint-frontend:
   image: node:16
