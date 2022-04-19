@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { CustomerController } from '../controller/customer.controllers';
+import { CustomerController } from '../controller/customer.controller';
 import { validateIdInUrlParams } from '../middleware/validate';
 
 export function customerRoutes(controller: CustomerController): Router {
