@@ -61,19 +61,18 @@ export class BoatController {
     const maxSpeedInKmH: number = req.body.maxSpeedInKmH;
     const sailAreaInM2: number = req.body.sailAreaInM2;
     try {
-      const result = await Boat.create({
+      const result = await this.boatService.addBoat(
         name,
         registrationNumber,
         pricePerDay,
         skipperRequired,
-        maintenance: false,
         imageRoute,
         lengthInM,
         maxOccupants,
         boatType,
         maxSpeedInKmH,
-        sailAreaInM2,
-      });
+        sailAreaInM2
+      );
       res.status(200).json(result);
     } catch (error) {
       res.status(400).send(error);
@@ -84,17 +83,7 @@ export class BoatController {
     res: express.Response
   ): Promise<void> {
     const idOfBoat: number = +req.params.id;
-    const boatToDelete: Boat | null = await Boat.findByPk(idOfBoat);
-    if (boatToDelete !== null) {
-      try {
-        await boatToDelete.destroy();
-        res.status(200).json({ result: 'Boat deleted' });
-      } catch (error) {
-        res.status(400).send(error);
-      }
-    } else {
-      res.status(400).json({ result: 'Boat not found' });
-    }
+    this.boatService.deleteBoat(res, idOfBoat);
   }
 
   public async updateBoat(
@@ -104,14 +93,7 @@ export class BoatController {
     const idOfBoat: number = +req.body.id;
     const updatedValue: boolean = req.body.updatedValue;
     try {
-      const boatToUpdate: Boat | null = await Boat.findByPk(idOfBoat);
-      if (boatToUpdate !== null) {
-        boatToUpdate.maintenance = updatedValue;
-        await boatToUpdate.save();
-        res.status(200).json({ result: 'Boat Updated' });
-      } else {
-        res.status(400).json({ result: 'Boat not found' });
-      }
+      this.boatService.updateBoat(res, idOfBoat, updatedValue);
     } catch (error) {
       res.status(400).send(error);
     }

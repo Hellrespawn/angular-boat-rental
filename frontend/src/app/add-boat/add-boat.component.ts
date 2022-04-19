@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, Validators } from '@angular/forms';
-import { catchError, throwError } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
 import { BoatService } from '../boat-service.service';
@@ -75,13 +75,13 @@ export class AddBoatComponent {
     private router: Router
   ) {}
 
-  public getErrorMessageForNameField() {
+  public getErrorMessageForNameField(): string {
     return this.nameControl.hasError(this.REQUIRED)
       ? 'Vul a.u.b. een naam in'
       : '';
   }
 
-  public getErrorMessageForPriceField() {
+  public getErrorMessageForPriceField(): string {
     return this.priceControl.hasError(this.REQUIRED)
       ? 'Vul a.u.b. een prijs in'
       : this.priceControl.hasError(this.ERROR_KEY_NUMBER_UNDER_ONE)
@@ -89,7 +89,7 @@ export class AddBoatComponent {
       : '';
   }
 
-  public getErrorMessageForLengthField() {
+  public getErrorMessageForLengthField(): string {
     return this.lengthControl.hasError(this.REQUIRED)
       ? 'Vul a.u.b. een lengte in'
       : this.lengthControl.hasError(this.ERROR_KEY_NUMBER_UNDER_ONE)
@@ -97,28 +97,28 @@ export class AddBoatComponent {
       : '';
   }
 
-  public getErrorMessageForSpeedField() {
+  public getErrorMessageForSpeedField(): string {
     return this.maxSpeedControl.hasError(this.REQUIRED)
       ? 'Vul a.u.b. een maximale snelheid in'
       : this.maxSpeedControl.hasError(this.ERROR_KEY_NUMBER_UNDER_ONE)
       ? this.ERROR_MESSAGE_NUMBER_UNDER_ONE
       : '';
   }
-  public getErrorMessageForRegistrationNumber() {
+  public getErrorMessageForRegistrationNumber(): string {
     return this.maxSpeedControl.hasError(this.REQUIRED)
       ? 'Vul a.u.b. een registratie nummer in'
       : this.maxSpeedControl.hasError(this.ERROR_KEY_NUMBER_UNDER_ONE)
       ? this.ERROR_MESSAGE_NUMBER_UNDER_ONE
       : '';
   }
-  public getErrorMessageForMaxOccupants() {
+  public getErrorMessageForMaxOccupants(): string {
     return this.maxSpeedControl.hasError(this.REQUIRED)
       ? 'Vul a.u.b. een maximaal aantal gasten in'
       : this.maxSpeedControl.hasError(this.ERROR_KEY_NUMBER_UNDER_ONE)
       ? this.ERROR_MESSAGE_NUMBER_UNDER_ONE
       : '';
   }
-  public getErrorMessageForSailAreaInM2() {
+  public getErrorMessageForSailAreaInM2(): string {
     return this.maxSpeedControl.hasError(this.REQUIRED)
       ? 'Vul a.u.b. een zeil oppervlak in'
       : this.maxSpeedControl.hasError(this.ERROR_KEY_NUMBER_UNDER_ONE)
@@ -127,7 +127,7 @@ export class AddBoatComponent {
   }
 
   // moet nog worden geïmplementeerd
-  public upload(event: Event) {
+  public upload(event: Event): void {
     console.log(event);
   }
 
@@ -171,10 +171,10 @@ export class AddBoatComponent {
     motor: boolean,
     maxSpeed?: string,
     sailM2?: string
-  ) {
+  ): void {
     this.markFormControlsAsTouched();
     if (this.checkControlsValid()) {
-      this.sendNieuwBoatToBackend(
+      this.sendNewBoatToBackend(
         new Boat(
           name,
           registrationNumber,
@@ -201,7 +201,7 @@ export class AddBoatComponent {
     }
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
     const errorArray: Array<any> = error.error.errors;
     this.resetFormControls();
@@ -222,7 +222,7 @@ export class AddBoatComponent {
     );
   }
 
-  private sendNieuwBoatToBackend(boat: Boat) {
+  private sendNewBoatToBackend(boat: Boat): void {
     const submitButton: HTMLButtonElement = <HTMLButtonElement>(
       document.getElementById('submitKnop')
     );
@@ -247,10 +247,10 @@ export class AddBoatComponent {
     (document.getElementById('skipperRequired') as HTMLInputElement).checked =
       false;
     (document.getElementById('length') as HTMLInputElement).value = '';
-    (document.getElementById('sail') as HTMLInputElement).checked
+    (document.getElementById('sail-input') as HTMLInputElement).checked
       ? ((document.getElementById('sailInM2') as HTMLInputElement).value = '')
       : ((document.getElementById('maxSpeed') as HTMLInputElement).value = '');
-    (document.getElementById('sail') as HTMLInputElement).checked = true;
+    (document.getElementById('sail-input') as HTMLInputElement).checked = true;
   }
 }
 

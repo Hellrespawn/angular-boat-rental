@@ -1,4 +1,5 @@
 import { Boat, BoatRequirements, BoatType } from '../model/boat.model';
+import express from 'express';
 
 export type BoatOverviewData = {
   id: number;
@@ -67,5 +68,62 @@ export class BoatService {
     const boats = await this.returnAllBoats();
 
     return boats.map(this.boatInstanceToOverviewData);
+  }
+
+  public async addBoat(
+    name: string,
+    registrationNumber: number,
+    pricePerDay: number,
+    skipperRequired: boolean,
+    imageRoute: string,
+    lengthInM: number,
+    maxOccupants: number,
+    boatType: string,
+    maxSpeedInKmH: number,
+    sailAreaInM2: number
+  ): Promise<Boat> {
+    return await Boat.create({
+      name,
+      registrationNumber,
+      pricePerDay,
+      skipperRequired,
+      maintenance: false,
+      imageRoute,
+      lengthInM,
+      maxOccupants,
+      boatType,
+      maxSpeedInKmH,
+      sailAreaInM2,
+    });
+  }
+  public async deleteBoat(
+    res: express.Response,
+    idOfBoat: number
+  ): Promise<void> {
+    const boatToDelete: Boat | null = await Boat.findByPk(idOfBoat);
+    if (boatToDelete !== null) {
+      try {
+        await boatToDelete.destroy();
+        res.status(200).json({ result: 'Boat deleted' });
+      } catch (error) {
+        res.status(400).send(error);
+      }
+    } else {
+      res.status(400).json({ result: 'Boat not found' });
+    }
+  }
+  public async updateBoat(
+    res: express.Response,
+    idOfBoat: number,
+    updatedValue: boolean
+  ): Promise<void> {
+    const boatToUpdate: Boat | null = await Boat.findByPk(idOfBoat);
+    if (boatToUpdate !== null) {
+      boatToUpdate.maintenance = updatedValue;
+      await boatToUpdate.save();
+      res.status(200).json({ result: 'Boat Updated' });
+    } else {
+      res.status(400).json({ result: 'Boat not found' });
+    }
   }
 }
