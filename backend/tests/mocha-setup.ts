@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import 'regenerator-runtime';
 import { Sequelize } from 'sequelize-typescript';
 import {
