@@ -8,4 +8,8 @@ import { BoatTypeFilter, RentalService } from '../../rental.service';
 })
 export class BoatTypeComponent {
   constructor(public rentalService: RentalService) {}
+
+  public updateFilter(change: BoatTypeFilter): void {
+    this.rentalService.typeFilter.next(change);
+  }
 }

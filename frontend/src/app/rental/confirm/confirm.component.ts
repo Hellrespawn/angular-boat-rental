@@ -11,28 +11,35 @@ import { RentalService } from '../rental.service';
 })
 export class ConfirmComponent implements OnInit {
   public boat!: BoatDetailData;
+  private dateRange: [Date, Date] | null = null;
 
-  constructor(
-    private rentalService: RentalService,
-    private boatService: BoatService
-  ) {}
+  constructor(private rentalService: RentalService) {}
 
   ngOnInit(): void {
     this.getBoat();
+    this.getDates();
   }
 
   private getBoat(): void {
-    const id = this.rentalService.selectedBoatId;
+    // BoatDetailsComponent makes sure that this is set.
+    const id = this.rentalService.selectedBoatId!;
 
-    if (id) {
-      this.boatService
-        .getBoatDetailData(id)
-        .subscribe((boat) => (this.boat = boat));
-    }
+    this.rentalService
+      .getBoatDetailData(id)
+      .subscribe((boat) => (this.boat = boat));
   }
 
+  private getDates(): void {
+    this.rentalService.dateRange.subscribe(
+      (dateRange) => (this.dateRange = dateRange)
+    );
+  }
+
+  /**
+   * Checks whether or not dateStart and dateEnd are set.
+   */
   public isDateSet(): boolean {
-    return Boolean(this.rentalService.dateStart && this.rentalService.dateEnd);
+    return Boolean(this.rentalService.dateRange);
   }
 
   public formatDate(date: Date): string {
@@ -48,9 +55,9 @@ export class ConfirmComponent implements OnInit {
       return NaN;
     }
 
-    let ms =
-      this.rentalService.dateEnd!.getTime() -
-      this.rentalService.dateStart!.getTime();
+    const [dateStart, dateEnd] = this.dateRange!;
+
+    let ms = dateEnd!.getTime() - dateStart!.getTime();
     return ms / 1000 / 60 / 60 / 24;
   }
 
@@ -59,8 +66,17 @@ export class ConfirmComponent implements OnInit {
   }
 
   public confirmOrder(): void {
-    //this.rentalService.addRental(this.userService.getCurrentUserId);
-    this.rentalService.addRental(1).subscribe((id) => console.log(id));
-    this.rentalService.reset();
+    /**     *
+     * while (!this.userService.getCurrentUser()) {
+     *   loginDialog()
+     * }
+     *
+     * this.rentalService.addRental(this.userService.getCurrentUser().id);
+     */
+
+    this.rentalService.addRental(1).subscribe((id) => {
+      console.log(id);
+      this.rentalService.reset();
+    });
   }
 }

@@ -8,4 +8,8 @@ import { RentalService, LicenseFilter } from '../../rental.service';
 })
 export class LicenseComponent {
   constructor(public rentalService: RentalService) {}
+
+  public updateFilter(change: LicenseFilter): void {
+    this.rentalService.licenseFilter.next(change);
+  }
 }

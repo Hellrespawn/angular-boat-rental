@@ -6,96 +6,20 @@ import { Boat, BoatRequirements } from './boat';
 import { environment } from 'src/environments/environment';
 import { BoatDetailData } from './rental/boat-card/boat-details/boat-details.component';
 
-type BoatOverviewResponse = { boats: BoatOverviewData[] };
-type BoatDetailResponse = { boat: BoatDetailData };
-
 @Injectable({
   providedIn: 'root',
 })
 export class BoatService {
   constructor(private httpClient: HttpClient) {}
 
-  /**
-   * Appends relative route to backend URL. Requires leading '/'.
-   *
-   * @param url
-   * @returns complete url
-   */
-  private constructUrl(url: string): string {
-    return `${environment.backendUrl}${url}`;
-  }
-
-  /**
-   * Adds the address of the backend to the imageRoute received from the
-   * backend.
-   *
-   * Will work on any type T that has a property imageRoute: string.
-   *
-   * @param item
-   * @returns modified item.
-   */
-  private modifyImageRoute<T extends { imageRoute: string }>(item: T): T {
-    item.imageRoute = this.constructUrl(item.imageRoute);
-    return item;
-  }
-
-  /**
-   * Formats Date object as YYYY-MM-DD
-   */
-  private dateToYMD(date: Date): string {
-    return date.toISOString().split('T')[0];
-  }
-
   public addBoat(boatObject: {}) {
     return this.httpClient.post(`${environment.backendUrl}/boat`, boatObject);
   }
 
   public getBoats(): Observable<any> {
-    return this.httpClient.get<{ boats: Boat[] }>(this.constructUrl('/boat'));
-  }
-
-  public getBoatDetailData(id: number): Observable<BoatDetailData> {
-    return this.httpClient
-      .get<BoatDetailResponse>(this.constructUrl(`/boat/rental/${id}`))
-      .pipe(
-        // Destructure object in parameter list.
-        map(({ boat }: BoatDetailResponse): BoatDetailData => {
-          return this.modifyImageRoute(boat);
-        })
-      );
-  }
-
-  public getBoatOverviewData(
-    dateRange?: [Date, Date]
-  ): Observable<BoatOverviewData[]> {
-    let route: string;
-
-    if (dateRange) {
-      let [startDate, endDate] = dateRange;
-      route = `/boat/available/${this.dateToYMD(startDate)}/${this.dateToYMD(
-        endDate
-      )}`;
-    } else {
-      route = '/boat/rental';
-    }
-
-    return this.httpClient
-      .get<BoatOverviewResponse>(this.constructUrl(route))
-      .pipe(
-        // Destructure object in parameter list.
-        map(({ boats }: BoatOverviewResponse): BoatOverviewData[] =>
-          // Bind this inside modifyImageRoute, otherwise this refers to a boat
-          boats.map(this.modifyImageRoute.bind(this))
-        )
-      );
-  }
-
-  public getBookedDates(id: number): Observable<Date[]> {
-    return this.httpClient
-      .get<{ dates: string[] }>(this.constructUrl(`/boat/${id}/bookedDates`))
-      .pipe(
-        map(({ dates }) => dates.map((dateString) => new Date(dateString)))
-      );
+    return this.httpClient.get<{ boats: Boat[] }>(
+      `${environment.backendUrl}/boat`
+    );
   }
 
   public deleteBoatById(id: number): Observable<Object> {

@@ -21,10 +21,13 @@
   </div>
 
   <ul *ngIf="boats.length">
-    <li *ngFor="let boat of boats" [ngClass]="{ disabled: !enabled(boat) }">
+    <li
+      *ngFor="let boat of boats"
+      [ngClass]="{ disabled: (isEnabled(boat) | async) === false }"
+    >
       <app-rental-boat-card
         [boat]="boat"
-        [enabled]="enabled(boat)"
+        [enabled]="(isEnabled(boat) | async) === true"
       ></app-rental-boat-card>
     </li>
   </ul>

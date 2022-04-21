@@ -24,7 +24,6 @@ export class BoatDetailsComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { id: number },
-    private boatService: BoatService,
     private rentalService: RentalService,
     private router: Router
   ) {}
@@ -34,7 +33,7 @@ export class BoatDetailsComponent implements OnInit {
   }
 
   private getBoat(): void {
-    this.boatService
+    this.rentalService
       .getBoatDetailData(this.data.id)
       .subscribe((boat) => (this.boat = boat));
   }

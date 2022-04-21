@@ -11,18 +11,35 @@ import { RentalService } from '../../rental.service';
 export class DateComponent implements OnInit {
   @Input() public boatId!: number;
   private bookedDates: Date[] = [];
+  public dateStart: Date | null = null;
+  public dateEnd: Date | null = null;
 
-  constructor(
-    public rentalService: RentalService,
-    private boatService: BoatService
-  ) {}
+  constructor(public rentalService: RentalService) {}
 
   ngOnInit(): void {
-    this.getBookedDates();
+    this.getDateRange();
+
+    if (this.boatId) {
+      this.getBookedDates();
+    }
+  }
+
+  private getDateRange(): void {
+    this.rentalService.dateRange.subscribe((dateRange) => {
+      if (dateRange) {
+        const [dateStart, dateEnd] = dateRange;
+
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+      } else {
+        this.dateStart = null;
+        this.dateEnd = null;
+      }
+    });
   }
 
   private getBookedDates(): void {
-    this.boatService
+    this.rentalService
       .getBookedDates(this.boatId)
       .subscribe((bookedDates) => (this.bookedDates = bookedDates));
   }
@@ -47,4 +64,16 @@ export class DateComponent implements OnInit {
       !this.bookedDates.find((date2) => this.isSameDay(date1, date2))
     );
   };
+
+  public updateDateStart(change: Date | null): void {
+    this.dateStart = change;
+  }
+
+  public updateDateEnd(change: Date | null): void {
+    this.dateEnd = change;
+    if (this.dateEnd && this.dateStart) {
+      const dateRange: [Date, Date] = [this.dateStart!, this.dateEnd!];
+      this.rentalService.dateRange.next(dateRange);
+    }
+  }
 }

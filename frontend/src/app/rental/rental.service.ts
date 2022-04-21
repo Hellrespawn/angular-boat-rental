@@ -1,204 +1,175 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, merge, Observable } from 'rxjs';
 import { BoatType } from '../boat';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { BoatOverviewData } from './rental.component';
+import { BoatDetailData } from './boat-card/boat-details/boat-details.component';
+
+type BoatOverviewResponse = { boats: BoatOverviewData[] };
+type BoatDetailResponse = { boat: BoatDetailData };
 
 export type BoatTypeFilter = 'all' | BoatType;
-export type DateFilter = [Date, Date] | null;
 export type LicenseFilter = 'both' | 'required' | 'not-required';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RentalService {
-  private static storageKeys = {
-    id: 'selectedBoatId',
-    dateStart: 'dateStart',
-    dateEnd: 'dateEnd',
-    license: 'license',
-    type: 'boatType',
-  };
+  public selectedBoatId?: number;
 
-  private _selectedBoatId?: number;
-  private previousDateStart: Date | null = null;
-  private _dateStart: BehaviorSubject<Date | null> = new BehaviorSubject(
-    null as Date | null
-  );
-  private _dateEnd: BehaviorSubject<Date | null> = new BehaviorSubject(
-    null as Date | null
+  public boats: BehaviorSubject<BoatOverviewData[]> = new BehaviorSubject(
+    [] as BoatOverviewData[]
   );
 
-  private _typeFilter: BehaviorSubject<BoatTypeFilter> = new BehaviorSubject(
+  public dateRange: BehaviorSubject<[Date, Date] | null> = new BehaviorSubject(
+    null as [Date, Date] | null
+  );
+
+  public typeFilter: BehaviorSubject<BoatTypeFilter> = new BehaviorSubject(
     'all' as BoatTypeFilter
   );
 
-  private _licenseFilter: BehaviorSubject<LicenseFilter> = new BehaviorSubject(
+  public licenseFilter: BehaviorSubject<LicenseFilter> = new BehaviorSubject(
     'both' as LicenseFilter
   );
 
   constructor(private httpClient: HttpClient) {
-    this.initId();
-    this.initDateStart();
-    this.initDateEnd();
-    this.initLicenseFilter();
-    this.initTypeFilter();
+    this.updateBoatOverviewData();
   }
 
-  private initId(): void {
-    let id = parseInt(
-      localStorage.getItem(RentalService.storageKeys.id) ?? 'NaN'
+  public updateBoatOverviewData(): void {
+    this.dateRange.subscribe((dateRange) => {
+      let route: string;
+
+      if (dateRange) {
+        let [startDate, endDate] = dateRange;
+
+        route = `/boat/available/${this.dateToYMD(startDate)}/${this.dateToYMD(
+          endDate
+        )}`;
+      } else {
+        route = '/boat/rental';
+      }
+
+      this.httpClient
+        .get<BoatOverviewResponse>(this.constructUrl(route))
+        .subscribe(({ boats }) =>
+          this.boats.next(boats.map(this.modifyImageRoute.bind(this)))
+        );
+    });
+  }
+
+  private passesLicenseFilter(boat: BoatOverviewData): Observable<boolean> {
+    return this.licenseFilter.pipe(
+      map((licenseFilter) => {
+        switch (licenseFilter) {
+          case 'both':
+            return true;
+          case 'required':
+            return boat.requirements == 'license';
+          case 'not-required':
+            return boat.requirements == 'none';
+        }
+      })
     );
-
-    if (!isNaN(id) && id > 0) {
-      this._selectedBoatId = id;
-    }
   }
 
-  private initDateStart(): void {
-    let dateString = localStorage.getItem(RentalService.storageKeys.dateStart);
+  private passesTypeFilter(boat: BoatOverviewData): Observable<boolean> {
+    return this.typeFilter.pipe(
+      map((typeFilter) => {
+        switch (typeFilter) {
+          case 'all':
+            return true;
 
-    if (dateString) {
-      this._dateStart.next(new Date(dateString));
-    }
-  }
+          case 'motor':
+            return boat.boatType == 'motor';
 
-  private initDateEnd(): void {
-    let dateString = localStorage.getItem(RentalService.storageKeys.dateEnd);
-
-    if (dateString) {
-      this._dateEnd.next(new Date(dateString));
-    }
-  }
-
-  private initLicenseFilter(): void {
-    const license = localStorage.getItem(RentalService.storageKeys.license);
-
-    if (license) {
-      this._licenseFilter.next(license as LicenseFilter);
-    }
-  }
-
-  private initTypeFilter(): void {
-    const type = localStorage.getItem(RentalService.storageKeys.type);
-
-    if (type) {
-      this._typeFilter.next(type as BoatTypeFilter);
-    }
-  }
-
-  private updateDateFilter(): void {
-    // Reset endDate if startDate changed.
-    if (this.dateStart != this.previousDateStart) {
-      this._dateEnd.next(null);
-      this.previousDateStart = this.dateStart;
-      localStorage.removeItem(RentalService.storageKeys.dateStart);
-      localStorage.removeItem(RentalService.storageKeys.dateEnd);
-    }
-
-    // Only emit event if both are filled in
-    if (this.dateStart && this.dateEnd) {
-      localStorage.setItem(
-        RentalService.storageKeys.dateStart,
-        this.dateStart.toISOString()
-      );
-      localStorage.setItem(
-        RentalService.storageKeys.dateEnd,
-        this.dateEnd.toISOString()
-      );
-    }
+          case 'sail':
+            return boat.boatType == 'sail';
+        }
+      })
+    );
   }
 
   public reset(): void {
     this.selectedBoatId = undefined;
-    this.licenseFilter = 'both';
-    this.dateStart = null;
-    this.dateEnd = null;
-    this.previousDateStart = null;
-    this.typeFilter = 'all';
+    this.licenseFilter.next('both');
+    this.typeFilter.next('all');
+    this.dateRange.next(null);
   }
 
-  public get selectedBoatId(): number | undefined {
-    return this._selectedBoatId;
+  /**
+   * Appends relative route to backend URL. Requires leading '/'.
+   *
+   * @param url
+   * @returns complete url
+   */
+  private constructUrl(url: string): string {
+    return `${environment.backendUrl}${url}`;
   }
 
-  public set selectedBoatId(id: number | undefined) {
-    this._selectedBoatId = id;
-    if (id) {
-      localStorage.setItem(RentalService.storageKeys.id, id.toString());
-    } else {
-      localStorage.removeItem(RentalService.storageKeys.id);
-    }
+  /**
+   * Adds the address of the backend to the imageRoute received from the
+   * backend.
+   *
+   * Will work on any type T that has a property imageRoute: string.
+   *
+   * @param item
+   * @returns modified item.
+   */
+  private modifyImageRoute<T extends { imageRoute: string }>(item: T): T {
+    item.imageRoute = this.constructUrl(item.imageRoute);
+    return item;
   }
 
-  public get typeFilterSubject(): BehaviorSubject<BoatTypeFilter> {
-    return this._typeFilter;
+  /**
+   * Formats Date object as YYYY-MM-DD
+   */
+  private dateToYMD(date: Date): string {
+    return date.toISOString().split('T')[0];
   }
 
-  public get licenseFilterSubject(): BehaviorSubject<LicenseFilter> {
-    return this._licenseFilter;
+  public getBoatDetailData(id: number): Observable<BoatDetailData> {
+    return this.httpClient
+      .get<BoatDetailResponse>(this.constructUrl(`/boat/rental/${id}`))
+      .pipe(
+        // Destructure object in parameter list.
+        map(({ boat }: BoatDetailResponse): BoatDetailData => {
+          return this.modifyImageRoute(boat);
+        })
+      );
   }
 
-  public get dateStartSubject(): BehaviorSubject<Date | null> {
-    return this._dateStart;
-  }
-
-  public get dateEndSubject(): BehaviorSubject<Date | null> {
-    return this._dateEnd;
-  }
-
-  public get typeFilter(): BoatTypeFilter {
-    return this._typeFilter.getValue();
-  }
-
-  public get licenseFilter(): LicenseFilter {
-    return this._licenseFilter.getValue();
-  }
-
-  public set typeFilter(filter: BoatTypeFilter) {
-    this._typeFilter.next(filter);
-    localStorage.setItem(RentalService.storageKeys.type, filter);
-  }
-
-  public set licenseFilter(filter: LicenseFilter) {
-    this._licenseFilter.next(filter);
-    localStorage.setItem(RentalService.storageKeys.license, filter);
-  }
-
-  public set dateStart(date: Date | null) {
-    this._dateStart.next(date);
-    this.updateDateFilter();
-  }
-
-  public get dateStart(): Date | null {
-    return this._dateStart.getValue();
-  }
-
-  public set dateEnd(date: Date | null) {
-    this._dateEnd.next(date);
-    this.updateDateFilter();
-  }
-
-  public get dateEnd(): Date | null {
-    return this._dateEnd.getValue();
-  }
-
-  public getDates(): [Date, Date] | null {
-    if (this.dateStart && this.dateEnd) {
-      return [this.dateStart, this.dateEnd];
-    } else {
-      return null;
-    }
+  public getBookedDates(id: number): Observable<Date[]> {
+    return this.httpClient
+      .get<{ dates: string[] }>(this.constructUrl(`/boat/${id}/bookedDates`))
+      .pipe(
+        map(({ dates }) => dates.map((dateString) => new Date(dateString)))
+      );
   }
 
   public addRental(customerId: number): Observable<number> {
-    return this.httpClient
+    const [dateStart, dateEnd] = this.dateRange.getValue()!;
+
+    let observable = this.httpClient
       .post<{ id: number }>(`${environment.backendUrl}/rental/`, {
         boatId: this.selectedBoatId,
         customerId,
-        dateStart: this.dateStart,
-        dateEnd: this.dateEnd,
+        dateStart: dateStart,
+        dateEnd: dateEnd,
       })
       .pipe(map(({ id }) => id));
+
+    this.reset();
+
+    return observable;
+  }
+
+  public isEnabled(boat: BoatOverviewData): Observable<boolean> {
+    return combineLatest([
+      this.passesLicenseFilter(boat),
+      this.passesTypeFilter(boat),
+    ]).pipe(map((filters) => filters.every((filter) => filter)));
   }
 }
