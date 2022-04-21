@@ -2,7 +2,9 @@
   Er zijn nog geen accounts geregistreerd!
 </p>
 <mat-card *ngFor="let customer of arrayOfCustomers; index as i">
-  <mat-card-title>{{ customer.firstName + customer.lastName }}</mat-card-title>
+  <mat-card-title>{{
+    customer.firstName + ' ' + customer.lastName
+  }}</mat-card-title>
   <mat-card-subtitle
     >Email adres: {{ customer.emailAddress }}</mat-card-subtitle
   >
