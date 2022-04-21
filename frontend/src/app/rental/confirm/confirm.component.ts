@@ -11,8 +11,6 @@ import { RentalService } from '../rental.service';
 })
 export class ConfirmComponent implements OnInit {
   public boat!: BoatDetailData;
-  public dateStart?: Date;
-  public dateEnd?: Date;
 
   constructor(
     private rentalService: RentalService,
@@ -21,7 +19,6 @@ export class ConfirmComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBoat();
-    this.getDates();
   }
 
   private getBoat(): void {
@@ -34,10 +31,8 @@ export class ConfirmComponent implements OnInit {
     }
   }
 
-  private getDates(): void {
-    // Once at this component, these will always be not null.
-    this.dateStart = this.rentalService.dateStart!;
-    this.dateEnd = this.rentalService.dateEnd!;
+  public isDateSet(): boolean {
+    return Boolean(this.rentalService.dateStart && this.rentalService.dateEnd);
   }
 
   public formatDate(date: Date): string {
@@ -49,15 +44,23 @@ export class ConfirmComponent implements OnInit {
   }
 
   public getDays(): number {
-    if (!this.dateStart || !this.dateEnd) {
+    if (!this.isDateSet()) {
       return NaN;
     }
 
-    let ms = this.dateEnd.getTime() - this.dateStart.getTime();
+    let ms =
+      this.rentalService.dateEnd!.getTime() -
+      this.rentalService.dateStart!.getTime();
     return ms / 1000 / 60 / 60 / 24;
   }
 
   public getTotalPrice(): number {
     return this.getDays() * this.boat.pricePerDay;
+  }
+
+  public confirmOrder(): void {
+    //this.rentalService.addRental(this.userService.getCurrentUserId);
+    this.rentalService.addRental(1).subscribe((id) => console.log(id));
+    this.rentalService.reset();
   }
 }

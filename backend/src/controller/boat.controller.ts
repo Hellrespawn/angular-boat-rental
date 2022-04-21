@@ -91,6 +91,16 @@ export class BoatController {
     }
   }
 
+  public async getBookedDates(req: Request, res: Response): Promise<void> {
+    // Validated by middleware
+    const id = parseInt(req.params.id);
+    try {
+      res.json({ dates: await this.boatService.getBookedDates(id) });
+    } catch (error) {
+      res.status(400).json({ error });
+    }
+  }
+
   public async addBoat(req: Request, res: Response): Promise<void> {
     const name: string = req.body.name;
     const registrationNumber: number = req.body.registrationNumber;

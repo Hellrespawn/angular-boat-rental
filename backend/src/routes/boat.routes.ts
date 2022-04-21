@@ -29,14 +29,22 @@ export function boatRoutes(controller: BoatController): Router {
     }
   );
 
-  // Check if boat is available between dates.
   router.get(
-    '/boat/:id/available/:dateStart/:dateEnd',
+    '/boat/:id/bookedDates',
     validateIdInUrlParams,
     async (req: Request, res: Response): Promise<void> => {
-      controller.isBoatAvailable(req, res);
+      controller.getBookedDates(req, res);
     }
   );
+
+  // Check if boat is available between dates.
+  // router.get(
+  //   '/boat/:id/available/:dateStart/:dateEnd',
+  //   validateIdInUrlParams,
+  //   async (req: Request, res: Response): Promise<void> => {
+  //     controller.isBoatAvailable(req, res);
+  //   }
+  // );
 
   router.post('/boat', async (req: Request, res: Response): Promise<void> => {
     controller.addBoat(req, res);

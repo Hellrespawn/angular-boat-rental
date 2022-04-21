@@ -4,7 +4,6 @@
 
 <div *ngIf="boat">
   <div id="container">
-    <section id="calendar" class="custom-card with-padding">Calendar</section>
     <section id="details" class="custom-card with-padding">
       <div>
         <h2>{{ boat.name }}</h2>
@@ -36,26 +35,24 @@
         >
       </div>
     </section>
-    <section
-      *ngIf="dateStart && dateEnd"
-      id="invoice"
-      class="custom-card with-padding accent"
-    >
-      <h3>Van: {{ formatDate(dateStart) }}</h3>
+    <section id="invoice" class="custom-card with-padding accent">
+      <app-filters-date [boatId]="boat.id"></app-filters-date>
+      <h3 *ngIf="!isDateSet()">Kies een datum!</h3>
 
-      <h3>Tot: {{ formatDate(dateEnd) }}</h3>
+      <h3>
+        <span *ngIf="isDateSet()">{{ getDays() }} dagen à </span>€
+        {{ boat.pricePerDay }} per dag
+      </h3>
+      <h3 *ngIf="isDateSet()">Subtotaal: € {{ getTotalPrice() }}</h3>
 
-      <h3>{{ getDays() }} dagen à € {{ boat.pricePerDay }} per dag</h3>
-      <h3>Subtotaal: € {{ getTotalPrice() }}</h3>
-
-      <button mat-raised-button color="primary">Nu Betalen</button>
-    </section>
-    <section
-      *ngIf="!dateStart && !dateEnd"
-      id="invoice"
-      class="custom-card with-padding accent"
-    >
-      Kies een datum!
+      <button
+        *ngIf="isDateSet()"
+        (click)="confirmOrder()"
+        mat-raised-button
+        color="primary"
+      >
+        Nu Betalen
+      </button>
     </section>
   </div>
 </div>

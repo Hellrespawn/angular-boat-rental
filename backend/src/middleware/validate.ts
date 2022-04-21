@@ -1,4 +1,5 @@
 import Ajv, { JSONSchemaType, ValidateFunction } from 'ajv';
+import addFormats from 'ajv-formats';
 import { NextFunction, Request, Response } from 'express';
 
 type Middleware = (req: Request, res: Response, next: NextFunction) => void;
@@ -9,6 +10,7 @@ type Middleware = (req: Request, res: Response, next: NextFunction) => void;
  * allErrors reports all errors, not just the first.
  */
 const AJV = new Ajv({ allErrors: true });
+addFormats(AJV);
 
 export function createValidatorFromSchema<T>(
   schema: JSONSchemaType<T>

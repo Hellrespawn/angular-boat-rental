@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { BoatType } from '../boat';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 export type BoatTypeFilter = 'all' | BoatType;
 export type DateFilter = [Date, Date] | null;
@@ -19,7 +21,7 @@ export class RentalService {
   };
 
   private _selectedBoatId?: number;
-  private lastStartDate: Date | null = null;
+  private previousDateStart: Date | null = null;
   private _dateStart: BehaviorSubject<Date | null> = new BehaviorSubject(
     null as Date | null
   );
@@ -35,7 +37,7 @@ export class RentalService {
     'both' as LicenseFilter
   );
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
     this.initId();
     this.initDateStart();
     this.initDateEnd();
@@ -87,9 +89,9 @@ export class RentalService {
 
   private updateDateFilter(): void {
     // Reset endDate if startDate changed.
-    if (this.dateStart != this.lastStartDate) {
+    if (this.dateStart != this.previousDateStart) {
       this._dateEnd.next(null);
-      this.lastStartDate = this.dateStart;
+      this.previousDateStart = this.dateStart;
       localStorage.removeItem(RentalService.storageKeys.dateStart);
       localStorage.removeItem(RentalService.storageKeys.dateEnd);
     }
@@ -111,8 +113,8 @@ export class RentalService {
     this.selectedBoatId = undefined;
     this.licenseFilter = 'both';
     this.dateStart = null;
-    this.lastStartDate = null;
     this.dateEnd = null;
+    this.previousDateStart = null;
     this.typeFilter = 'all';
   }
 
@@ -187,5 +189,16 @@ export class RentalService {
     } else {
       return null;
     }
+  }
+
+  public addRental(customerId: number): Observable<number> {
+    return this.httpClient
+      .post<{ id: number }>(`${environment.backendUrl}/rental/`, {
+        boatId: this.selectedBoatId,
+        customerId,
+        dateStart: this.dateStart,
+        dateEnd: this.dateEnd,
+      })
+      .pipe(map(({ id }) => id));
   }
 }

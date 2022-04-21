@@ -148,4 +148,14 @@ export class BoatService {
 
     return filteredBoats.map(this.boatInstanceToOverviewData);
   }
+
+  public async getBookedDates(id: number): Promise<Date[]> {
+    const boat = await Boat.findByPk(id);
+
+    if (!boat) {
+      throw `Boat with id ${id} doesn't exist!`;
+    }
+
+    return boat.getBookedDates();
+  }
 }

@@ -90,6 +90,14 @@ export class BoatService {
       );
   }
 
+  public getBookedDates(id: number): Observable<Date[]> {
+    return this.httpClient
+      .get<{ dates: string[] }>(this.constructUrl(`/boat/${id}/bookedDates`))
+      .pipe(
+        map(({ dates }) => dates.map((dateString) => new Date(dateString)))
+      );
+  }
+
   public deleteBoatById(id: number): Observable<Object> {
     return this.httpClient.delete(
       `${environment.backendUrl}/delete-boat/${id}`
