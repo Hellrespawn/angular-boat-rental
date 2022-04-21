@@ -1,6 +1,6 @@
 <mat-form-field appearance="fill">
   <mat-label>Vaarbewijs</mat-label>
-  <mat-select [(ngModel)]="selectedOption" (ngModelChange)="changeFilter()">
+  <mat-select [(ngModel)]="rentalService.licenseFilter">
     <mat-option value="both"> Beide </mat-option>
     <mat-option value="required"> Vaarbewijs vereist </mat-option>
     <mat-option value="not-required"> Vaarbewijs niet vereist </mat-option>

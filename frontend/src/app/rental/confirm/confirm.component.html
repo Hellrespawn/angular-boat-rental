@@ -36,15 +36,26 @@
         >
       </div>
     </section>
-    <section id="invoice" class="custom-card with-padding">
-      <h3 *ngIf="dateStart">Van: {{ formatDate(dateStart) }}</h3>
+    <section
+      *ngIf="dateStart && dateEnd"
+      id="invoice"
+      class="custom-card with-padding accent"
+    >
+      <h3>Van: {{ formatDate(dateStart) }}</h3>
 
-      <h3 *ngIf="dateEnd">Tot: {{ formatDate(dateEnd) }}</h3>
+      <h3>Tot: {{ formatDate(dateEnd) }}</h3>
 
-      <h3 *ngIf="dateStart && dateEnd">
-        {{ getDays() }} dagen à € {{ boat.pricePerDay }} per dag
-      </h3>
-      <h3 *ngIf="dateStart && dateEnd">Subtotaal: € {{ getTotalPrice() }}</h3>
+      <h3>{{ getDays() }} dagen à € {{ boat.pricePerDay }} per dag</h3>
+      <h3>Subtotaal: € {{ getTotalPrice() }}</h3>
+
+      <button mat-raised-button color="primary">Nu Betalen</button>
+    </section>
+    <section
+      *ngIf="!dateStart && !dateEnd"
+      id="invoice"
+      class="custom-card with-padding accent"
+    >
+      Kies een datum!
     </section>
   </div>
 </div>

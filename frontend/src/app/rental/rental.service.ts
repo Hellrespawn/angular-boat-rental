@@ -19,13 +19,16 @@ export class RentalService {
   };
 
   private _selectedBoatId?: number;
+  private lastStartDate: Date | null = null;
+  private _dateStart: BehaviorSubject<Date | null> = new BehaviorSubject(
+    null as Date | null
+  );
+  private _dateEnd: BehaviorSubject<Date | null> = new BehaviorSubject(
+    null as Date | null
+  );
 
   private _typeFilter: BehaviorSubject<BoatTypeFilter> = new BehaviorSubject(
     'all' as BoatTypeFilter
-  );
-
-  private _dateFilter: BehaviorSubject<DateFilter> = new BehaviorSubject(
-    null as DateFilter
   );
 
   private _licenseFilter: BehaviorSubject<LicenseFilter> = new BehaviorSubject(
@@ -34,7 +37,8 @@ export class RentalService {
 
   constructor() {
     this.initId();
-    this.initDateFilter();
+    this.initDateStart();
+    this.initDateEnd();
     this.initLicenseFilter();
     this.initTypeFilter();
   }
@@ -49,19 +53,19 @@ export class RentalService {
     }
   }
 
-  private initDateFilter(): void {
-    const dateStartString = localStorage.getItem(
-      RentalService.storageKeys.dateStart
-    );
-    const dateEndString = localStorage.getItem(
-      RentalService.storageKeys.dateEnd
-    );
+  private initDateStart(): void {
+    let dateString = localStorage.getItem(RentalService.storageKeys.dateStart);
 
-    if (dateStartString && dateEndString) {
-      const dateStart = new Date(dateStartString);
-      const dateEnd = new Date(dateEndString);
+    if (dateString) {
+      this._dateStart.next(new Date(dateString));
+    }
+  }
 
-      this._dateFilter.next([dateStart, dateEnd] as DateFilter);
+  private initDateEnd(): void {
+    let dateString = localStorage.getItem(RentalService.storageKeys.dateEnd);
+
+    if (dateString) {
+      this._dateEnd.next(new Date(dateString));
     }
   }
 
@@ -81,10 +85,34 @@ export class RentalService {
     }
   }
 
+  private updateDateFilter(): void {
+    // Reset endDate if startDate changed.
+    if (this.dateStart != this.lastStartDate) {
+      this._dateEnd.next(null);
+      this.lastStartDate = this.dateStart;
+      localStorage.removeItem(RentalService.storageKeys.dateStart);
+      localStorage.removeItem(RentalService.storageKeys.dateEnd);
+    }
+
+    // Only emit event if both are filled in
+    if (this.dateStart && this.dateEnd) {
+      localStorage.setItem(
+        RentalService.storageKeys.dateStart,
+        this.dateStart.toISOString()
+      );
+      localStorage.setItem(
+        RentalService.storageKeys.dateEnd,
+        this.dateEnd.toISOString()
+      );
+    }
+  }
+
   public reset(): void {
     this.selectedBoatId = undefined;
     this.licenseFilter = 'both';
-    this.dateFilter = null;
+    this.dateStart = null;
+    this.lastStartDate = null;
+    this.dateEnd = null;
     this.typeFilter = 'all';
   }
 
@@ -105,20 +133,20 @@ export class RentalService {
     return this._typeFilter;
   }
 
-  public get dateFilterSubject(): BehaviorSubject<DateFilter> {
-    return this._dateFilter;
-  }
-
   public get licenseFilterSubject(): BehaviorSubject<LicenseFilter> {
     return this._licenseFilter;
   }
 
-  public get typeFilter(): BoatTypeFilter {
-    return this._typeFilter.getValue();
+  public get dateStartSubject(): BehaviorSubject<Date | null> {
+    return this._dateStart;
   }
 
-  public get dateFilter(): DateFilter {
-    return this._dateFilter.getValue();
+  public get dateEndSubject(): BehaviorSubject<Date | null> {
+    return this._dateEnd;
+  }
+
+  public get typeFilter(): BoatTypeFilter {
+    return this._typeFilter.getValue();
   }
 
   public get licenseFilter(): LicenseFilter {
@@ -130,27 +158,34 @@ export class RentalService {
     localStorage.setItem(RentalService.storageKeys.type, filter);
   }
 
-  public set dateFilter(filter: DateFilter) {
-    this._dateFilter.next(filter);
-
-    if (filter) {
-      const [dateStart, dateEnd] = filter;
-      localStorage.setItem(
-        RentalService.storageKeys.dateStart,
-        dateStart.toISOString()
-      );
-      localStorage.setItem(
-        RentalService.storageKeys.dateEnd,
-        dateEnd.toISOString()
-      );
-    } else {
-      localStorage.removeItem(RentalService.storageKeys.dateStart);
-      localStorage.removeItem(RentalService.storageKeys.dateEnd);
-    }
-  }
-
   public set licenseFilter(filter: LicenseFilter) {
     this._licenseFilter.next(filter);
     localStorage.setItem(RentalService.storageKeys.license, filter);
+  }
+
+  public set dateStart(date: Date | null) {
+    this._dateStart.next(date);
+    this.updateDateFilter();
+  }
+
+  public get dateStart(): Date | null {
+    return this._dateStart.getValue();
+  }
+
+  public set dateEnd(date: Date | null) {
+    this._dateEnd.next(date);
+    this.updateDateFilter();
+  }
+
+  public get dateEnd(): Date | null {
+    return this._dateEnd.getValue();
+  }
+
+  public getDates(): [Date, Date] | null {
+    if (this.dateStart && this.dateEnd) {
+      return [this.dateStart, this.dateEnd];
+    } else {
+      return null;
+    }
   }
 }

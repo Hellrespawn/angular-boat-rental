@@ -4,17 +4,14 @@
     <input
       matStartDate
       placeholder="Startdatum"
-      [(ngModel)]="selectedStartDate"
-      (ngModelChange)="changeFilter()"
+      [(ngModel)]="rentalService.dateStart"
     />
     <input
       matEndDate
       placeholder="Einddatum"
-      [(ngModel)]="selectedEndDate"
-      (ngModelChange)="changeFilter()"
+      [(ngModel)]="rentalService.dateEnd"
     />
   </mat-date-range-input>
-  <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
   <mat-date-range-picker #picker></mat-date-range-picker>
 </mat-form-field>

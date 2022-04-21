@@ -1,11 +1,19 @@
-<div>
-  <section class="custom-card">
-    <app-filters-boat-type></app-filters-boat-type>
-    <mat-divider [vertical]="true"></mat-divider>
-    <app-filters-license></app-filters-license>
-    <mat-divider [vertical]="true"></mat-divider>
-    <app-filters-date></app-filters-date>
-  </section>
+<div id="container">
+  <div>
+    <section class="custom-card">
+      <app-filters-boat-type></app-filters-boat-type>
+      <mat-divider [vertical]="true"></mat-divider>
+      <app-filters-license></app-filters-license>
+      <mat-divider [vertical]="true"></mat-divider>
+      <app-filters-date></app-filters-date>
+    </section>
+
+    <section id="buttons">
+      <button mat-raised-button color="primary" (click)="clearFilters()">
+        Filters herstellen
+      </button>
+    </section>
+  </div>
 
   <div *ngIf="!boats.length" class="custom-card with-padding">
     <h2>Op dit moment zijn er geen boten beschikbaar</h2>

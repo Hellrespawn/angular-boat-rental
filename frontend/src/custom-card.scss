@@ -12,6 +12,13 @@
   border-radius: 4px;
 }
 
+.custom-card.accent {
+  background-color: mat.get-color-from-palette(
+    theme.$dogstack-project-uml-accent,
+    'default'
+  );
+}
+
 .custom-card.vertical {
   flex-direction: column;
 }

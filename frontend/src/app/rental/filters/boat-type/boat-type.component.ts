@@ -7,13 +7,5 @@ import { BoatTypeFilter, RentalService } from '../../rental.service';
   styleUrls: ['./boat-type.component.scss'],
 })
 export class BoatTypeComponent {
-  public selectedOption: BoatTypeFilter;
-
-  public changeFilter(): void {
-    this.rentalService.typeFilter = this.selectedOption;
-  }
-
-  constructor(private rentalService: RentalService) {
-    this.selectedOption = rentalService.typeFilter;
-  }
+  constructor(public rentalService: RentalService) {}
 }

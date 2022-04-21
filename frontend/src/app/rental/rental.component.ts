@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { map } from 'rxjs';
 import { BoatRequirements, BoatType } from '../boat';
 import { BoatService } from '../boat-service.service';
@@ -67,7 +67,7 @@ export class RentalComponent implements OnInit {
   }
 
   private subscribeToFilters(): void {
-    this.rentalService.dateFilterSubject.subscribe(
+    this.rentalService.dateEndSubject.subscribe(
       this.dateFilterChanged.bind(this)
     );
 
@@ -82,6 +82,10 @@ export class RentalComponent implements OnInit {
 
   public enabled(boat: OverviewBoat): boolean {
     return Object.values(boat.filters).every((v) => v);
+  }
+
+  public clearFilters(): void {
+    this.rentalService.reset();
   }
 
   public typeFilterChanged(change: BoatTypeFilter): void {
@@ -116,9 +120,10 @@ export class RentalComponent implements OnInit {
     }
   }
 
-  public dateFilterChanged(change: DateFilter | null): void {
+  public dateFilterChanged(change: Date | null): void {
     if (change) {
-      this.getBoats(change);
+      // Once here this will never actually return null.
+      this.getBoats(this.rentalService.getDates()!);
     }
   }
 }

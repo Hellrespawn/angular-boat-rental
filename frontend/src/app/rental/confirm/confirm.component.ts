@@ -35,11 +35,9 @@ export class ConfirmComponent implements OnInit {
   }
 
   private getDates(): void {
-    const dateRange = this.rentalService.dateFilter;
-
-    if (dateRange) {
-      [this.dateStart, this.dateEnd] = dateRange;
-    }
+    // Once at this component, these will always be not null.
+    this.dateStart = this.rentalService.dateStart!;
+    this.dateEnd = this.rentalService.dateEnd!;
   }
 
   public formatDate(date: Date): string {
