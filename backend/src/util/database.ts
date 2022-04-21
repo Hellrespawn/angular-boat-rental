@@ -2,19 +2,21 @@ import { Sequelize } from 'sequelize-typescript';
 import mysql, { Connection } from 'mysql2/promise';
 import { MODELS } from '../model';
 
-const database = process.env.DB_NAME ?? 'dogstack-het-vrolijke-avontuur';
-const user = process.env.DB_USER ?? 'root';
-const password = process.env.DB_PASSWORD ?? 'password';
-const host = process.env.DB_HOST ?? 'localhost';
-const port = +(process.env.DB_PORT ?? 3306);
-
-export async function initSequelize(): Promise<Sequelize> {
-  const sequelize = new Sequelize(database, user, password, {
-    dialect: 'mysql',
-    host,
-    port,
-    omitNull: true,
-  });
+export async function initSequelize(options?: {
+  logging?: boolean;
+}): Promise<Sequelize> {
+  const sequelize = new Sequelize(
+    process.env.DB_NAME ?? 'dogstack-het-vrolijke-avontuur',
+    process.env.DB_USER ?? 'root',
+    process.env.DB_PASSWORD ?? 'password',
+    {
+      dialect: 'mysql',
+      host: process.env.DB_HOST ?? 'localhost',
+      port: parseInt(process.env.DB_PORT ?? '3306'),
+      omitNull: true,
+      ...options,
+    }
+  );
 
   sequelize.addModels(MODELS);
 
@@ -23,19 +25,29 @@ export async function initSequelize(): Promise<Sequelize> {
 
 async function createConnection(): Promise<Connection> {
   return mysql.createConnection({
-    host,
-    port,
-    user,
-    password,
+    host: process.env.DB_HOST ?? 'localhost',
+    port: parseInt(process.env.DB_PORT ?? '3306'),
+    user: process.env.DB_USER ?? 'root',
+    password: process.env.DB_PASSWORD ?? 'password',
   });
 }
 
-export async function createDatabase(): Promise<void> {
+export async function createDatabase(): Promise<Connection> {
   const connection = await createConnection();
-  await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
+  await connection.query(
+    `CREATE DATABASE IF NOT EXISTS \`${
+      process.env.DB_NAME ?? 'dogstack-het-vrolijke-avontuur'
+    }\`;`
+  );
+  return connection;
 }
 
-export async function dropDatabase(): Promise<void> {
+export async function dropDatabase(): Promise<Connection> {
   const connection = await createConnection();
-  await connection.query(`DROP DATABASE IF EXISTS \`${database}\`;`);
+  await connection.query(
+    `DROP DATABASE IF EXISTS \`${
+      process.env.DB_NAME ?? 'dogstack-het-vrolijke-avontuur'
+    }\`;`
+  );
+  return connection;
 }

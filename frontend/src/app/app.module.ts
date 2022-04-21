@@ -31,7 +31,6 @@ import { LoginComponent } from './log-in/log-in.component';
 import { FaqComponent } from './faq/faq.component';
 
 import { RentalComponent } from './rental/rental.component';
-import { FiltersComponent } from './rental/filters/filters.component';
 import { LicenseComponent } from './rental/filters/license/license.component';
 import { BoatTypeComponent } from './rental/filters/boat-type/boat-type.component';
 import { BoatCardComponent } from './rental/boat-card/boat-card.component';
@@ -49,6 +48,8 @@ import { NavbarComponent } from './header/navbar/navbar.component';
 import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
 import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-skipper-overview.component';
 import { BoatDetailsComponent } from './rental/boat-card/boat-details/boat-details.component';
+import { DateComponent } from './rental/filters/date/date.component';
+import { ConfirmComponent } from './rental/confirm/confirm.component';
 
 @NgModule({
   declarations: [
@@ -70,13 +71,14 @@ import { BoatDetailsComponent } from './rental/boat-card/boat-details/boat-detai
     RegistrationComponent,
     LoginComponent,
     RentalComponent,
-    FiltersComponent,
     LicenseComponent,
     BoatTypeComponent,
     BoatCardComponent,
     AdminBoatOverviewComponent,
     AdminSkipperOverviewComponent,
     BoatDetailsComponent,
+    DateComponent,
+    ConfirmComponent,
   ],
   imports: [
     BrowserModule,

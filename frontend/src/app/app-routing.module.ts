@@ -10,6 +10,7 @@ import { FaqComponent } from './faq/faq.component';
 import { RentalComponent } from './rental/rental.component';
 import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
 import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-skipper-overview.component';
+import { ConfirmComponent } from './rental/confirm/confirm.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'registratie-pagina', component: RegistrationComponent },
   { path: 'log-In', component: LoginComponent },
   { path: 'veel-gestelde-vragen', component: FaqComponent },
+  { path: 'verhuur/bevestig', component: ConfirmComponent },
   { path: 'verhuur', component: RentalComponent },
   { path: 'boat-overview-admin', component: AdminBoatOverviewComponent },
   { path: 'skipper-overview-admin', component: AdminSkipperOverviewComponent },

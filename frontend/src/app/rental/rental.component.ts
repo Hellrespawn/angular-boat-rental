@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs';
 import { BoatRequirements, BoatType } from '../boat';
 import { BoatService } from '../boat-service.service';
-import { BoatTypeFilter } from './filters/boat-type/boat-type.component';
-import { LicenseFilter } from './filters/license/license.component';
+import {
+  BoatTypeFilter,
+  DateFilter,
+  RentalService,
+  LicenseFilter,
+} from './rental.service';
 
 export type BoatOverviewData = {
   id: number;
@@ -31,15 +35,19 @@ export type OverviewBoat = BoatOverviewData & BoatOverviewFilters;
 export class RentalComponent implements OnInit {
   public boats: OverviewBoat[] = [];
 
-  constructor(private boatService: BoatService) {}
+  constructor(
+    private boatService: BoatService,
+    private rentalService: RentalService
+  ) {}
 
   ngOnInit(): void {
     this.getBoats();
+    this.subscribeToFilters();
   }
 
-  private getBoats(): void {
+  private getBoats(dateRange?: [Date, Date]): void {
     this.boatService
-      .getBoatOverviewData()
+      .getBoatOverviewData(dateRange)
       .pipe(
         map((boats: BoatOverviewData[]): OverviewBoat[] =>
           boats.map((boat: BoatOverviewData): OverviewBoat => {
@@ -50,9 +58,26 @@ export class RentalComponent implements OnInit {
           })
         )
       )
-      .subscribe(
-        (boats: OverviewBoat[]): OverviewBoat[] => (this.boats = boats)
-      );
+      .subscribe((boats: OverviewBoat[]): OverviewBoat[] => {
+        this.boats = boats;
+        this.typeFilterChanged(this.rentalService.typeFilter);
+        this.licenseFilterChanged(this.rentalService.licenseFilter);
+        return this.boats;
+      });
+  }
+
+  private subscribeToFilters(): void {
+    this.rentalService.dateFilterSubject.subscribe(
+      this.dateFilterChanged.bind(this)
+    );
+
+    this.rentalService.licenseFilterSubject.subscribe(
+      this.licenseFilterChanged.bind(this)
+    );
+
+    this.rentalService.typeFilterSubject.subscribe(
+      this.typeFilterChanged.bind(this)
+    );
   }
 
   public enabled(boat: OverviewBoat): boolean {
@@ -65,10 +90,10 @@ export class RentalComponent implements OnInit {
         case 'all':
           boat.filters.typeFiltered = true;
           break;
-        case 'motorboat':
+        case 'motor':
           boat.filters.typeFiltered = boat.boatType == 'motor';
           break;
-        case 'sailboat':
+        case 'sail':
           boat.filters.typeFiltered = boat.boatType == 'sail';
           break;
       }
@@ -88,6 +113,12 @@ export class RentalComponent implements OnInit {
           boat.filters.licenseFiltered = boat.requirements == 'none';
           break;
       }
+    }
+  }
+
+  public dateFilterChanged(change: DateFilter | null): void {
+    if (change) {
+      this.getBoats(change);
     }
   }
 }

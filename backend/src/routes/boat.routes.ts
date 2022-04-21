@@ -3,17 +3,17 @@ import { BoatController } from '../controller/boat.controller';
 import { validateIdInUrlParams } from '../middleware/validate';
 
 export function boatRoutes(controller: BoatController): Router {
-  const boatRouter = Router();
+  const router = Router();
 
-  boatRouter.get('/boat', (req: Request, res: Response): void => {
+  router.get('/boat', (req: Request, res: Response): void => {
     controller.getBoats(req, res);
   });
 
-  boatRouter.get('/boat/rental', (req: Request, res: Response): void => {
+  router.get('/boat/rental', (req: Request, res: Response): void => {
     controller.getBoatOverviewData(req, res);
   });
 
-  boatRouter.get(
+  router.get(
     '/boat/rental/:id',
     validateIdInUrlParams,
     (req: Request, res: Response): void => {
@@ -21,26 +21,40 @@ export function boatRoutes(controller: BoatController): Router {
     }
   );
 
-  boatRouter.post(
-    '/boat',
+  // Get all available boats between dates.
+  router.get(
+    '/boat/available/:dateStart/:dateEnd',
     async (req: Request, res: Response): Promise<void> => {
-      controller.addBoat(req, res);
+      controller.getAvailableBoatsOverviewData(req, res);
     }
   );
 
-  boatRouter.delete(
+  // Check if boat is available between dates.
+  router.get(
+    '/boat/:id/available/:dateStart/:dateEnd',
+    validateIdInUrlParams,
+    async (req: Request, res: Response): Promise<void> => {
+      controller.isBoatAvailable(req, res);
+    }
+  );
+
+  router.post('/boat', async (req: Request, res: Response): Promise<void> => {
+    controller.addBoat(req, res);
+  });
+
+  router.delete(
     '/delete-boat/:id',
     async (req: Request, res: Response): Promise<void> => {
       controller.deleteBoat(req, res);
     }
   );
 
-  boatRouter.patch(
+  router.patch(
     '/update-boat',
     async (req: Request, res: Response): Promise<void> => {
       controller.updateBoat(req, res);
     }
   );
 
-  return boatRouter;
+  return router;
 }

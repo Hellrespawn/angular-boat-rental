@@ -1,14 +1,29 @@
 import { BoatService } from '../services/boat.service';
 import { Boat } from '../model/boat.model';
-import express from 'express';
+import { Request, Response } from 'express';
 
 export class BoatController {
+  // YYYY-MM-DD
+  public static dateRegex = /\d{4}-\d{2}-\d{2}/;
+
   constructor(private boatService: BoatService = new BoatService()) {}
 
-  public async getBoats(
-    req: express.Request,
-    res: express.Response
-  ): Promise<void> {
+  private getAndValidateDate(dateString: string): Date {
+    if (!dateString.match(BoatController.dateRegex)) {
+      throw `Invalid date: "${dateString}", required format is YYYY-MM-DD`;
+    }
+
+    return new Date(dateString);
+  }
+
+  private getAndValidateDates(req: Request): [Date, Date] {
+    return [
+      this.getAndValidateDate(req.params.dateStart),
+      this.getAndValidateDate(req.params.dateEnd),
+    ];
+  }
+
+  public async getBoats(req: Request, res: Response): Promise<void> {
     try {
       const boats: Boat[] = await this.boatService.returnAllBoats();
       res.status(200).json({ boats });
@@ -18,10 +33,7 @@ export class BoatController {
     }
   }
 
-  public async getBoatDetailData(
-    req: express.Request,
-    res: express.Response
-  ): Promise<void> {
+  public async getBoatDetailData(req: Request, res: Response): Promise<void> {
     try {
       // ID is checked by middleware in route.
       const id = +req.params.id;
@@ -33,12 +45,9 @@ export class BoatController {
     }
   }
 
-  public async getBoatOverviewData(
-    req: express.Request,
-    res: express.Response
-  ): Promise<void> {
+  public async getBoatOverviewData(req: Request, res: Response): Promise<void> {
     try {
-      const boats = await this.boatService.getBoatOverviewData();
+      const boats = await this.boatService.getBoatsOverviewData();
       res.status(200).json({ boats });
     } catch (error) {
       console.error(error);
@@ -46,10 +55,43 @@ export class BoatController {
     }
   }
 
-  public async addBoat(
-    req: express.Request,
-    res: express.Response
+  public async getAvailableBoatsOverviewData(
+    req: Request,
+    res: Response
   ): Promise<void> {
+    try {
+      const [dateStart, dateEnd] = this.getAndValidateDates(req);
+
+      const boats = await this.boatService.getAvailableBoatsOverviewData(
+        new Date(dateStart),
+        new Date(dateEnd)
+      );
+
+      res.json({ boats });
+    } catch (error) {
+      res.status(400).json({ error });
+    }
+  }
+
+  public async isBoatAvailable(req: Request, res: Response): Promise<void> {
+    try {
+      // Validated by middleware
+      const id = parseInt(req.params.id);
+      const [dateStart, dateEnd] = this.getAndValidateDates(req);
+
+      const available = await this.boatService.isBoatAvailable(
+        id,
+        new Date(dateStart),
+        new Date(dateEnd)
+      );
+
+      res.json({ available });
+    } catch (error) {
+      res.status(400).json({ error });
+    }
+  }
+
+  public async addBoat(req: Request, res: Response): Promise<void> {
     const name: string = req.body.name;
     const registrationNumber: number = req.body.registrationNumber;
     const pricePerDay: number = +req.body.pricePerDay;
@@ -78,10 +120,7 @@ export class BoatController {
       res.status(400).send(error);
     }
   }
-  public async deleteBoat(
-    req: express.Request,
-    res: express.Response
-  ): Promise<void> {
+  public async deleteBoat(req: Request, res: Response): Promise<void> {
     const idOfBoat: number = +req.params.id;
     try {
       const result = await this.boatService.deleteBoat(idOfBoat);
@@ -91,10 +130,7 @@ export class BoatController {
     }
   }
 
-  public async updateBoat(
-    req: express.Request,
-    res: express.Response
-  ): Promise<void> {
+  public async updateBoat(req: Request, res: Response): Promise<void> {
     const idOfBoat: number = +req.body.id;
     const updatedValue: boolean = req.body.updatedValue;
     try {

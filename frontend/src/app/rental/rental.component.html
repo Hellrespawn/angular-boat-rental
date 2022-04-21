@@ -1,8 +1,11 @@
 <div>
-  <app-rental-filters
-    (typeFilterChangedEvent)="typeFilterChanged($event)"
-    (licenseFilterChangedEvent)="licenseFilterChanged($event)"
-  ></app-rental-filters>
+  <section class="custom-card">
+    <app-filters-boat-type></app-filters-boat-type>
+    <mat-divider [vertical]="true"></mat-divider>
+    <app-filters-license></app-filters-license>
+    <mat-divider [vertical]="true"></mat-divider>
+    <app-filters-date></app-filters-date>
+  </section>
 
   <div *ngIf="!boats.length" class="custom-card with-padding">
     <h2>Op dit moment zijn er geen boten beschikbaar</h2>

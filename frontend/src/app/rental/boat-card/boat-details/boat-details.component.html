@@ -28,7 +28,9 @@
       >
     </div>
 
-    <button mat-raised-button color="primary">Boek {{ boat.name }} nu!</button>
+    <button mat-raised-button color="primary" (click)="selectBoat()">
+      Boek {{ boat.name }} nu!
+    </button>
   </section>
 </div>
 <div *ngIf="!boat">

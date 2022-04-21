@@ -39,6 +39,13 @@ export class BoatService {
     return item;
   }
 
+  /**
+   * Formats Date object as YYYY-MM-DD
+   */
+  private dateToYMD(date: Date): string {
+    return date.toISOString().split('T')[0];
+  }
+
   public addBoat(boatObject: {}) {
     return this.httpClient.post(`${environment.backendUrl}/boat`, boatObject);
   }
@@ -58,9 +65,22 @@ export class BoatService {
       );
   }
 
-  public getBoatOverviewData(): Observable<BoatOverviewData[]> {
+  public getBoatOverviewData(
+    dateRange?: [Date, Date]
+  ): Observable<BoatOverviewData[]> {
+    let route: string;
+
+    if (dateRange) {
+      let [startDate, endDate] = dateRange;
+      route = `/boat/available/${this.dateToYMD(startDate)}/${this.dateToYMD(
+        endDate
+      )}`;
+    } else {
+      route = '/boat/rental';
+    }
+
     return this.httpClient
-      .get<BoatOverviewResponse>(this.constructUrl('/boat/rental'))
+      .get<BoatOverviewResponse>(this.constructUrl(route))
       .pipe(
         // Destructure object in parameter list.
         map(({ boats }: BoatOverviewResponse): BoatOverviewData[] =>

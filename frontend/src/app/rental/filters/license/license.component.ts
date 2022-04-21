@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { Output, EventEmitter } from '@angular/core';
-
-export type LicenseFilter = 'both' | 'required' | 'not-required';
+import { RentalService, LicenseFilter } from '../../rental.service';
 
 @Component({
   selector: 'app-filters-license',
@@ -9,14 +7,13 @@ export type LicenseFilter = 'both' | 'required' | 'not-required';
   styleUrls: ['./license.component.scss'],
 })
 export class LicenseComponent {
-  @Output() public licenseFilterChangedEvent =
-    new EventEmitter<LicenseFilter>();
-
   public selectedOption: LicenseFilter = 'both';
 
   public changeFilter(): void {
-    this.licenseFilterChangedEvent.emit(this.selectedOption);
+    this.rentalService.licenseFilter = this.selectedOption;
   }
 
-  constructor() {}
+  constructor(private rentalService: RentalService) {
+    this.selectedOption = rentalService.licenseFilter;
+  }
 }
