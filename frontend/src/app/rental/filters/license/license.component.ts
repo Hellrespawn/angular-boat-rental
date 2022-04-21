@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FilterService, LicenseFilter } from '../../filter.service';
+import { RentalService, LicenseFilter } from '../../rental.service';
 
 @Component({
   selector: 'app-filters-license',
@@ -10,8 +10,10 @@ export class LicenseComponent {
   public selectedOption: LicenseFilter = 'both';
 
   public changeFilter(): void {
-    this.filterService.setLicenseFilter(this.selectedOption);
+    this.rentalService.licenseFilter = this.selectedOption;
   }
 
-  constructor(private filterService: FilterService) {}
+  constructor(private rentalService: RentalService) {
+    this.selectedOption = rentalService.licenseFilter;
+  }
 }
