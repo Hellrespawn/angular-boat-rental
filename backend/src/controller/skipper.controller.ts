@@ -26,10 +26,14 @@ export class SkipperController {
     const pricePerDay: number = req.body.pricePerDay;
     const birthDate: Date = req.body.birthDate;
     try {
-      const result = await Skipper.create({ name, pricePerDay, birthDate });
+      const result = await this.skipperService.addSkipper(
+        name,
+        pricePerDay,
+        birthDate
+      );
       res.status(200).json(result);
     } catch (error) {
-      res.status(400).send(error);
+      res.status(400).json(error);
     }
   }
 
@@ -38,16 +42,28 @@ export class SkipperController {
     res: express.Response
   ): Promise<void> {
     const idOfSkipper: number = +req.params.id;
-    const skipperToDelete: Skipper | null = await Skipper.findByPk(idOfSkipper);
-    if (skipperToDelete !== null) {
-      try {
-        await skipperToDelete.destroy();
-        res.status(200).json({ result: 'Boat deleted' });
-      } catch (error) {
-        res.status(400).send(error);
-      }
-    } else {
-      res.status(400).json({ result: 'Skipper not found' });
+    try {
+      const result = await this.skipperService.deleteSkipper(idOfSkipper);
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(400).json(error);
+    }
+  }
+
+  public async updateSkipper(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
+    const idOfSkipper: number = +req.body.id;
+    const updatedValue: boolean = req.body.updatedValue;
+    try {
+      const result = await this.skipperService.updateSkipper(
+        idOfSkipper,
+        updatedValue
+      );
+      res.status(200).json(result);
+    } catch (error) {
+      res.status(400).send(error);
     }
   }
 }

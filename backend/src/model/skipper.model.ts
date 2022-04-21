@@ -4,6 +4,7 @@ export type SkipperData = {
   name: string;
   pricePerDay: number;
   birthDate: Date;
+  leave: boolean;
 };
 
 @Table
@@ -13,6 +14,8 @@ export class Skipper extends Model implements SkipperData {
   @Column public pricePerDay!: number;
 
   @Column public birthDate!: Date;
+
+  @Column public leave!: boolean;
 
   @HasMany(() => Rental)
   public rentals!: Rental[];

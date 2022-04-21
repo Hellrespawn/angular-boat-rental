@@ -95,6 +95,7 @@ async function insertMockSkippers() {
       name,
       pricePerDay: randomInt(100, 500),
       birthDate: randomDate(new Date(1980, 1, 1), new Date()),
+      leave: false,
     };
     return skipper;
   });

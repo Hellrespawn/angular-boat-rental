@@ -1,4 +1,5 @@
 import { Boat, BoatRequirements, BoatType } from '../model/boat.model';
+import express from 'express';
 
 export type BoatOverviewData = {
   id: number;
@@ -69,6 +70,52 @@ export class BoatService {
     return boats.map(this.boatInstanceToOverviewData);
   }
 
+  public async addBoat(
+    name: string,
+    registrationNumber: number,
+    pricePerDay: number,
+    skipperRequired: boolean,
+    imageRoute: string,
+    lengthInM: number,
+    maxOccupants: number,
+    boatType: string,
+    maxSpeedInKmH: number,
+    sailAreaInM2: number
+  ): Promise<Boat> {
+    return await Boat.create({
+      name,
+      registrationNumber,
+      pricePerDay,
+      skipperRequired,
+      maintenance: false,
+      imageRoute,
+      lengthInM,
+      maxOccupants,
+      boatType,
+      maxSpeedInKmH,
+      sailAreaInM2,
+    });
+  }
+  public async deleteBoat(idOfBoat: number): Promise<void> {
+    const boatToDelete: Boat | null = await Boat.findByPk(idOfBoat);
+    if (boatToDelete !== null) {
+      await boatToDelete.destroy();
+    } else {
+      throw 'Boat not found';
+    }
+  }
+  public async updateBoat(
+    idOfBoat: number,
+    updatedValue: boolean
+  ): Promise<void> {
+    const boatToUpdate: Boat | null = await Boat.findByPk(idOfBoat);
+    if (boatToUpdate !== null) {
+      boatToUpdate.maintenance = updatedValue;
+      await boatToUpdate.save();
+    } else {
+      throw 'Boat not found';
+    }
+  }
   public async isBoatAvailable(
     id: number,
     dateStart: Date,
