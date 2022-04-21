@@ -37,15 +37,6 @@ export function boatRoutes(controller: BoatController): Router {
     }
   );
 
-  // Check if boat is available between dates.
-  // router.get(
-  //   '/boat/:id/available/:dateStart/:dateEnd',
-  //   validateIdInUrlParams,
-  //   async (req: Request, res: Response): Promise<void> => {
-  //     controller.isBoatAvailable(req, res);
-  //   }
-  // );
-
   router.post('/boat', async (req: Request, res: Response): Promise<void> => {
     controller.addBoat(req, res);
   });

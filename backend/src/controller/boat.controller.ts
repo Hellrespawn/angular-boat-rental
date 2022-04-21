@@ -73,24 +73,6 @@ export class BoatController {
     }
   }
 
-  public async isBoatAvailable(req: Request, res: Response): Promise<void> {
-    try {
-      // Validated by middleware
-      const id = parseInt(req.params.id);
-      const [dateStart, dateEnd] = this.getAndValidateDates(req);
-
-      const available = await this.boatService.isBoatAvailable(
-        id,
-        new Date(dateStart),
-        new Date(dateEnd)
-      );
-
-      res.json({ available });
-    } catch (error) {
-      res.status(400).json({ error });
-    }
-  }
-
   public async getBookedDates(req: Request, res: Response): Promise<void> {
     // Validated by middleware
     const id = parseInt(req.params.id);

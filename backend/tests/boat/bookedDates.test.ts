@@ -6,7 +6,7 @@ import { closeDatabase, initDatabase } from '../mocha-setup';
 import { Customer } from '../../src/model/customer.model';
 import { Rental } from '../../src/model/rental.model';
 
-describe('Test Boat', () => {
+describe('Test /boat/:id/bookedDates', () => {
   let boat: Boat;
   let customer: Customer;
 
@@ -48,28 +48,30 @@ describe('Test Boat', () => {
 
   after(closeDatabase);
 
-  describe('boat.isAvailable', () => {
-    it('Responds `{ available: false }` when boat is unavailable', async () => {
-      const res = await request(app).get(
-        `/boat/${boat.id}/available/2022-01-01/2022-01-10`
-      );
+  describe('GET /boat/:id/bookedDates', () => {
+    it('Responds with an array of booked dates', async () => {
+      const res = await request(app).get(`/boat/${boat.id}/bookedDates`);
 
       expect(res.status).to.equal(200);
-      expect(res.body).to.deep.equal({ available: false });
-    });
-
-    it('Responds `{ available: true }` when boat is available', async () => {
-      const res = await request(app).get(
-        `/boat/${boat.id}/available/2022-02-01/2022-02-10`
-      );
-
-      expect(res.status).to.equal(200);
-      expect(res.body).to.deep.equal({ available: true });
+      expect(res.body).to.deep.equal({
+        dates: [
+          '2022-01-01T00:00:00.000Z',
+          '2022-01-02T00:00:00.000Z',
+          '2022-01-03T00:00:00.000Z',
+          '2022-01-04T00:00:00.000Z',
+          '2022-01-05T00:00:00.000Z',
+          '2022-01-06T00:00:00.000Z',
+          '2022-01-07T00:00:00.000Z',
+          '2022-01-08T00:00:00.000Z',
+          '2022-01-09T00:00:00.000Z',
+          '2022-01-10T00:00:00.000Z',
+        ],
+      });
     });
   });
 
-  describe('getAvailableBoatsOverviewData', () => {
-    it('Responds empty array when boats are unavailable', async () => {
+  describe('Test /boat/available/:dateStart/:dateEnd', () => {
+    it('Responds empty array when no boats are available', async () => {
       const res = await request(app).get(
         '/boat/available/2022-01-01/2022-01-10'
       );
