@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomerService } from '../customer.service';
+import { addToNavBar } from '../navigation.service';
 import { SnackBarInput, SnackBarService } from '../snack-bar.service';
 
+@addToNavBar({
+  name: 'Account-administratie',
+  route: '/customer-overview-admin',
+  userTypes: ['admin'],
+})
 @Component({
   selector: 'app-admin-customer-overview',
   templateUrl: './admin-customer-overview.component.html',

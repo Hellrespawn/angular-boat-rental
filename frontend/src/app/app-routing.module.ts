@@ -11,6 +11,7 @@ import { RentalComponent } from './rental/rental.component';
 import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
 import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-skipper-overview.component';
 import { ConfirmComponent } from './rental/confirm/confirm.component';
+import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-customer-overview.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -25,6 +26,10 @@ const routes: Routes = [
   { path: 'verhuur', component: RentalComponent },
   { path: 'boat-overview-admin', component: AdminBoatOverviewComponent },
   { path: 'skipper-overview-admin', component: AdminSkipperOverviewComponent },
+  {
+    path: 'customer-overview-admin',
+    component: AdminCustomerOverviewComponent,
+  },
 ];
 
 @NgModule({

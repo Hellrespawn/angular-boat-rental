@@ -1,1 +1,45 @@
-<p>admin-customer-overview works!</p>
+<p *ngIf="arrayOfCustomers.length === 0">
+  Er zijn nog geen accounts geregistreerd!
+</p>
+<mat-card *ngFor="let customer of arrayOfCustomers; index as i">
+  <mat-card-title>{{ customer.firstName + customer.lastName }}</mat-card-title>
+  <mat-card-subtitle
+    >Email adres: {{ customer.emailAddress }}</mat-card-subtitle
+  >
+  <mat-card-subtitle
+    >Geboorte datum:
+    {{ parseDateStringToDate(customer.dateOfBirth).getDate() }}-{{
+      parseDateStringToDate(customer.dateOfBirth).getMonth()
+    }}-{{
+      parseDateStringToDate(customer.dateOfBirth).getFullYear()
+    }}</mat-card-subtitle
+  >
+  <mat-card-subtitle *ngIf="customer.blocked" style="color: red"
+    >Geblokkeerd!</mat-card-subtitle
+  >
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="deleteCustomerById(customer.id, i)"
+    >
+      Verwijder
+    </button>
+    <button
+      *ngIf="!customer.blocked"
+      mat-raised-button
+      color="primary"
+      (click)="updateBlocked(customer.id, true, i)"
+    >
+      Blokkeer
+    </button>
+    <button
+      *ngIf="customer.blocked"
+      mat-raised-button
+      color="primary"
+      (click)="updateBlocked(customer.id, false, i)"
+    >
+      De-blokkeer
+    </button>
+  </mat-card-actions>
+</mat-card>
