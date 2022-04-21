@@ -5,11 +5,27 @@ import { validateIdInUrlParams } from '../middleware/validate';
 export function customerRoutes(controller: CustomerController): Router {
   const router = Router();
 
-  // TODO Check if boat available between dates
-  router.get('/boat/:id/:dateStart/:dateEnd', validateIdInUrlParams);
+  router.get(
+    '/customer',
+    async (req: Request, res: Response): Promise<void> => {
+      controller.getCustomers(res);
+    }
+  );
 
-  // TODO Get availability for all boats
-  router.get('/boat/:dateStart/:dateEnd');
+  router.delete(
+    '/delete-customer/:id',
+    validateIdInUrlParams,
+    async (req: Request, res: Response): Promise<void> => {
+      controller.deleteCustomer(req, res);
+    }
+  );
+
+  router.patch(
+    '/update-customer',
+    async (req: Request, res: Response): Promise<void> => {
+      controller.updateCustomer(req, res);
+    }
+  );
 
   return router;
 }
