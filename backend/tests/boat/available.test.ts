@@ -34,6 +34,7 @@ describe('Test Boat', () => {
       dateOfBirth: new Date('1991-09-25'),
       emailAddress: 'stef@test.nl',
       password: 'password',
+      blocked: false,
     });
 
     await Rental.create({
