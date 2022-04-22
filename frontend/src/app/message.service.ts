@@ -10,14 +10,14 @@ import { Message } from './message';
 export class MessageService {
   constructor(private httpClient: HttpClient) {}
 
-  public addMessage(MessageObject: {}): Observable<Object> {
+  public addMessages(MessagesObject: {}): Observable<Object> {
     return this.httpClient.post(
       `${environment.backendUrl}/veel-gestelde-vragen`,
-      MessageObject
+      MessagesObject
     );
   }
 
-  public getMessage(): Observable<any> {
+  public getMessages(): Observable<any> {
     return this.httpClient.get<{ message: Message[] }>(
       `${environment.backendUrl}/faq`
     );

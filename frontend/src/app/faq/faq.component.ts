@@ -10,9 +10,9 @@ import { MessageService } from '../message.service';
 })
 export class FaqComponent {
   constructor(private messageService: MessageService, private router: Router) {}
-  @ViewChild('nameForm') nameInp!: ElementRef;
-  @ViewChild('emailForm') emailInp!: ElementRef;
-  @ViewChild('textForm') textInp!: ElementRef;
+  @ViewChild('nameForm') nameInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('emailForm') emailInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('textForm') textInp!: ElementRef<HTMLInputElement>;
 
   public emailFormControl = new FormControl('', [
     Validators.required,
@@ -21,7 +21,7 @@ export class FaqComponent {
   public nameFormControl = new FormControl('', [Validators.required]);
   public textFormControl = new FormControl('', [Validators.required]);
 
-  public getMessage() {
+  public getMessages() {
     let nameInp: string = this.nameInp.nativeElement.value;
     let emailInp: string = this.emailInp.nativeElement.value;
     let textInp: string = this.textInp.nativeElement.value;
@@ -33,7 +33,7 @@ export class FaqComponent {
   }
 
   public sendMessageToBackend(): void {
-    this.messageService.addMessage(this.getMessage()).subscribe();
+    this.messageService.addMessages(this.getMessages()).subscribe();
     this.router.navigateByUrl('/veel-gestelde-vragen');
   }
   public nameErrorMessage(): string {
