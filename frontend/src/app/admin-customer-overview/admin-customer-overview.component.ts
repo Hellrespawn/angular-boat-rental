@@ -14,7 +14,7 @@ import { SnackBarInput, SnackBarService } from '../snack-bar.service';
   styleUrls: ['./admin-customer-overview.component.scss'],
 })
 export class AdminCustomerOverviewComponent implements OnInit {
-  public arrayOfCustomers: Array<CustomerForAdmin> = [];
+  public arrayOfCustomers: CustomerForAdmin[] = [];
   private readonly succesSnackbarInput: SnackBarInput = {
     message: 'Klant is verwijderd!',
     buttonText: 'Sluit',

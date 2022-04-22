@@ -14,7 +14,7 @@ import { SnackBarInput, SnackBarService } from '../snack-bar.service';
   styleUrls: ['./admin-boat-overview.component.scss'],
 })
 export class AdminBoatOverviewComponent implements OnInit {
-  public arrayOfBoats: Array<BoatForAdmin> = [];
+  public arrayOfBoats: BoatForAdmin[] = [];
   private readonly succesSnackbarInput: SnackBarInput = {
     message: 'Boot is verwijderd!',
     buttonText: 'Sluit',

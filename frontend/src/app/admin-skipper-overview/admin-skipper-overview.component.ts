@@ -14,7 +14,7 @@ import { SnackBarInput, SnackBarService } from '../snack-bar.service';
   styleUrls: ['./admin-skipper-overview.component.scss'],
 })
 export class AdminSkipperOverviewComponent implements OnInit {
-  public arrayOfSkippers: Array<SkipperForAdmin> = [];
+  public arrayOfSkippers: SkipperForAdmin[] = [];
   private readonly succesSnackbarInput: SnackBarInput = {
     message: 'Schipper is verwijderd!',
     buttonText: 'Sluit',

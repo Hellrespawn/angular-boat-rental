@@ -19,7 +19,7 @@ export type BoatDetailData = {
 };
 
 export class BoatService {
-  private boatArray: Array<Boat> = [];
+  private boatArray: Boat[] = [];
 
   private async updateBoats(): Promise<void> {
     this.boatArray = await Boat.findAll();

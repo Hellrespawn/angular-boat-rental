@@ -1,6 +1,6 @@
 import { Customer } from '../model/customer.model';
 export class CustomerService {
-  private customerArray: Array<Customer> = [];
+  private customerArray: Customer[] = [];
 
   private async updateCustomers(): Promise<void> {
     this.customerArray = await Customer.findAll();
