@@ -50,6 +50,7 @@ import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-sk
 import { BoatDetailsComponent } from './rental/boat-card/boat-details/boat-details.component';
 import { DateComponent } from './rental/filters/date/date.component';
 import { ConfirmComponent } from './rental/confirm/confirm.component';
+import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-customer-overview.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { ConfirmComponent } from './rental/confirm/confirm.component';
     BoatDetailsComponent,
     DateComponent,
     ConfirmComponent,
+    AdminCustomerOverviewComponent,
   ],
   imports: [
     BrowserModule,

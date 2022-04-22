@@ -1,6 +1,6 @@
 import { Message } from '../model/message.model';
 export class MessageService {
-  private messageArray: Array<Message> = [];
+  private messageArray: Message[] = [];
 
   private async updateMessages(): Promise<void> {
     this.messageArray = await Message.findAll();

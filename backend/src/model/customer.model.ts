@@ -41,6 +41,7 @@ export class Customer extends Model implements CustomerData {
   public dateOfBirth!: Date;
   @AllowNull(false) @IsEmail @Column public emailAddress!: string;
   @AllowNull(false) @Column public password!: string;
+  @AllowNull(false) @Column public blocked!: boolean;
 
   @HasMany(() => Rental)
   public rentals!: Rental[];

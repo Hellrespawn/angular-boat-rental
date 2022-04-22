@@ -10,6 +10,8 @@ import { ImageController } from './controller/image.controller';
 import { imageRoutes } from './routes/image.routes';
 import { MessageController } from './controller/message.controller';
 import { addMessageRoute } from './routes/message.routes';
+import { CustomerController } from './controller/customer.controller';
+import { customerRoutes } from './routes/customer.routes';
 import * as path from 'path';
 import { Server } from 'http';
 
@@ -19,6 +21,7 @@ const boatController: BoatController = new BoatController();
 const skipperController: SkipperController = new SkipperController();
 const imageController: ImageController = new ImageController();
 const messageController: MessageController = new MessageController();
+const customerController: CustomerController = new CustomerController();
 
 export const app: Application = express();
 const port = +(process.env.SRV_PORT ?? 3000);
@@ -35,6 +38,7 @@ app.use(boatRoutes(boatController));
 app.use(skipperRoutes(skipperController));
 app.use(imageRoutes(imageController));
 addMessageRoute(app, messageController);
+app.use(customerRoutes(customerController));
 
 export let server: Server;
 

@@ -85,6 +85,7 @@ async function insertMockCustomers() {
       dateOfBirth: new Date('1991-01-01'),
       emailAddress: 'test@test.test',
       password: 'password',
+      blocked: false,
     });
   }
 }
