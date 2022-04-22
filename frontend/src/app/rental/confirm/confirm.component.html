@@ -4,36 +4,39 @@
 
 <div *ngIf="boat">
   <div id="container">
-    <section id="details" class="custom-card with-padding">
-      <div>
-        <h2>{{ boat.name }}</h2>
-        <h3>#{{ boat.registrationNumber }}</h3>
-      </div>
+    <section id="boat" class="custom-card">
+      <img src="{{ boat.imageRoute }}" alt="{{ boat.name }}" />
+      <section id="details">
+        <div>
+          <h2>{{ boat.name }}</h2>
+          <h3>#{{ boat.registrationNumber }}</h3>
+        </div>
 
-      <div>
-        <span *ngIf="boat.boatType === 'sail'" class="icon"
-          ><mat-icon>sailing</mat-icon>{{ boat.sailAreaInM2 }} m<sup
-            >2</sup
-          ></span
-        >
-        <span *ngIf="boat.boatType === 'motor'" class="icon"
-          ><mat-icon>speed</mat-icon>{{ boat.maxSpeedInKmH }} km/h</span
-        >
-        <span class="icon"
-          ><mat-icon>square_foot</mat-icon>{{ boat.lengthInM }} meter</span
-        >
-        <span class="icon"
-          ><mat-icon>directions_boat</mat-icon
-          >{{ requirementsToString() }}</span
-        >
-        <span class="icon"
-          ><mat-icon>bed</mat-icon>Maximaal
-          {{ boat.maxOccupants }} personen</span
-        >
-        <span class="icon"
-          ><mat-icon>euro</mat-icon>{{ boat.pricePerDay }} per dag</span
-        >
-      </div>
+        <div>
+          <span *ngIf="boat.boatType === 'sail'" class="icon"
+            ><mat-icon>sailing</mat-icon>{{ boat.sailAreaInM2 }} m<sup
+              >2</sup
+            ></span
+          >
+          <span *ngIf="boat.boatType === 'motor'" class="icon"
+            ><mat-icon>speed</mat-icon>{{ boat.maxSpeedInKmH }} km/h</span
+          >
+          <span class="icon"
+            ><mat-icon>square_foot</mat-icon>{{ boat.lengthInM }} meter</span
+          >
+          <span class="icon"
+            ><mat-icon>directions_boat</mat-icon
+            >{{ requirementsToString() }}</span
+          >
+          <span class="icon"
+            ><mat-icon>bed</mat-icon>Maximaal
+            {{ boat.maxOccupants }} personen</span
+          >
+          <span class="icon"
+            ><mat-icon>euro</mat-icon>{{ boat.pricePerDay }} per dag</span
+          >
+        </div>
+      </section>
     </section>
     <section id="invoice" class="custom-card with-padding accent">
       <app-filters-date [boatId]="boat.id"></app-filters-date>

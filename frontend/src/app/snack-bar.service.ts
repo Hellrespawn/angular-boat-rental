@@ -23,6 +23,15 @@ export class SnackBarService {
 
     snackBarRef.onAction().subscribe(() => {});
   }
+
+  public displayError(message: string): void {
+    this.makeSnackbarThatClosesAutomatically({
+      buttonText: 'OK',
+      duration: 5000,
+      error: true,
+      message,
+    });
+  }
 }
 
 export interface SnackBarInput {

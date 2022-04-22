@@ -58,7 +58,20 @@ export class DateComponent implements OnInit {
     return new Date();
   }
 
-  public isRangeValid(): boolean {
+  private isBookedBetweenRange(): boolean {
+    // Selecting a booked date is disabled in the date picker, so we only need
+    // to check one booked date to ensure that the current range doesn't
+    // encompass it
+    let earliest: Date | undefined = this.bookedDates[0];
+
+    if (earliest) {
+      return this.dateStart! < earliest && this.dateEnd! > earliest;
+    } else {
+      return false;
+    }
+  }
+
+  private isRangeValid(): boolean {
     if (this.dateStart && this.dateEnd) {
       return this.rentalService.isRangeValid(this.dateStart, this.dateEnd);
     }
@@ -84,26 +97,29 @@ export class DateComponent implements OnInit {
 
     // Doing this in ngModelChange means Angular doesn't notice when
     // this.dateEnd is nulled out. Adding a small delay fixes this.
-    setTimeout(this.updateDateRange.bind(this), 1);
+    if (change && this.dateStart) {
+      setTimeout(this.updateDateRange.bind(this), 1);
+    }
   }
 
   private updateDateRange(): void {
-    if (this.dateEnd && this.dateStart) {
-      let dateRange: [Date, Date] | null;
-      if (!this.isRangeValid()) {
-        this.snackBarService.makeSnackbarThatClosesAutomatically({
-          buttonText: 'OK',
-          duration: 5000,
-          error: true,
-          message: 'Je moet minimaal 3 dagen huren!',
-        });
-        this.dateEnd = null;
-        this.dateStart = null;
-        dateRange = null;
-      } else {
-        dateRange = [this.dateStart!, this.dateEnd!];
-      }
-      this.rentalService.dateRange.next(dateRange);
+    let dateRange: [Date, Date] | null;
+
+    if (!this.isRangeValid()) {
+      this.snackBarService.displayError('Je moet minimaal 3 dagen huren!');
+      this.dateEnd = null;
+      this.dateStart = null;
+      dateRange = null;
+    } else if (this.isBookedBetweenRange()) {
+      this.snackBarService.displayError(
+        'Er zit een boeking tussen je selectie!'
+      );
+      this.dateEnd = null;
+      this.dateStart = null;
+      dateRange = null;
+    } else {
+      dateRange = [this.dateStart!, this.dateEnd!];
     }
+    this.rentalService.dateRange.next(dateRange);
   }
 }
