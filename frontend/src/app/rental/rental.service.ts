@@ -38,6 +38,10 @@ export class RentalService {
     this.updateBoatOverviewData();
   }
 
+  /**
+   * Updates the list of valid boats, based on this.dateRange, and broadcasts
+   * it to subscribers of this.boats
+   */
   public updateBoatOverviewData(): void {
     this.dateRange.subscribe((dateRange) => {
       let route: string;
@@ -60,6 +64,10 @@ export class RentalService {
     });
   }
 
+  /**
+   * Returns an observable which tells whether or not a boat passes
+   * the license filter.
+   */
   private passesLicenseFilter(boat: BoatOverviewData): Observable<boolean> {
     return this.licenseFilter.pipe(
       map((licenseFilter) => {
@@ -74,7 +82,10 @@ export class RentalService {
       })
     );
   }
-
+  /**
+   * Returns an observable which tells whether or not a boat passes
+   * the boat type filter.
+   */
   private passesTypeFilter(boat: BoatOverviewData): Observable<boolean> {
     return this.typeFilter.pipe(
       map((typeFilter) => {
@@ -92,6 +103,7 @@ export class RentalService {
     );
   }
 
+  /** Resets all current filters. */
   public reset(): void {
     this.selectedBoatId = undefined;
     this.licenseFilter.next('both');
@@ -130,6 +142,9 @@ export class RentalService {
     return date.toISOString().split('T')[0];
   }
 
+  /**
+   * Retrieves detailed data from the backend for boat ${id}
+   */
   public getBoatDetailData(id: number): Observable<BoatDetailData> {
     return this.httpClient
       .get<BoatDetailResponse>(this.constructUrl(`/boat/rental/${id}`))
@@ -141,6 +156,9 @@ export class RentalService {
       );
   }
 
+  /**
+   * Returns a list of all booked dates for boat ${id}
+   */
   public getBookedDates(id: number): Observable<Date[]> {
     return this.httpClient
       .get<{ dates: string[] }>(this.constructUrl(`/boat/${id}/bookedDates`))
@@ -149,6 +167,10 @@ export class RentalService {
       );
   }
 
+  /**
+   * Creates a rental and returns an observable with the id of the created
+   * Rental
+   */
   public addRental(customerId: number): Observable<number> {
     const [dateStart, dateEnd] = this.dateRange.getValue()!;
 
@@ -166,10 +188,30 @@ export class RentalService {
     return observable;
   }
 
+  /**
+   * Returns an observable which tells whether or not the boat passes the
+   * filters
+   */
   public isEnabled(boat: BoatOverviewData): Observable<boolean> {
     return combineLatest([
       this.passesLicenseFilter(boat),
       this.passesTypeFilter(boat),
     ]).pipe(map((filters) => filters.every((filter) => filter)));
+  }
+
+  /**
+   * Gets the amount of days between two dates.
+   */
+  public getDays(dateStart: Date, dateEnd: Date): number {
+    let ms = dateEnd!.getTime() - dateStart!.getTime();
+    let days = ms / 1000 / 60 / 60 / 24;
+    return days + 1;
+  }
+
+  /**
+   * Checks whether or not the date range is valid.
+   */
+  public isRangeValid(dateStart: Date, dateEnd: Date): boolean {
+    return this.getDays(dateStart, dateEnd) >= 3;
   }
 }

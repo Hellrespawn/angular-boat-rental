@@ -1,6 +1,5 @@
-import { importExpr } from '@angular/compiler/src/output/output_ast';
 import { Component, Input, OnInit } from '@angular/core';
-import { BoatService } from 'src/app/boat-service.service';
+import { SnackBarService } from 'src/app/snack-bar.service';
 import { RentalService } from '../../rental.service';
 
 @Component({
@@ -14,7 +13,10 @@ export class DateComponent implements OnInit {
   public dateStart: Date | null = null;
   public dateEnd: Date | null = null;
 
-  constructor(public rentalService: RentalService) {}
+  constructor(
+    public rentalService: RentalService,
+    private snackBarService: SnackBarService
+  ) {}
 
   ngOnInit(): void {
     this.getDateRange();
@@ -56,6 +58,14 @@ export class DateComponent implements OnInit {
     return new Date();
   }
 
+  public isRangeValid(): boolean {
+    if (this.dateStart && this.dateEnd) {
+      return this.rentalService.isRangeValid(this.dateStart, this.dateEnd);
+    }
+
+    return false;
+  }
+
   // Normal function definitions or using .bind(this) all freeze the
   // datepicker. This workaround was found here:
   // https://stackoverflow.com/questions/47204329/matdatepickerfilter-filter-function-cant-access-class-variable
@@ -71,8 +81,28 @@ export class DateComponent implements OnInit {
 
   public updateDateEnd(change: Date | null): void {
     this.dateEnd = change;
+
+    // Doing this in ngModelChange means Angular doesn't notice when
+    // this.dateEnd is nulled out. Adding a small delay fixes this.
+    setTimeout(this.updateDateRange.bind(this), 1);
+  }
+
+  private updateDateRange(): void {
     if (this.dateEnd && this.dateStart) {
-      const dateRange: [Date, Date] = [this.dateStart!, this.dateEnd!];
+      let dateRange: [Date, Date] | null;
+      if (!this.isRangeValid()) {
+        this.snackBarService.makeSnackbarThatClosesAutomatically({
+          buttonText: 'OK',
+          duration: 5000,
+          error: true,
+          message: 'Je moet minimaal 3 dagen huren!',
+        });
+        this.dateEnd = null;
+        this.dateStart = null;
+        dateRange = null;
+      } else {
+        dateRange = [this.dateStart!, this.dateEnd!];
+      }
       this.rentalService.dateRange.next(dateRange);
     }
   }

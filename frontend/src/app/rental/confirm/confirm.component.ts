@@ -39,7 +39,15 @@ export class ConfirmComponent implements OnInit {
    * Checks whether or not dateStart and dateEnd are set.
    */
   public isDateSet(): boolean {
-    return Boolean(this.rentalService.dateRange);
+    return Boolean(this.dateRange);
+  }
+
+  public isOrderValid(): boolean {
+    if (this.isDateSet()) {
+      return this.rentalService.getDays(...this.dateRange!) >= 3;
+    }
+
+    return false;
   }
 
   public formatDate(date: Date): string {
@@ -57,8 +65,7 @@ export class ConfirmComponent implements OnInit {
 
     const [dateStart, dateEnd] = this.dateRange!;
 
-    let ms = dateEnd!.getTime() - dateStart!.getTime();
-    return ms / 1000 / 60 / 60 / 24;
+    return this.rentalService.getDays(dateStart, dateEnd);
   }
 
   public getTotalPrice(): number {

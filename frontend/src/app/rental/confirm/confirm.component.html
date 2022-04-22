@@ -46,10 +46,19 @@
       <h3 *ngIf="isDateSet()">Subtotaal: € {{ getTotalPrice() }}</h3>
 
       <button
-        *ngIf="isDateSet()"
+        *ngIf="isOrderValid()"
         (click)="confirmOrder()"
         mat-raised-button
         color="primary"
+      >
+        Nu Betalen
+      </button>
+
+      <button
+        *ngIf="!isOrderValid()"
+        mat-raised-button
+        color="primary"
+        disabled
       >
         Nu Betalen
       </button>
