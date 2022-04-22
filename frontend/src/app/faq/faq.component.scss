@@ -23,8 +23,14 @@ h2 {
 }
 input {
   position: absolute;
+  opacity: 1;
+  //   z-index: -1;
+}
+#box1,
+#box2,
+#close-box {
+  //   z-index: -1;
   opacity: 0;
-  z-index: -1;
 }
 // Layout
 .row {
@@ -69,13 +75,20 @@ input {
       width: 1em;
       height: 1em;
       text-align: center;
-      transition: all 0.35s;
+      transition: all 0.28s;
     }
   }
   &-content {
     max-height: 0;
     padding: 0 1em;
     color: black;
+    transition: all 0.28s;
+  }
+  &-close {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1em;
+    font-size: 0.75em;
     background-color: rgba(
       $color:
         mat.get-color-from-palette(
@@ -84,14 +97,6 @@ input {
         ),
       $alpha: 0.8
     );
-    transition: all 0.35s;
-  }
-  &-close {
-    display: flex;
-    justify-content: flex-end;
-    padding: 1em;
-    font-size: 0.75em;
-    background: $midnight;
     cursor: pointer;
     &:hover {
       background: darken($midnight, 10%);
@@ -102,10 +107,14 @@ input {
 // :checked
 input:checked {
   + .tab-label {
-    background: darken($midnight, 10%);
-    &::after {
-      transform: rotate(90deg);
-    }
+    background-color: rgba(
+      $color:
+        mat.get-color-from-palette(
+          theme.$dogstack-project-uml-primary,
+          'lighter'
+        ),
+      $alpha: 0.8
+    );
   }
   ~ .tab-content {
     max-height: 100vh;
@@ -116,8 +125,8 @@ input:checked {
 // css for input fields
 
 .question-form {
+  color: black;
   width: 97%;
-
   display: flex;
   flex-direction: column;
   align-items: flex-start;
