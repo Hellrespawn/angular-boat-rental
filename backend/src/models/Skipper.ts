@@ -1,4 +1,4 @@
-import { Table, Column, Model, Unique } from "sequelize-typescript";
+import { Table, Column, Model, Unique } from 'sequelize-typescript';
 
 @Table
 export class Skipper extends Model {

@@ -1,4 +1,11 @@
-import { Table, Column, Model, DataType, AllowNull, Unique } from "sequelize-typescript";
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  AllowNull,
+  Unique,
+} from 'sequelize-typescript';
 
 @Table
 export class Boat extends Model {
@@ -14,5 +21,5 @@ export class Boat extends Model {
 
   @Column maxSpeed!: number;
 
-  @Column(DataType.ENUM("sail", "motor")) sailOrMotor!: string
+  @Column(DataType.ENUM('sail', 'motor')) sailOrMotor!: string;
 }
