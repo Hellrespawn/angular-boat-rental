@@ -42,7 +42,7 @@ async function seedDatabase(): Promise<Boat> {
   return boat;
 }
 
-describe('Test /boat/:id/bookedDates', () => {
+describe('Test /boats/:id/bookedDates', () => {
   let boat: Boat;
 
   before(async () => {
@@ -52,9 +52,9 @@ describe('Test /boat/:id/bookedDates', () => {
 
   after(closeDatabase);
 
-  describe('GET /boat/:id/bookedDates', () => {
+  describe('GET /boats/:id/bookedDates', () => {
     it('Responds with an array of booked dates', async () => {
-      const res = await request(app).get(`/boat/${boat.id}/bookedDates`);
+      const res = await request(app).get(`/boats/${boat.id}/bookedDates`);
 
       expect(res.status).to.equal(200);
       expect(res.body).to.deep.equal({
@@ -74,10 +74,10 @@ describe('Test /boat/:id/bookedDates', () => {
     });
   });
 
-  describe('Test /boat/available/:dateStart/:dateEnd', () => {
+  describe('Test /boats/overview/available/:dateStart/:dateEnd', () => {
     it('Responds with an empty array when no boats are available', async () => {
       const res = await request(app).get(
-        '/boat/available/2022-01-01/2022-01-10'
+        '/boats/overview/available/2022-01-01/2022-01-10'
       );
 
       expect(res.status).to.equal(200);
@@ -86,7 +86,7 @@ describe('Test /boat/:id/bookedDates', () => {
 
     it('Responds with BoatOverviewData when boats are available', async () => {
       const res = await request(app).get(
-        '/boat/available/2022-02-01/2022-02-10'
+        '/boats/overview/available/2022-02-01/2022-02-10'
       );
 
       expect(res.status).to.equal(200);
@@ -99,7 +99,7 @@ describe('Test /boat/:id/bookedDates', () => {
 
     it('Responds with an error on a malformed date', async () => {
       const res = await request(app).get(
-        '/boat/available/2022-02-01/2022-02-0'
+        '/boats/overview/available/2022-02-01/2022-02-0'
       );
 
       expect(res.status).to.equal(400);

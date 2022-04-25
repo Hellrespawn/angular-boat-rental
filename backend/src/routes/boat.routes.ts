@@ -5,55 +5,52 @@ import { validateIdInUrlParams } from '../middleware/validate';
 export function boatRoutes(controller: BoatController): Router {
   const router = Router();
 
-  router.get('/boat', (req: Request, res: Response): void => {
+  router.get('/boats', (req: Request, res: Response): void => {
     controller.getBoats(req, res);
   });
 
-  router.get('/boat/rental', (req: Request, res: Response): void => {
+  router.get('/boats/overview', (req: Request, res: Response): void => {
     controller.getBoatOverviewData(req, res);
   });
 
-  router.get(
-    '/boat/rental/:id',
-    validateIdInUrlParams,
-    (req: Request, res: Response): void => {
-      controller.getBoatDetailData(req, res);
-    }
-  );
-
   // Get all available boats between dates.
   router.get(
-    '/boat/available/:dateStart/:dateEnd',
+    '/boats/overview/available/:dateStart/:dateEnd',
     async (req: Request, res: Response): Promise<void> => {
       controller.getAvailableBoatsOverviewData(req, res);
     }
   );
 
   router.get(
-    '/boat/:id/bookedDates',
+    '/boats/:id/detail',
+    validateIdInUrlParams,
+    (req: Request, res: Response): void => {
+      controller.getBoatDetailData(req, res);
+    }
+  );
+
+  router.get(
+    '/boats/:id/bookedDates',
     validateIdInUrlParams,
     async (req: Request, res: Response): Promise<void> => {
       controller.getBookedDates(req, res);
     }
   );
 
-  router.post('/boat', async (req: Request, res: Response): Promise<void> => {
+  router.post('/boats', async (req: Request, res: Response): Promise<void> => {
     controller.addBoat(req, res);
   });
 
   router.delete(
-    '/delete-boat/:id',
+    '/boats/:id',
     async (req: Request, res: Response): Promise<void> => {
       controller.deleteBoat(req, res);
     }
   );
 
-  router.patch(
-    '/update-boat',
-    async (req: Request, res: Response): Promise<void> => {
-      controller.updateBoat(req, res);
-    }
-  );
+  router.patch('/boats', async (req: Request, res: Response): Promise<void> => {
+    controller.updateBoat(req, res);
+  });
 
   return router;
 }

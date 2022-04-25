@@ -44,16 +44,14 @@ export class RentalService {
    */
   public updateBoatOverviewData(): void {
     this.dateRange.subscribe((dateRange) => {
-      let route: string;
+      let route = '/boats/overview';
 
       if (dateRange) {
         let [startDate, endDate] = dateRange;
 
-        route = `/boat/available/${this.dateToYMD(startDate)}/${this.dateToYMD(
+        route += `/available/${this.dateToYMD(startDate)}/${this.dateToYMD(
           endDate
         )}`;
-      } else {
-        route = '/boat/rental';
       }
 
       this.httpClient
@@ -147,7 +145,7 @@ export class RentalService {
    */
   public getBoatDetailData(id: number): Observable<BoatDetailData> {
     return this.httpClient
-      .get<BoatDetailResponse>(this.constructUrl(`/boat/rental/${id}`))
+      .get<BoatDetailResponse>(this.constructUrl(`/boats/${id}/detail`))
       .pipe(
         // Destructure object in parameter list.
         map(({ boat }: BoatDetailResponse): BoatDetailData => {
@@ -161,7 +159,7 @@ export class RentalService {
    */
   public getBookedDates(id: number): Observable<Date[]> {
     return this.httpClient
-      .get<{ dates: string[] }>(this.constructUrl(`/boat/${id}/bookedDates`))
+      .get<{ dates: string[] }>(this.constructUrl(`/boats/${id}/bookedDates`))
       .pipe(
         map(({ dates }) => dates.map((dateString) => new Date(dateString)))
       );
@@ -175,7 +173,7 @@ export class RentalService {
     const [dateStart, dateEnd] = this.dateRange.getValue()!;
 
     let observable = this.httpClient
-      .post<{ id: number }>(`${environment.backendUrl}/rental/`, {
+      .post<{ id: number }>(`${environment.backendUrl}/rentals/`, {
         boatId: this.selectedBoatId,
         customerId,
         dateStart: dateStart,

@@ -7,7 +7,6 @@ import {
   Unique,
   HasMany,
 } from 'sequelize-typescript';
-import { IMAGE_ROUTE } from '../routes/image.routes';
 import { Rental } from './rental.model';
 
 export type BoatType = 'sail' | 'motor';
@@ -55,7 +54,7 @@ export class Boat extends Model implements BoatData {
   }
 
   public set imageRoute(imageRoute: string) {
-    this.setDataValue('imageRoute', `/${IMAGE_ROUTE}/${imageRoute}`);
+    this.setDataValue('imageRoute', `/images/${imageRoute}`);
   }
 
   @AllowNull(false) @Column public lengthInM!: number;

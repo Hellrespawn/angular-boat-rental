@@ -12,26 +12,24 @@ export class SkipperService {
 
   public addSkipper(skipperObject: {}) {
     return this.httpClient.post(
-      `${environment.backendUrl}/skipper`,
+      `${environment.backendUrl}/skippers`,
       skipperObject
     );
   }
 
   public getSkippers(): Observable<any> {
     return this.httpClient.get<{ skippers: Skipper[] }>(
-      `${environment.backendUrl}/skipper`
+      `${environment.backendUrl}/skippers`
     );
   }
   public deleteSkipperById(id: number): Observable<Object> {
-    return this.httpClient.delete(
-      `${environment.backendUrl}/delete-skipper/${id}`
-    );
+    return this.httpClient.delete(`${environment.backendUrl}/skippers/${id}`);
   }
   public updateLeaveStatus(
     id: number,
     updatedValue: boolean
   ): Observable<Object> {
-    return this.httpClient.patch(`${environment.backendUrl}/update-skipper`, {
+    return this.httpClient.patch(`${environment.backendUrl}/skippers`, {
       id,
       updatedValue,
     });

@@ -6,14 +6,14 @@ export function customerRoutes(controller: CustomerController): Router {
   const router = Router();
 
   router.get(
-    '/customer',
+    '/customers',
     async (req: Request, res: Response): Promise<void> => {
       controller.getCustomers(res);
     }
   );
 
   router.delete(
-    '/delete-customer/:id',
+    '/customers/:id',
     validateIdInUrlParams,
     async (req: Request, res: Response): Promise<void> => {
       controller.deleteCustomer(req, res);
@@ -21,7 +21,7 @@ export function customerRoutes(controller: CustomerController): Router {
   );
 
   router.patch(
-    '/update-customer',
+    '/customers',
     async (req: Request, res: Response): Promise<void> => {
       controller.updateCustomer(req, res);
     }

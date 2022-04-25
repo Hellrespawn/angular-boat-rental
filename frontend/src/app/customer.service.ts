@@ -12,19 +12,17 @@ export class CustomerService {
 
   public getCustomers(): Observable<any> {
     return this.httpClient.get<{ customers: Customer[] }>(
-      `${environment.backendUrl}/customer`
+      `${environment.backendUrl}/customers`
     );
   }
   public deleteCustomerById(id: number): Observable<Object> {
-    return this.httpClient.delete(
-      `${environment.backendUrl}/delete-customer/${id}`
-    );
+    return this.httpClient.delete(`${environment.backendUrl}/customers/${id}`);
   }
   public updateBlockedStatus(
     id: number,
     updatedValue: boolean
   ): Observable<Object> {
-    return this.httpClient.patch(`${environment.backendUrl}/update-customer`, {
+    return this.httpClient.patch(`${environment.backendUrl}/customers`, {
       id,
       updatedValue,
     });
