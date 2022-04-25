@@ -3,8 +3,8 @@ stages:
   - test
 
 variables:
-  MYSQL_ROOT_PASSWORD: abcd
-  DB_HOST: mysql
+  MARIADB_ROOT_PASSWORD: abcd
+  DB_HOST: mariadb
   DB_PASSWORD: abcd
 
 lint-frontend:
@@ -30,7 +30,7 @@ lint-backend:
 test-backend:
   image: node:16
   services:
-    - mysql:8-oracle
+    - mariadb:10
   tags:
     - hva
   stage: test
