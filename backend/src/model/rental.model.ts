@@ -79,6 +79,18 @@ export class Rental extends Model {
     );
   }
 
+  public getDates(): Date[] {
+    const dates: Date[] = [];
+    for (
+      let date = new Date(this.dateStart);
+      date <= new Date(this.dateEnd);
+      date.setDate(date.getDate() + 1)
+    ) {
+      dates.push(new Date(date));
+    }
+    return dates;
+  }
+
   public isUpcoming(): boolean {
     return this.dateStart > new Date();
   }

@@ -14,11 +14,14 @@ import { CustomerController } from './controller/customer.controller';
 import { customerRoutes } from './routes/customer.routes';
 import * as path from 'path';
 import { Server } from 'http';
+import { rentalRoutes } from './routes/rental.routes';
+import { RentalController } from './controller/rental.controller';
 
 initSequelize();
 
 const boatController: BoatController = new BoatController();
 const skipperController: SkipperController = new SkipperController();
+const rentalController: RentalController = new RentalController();
 const imageController: ImageController = new ImageController();
 const messageController: MessageController = new MessageController();
 const customerController: CustomerController = new CustomerController();
@@ -36,6 +39,7 @@ app.use('/image', express.static(path.join(__dirname, '..', 'media')));
 // Routes
 app.use(boatRoutes(boatController));
 app.use(skipperRoutes(skipperController));
+app.use(rentalRoutes(rentalController));
 app.use(imageRoutes(imageController));
 addMessageRoute(app, messageController);
 app.use(customerRoutes(customerController));

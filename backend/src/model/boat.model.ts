@@ -97,4 +97,9 @@ export class Boat extends Model implements BoatData {
 
     return rentals.every((r) => !r.areDatesOverlapping(dateStart, dateEnd));
   }
+
+  public async getBookedDates(): Promise<Date[]> {
+    const rentals = this.rentals ?? (await this.$get('rentals'));
+    return rentals.flatMap((rental) => rental.getDates());
+  }
 }

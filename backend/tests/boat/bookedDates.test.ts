@@ -1,0 +1,111 @@
+import request from 'supertest';
+import { Boat } from '../../src/model/boat.model';
+import { app } from '../../src/server';
+import { expect } from 'chai';
+import { closeDatabase, initDatabase } from '../mocha-setup';
+import { Customer } from '../../src/model/customer.model';
+import { Rental } from '../../src/model/rental.model';
+
+async function seedDatabase(): Promise<Boat> {
+  const boat = await Boat.create({
+    name: 'testboat',
+    registrationNumber: 1234,
+    pricePerDay: 1234,
+    skipperRequired: false,
+    maintenance: false,
+    imageRoute: '',
+    lengthInM: 1234,
+    maxOccupants: 1234,
+    boatType: 'motor',
+    maxSpeedInKmH: 1234,
+    sailAreaInM2: undefined,
+  });
+
+  const customer = await Customer.create({
+    firstName: 'Stef',
+    lastName: 'Korporaal',
+    license: true,
+    dateOfBirth: new Date('1991-09-25'),
+    emailAddress: 'stef@test.nl',
+    password: 'password',
+    blocked: false,
+  });
+
+  await Rental.create({
+    boatId: boat.id,
+    customerId: customer.id,
+    dateStart: new Date('2022-01-01'),
+    dateEnd: new Date('2022-01-10'),
+    paid: true,
+  });
+
+  return boat;
+}
+
+describe('Test /boat/:id/bookedDates', () => {
+  let boat: Boat;
+
+  before(async () => {
+    await initDatabase();
+    boat = await seedDatabase();
+  });
+
+  after(closeDatabase);
+
+  describe('GET /boat/:id/bookedDates', () => {
+    it('Responds with an array of booked dates', async () => {
+      const res = await request(app).get(`/boat/${boat.id}/bookedDates`);
+
+      expect(res.status).to.equal(200);
+      expect(res.body).to.deep.equal({
+        dates: [
+          '2022-01-01T00:00:00.000Z',
+          '2022-01-02T00:00:00.000Z',
+          '2022-01-03T00:00:00.000Z',
+          '2022-01-04T00:00:00.000Z',
+          '2022-01-05T00:00:00.000Z',
+          '2022-01-06T00:00:00.000Z',
+          '2022-01-07T00:00:00.000Z',
+          '2022-01-08T00:00:00.000Z',
+          '2022-01-09T00:00:00.000Z',
+          '2022-01-10T00:00:00.000Z',
+        ],
+      });
+    });
+  });
+
+  describe('Test /boat/available/:dateStart/:dateEnd', () => {
+    it('Responds with an empty array when no boats are available', async () => {
+      const res = await request(app).get(
+        '/boat/available/2022-01-01/2022-01-10'
+      );
+
+      expect(res.status).to.equal(200);
+      expect(res.body).to.deep.equal({ boats: [] });
+    });
+
+    it('Responds with BoatOverviewData when boats are available', async () => {
+      const res = await request(app).get(
+        '/boat/available/2022-02-01/2022-02-10'
+      );
+
+      expect(res.status).to.equal(200);
+
+      const { boats } = res.body;
+
+      expect(boats.length).to.equal(1);
+      expect(boats[0].id).to.equal(boat.id);
+    });
+
+    it('Responds with an error on a malformed date', async () => {
+      const res = await request(app).get(
+        '/boat/available/2022-02-01/2022-02-0'
+      );
+
+      expect(res.status).to.equal(400);
+
+      const { error } = res.body;
+      expect(error).to.contain('Invalid date');
+    });
+  });
+});
