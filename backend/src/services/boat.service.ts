@@ -116,19 +116,6 @@ export class BoatService {
       throw 'Boat not found';
     }
   }
-  public async isBoatAvailable(
-    id: number,
-    dateStart: Date,
-    dateEnd: Date
-  ): Promise<boolean> {
-    const boat = await Boat.findByPk(id);
-
-    if (!boat) {
-      throw `Boat with id ${id} doesn't exist!`;
-    }
-
-    return boat.isAvailable(dateStart, dateEnd);
-  }
 
   public async getAvailableBoatsOverviewData(
     dateStart: Date,
@@ -147,5 +134,15 @@ export class BoatService {
     });
 
     return filteredBoats.map(this.boatInstanceToOverviewData);
+  }
+
+  public async getBookedDates(id: number): Promise<Date[]> {
+    const boat = await Boat.findByPk(id);
+
+    if (!boat) {
+      throw `Boat with id ${id} doesn't exist!`;
+    }
+
+    return boat.getBookedDates();
   }
 }

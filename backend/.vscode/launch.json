@@ -1,0 +1,27 @@
+// Debugger config for ts-node-dev stolen from
+// https://github.com/wclr/ts-node-dev/issues/9#issuecomment-648118389
+// and
+// https://gist.github.com/cecilemuller/2963155d0f249c1544289b78a1cdd695?permalink_comment_id=4101212#gistcomment-4101212
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ts-node",
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "restart": true,
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/ts-node-dev",
+      "cwd": "${workspaceRoot}",
+      "internalConsoleOptions": "openOnSessionStart",
+      "args": [
+        "--inspect",
+        "--respawn",
+        "--no-notify",
+        "--require",
+        "tsconfig-paths/register",
+        "./src/server.ts"
+      ]
+    }
+  ]
+}

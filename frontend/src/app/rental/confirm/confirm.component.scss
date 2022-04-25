@@ -7,22 +7,19 @@
   justify-content: space-around;
 }
 
-#details,
+#boat,
 #invoice {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+}
+
+#details {
+  padding: 2em;
 }
 
 h2 {
   margin: 0;
-}
-
-h3 {
-  color: mat.get-color-from-palette(
-    theme.$dogstack-project-uml-primary,
-    'default'
-  );
 }
 
 .icon {
@@ -32,4 +29,8 @@ h3 {
 
 .icon :first-child {
   margin-right: 0.5em;
+}
+
+img {
+  object-fit: cover;
 }

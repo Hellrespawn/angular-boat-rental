@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { requirementsToString } from 'src/app/boat';
-import { BoatService } from 'src/app/boat-service.service';
 import { BoatDetailData } from '../boat-card/boat-details/boat-details.component';
 import { RentalService } from '../rental.service';
+import { SuccessDialogComponent } from './success-dialog/success-dialog.component';
 
 @Component({
   selector: 'app-confirm',
@@ -11,12 +13,13 @@ import { RentalService } from '../rental.service';
 })
 export class ConfirmComponent implements OnInit {
   public boat!: BoatDetailData;
-  public dateStart?: Date;
-  public dateEnd?: Date;
+  private dateRange: [Date, Date] | null = null;
+  private dialogRef?: MatDialogRef<SuccessDialogComponent, any>;
 
   constructor(
+    private dialog: MatDialog,
     private rentalService: RentalService,
-    private boatService: BoatService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -25,21 +28,33 @@ export class ConfirmComponent implements OnInit {
   }
 
   private getBoat(): void {
-    const id = this.rentalService.selectedBoatId;
+    // BoatDetailsComponent makes sure that this is set.
+    const id = this.rentalService.selectedBoatId!;
 
-    if (id) {
-      this.boatService
-        .getBoatDetailData(id)
-        .subscribe((boat) => (this.boat = boat));
-    }
+    this.rentalService
+      .getBoatDetailData(id)
+      .subscribe((boat) => (this.boat = boat));
   }
 
   private getDates(): void {
-    const dateRange = this.rentalService.dateFilter;
+    this.rentalService.dateRange.subscribe(
+      (dateRange) => (this.dateRange = dateRange)
+    );
+  }
 
-    if (dateRange) {
-      [this.dateStart, this.dateEnd] = dateRange;
+  /**
+   * Checks whether or not dateStart and dateEnd are set.
+   */
+  public isDateSet(): boolean {
+    return Boolean(this.dateRange);
+  }
+
+  public isOrderValid(): boolean {
+    if (this.isDateSet()) {
+      return this.rentalService.getDays(...this.dateRange!) >= 3;
     }
+
+    return false;
   }
 
   public formatDate(date: Date): string {
@@ -51,15 +66,32 @@ export class ConfirmComponent implements OnInit {
   }
 
   public getDays(): number {
-    if (!this.dateStart || !this.dateEnd) {
+    if (!this.isDateSet()) {
       return NaN;
     }
 
-    let ms = this.dateEnd.getTime() - this.dateStart.getTime();
-    return ms / 1000 / 60 / 60 / 24;
+    const [dateStart, dateEnd] = this.dateRange!;
+
+    return this.rentalService.getDays(dateStart, dateEnd);
   }
 
   public getTotalPrice(): number {
     return this.getDays() * this.boat.pricePerDay;
+  }
+
+  public confirmOrder(): void {
+    // TODO Get user ID here, when it exists.
+
+    this.rentalService.addRental(1).subscribe((id) => {
+      this.rentalService.reset();
+
+      this.dialogRef = this.dialog.open(SuccessDialogComponent, {
+        data: { rentalId: id },
+      });
+
+      this.dialogRef.afterClosed().subscribe((result) => {
+        this.router.navigate(['/']);
+      });
+    });
   }
 }

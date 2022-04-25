@@ -1,10 +1,10 @@
-import { Sequelize } from 'sequelize-typescript';
+import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import mysql, { Connection } from 'mysql2/promise';
 import { MODELS } from '../model';
 
-export async function initSequelize(options?: {
-  logging?: boolean;
-}): Promise<Sequelize> {
+export async function initSequelize(
+  options?: SequelizeOptions
+): Promise<Sequelize> {
   const sequelize = new Sequelize(
     process.env.DB_NAME ?? 'dogstack-het-vrolijke-avontuur',
     process.env.DB_USER ?? 'root',

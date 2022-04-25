@@ -10,6 +10,14 @@
   );
   box-shadow: 0px 4px 4px #00000044;
   border-radius: 4px;
+  overflow: hidden;
+}
+
+.custom-card.accent {
+  background-color: mat.get-color-from-palette(
+    theme.$dogstack-project-uml-accent,
+    'default'
+  );
 }
 
 .custom-card.vertical {
@@ -24,6 +32,10 @@
 .custom-card.side-by-side img,
 .custom-card.side-by-side .content {
   width: 50%;
+}
+
+.custom-card.allow-overflow {
+  overflow: visible;
 }
 
 .custom-card img {

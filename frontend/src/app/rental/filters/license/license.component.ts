@@ -7,13 +7,9 @@ import { RentalService, LicenseFilter } from '../../rental.service';
   styleUrls: ['./license.component.scss'],
 })
 export class LicenseComponent {
-  public selectedOption: LicenseFilter = 'both';
+  constructor(public rentalService: RentalService) {}
 
-  public changeFilter(): void {
-    this.rentalService.licenseFilter = this.selectedOption;
-  }
-
-  constructor(private rentalService: RentalService) {
-    this.selectedOption = rentalService.licenseFilter;
+  public updateFilter(change: LicenseFilter): void {
+    this.rentalService.licenseFilter.next(change);
   }
 }
