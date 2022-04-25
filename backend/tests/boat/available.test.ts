@@ -2,9 +2,10 @@ import request from 'supertest';
 import { Boat } from '../../src/model/boat.model';
 import { app } from '../../src/server';
 import { expect } from 'chai';
-import { closeDatabase, initDatabase } from '../mocha-setup';
 import { Customer } from '../../src/model/customer.model';
 import { Rental } from '../../src/model/rental.model';
+import { initDatabase } from '../mocha-setup';
+import { dropDatabase } from '../../src/util/database';
 
 describe('Test Boat', () => {
   let boat: Boat;
@@ -12,7 +13,6 @@ describe('Test Boat', () => {
 
   before(async () => {
     await initDatabase();
-
     boat = await Boat.create({
       name: 'testboat',
       registrationNumber: 1234,
@@ -46,7 +46,9 @@ describe('Test Boat', () => {
     });
   });
 
-  after(closeDatabase);
+  after(async () => {
+    await dropDatabase();
+  });
 
   describe('boat.isAvailable', () => {
     it('Responds `{ available: false }` when boat is unavailable', async () => {
