@@ -37,7 +37,7 @@ export class ImageController {
     const name = req.params.name;
 
     if (await this.imageService.saveImage(buffer, name)) {
-      res.json({ route: `/image/${name}` });
+      res.json({ route: `/images/${name}` });
     } else {
       res.status(400).json({ error: 'File exists!' });
     }
@@ -50,7 +50,7 @@ export class ImageController {
     const name = req.params.name;
 
     if (await this.imageService.deleteImage(name)) {
-      res.json({ deleted: `/image/${name}` });
+      res.json({ deleted: `/images/${name}` });
     } else {
       res.status(404).end();
     }

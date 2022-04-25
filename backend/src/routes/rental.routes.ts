@@ -16,14 +16,14 @@ export function rentalRoutes(controller: RentalController): Router {
   const router = Router();
 
   router.post(
-    '/rental/',
+    '/rentals/',
     validateNewRental,
     controller.addRental.bind(controller)
   );
 
-  router.get('/rental/upcoming');
-  router.get('/rental/current');
-  router.get('/rental/past');
+  router.get('/rentals/upcoming');
+  router.get('/rentals/current');
+  router.get('/rentals/past');
 
   return router;
 }
