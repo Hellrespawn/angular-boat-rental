@@ -10,8 +10,20 @@ import { Boat } from './boat.model';
 import { Customer } from './customer.model';
 import { Skipper } from './skipper.model';
 
+type RentalData = {
+  boatId: number;
+  boat: Boat;
+  customerId: number;
+  customer: Customer;
+  skipperId?: number;
+  skipper?: Skipper;
+  dateStart: Date;
+  dateEnd: Date;
+  paid: boolean;
+};
+
 @Table
-export class Rental extends Model {
+export class Rental extends Model implements RentalData {
   @ForeignKey(() => Boat)
   @AllowNull(false)
   @Column
