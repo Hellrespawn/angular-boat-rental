@@ -6,44 +6,48 @@ import { closeDatabase, initDatabase } from '../mocha-setup';
 import { Customer } from '../../src/model/customer.model';
 import { Rental } from '../../src/model/rental.model';
 
+async function seedDatabase(): Promise<Boat> {
+  const boat = await Boat.create({
+    name: 'testboat',
+    registrationNumber: 1234,
+    pricePerDay: 1234,
+    skipperRequired: false,
+    maintenance: false,
+    imageRoute: '',
+    lengthInM: 1234,
+    maxOccupants: 1234,
+    boatType: 'motor',
+    maxSpeedInKmH: 1234,
+    sailAreaInM2: undefined,
+  });
+
+  const customer = await Customer.create({
+    firstName: 'Stef',
+    lastName: 'Korporaal',
+    license: true,
+    dateOfBirth: new Date('1991-09-25'),
+    emailAddress: 'stef@test.nl',
+    password: 'password',
+    blocked: false,
+  });
+
+  await Rental.create({
+    boatId: boat.id,
+    customerId: customer.id,
+    dateStart: new Date('2022-01-01'),
+    dateEnd: new Date('2022-01-10'),
+    paid: true,
+  });
+
+  return boat;
+}
+
 describe('Test /boat/:id/bookedDates', () => {
   let boat: Boat;
-  let customer: Customer;
 
   before(async () => {
     await initDatabase();
-
-    boat = await Boat.create({
-      name: 'testboat',
-      registrationNumber: 1234,
-      pricePerDay: 1234,
-      skipperRequired: false,
-      maintenance: false,
-      imageRoute: '',
-      lengthInM: 1234,
-      maxOccupants: 1234,
-      boatType: 'motor',
-      maxSpeedInKmH: 1234,
-      sailAreaInM2: undefined,
-    });
-
-    customer = await Customer.create({
-      firstName: 'Stef',
-      lastName: 'Korporaal',
-      license: true,
-      dateOfBirth: new Date('1991-09-25'),
-      emailAddress: 'stef@test.nl',
-      password: 'password',
-      blocked: false,
-    });
-
-    await Rental.create({
-      boatId: boat.id,
-      customerId: customer.id,
-      dateStart: new Date('2022-01-01'),
-      dateEnd: new Date('2022-01-10'),
-      paid: true,
-    });
+    boat = await seedDatabase();
   });
 
   after(closeDatabase);
@@ -71,7 +75,7 @@ describe('Test /boat/:id/bookedDates', () => {
   });
 
   describe('Test /boat/available/:dateStart/:dateEnd', () => {
-    it('Responds empty array when no boats are available', async () => {
+    it('Responds with an empty array when no boats are available', async () => {
       const res = await request(app).get(
         '/boat/available/2022-01-01/2022-01-10'
       );
@@ -101,7 +105,6 @@ describe('Test /boat/:id/bookedDates', () => {
       expect(res.status).to.equal(400);
 
       const { error } = res.body;
-
       expect(error).to.contain('Invalid date');
     });
   });
