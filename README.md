@@ -1,27 +1,42 @@
-# DogstackProjectUml
+# Het Vrolijke avontuur - DogStack
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.5.
+## Backend installeren
 
-## Development server
+1. Navigeer naar de `backend`-map.
+1. Voer `npm install` uit.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+1. Kopieer `.env.example` naar `.env`.
+1. Pas de waarden aan voor jouw systeem.
 
-## Code scaffolding
+1. Voer `npm run sync` uit om de database te initialiseren.
+1. Voer eventueel `npm run seed` uit om test-data in de database te zetten.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Backend starten
 
-## Build
+1. Navigeer naar de `backend`-map.
+1. Voer `npm start` uit om de backend-server te starten.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Front-end installeren
 
-## Running unit tests
+1. Navigeer naar de `frontend`-map.
+1. Voer `npm install` uit.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Frontend starten
 
-## Running end-to-end tests
+1. Navigeer naar de `frontend`-map.
+1. Voer `npm start` uit om de frontend-server te starten.
+1. Navigeer naar localhost:4200
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Database verwijderen
 
-## Further help
+1. Navigeer naar de `backend`-map.
+1. Voer `npm run drop` uit.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Database resetten
+
+1. Navigeer naar de `backend`-map.
+1. Voer `npm run drop` uit.
+1. Voer `npm run sync` uit.
+1. Voer eventueel `npm run seed` uit om test-data in de database te zetten.
+
+In plaats van los `drop`, `sync`, en `debug` uit te voeren, is er ook `npm run debug` die deze stappen achter elkaar doet.
