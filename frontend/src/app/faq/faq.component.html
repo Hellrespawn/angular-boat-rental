@@ -23,6 +23,8 @@
     </section>
   </section>
   <br />
+
+  <!-- input fields section -->
   <h3>Laat een bericht achter</h3>
   <section class="question-form">
     <mat-form-field class="question-full-width" appearance="fill">
@@ -32,7 +34,8 @@
         [formControl]="nameFormControl"
         placeholder="Naam"
         value="Naam"
-        id="naam-form"
+        id="name-form"
+        #nameForm
       />
 
       <mat-error *ngIf="nameFormControl.invalid"
@@ -49,6 +52,7 @@
         [formControl]="emailFormControl"
         placeholder=""
         id="email-form"
+        #emailForm
       />
 
       <mat-error *ngIf="emailFormControl.invalid"
@@ -64,6 +68,7 @@
         placeholder=""
         [formControl]="textFormControl"
         id="textarea-form"
+        #textForm
       ></textarea>
       <mat-error *ngIf="textFormControl.invalid">
         {{ textErrorMessage() }}
@@ -74,7 +79,7 @@
       mat-raised-button
       color="primary"
       id="send-question-btn"
-      (click)="getMessage()"
+      (click)="sendMessageToBackend()"
     >
       Verstuur bericht!
     </button>

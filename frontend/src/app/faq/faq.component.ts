@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
+import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-faq',
@@ -8,7 +9,11 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./faq.component.scss'],
 })
 export class FaqComponent {
-  constructor() {}
+  constructor(private messageService: MessageService, private router: Router) {}
+  @ViewChild('nameForm') nameInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('emailForm') emailInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('textForm') textInp!: ElementRef<HTMLInputElement>;
+
   public emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
@@ -16,14 +21,20 @@ export class FaqComponent {
   public nameFormControl = new FormControl('', [Validators.required]);
   public textFormControl = new FormControl('', [Validators.required]);
 
-  //   ngOnInit(): void {
-  //     this.getMessage();
-  //   }
-  public getMessage() {
-    let message = (
-      document.getElementById('textarea-input') as HTMLTextAreaElement
-    ).value;
-    console.log(message);
+  public getMessages() {
+    let nameInp: string = this.nameInp.nativeElement.value;
+    let emailInp: string = this.emailInp.nativeElement.value;
+    let textInp: string = this.textInp.nativeElement.value;
+    console.log(nameInp);
+    console.log(emailInp);
+    console.log(textInp);
+
+    return { name: nameInp, email: emailInp, text: textInp };
+  }
+
+  public sendMessageToBackend(): void {
+    this.messageService.addMessages(this.getMessages()).subscribe();
+    this.router.navigateByUrl('/veel-gestelde-vragen');
   }
   public nameErrorMessage(): string {
     let errorMessage: string = '';
