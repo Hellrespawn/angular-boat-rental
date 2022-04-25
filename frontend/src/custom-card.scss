@@ -34,6 +34,10 @@
   width: 50%;
 }
 
+.custom-card.allow-overflow {
+  overflow: visible;
+}
+
 .custom-card img {
   object-fit: contain;
 }
