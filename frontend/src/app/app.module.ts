@@ -51,6 +51,7 @@ import { BoatDetailsComponent } from './rental/boat-card/boat-details/boat-detai
 import { DateComponent } from './rental/filters/date/date.component';
 import { ConfirmComponent } from './rental/confirm/confirm.component';
 import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-customer-overview.component';
+import { SuccessDialogComponent } from './rental/confirm/success-dialog/success-dialog.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-
     DateComponent,
     ConfirmComponent,
     AdminCustomerOverviewComponent,
+    SuccessDialogComponent,
   ],
   imports: [
     BrowserModule,

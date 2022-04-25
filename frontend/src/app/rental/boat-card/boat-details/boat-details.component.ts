@@ -1,8 +1,7 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { requirementsToString } from 'src/app/boat';
-import { BoatService } from 'src/app/boat-service.service';
 import { BoatOverviewData } from '../../rental.component';
 import { RentalService } from '../../rental.service';
 

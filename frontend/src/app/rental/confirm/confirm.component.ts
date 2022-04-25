@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { requirementsToString } from 'src/app/boat';
-import { BoatService } from 'src/app/boat-service.service';
 import { BoatDetailData } from '../boat-card/boat-details/boat-details.component';
 import { RentalService } from '../rental.service';
+import { SuccessDialogComponent } from './success-dialog/success-dialog.component';
 
 @Component({
   selector: 'app-confirm',
@@ -12,8 +14,13 @@ import { RentalService } from '../rental.service';
 export class ConfirmComponent implements OnInit {
   public boat!: BoatDetailData;
   private dateRange: [Date, Date] | null = null;
+  private dialogRef?: MatDialogRef<SuccessDialogComponent, any>;
 
-  constructor(private rentalService: RentalService) {}
+  constructor(
+    private dialog: MatDialog,
+    private rentalService: RentalService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getBoat();
@@ -73,17 +80,18 @@ export class ConfirmComponent implements OnInit {
   }
 
   public confirmOrder(): void {
-    /**     *
-     * while (!this.userService.getCurrentUser()) {
-     *   loginDialog()
-     * }
-     *
-     * this.rentalService.addRental(this.userService.getCurrentUser().id);
-     */
+    // TODO Get user ID here, when it exists.
 
     this.rentalService.addRental(1).subscribe((id) => {
-      console.log(id);
       this.rentalService.reset();
+
+      this.dialogRef = this.dialog.open(SuccessDialogComponent, {
+        data: { rentalId: id },
+      });
+
+      this.dialogRef.afterClosed().subscribe((result) => {
+        this.router.navigate(['/']);
+      });
     });
   }
 }
