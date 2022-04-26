@@ -12,6 +12,7 @@ import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-ove
 import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-skipper-overview.component';
 import { ConfirmComponent } from './rental/confirm/confirm.component';
 import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-customer-overview.component';
+import { SelectSkipperComponent } from './rental/confirm/skipper/skipper.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -22,8 +23,9 @@ const routes: Routes = [
   { path: 'registratie-pagina', component: RegistrationComponent },
   { path: 'log-In', component: LoginComponent },
   { path: 'veel-gestelde-vragen', component: FaqComponent },
-  { path: 'verhuur/bevestig', component: ConfirmComponent },
   { path: 'verhuur', component: RentalComponent },
+  { path: 'verhuur/bevestig/:boatId', component: ConfirmComponent },
+  { path: 'verhuur/schipper/:rentalId', component: SelectSkipperComponent },
   { path: 'boat-overview-admin', component: AdminBoatOverviewComponent },
   { path: 'skipper-overview-admin', component: AdminSkipperOverviewComponent },
   {

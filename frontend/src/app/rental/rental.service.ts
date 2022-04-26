@@ -5,6 +5,9 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BoatOverviewData } from './rental.component';
 import { BoatDetailData } from './boat-card/boat-details/boat-details.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { SuccessDialogComponent } from './confirm/success-dialog/success-dialog.component';
 
 type BoatOverviewResponse = { boats: BoatOverviewData[] };
 type BoatDetailResponse = { boat: BoatDetailData };
@@ -16,8 +19,6 @@ export type LicenseFilter = 'both' | 'required' | 'not-required';
   providedIn: 'root',
 })
 export class RentalService {
-  public selectedBoatId?: number;
-
   public boats: BehaviorSubject<BoatOverviewData[]> = new BehaviorSubject(
     [] as BoatOverviewData[]
   );
@@ -34,7 +35,11 @@ export class RentalService {
     'both' as LicenseFilter
   );
 
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private dialog: MatDialog,
+    private router: Router
+  ) {
     this.updateBoatOverviewData();
   }
 
@@ -103,7 +108,6 @@ export class RentalService {
 
   /** Resets all current filters. */
   public reset(): void {
-    this.selectedBoatId = undefined;
     this.licenseFilter.next('both');
     this.typeFilter.next('all');
     this.dateRange.next(null);
@@ -169,12 +173,12 @@ export class RentalService {
    * Creates a rental and returns an observable with the id of the created
    * Rental
    */
-  public addRental(customerId: number): Observable<number> {
+  public addRental(boatId: number, customerId: number): Observable<number> {
     const [dateStart, dateEnd] = this.dateRange.getValue()!;
 
     let observable = this.httpClient
       .post<{ id: number }>(`${environment.backendUrl}/rentals/`, {
-        boatId: this.selectedBoatId,
+        boatId,
         customerId,
         dateStart: dateStart,
         dateEnd: dateEnd,
@@ -211,5 +215,22 @@ export class RentalService {
    */
   public isRangeValid(dateStart: Date, dateEnd: Date): boolean {
     return this.getDays(dateStart, dateEnd) >= 3;
+  }
+
+  public openSuccessDialog(
+    rentalId: number
+  ): MatDialogRef<SuccessDialogComponent, any> {
+    this.reset();
+
+    const dialogRef = this.dialog.open(SuccessDialogComponent, {
+      data: { rentalId },
+    });
+
+    dialogRef.afterClosed().subscribe((_) => {
+      // FIXME Navigate to userpanel.
+      this.router.navigate(['/']);
+    });
+
+    return dialogRef;
   }
 }

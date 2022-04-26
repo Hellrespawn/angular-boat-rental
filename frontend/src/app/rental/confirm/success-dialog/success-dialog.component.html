@@ -1,8 +1,14 @@
-<h2>Bedankt voor je bestelling!</h2>
+<h2 mat-dialog-title>Bedankt voor je bestelling!</h2>
 
-<h3>Ordernummer: {{ this.data.rentalId }}</h3>
+<mat-dialog-content>
+  <h3>Ordernummer: {{ this.data.rentalId }}</h3>
 
-<p>
-  Je bestelling is bevestigd. Je kunt deze terugvinden in het
-  <a routerLink="/user">klantenpaneel</a>.
-</p>
+  <p>
+    Je bestelling is bevestigd. Je kunt deze terugvinden in het
+    <a routerLink="/user">klantenpaneel</a>.
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-flat-button color="primary" mat-dialog-close>OK</button>
+</mat-dialog-actions>

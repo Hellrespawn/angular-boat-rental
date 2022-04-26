@@ -53,6 +53,7 @@ import { DateComponent } from './rental/filters/date/date.component';
 import { ConfirmComponent } from './rental/confirm/confirm.component';
 import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-customer-overview.component';
 import { SuccessDialogComponent } from './rental/confirm/success-dialog/success-dialog.component';
+import { SelectSkipperComponent } from './rental/confirm/skipper/skipper.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { SuccessDialogComponent } from './rental/confirm/success-dialog/success-
     ConfirmComponent,
     AdminCustomerOverviewComponent,
     SuccessDialogComponent,
+    SelectSkipperComponent,
   ],
   imports: [
     BrowserModule,

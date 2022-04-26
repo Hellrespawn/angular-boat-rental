@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { MatDialogRef } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { requirementsToString } from 'src/app/boat';
 import { BoatDetailData } from '../boat-card/boat-details/boat-details.component';
 import { RentalService } from '../rental.service';
@@ -12,14 +12,14 @@ import { SuccessDialogComponent } from './success-dialog/success-dialog.componen
   styleUrls: ['./confirm.component.scss'],
 })
 export class ConfirmComponent implements OnInit {
+  public dateRange: [Date, Date] | null = null;
   public boat!: BoatDetailData;
-  private dateRange: [Date, Date] | null = null;
   private dialogRef?: MatDialogRef<SuccessDialogComponent, any>;
 
   constructor(
-    private dialog: MatDialog,
     private rentalService: RentalService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -28,12 +28,14 @@ export class ConfirmComponent implements OnInit {
   }
 
   private getBoat(): void {
-    // BoatDetailsComponent makes sure that this is set.
-    const id = this.rentalService.selectedBoatId!;
+    const params = this.route.snapshot.paramMap;
+    const id = parseInt(params.get('boatId') ?? '');
 
-    this.rentalService
-      .getBoatDetailData(id)
-      .subscribe((boat) => (this.boat = boat));
+    if (!isNaN(id)) {
+      this.rentalService
+        .getBoatDetailData(id)
+        .subscribe((boat) => (this.boat = boat));
+    }
   }
 
   private getDates(): void {
@@ -42,16 +44,37 @@ export class ConfirmComponent implements OnInit {
     );
   }
 
-  /**
-   * Checks whether or not dateStart and dateEnd are set.
-   */
-  public isDateSet(): boolean {
-    return Boolean(this.dateRange);
+  private getCurrentUserId(): number {
+    return 1;
+  }
+
+  private selectSkipper(rentalId: number): void {
+    this.router.navigate(['/verhuur/schipper', rentalId]);
+  }
+
+  private finishOrder(rentalId: number): void {
+    this.dialogRef = this.rentalService.openSuccessDialog(rentalId);
+  }
+
+  private confirmOrder(rentalId: number): void {
+    if (this.boat.requirements === 'skipper') {
+      this.selectSkipper(rentalId);
+    } else {
+      this.finishOrder(rentalId);
+    }
+  }
+
+  public getButtonText(): string {
+    if (this.boat && this.boat.requirements === 'skipper') {
+      return 'Selecteer schipper';
+    }
+
+    return 'Bestelling bevestigen';
   }
 
   public isOrderValid(): boolean {
-    if (this.isDateSet()) {
-      return this.rentalService.getDays(...this.dateRange!) >= 3;
+    if (this.dateRange) {
+      return this.rentalService.getDays(...this.dateRange) >= 3;
     }
 
     return false;
@@ -62,36 +85,22 @@ export class ConfirmComponent implements OnInit {
   }
 
   public requirementsToString(): string {
-    return requirementsToString(this.boat);
+    return requirementsToString(this.boat!);
   }
 
   public getDays(): number {
-    if (!this.isDateSet()) {
-      return NaN;
-    }
-
     const [dateStart, dateEnd] = this.dateRange!;
 
     return this.rentalService.getDays(dateStart, dateEnd);
   }
 
   public getTotalPrice(): number {
-    return this.getDays() * this.boat.pricePerDay;
+    return this.getDays() * this.boat!.pricePerDay;
   }
 
-  public confirmOrder(): void {
-    // TODO Get user ID here, when it exists.
-
-    this.rentalService.addRental(1).subscribe((id) => {
-      this.rentalService.reset();
-
-      this.dialogRef = this.dialog.open(SuccessDialogComponent, {
-        data: { rentalId: id },
-      });
-
-      this.dialogRef.afterClosed().subscribe((result) => {
-        this.router.navigate(['/']);
-      });
-    });
+  public handleButton(): void {
+    this.rentalService
+      .addRental(this.boat!.id, this.getCurrentUserId())
+      .subscribe(this.confirmOrder.bind(this));
   }
 }

@@ -37,11 +37,6 @@ export class BoatDetailsComponent implements OnInit {
       .subscribe((boat) => (this.boat = boat));
   }
 
-  public selectBoat(): void {
-    this.rentalService.selectedBoatId = this.boat.id;
-    this.router.navigate(['/verhuur/bevestig']);
-  }
-
   public requirementsToString(): string {
     return requirementsToString(this.boat);
   }
