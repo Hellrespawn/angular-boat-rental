@@ -14,8 +14,8 @@ export class CustomerService {
    * sends a request to the backend for all skippers in the database
    * @returns an Observable of an array of Customers
    */
-  public getCustomers(): Observable<{ customers: Customer[] }> {
-    return this.httpClient.get<{ customers: Customer[] }>(
+  public getCustomers(): Observable<Customer[]> {
+    return this.httpClient.get<Customer[]>(
       `${environment.backendUrl}/customers`
     );
   }
@@ -38,8 +38,8 @@ export class CustomerService {
   public updateBlockedStatus(
     id: number,
     updatedValue: boolean
-  ): Observable<Object> {
-    return this.httpClient.patch(`${environment.backendUrl}/customers`, {
+  ): Observable<void> {
+    return this.httpClient.patch<void>(`${environment.backendUrl}/customers`, {
       id,
       updatedValue,
     });

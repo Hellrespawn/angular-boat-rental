@@ -26,10 +26,8 @@ export class SkipperService {
    * requests all skippers from the backend
    * @returns an observable of an array of skippers (can be empty)
    */
-  public getSkippers(): Observable<{ skippers: Skipper[] }> {
-    return this.httpClient.get<{ skippers: Skipper[] }>(
-      `${environment.backendUrl}/skippers`
-    );
+  public getSkippers(): Observable<Skipper[]> {
+    return this.httpClient.get<Skipper[]>(`${environment.backendUrl}/skippers`);
   }
   /**
    * sends a request for deletion of a specific skipper to the backend

@@ -15,15 +15,18 @@ export class BoatService {
    * @param boatObject the object specifying the new boat
    * @returns and Observable of either the newly added boat or an error object
    */
-  public addBoat(boatObject: {}): Observable<any> {
-    return this.httpClient.post(`${environment.backendUrl}/boats`, boatObject);
+  public addBoat(boatObject: {}): Observable<Boat> {
+    return this.httpClient.post<Boat>(
+      `${environment.backendUrl}/boats`,
+      boatObject
+    );
   }
 
   /**
    * sends a request to the backend to fetch all Boats from the database
    * @returns an Observable of an array of all Boats in the database
    */
-  public getBoats(): Observable<any> {
+  public getBoats(): Observable<{ boats: Boat[] }> {
     return this.httpClient.get<{ boats: Boat[] }>(
       `${environment.backendUrl}/boats`
     );
@@ -34,8 +37,10 @@ export class BoatService {
    * @param id the id of the boat that needs to be deleted
    * @returns an Observable of the response object
    */
-  public deleteBoatById(id: number): Observable<Object> {
-    return this.httpClient.delete(`${environment.backendUrl}/boats/${id}`);
+  public deleteBoatById(id: number): Observable<void> {
+    return this.httpClient.delete<void>(
+      `${environment.backendUrl}/boats/${id}`
+    );
   }
   /**
    * sends a request to the backend to update the maintenance boolean value of a specific boat
@@ -46,8 +51,8 @@ export class BoatService {
   public updateMaintenanceStatus(
     id: number,
     updatedValue: boolean
-  ): Observable<Object> {
-    return this.httpClient.patch(`${environment.backendUrl}/boats`, {
+  ): Observable<void> {
+    return this.httpClient.patch<void>(`${environment.backendUrl}/boats`, {
       id,
       updatedValue,
     });
