@@ -12,11 +12,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-boat.component.scss'],
 })
 export class AddBoatComponent {
+  // input error messages
   private readonly ERROR_MESSAGE_NUMBER_UNDER_ONE: string =
     'voer a.u.b. een getal boven de 0 in';
   private readonly REQUIRED: string = 'required';
   private readonly ERROR_KEY_NUMBER_UNDER_ONE: string = 'kleinerOfGelijkAanNul';
 
+  // the snackbar inputs used in this file
   private readonly errorSnackBarInput: SnackBarInput = {
     message: 'Verkeerde invoer!',
     buttonText: 'Sluit',
@@ -43,6 +45,7 @@ export class AddBoatComponent {
     error: false,
   };
 
+  // formcontrols
   public nameControl = new FormControl(null, [Validators.required]);
   public priceControl = new FormControl(null, [
     Validators.required,
@@ -75,6 +78,7 @@ export class AddBoatComponent {
     private router: Router
   ) {}
 
+  // get error message of formcontrol methods
   public getErrorMessageForNameField(): string {
     return this.nameControl.hasError(this.REQUIRED)
       ? 'Vul a.u.b. een naam in'
@@ -126,11 +130,15 @@ export class AddBoatComponent {
       : '';
   }
 
-  // moet nog worden geïmplementeerd
+  // yet to be implemented
   public upload(event: Event): void {
     console.log(event);
   }
 
+  /**
+   * makes an array of all the form controls
+   * @returns an array of all the formcontrols
+   */
   private makeArrayOfFormControls(): Array<FormControl> {
     return [
       this.nameControl,
@@ -143,6 +151,10 @@ export class AddBoatComponent {
     ];
   }
 
+  /**
+   * checks all the formcontrols for validity
+   * @returns a boolean about the validity of all form controls
+   */
   private checkControlsValid(): boolean {
     return (
       !this.nameControl.invalid &&
@@ -154,12 +166,28 @@ export class AddBoatComponent {
     );
   }
 
+  /**
+   * marks all form controls as touched
+   */
   private markFormControlsAsTouched(): void {
     for (let control of this.makeArrayOfFormControls()) {
       control.markAsTouched();
     }
   }
 
+  /**
+   * onSubmit method, checks the form and calls the send-method if the form is valid
+   * @param name name of new boat
+   * @param registrationNumber registration number of new boat
+   * @param price price per day of new boat
+   * @param length length of boat in meters
+   * @param skipperRequired boolean about wheter or not a skipper is needed
+   * @param maxOccupants maximum amount of occupants on the ship
+   * @param sail boolean about wheter or not the boat is a sail boat
+   * @param motor boolean about wheter or not the boat is a motor boat
+   * @param maxSpeed optional maximum speed, only for motor boats
+   * @param sailM2 optional sail in square meters, only for sail boats
+   */
   public checkFields(
     name: string,
     registrationNumber: string,
@@ -195,12 +223,20 @@ export class AddBoatComponent {
     }
   }
 
+  /**
+   * resets all the formcontrols
+   */
   private resetFormControls(): void {
     for (let control of this.makeArrayOfFormControls()) {
       control.reset();
     }
   }
 
+  /**
+   * errorhandling method used in the sendNewBoatToBackend() error-pipe
+   * @param error error response
+   * @returns an Observable of never
+   */
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
     const errorArray: Array<any> = error.error.errors;
@@ -222,6 +258,10 @@ export class AddBoatComponent {
     );
   }
 
+  /**
+   * sends new boat object to backend
+   * @param boat new boat object
+   */
   private sendNewBoatToBackend(boat: Boat): void {
     const submitButton: HTMLButtonElement = <HTMLButtonElement>(
       document.getElementById('submitKnop')
@@ -241,6 +281,9 @@ export class AddBoatComponent {
       });
   }
 
+  /**
+   * resets all the values of all input fields
+   */
   private resetInputFields(): void {
     (document.getElementById('name') as HTMLInputElement).value = '';
     (document.getElementById('price') as HTMLInputElement).value = '';
@@ -292,6 +335,11 @@ class Boat {
   }
 }
 
+/**
+ * checks if the value in a form field is greater than zero
+ * @param control the formcontrol of the specific formfield
+ * @returns either a kleinerOfGelijkAanNul: true object or null
+ */
 export function smallerOrEqualToZero(
   control: AbstractControl
 ): { [key: string]: boolean } | null {

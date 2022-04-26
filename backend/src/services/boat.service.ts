@@ -1,6 +1,8 @@
 import { Boat, BoatRequirements, BoatType } from '../model/boat.model';
-import express from 'express';
 
+/**
+ * type which is required by the boat rental overview page
+ */
 export type BoatOverviewData = {
   id: number;
   imageRoute: string;
@@ -9,7 +11,9 @@ export type BoatOverviewData = {
   boatType: BoatType;
   maxOccupants: number;
 };
-
+/**
+ * type which contains additional information about the boat
+ */
 export type BoatDetailData = {
   registrationNumber: number;
   pricePerDay: number;
@@ -19,12 +23,6 @@ export type BoatDetailData = {
 };
 
 export class BoatService {
-  private boatArray: Boat[] = [];
-
-  private async updateBoats(): Promise<void> {
-    this.boatArray = await Boat.findAll();
-  }
-
   /**
    * Converts a Boat into BoatOverviewData.
    *
@@ -41,10 +39,12 @@ export class BoatService {
       maxOccupants: boat.maxOccupants,
     };
   }
-
+  /**
+   * requests all Boats from the database
+   * @returns all boats from the database
+   */
   public async returnAllBoats(): Promise<Array<Boat>> {
-    await this.updateBoats();
-    return this.boatArray;
+    return await Boat.findAll();
   }
 
   /**
@@ -86,7 +86,20 @@ export class BoatService {
 
     return boats.map(this.boatInstanceToOverviewData);
   }
-
+  /**
+   * adds a boat to the database if possible (name and registration have to be unique)
+   * @param name name of new boat
+   * @param registrationNumber registration number of new boat
+   * @param pricePerDay price per day of boat
+   * @param skipperRequired boolean describing wheter or not a skipper is needed
+   * @param imageRoute route to the image of the baot
+   * @param lengthInM length in meters of the boat
+   * @param maxOccupants maximum amount of people that can be on the boat
+   * @param boatType describes the type of boat, either motor of sail
+   * @param maxSpeedInKmH optional, only motor boats can have a max speed
+   * @param sailAreaInM2 optional, only sail boats can have a sail area in square meters
+   * @returns an object of the created boat, or an error message if for example name or registration number are already in use
+   */
   public async addBoat(
     name: string,
     registrationNumber: number,
@@ -113,6 +126,10 @@ export class BoatService {
       sailAreaInM2,
     });
   }
+  /**
+   * deletes a boat by id from the database
+   * @param idOfBoat id of the boat to identify the specific boat
+   */
   public async deleteBoat(idOfBoat: number): Promise<void> {
     const boatToDelete: Boat | null = await Boat.findByPk(idOfBoat);
     if (boatToDelete !== null) {
@@ -121,6 +138,11 @@ export class BoatService {
       throw 'Boat not found';
     }
   }
+  /**
+   * updates the maintenance boolean in a specific boat found by id
+   * @param idOfBoat id of the boat to be updated
+   * @param updatedValue new boolean value to which the maintenance boolean of the boat will be updated
+   */
   public async updateBoat(
     idOfBoat: number,
     updatedValue: boolean

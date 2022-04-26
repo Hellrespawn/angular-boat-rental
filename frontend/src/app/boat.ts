@@ -3,6 +3,7 @@ export type BoatType = 'motor' | 'sail';
 export type BoatRequirements = 'none' | 'license' | 'skipper';
 
 export type Boat = {
+  id: number;
   name: string;
   registrationNumber: number;
   pricePerDay: number;
