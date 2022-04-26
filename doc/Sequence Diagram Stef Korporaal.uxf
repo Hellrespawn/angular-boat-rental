@@ -4,8 +4,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>252</x>
-      <y>144</y>
+      <x>180</x>
+      <y>126</y>
       <w>189</w>
       <h>36</h>
     </coordinates>
@@ -16,8 +16,8 @@ getBoatOverviewData()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>387</x>
-      <y>90</y>
+      <x>315</x>
+      <y>72</y>
       <w>108</w>
       <h>27</h>
     </coordinates>
@@ -27,8 +27,8 @@ getBoatOverviewData()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>423</x>
-      <y>108</y>
+      <x>351</x>
+      <y>90</y>
       <w>27</w>
       <h>63</h>
     </coordinates>
@@ -38,8 +38,8 @@ getBoatOverviewData()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>423</x>
-      <y>153</y>
+      <x>351</x>
+      <y>135</y>
       <w>27</w>
       <h>441</h>
     </coordinates>
@@ -49,8 +49,8 @@ getBoatOverviewData()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>576</x>
-      <y>90</y>
+      <x>504</x>
+      <y>72</y>
       <w>108</w>
       <h>27</h>
     </coordinates>
@@ -60,8 +60,8 @@ getBoatOverviewData()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>621</x>
-      <y>108</y>
+      <x>549</x>
+      <y>90</y>
       <w>27</w>
       <h>63</h>
     </coordinates>
@@ -71,8 +71,8 @@ getBoatOverviewData()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>621</x>
-      <y>153</y>
+      <x>549</x>
+      <y>135</y>
       <w>27</w>
       <h>432</h>
     </coordinates>
@@ -82,8 +82,8 @@ getBoatOverviewData()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>441</x>
-      <y>153</y>
+      <x>369</x>
+      <y>135</y>
       <w>198</w>
       <h>36</h>
     </coordinates>
@@ -94,8 +94,8 @@ getBoatOverviewData()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>639</x>
-      <y>171</y>
+      <x>567</x>
+      <y>162</y>
       <w>162</w>
       <h>54</h>
     </coordinates>
@@ -106,57 +106,33 @@ returnAllBoats()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>639</x>
+      <x>567</x>
       <y>189</y>
       <w>27</w>
-      <h>198</h>
+      <h>108</h>
     </coordinates>
     <panel_attributes>
 bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>657</x>
-      <y>234</y>
-      <w>27</w>
-      <h>108</h>
-    </coordinates>
-    <panel_attributes>
-bg=orange</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>Relation</id>
     <coordinates>
-      <x>657</x>
-      <y>216</y>
-      <w>153</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-UpdateBoats()</panel_attributes>
-    <additional_attributes>30.0;40.0;60.0;40.0;60.0;10.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>675</x>
-      <y>261</y>
-      <w>225</w>
+      <x>585</x>
+      <y>207</y>
+      <w>243</w>
       <h>45</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 &lt;&lt;static&gt;&gt;
 findAll()</panel_attributes>
-    <additional_attributes>230.0;20.0;10.0;20.0</additional_attributes>
+    <additional_attributes>250.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>846</x>
-      <y>90</y>
+      <x>774</x>
+      <y>72</y>
       <w>90</w>
       <h>27</h>
     </coordinates>
@@ -166,21 +142,21 @@ findAll()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>882</x>
-      <y>108</y>
+      <x>810</x>
+      <y>90</y>
       <w>27</w>
-      <h>171</h>
+      <h>135</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>882</x>
-      <y>261</y>
+      <x>810</x>
+      <y>207</y>
       <w>18</w>
-      <h>63</h>
+      <h>72</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -188,32 +164,20 @@ findAll()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>675</x>
-      <y>297</y>
-      <w>225</w>
+      <x>585</x>
+      <y>243</y>
+      <w>243</w>
       <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 Boat[]</panel_attributes>
-    <additional_attributes>10.0;20.0;230.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>657</x>
-      <y>324</y>
-      <w>108</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-Boat[]</panel_attributes>
-    <additional_attributes>10.0;40.0;60.0;40.0;60.0;10.0;30.0;10.0</additional_attributes>
+    <additional_attributes>10.0;20.0;250.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>639</x>
-      <y>432</y>
+      <x>567</x>
+      <y>387</y>
       <w>27</w>
       <h>99</h>
     </coordinates>
@@ -224,8 +188,8 @@ bg=yellow</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>639</x>
-      <y>414</y>
+      <x>567</x>
+      <y>360</y>
       <w>234</w>
       <h>54</h>
     </coordinates>
@@ -236,8 +200,8 @@ boatInstanceToOverviewData</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>882</x>
-      <y>450</y>
+      <x>810</x>
+      <y>405</y>
       <w>18</w>
       <h>63</h>
     </coordinates>
@@ -247,8 +211,8 @@ boatInstanceToOverviewData</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>657</x>
-      <y>450</y>
+      <x>585</x>
+      <y>405</y>
       <w>243</w>
       <h>36</h>
     </coordinates>
@@ -259,20 +223,20 @@ getRequirements()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>657</x>
-      <y>477</y>
+      <x>585</x>
+      <y>432</y>
       <w>243</w>
       <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-BoatOverviewData</panel_attributes>
+Requirements</panel_attributes>
     <additional_attributes>10.0;20.0;250.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>639</x>
-      <y>369</y>
+      <x>567</x>
+      <y>279</y>
       <w>108</w>
       <h>54</h>
     </coordinates>
@@ -283,20 +247,20 @@ Boat[]</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>639</x>
-      <y>513</y>
+      <x>567</x>
+      <y>468</y>
       <w>180</w>
       <h>54</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-BoatOverviewData[]</panel_attributes>
+BoatOverviewData</panel_attributes>
     <additional_attributes>10.0;40.0;60.0;40.0;60.0;10.0;30.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>441</x>
-      <y>549</y>
+      <x>369</x>
+      <y>531</y>
       <w>198</w>
       <h>36</h>
     </coordinates>
@@ -307,19 +271,19 @@ BoatOverviewData[]</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>882</x>
-      <y>504</y>
+      <x>810</x>
+      <y>459</y>
       <w>27</w>
-      <h>144</h>
+      <h>171</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>621</x>
-      <y>576</y>
+      <x>549</x>
+      <y>558</y>
       <w>27</w>
       <h>72</h>
     </coordinates>
@@ -329,8 +293,8 @@ BoatOverviewData[]</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>423</x>
-      <y>585</y>
+      <x>351</x>
+      <y>567</y>
       <w>27</w>
       <h>63</h>
     </coordinates>
@@ -338,25 +302,25 @@ BoatOverviewData[]</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
   </element>
   <element>
-    <id>UMLFrame</id>
-    <coordinates>
-      <x>261</x>
-      <y>45</y>
-      <w>693</w>
-      <h>585</h>
-    </coordinates>
-    <panel_attributes>GET /boats/overview</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>Relation</id>
     <coordinates>
-      <x>882</x>
-      <y>315</y>
+      <x>810</x>
+      <y>270</y>
       <w>27</w>
       <h>153</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLFrame</id>
+    <coordinates>
+      <x>459</x>
+      <y>351</y>
+      <w>387</w>
+      <h>171</h>
+    </coordinates>
+    <panel_attributes>boats.map</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
