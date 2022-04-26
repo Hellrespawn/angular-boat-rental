@@ -23,14 +23,10 @@ describe('Test Message', () => {
     // console.log(res.body.message[0].name)
     expect(res.status).to.equal(200);
     expect(message.name).to.deep.equal('Testgebruiker1');
-  });
-  it('Responds `{ send: true }` when message is equal to DB message', async () => {
-    const res = await request(app).get(`/faq/`);
+
     expect(res.status).to.equal(200);
     expect(message.email).to.deep.equal('Testgebruiker@hotmail.com');
-  });
-  it('Responds `{ send: true }` when message is equal to DB message', async () => {
-    const res = await request(app).get(`/faq/`);
+
     expect(res.status).to.equal(200);
     expect(message.text).to.deep.equal('Lorem Ipsum');
   });
