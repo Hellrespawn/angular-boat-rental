@@ -4,7 +4,7 @@ import { SnackBarService, SnackBarInput } from '../snack-bar.service';
 import { smallerOrEqualToZero as smallerOrEqualToZero } from '../add-boat/add-boat.component';
 import { FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { catchError, throwError } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { SkipperService } from '../skipper.service';
 @Component({
   selector: 'app-schipper-toevoeg',
@@ -12,11 +12,13 @@ import { SkipperService } from '../skipper.service';
   styleUrls: ['./add-skipper.component.scss'],
 })
 export class AddSkipperComponent {
+  // input error messages
   private readonly ERROR_MESSAGE_NUMER_UNDER_ONE: string =
     'voer a.u.b. een getal boven de 0 in';
   private readonly REQUIRED: string = 'required';
   private readonly ERROR_KEY_NUMBER_UNDER_ONE: string = 'kleinerOfGelijkAanNul';
 
+  // all snackbar inputs used in this file
   private readonly incorrectInputSnackBarInput: SnackBarInput = {
     message: 'Verkeerde invoer!',
     buttonText: 'Sluit',
@@ -37,6 +39,7 @@ export class AddSkipperComponent {
     error: true,
   };
 
+  // all formcontrols
   public nameControl = new FormControl(null, [Validators.required]);
   public birthDateControl = new FormControl(null, [Validators.required]);
   public priceControl = new FormControl(null, [
@@ -50,6 +53,7 @@ export class AddSkipperComponent {
     private skipperService: SkipperService
   ) {}
 
+  //error message getters for form fields
   public getErrorMessageForNameField(): string {
     return this.nameControl.hasError(this.REQUIRED)
       ? 'Vul a.u.b. een naam in'
@@ -64,16 +68,24 @@ export class AddSkipperComponent {
       : '';
   }
 
-  public getErrorMessageForBirthDateField() {
+  public getErrorMessageForBirthDateField(): string {
     return this.birthDateControl.hasError(this.REQUIRED)
       ? 'Vul a.u.b. een geboorte datum in'
       : '';
   }
 
+  /**
+   * makes array of all form controls
+   * @returns returns the array of all formcontrols
+   */
   private makeArrayOfFormControls(): Array<FormControl> {
     return [this.nameControl, this.priceControl, this.birthDateControl];
   }
 
+  /**
+   * checks all formcontrols for errors
+   * @returns wheter or not there is an invalid formfield
+   */
   private checkControlsValid(): boolean {
     return (
       !this.nameControl.invalid &&
@@ -82,11 +94,17 @@ export class AddSkipperComponent {
     );
   }
 
+  /**
+   * onSubmit method, checks the formfields and if they are valid calls the sendNewSkipperToBackend method
+   * @param name name of skipper
+   * @param price price per day of skipper
+   * @param birthDate birthdate of skipper
+   */
   public checkFieldsAndAddSkipper(
     name: string,
     price: string,
     birthDate: string
-  ) {
+  ): void {
     for (let control of this.makeArrayOfFormControls()) {
       control.markAsTouched();
     }
@@ -99,13 +117,21 @@ export class AddSkipperComponent {
     }
   }
 
+  /**
+   * resets all the form controls
+   */
   private resetFormControls(): void {
     for (let control of this.makeArrayOfFormControls()) {
       control.reset();
     }
   }
 
-  private handleError(error: HttpErrorResponse) {
+  /**
+   * errorhandling method used in the sendNewSkipperToBackend() error-pipe
+   * @param error error response
+   * @returns an Observable of never
+   */
+  private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
     const errorArray: Array<any> = error.error.errors;
     this.resetFormControls();
@@ -122,6 +148,10 @@ export class AddSkipperComponent {
     );
   }
 
+  /**
+   * sends the new skipper to the backend
+   * @param skipper new skipper object
+   */
   private sendNewSkipperToBackend(skipper: Skipper): void {
     const submitButton: HTMLButtonElement = <HTMLButtonElement>(
       document.getElementById('submitKnop')
@@ -141,6 +171,9 @@ export class AddSkipperComponent {
       });
   }
 
+  /**
+   * resets the values of all the input fields
+   */
   private resetInputFields(): void {
     (document.getElementById('name') as HTMLInputElement).value = '';
     (document.getElementById('price') as HTMLInputElement).value = '';

@@ -10,19 +10,36 @@ import { Customer } from './customer';
 export class CustomerService {
   constructor(private httpClient: HttpClient) {}
 
-  public getCustomers(): Observable<any> {
-    return this.httpClient.get<{ customers: Customer[] }>(
+  /**
+   * sends a request to the backend for all skippers in the database
+   * @returns an Observable of an array of Customers
+   */
+  public getCustomers(): Observable<Customer[]> {
+    return this.httpClient.get<Customer[]>(
       `${environment.backendUrl}/customers`
     );
   }
-  public deleteCustomerById(id: number): Observable<Object> {
-    return this.httpClient.delete(`${environment.backendUrl}/customers/${id}`);
+  /**
+   * sends a request to the backend to delete a specific Customer by id
+   * @param id id of the specific Cutsomer
+   * @returns an Observable of the response object
+   */
+  public deleteCustomerById(id: number): Observable<void> {
+    return this.httpClient.delete<void>(
+      `${environment.backendUrl}/customers/${id}`
+    );
   }
+  /**
+   * sends a request to the backend to update the blocked boolean of a specific Customer by id
+   * @param id the id of the customer needed to be updated
+   * @param updatedValue the new value of the blocked boolean of specific customer
+   * @returns an Observable of the response object
+   */
   public updateBlockedStatus(
     id: number,
     updatedValue: boolean
-  ): Observable<Object> {
-    return this.httpClient.patch(`${environment.backendUrl}/customers`, {
+  ): Observable<void> {
+    return this.httpClient.patch<void>(`${environment.backendUrl}/customers`, {
       id,
       updatedValue,
     });
