@@ -18,12 +18,13 @@ describe('Test Message', () => {
   });
   after(closeDatabase);
 
-  it('Responds `{ send: true }` when message is equal to DB message', async () => {
-    const res = await request(app).get(`/faq/`);
-    // console.log(res.body.message[0].name)
+  it('Check if fields are same as DB fields', async () => {
+    const res = await request(app).get(`/faq`);
+    console.log(res.body.message[0]);
+    // console.log(message.name)
     expect(res.status).to.equal(200);
-    expect(message.name).to.equal('Testgebruiker1');
-    expect(message.email).to.equal('Testgebruiker@hotmail.com');
-    expect(message.text).to.equal('Lorem Ipsum');
+    expect(res.body.message[0].name).to.equal('Testgebruiker1');
+    expect(res.body.message[0].email).to.equal('Testgebruiker@hotmail.com');
+    expect(res.body.message[0].text).to.equal('Lorem Ipsum');
   });
 });
