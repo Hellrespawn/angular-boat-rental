@@ -59,30 +59,49 @@ export class Rental extends Model implements RentalData {
   @Column
   public paid!: boolean;
 
-  private days(): number {
+  /**
+   * Returns the number of days between dateStart and dateEnd (inclusive)
+   */
+  public days(): number {
     const ms = this.dateEnd.getTime() - this.dateStart.getTime();
-    return Math.ceil(ms / 1000 / 60 / 60 / 24);
+    return Math.ceil(ms / 1000 / 60 / 60 / 24) + 1;
   }
 
-  public priceTotal(): number {
-    const days = this.days();
+  /**
+   * Returns the total price of the rental.
+   */
+  public async priceTotal(): Promise<number> {
+    const boat = this.boat ?? (await this.$get('boat'));
 
-    let total = days * this.boat.pricePerDay;
-    if (this.skipper) {
-      total += days * this.skipper.pricePerDay;
+    const skipper: Skipper | null =
+      this.skipper ?? (await this.$get('skipper'));
+
+    const days = this.days();
+    let total = days * boat.pricePerDay;
+    if (skipper) {
+      total += days * skipper.pricePerDay;
     }
 
     return total;
   }
 
+  /**
+   * Returns true if date is during the rental period.
+   */
   private isDateDuringRental(date: Date): boolean {
     return date >= this.dateStart && date <= this.dateEnd;
   }
 
+  /**
+   * Returns true if the rental period is between dateStart and dateEnd.
+   */
   private isRentalBetweenDates(dateStart: Date, dateEnd: Date): boolean {
     return this.dateStart >= dateStart && this.dateEnd <= dateEnd;
   }
 
+  /**
+   * Checks if dateStart and dateEnd overlaps the rental period.
+   */
   public areDatesOverlapping(dateStart: Date, dateEnd: Date): boolean {
     return (
       this.isDateDuringRental(dateStart) ||
@@ -91,6 +110,9 @@ export class Rental extends Model implements RentalData {
     );
   }
 
+  /**
+   * Returns an array with all booked dates.
+   */
   public getDates(): Date[] {
     const dates: Date[] = [];
     for (

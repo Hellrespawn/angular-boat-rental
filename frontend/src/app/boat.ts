@@ -18,7 +18,7 @@ export type Boat = {
 };
 
 /**
- * Creates a string to display from
+ * Creates a string to display from BoatRequirements
  * @returns
  */
 export function requirementsToString<

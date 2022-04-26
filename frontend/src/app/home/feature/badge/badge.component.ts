@@ -6,6 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./badge.component.scss'],
 })
 export class FeatureBadgeComponent {
-  @Input() public order: 'first' | 'last' = 'first';
+  @Input() public order?: 'first' | 'last' = 'first';
   constructor() {}
 }

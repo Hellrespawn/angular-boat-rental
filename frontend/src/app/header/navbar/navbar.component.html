@@ -3,7 +3,9 @@
   <a mat-button routerLink="/verhuur">Verhuur</a>
   <a *ngIf="isGuest()" mat-button routerLink="/log-In">Login</a>
 
-  <!-- Menu-knop -->
+  <!-- Menu button -->
+  <!-- This button is hidden for guests because there are no nav items for
+  guest users. -->
   <button *ngIf="showMenuButton()" mat-button [matMenuTriggerFor]="menu">
     <mat-icon>{{ getIconName() }}</mat-icon>
   </button>
