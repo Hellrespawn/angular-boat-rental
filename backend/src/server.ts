@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Statically serve images.
-app.use('/image', express.static(path.join(__dirname, '..', 'media')));
+app.use('/images', express.static(path.join(__dirname, '..', 'media')));
 
 // Routes
 app.use(boatRoutes(boatController));
