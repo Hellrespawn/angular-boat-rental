@@ -7,6 +7,9 @@ export class CustomerController {
     private customerService: CustomerService = new CustomerService()
   ) {}
 
+  /**gets all Customers from the database through the service
+   * @param res the response sent back to the client
+   */
   public async getCustomers(res: express.Response): Promise<void> {
     try {
       const result: Customer[] =
@@ -18,6 +21,11 @@ export class CustomerController {
     }
   }
 
+  /**
+   * deletes a Customer from the database by id through the service
+   * @param req the request made to the backend
+   * @param res the response sent back to the client
+   */
   public async deleteCustomer(
     req: express.Request,
     res: express.Response
@@ -30,7 +38,10 @@ export class CustomerController {
       res.status(400).json(error);
     }
   }
-
+  /**updates the blocked-boolean in a Customer in the database by id through the service
+   * @param req the request made to the backend
+   * @param res the response sent back to the client
+   */
   public async updateCustomer(
     req: express.Request,
     res: express.Response
