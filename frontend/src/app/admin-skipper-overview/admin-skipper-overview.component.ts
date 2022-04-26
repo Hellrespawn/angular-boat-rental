@@ -36,7 +36,7 @@ export class AdminSkipperOverviewComponent implements OnInit {
    */
   private async getSkippersFromDatabase(): Promise<void> {
     this.skipperService.getSkippers().subscribe((skippers) => {
-      this.arrayOfSkippers = skippers;
+      this.arrayOfSkippers = skippers.skippers;
     });
   }
   /**
