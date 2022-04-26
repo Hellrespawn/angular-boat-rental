@@ -24,6 +24,9 @@ export class BoatCardComponent implements OnInit {
     });
   }
 
+  /**
+   * Opens boat detail dialog
+   */
   public openDialog(): void {
     this.dialogRef = this.dialog.open(BoatDetailsComponent, {
       data: { id: this.boat.id },

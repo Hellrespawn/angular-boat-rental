@@ -1,9 +1,13 @@
 <div class="custom-card with-padding side-by-side allow-overflow">
   <img class="{{ imageOrder }}" src="{{ imageSource }}" alt="Boat" />
+
   <app-badge *ngIf="badgeText" [order]="imageOrder">{{ badgeText }}</app-badge>
+
   <div class="content">
     <ng-content></ng-content>
+
     <div class="spacer"></div>
+
     <a routerLink="{{ buttonHref }}" mat-button color="primary">{{
       buttonText
     }}</a>

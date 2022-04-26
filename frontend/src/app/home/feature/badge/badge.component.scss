@@ -24,12 +24,12 @@
 
 .badge.first {
   left: var(--badge-offset);
-  transform: rotate(calc(var(--rotation) * -1)) perspective(1px);
+  transform: rotate(calc(var(--rotation) * -1));
 }
 
 .badge.last {
   right: var(--badge-offset);
-  transform: rotate(var(--rotation)) perspective(1px);
+  transform: rotate(var(--rotation));
 }
 
 .text {

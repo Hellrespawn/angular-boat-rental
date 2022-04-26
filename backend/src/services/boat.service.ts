@@ -25,6 +25,12 @@ export class BoatService {
     this.boatArray = await Boat.findAll();
   }
 
+  /**
+   * Converts a Boat into BoatOverviewData.
+   *
+   * @param boat the boat to convert
+   * @returns the converted boat
+   */
   private boatInstanceToOverviewData(boat: Boat): BoatOverviewData {
     return {
       id: boat.id,
@@ -41,6 +47,12 @@ export class BoatService {
     return this.boatArray;
   }
 
+  /**
+   * Gets BoatDetailData for boat.
+   *
+   * @param id the id of the desired boat
+   * @returns A type intersection of BoatOverviewData and BoatDetailData
+   */
   public async getBoatDetailData(
     id: number
   ): Promise<(BoatOverviewData & BoatDetailData) | null> {
@@ -64,6 +76,11 @@ export class BoatService {
     }
   }
 
+  /**
+   * Get all boats as BoatOverviewData.
+   *
+   * @returns an array of BoatOverviewData
+   */
   public async getBoatsOverviewData(): Promise<BoatOverviewData[]> {
     const boats = await this.returnAllBoats();
 
@@ -117,6 +134,14 @@ export class BoatService {
     }
   }
 
+  /**
+   * Get BoatOverviewData for all boats available between dateStart and dateEnd.
+   *
+   * @param dateStart start of period to check
+   * @param dateEnd end of period to check
+   * @returns an array of BoatOverviewData of boats available between
+   * those dates.
+   */
   public async getAvailableBoatsOverviewData(
     dateStart: Date,
     dateEnd: Date
@@ -136,6 +161,13 @@ export class BoatService {
     return filteredBoats.map(this.boatInstanceToOverviewData);
   }
 
+  /**
+   * Get all Dates for which boat with id is booked.
+   *
+   * @param id the id of the desired boat.
+   *
+   * @returns an array of Dates
+   */
   public async getBookedDates(id: number): Promise<Date[]> {
     const boat = await Boat.findByPk(id);
 

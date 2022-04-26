@@ -7,10 +7,9 @@ export class ImageController {
   /**
    * Returns buffer with image from request.
    *
-   * TODO No security at this point, will take any file of any size.
-   *
    * @param req
-   * @returns
+   *
+   * TODO No security at this point, will take any file of any size.
    */
   private async bufferImage(req: Request): Promise<Buffer> {
     return new Promise((resolve, reject) => {
@@ -31,6 +30,9 @@ export class ImageController {
 
   /**
    * Saves image to disk and responds with the route.
+   *
+   * @param req
+   * @param res
    */
   public async saveImage(req: Request, res: Response): Promise<void> {
     const buffer = await this.bufferImage(req);
@@ -45,6 +47,9 @@ export class ImageController {
 
   /**
    * Deletes an image from disk and responds with the former route.
+   *
+   * @param req
+   * @param res
    */
   public async deleteImage(req: Request, res: Response): Promise<void> {
     const name = req.params.name;

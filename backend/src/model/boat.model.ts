@@ -70,6 +70,11 @@ export class Boat extends Model implements BoatData {
   @HasMany(() => Rental)
   public rentals!: Rental[];
 
+  /**
+   * Calculates the boat's requirements.
+   *
+   * @returns the boat's requirements.
+   */
   public getRequirements(): BoatRequirements {
     let requirements: BoatRequirements = 'none';
 
@@ -88,6 +93,10 @@ export class Boat extends Model implements BoatData {
 
   /**
    * Checks all rentals for this boat to see if it's available.
+   *
+   * @param dateStart start of period to check
+   * @param dateEnd end of period to check
+   * @returns whether or not the boat is available
    */
   public async isAvailable(dateStart: Date, dateEnd: Date): Promise<boolean> {
     // If the boat instance was eagerly loaded, this.rentals will be defined,
@@ -97,6 +106,11 @@ export class Boat extends Model implements BoatData {
     return rentals.every((r) => !r.areDatesOverlapping(dateStart, dateEnd));
   }
 
+  /**
+   * Returns an all booked dates.
+   *
+   * @returns array of booked dates
+   */
   public async getBookedDates(): Promise<Date[]> {
     const rentals = this.rentals ?? (await this.$get('rentals'));
     return rentals.flatMap((rental) => rental.getDates());

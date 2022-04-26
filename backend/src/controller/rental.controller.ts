@@ -2,6 +2,9 @@ import { JSONSchemaType } from 'ajv';
 import { Request, Response } from 'express';
 import { RentalService } from '../services/rental.service';
 
+/**
+ * Interface matching the expected data for a new rental.
+ */
 type NewRentalData = {
   boatId: number;
   customerId: number;
@@ -9,6 +12,9 @@ type NewRentalData = {
   dateEnd: string;
 };
 
+/**
+ * JSON Schema describing NewRentalData
+ */
 export const newRentalSchema: JSONSchemaType<NewRentalData> = {
   type: 'object',
   properties: {
@@ -27,13 +33,19 @@ export const newRentalSchema: JSONSchemaType<NewRentalData> = {
       format: 'date-time',
     },
   },
-  required: ['boatId', 'dateStart', 'dateEnd'],
+  required: ['boatId', 'customerId', 'dateStart', 'dateEnd'],
   additionalProperties: false,
 };
 
 export class RentalController {
   constructor(private rentalService: RentalService = new RentalService()) {}
 
+  /**
+   * Adds a new rental to the database.
+   *
+   * @param req
+   * @param res
+   */
   public async addRental(req: Request, res: Response): Promise<void> {
     // Validated by middleware in routes.
     const boatId: number = req.body.boatId;

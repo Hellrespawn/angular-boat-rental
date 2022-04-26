@@ -23,14 +23,15 @@ export class NavbarComponent implements OnInit {
     return this.debugUserType;
   }
 
+  /**
+   * @returns true if the current user is a guest
+   */
   public isGuest(): boolean {
     return this.debugUserType === 'guest';
   }
 
   /**
-   * Retourneert de naam van het menu-icoon.
-   *
-   * Wordt vastgesteld op basis van het huidige UserType.
+   * @returns icon name based on current user type
    */
   public getIconName(): string {
     const currentUserType = this.getCurrentUserType();
@@ -47,12 +48,17 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  /**
+   * @returns whether or not to show the menu button.
+   */
   public showMenuButton(): boolean {
     return Boolean(this.getNavigationItems().length);
   }
 
   /**
-   * Retourneert alle NavItems op basis van het huidige UserType
+   * Returns this.navItems based on the currentUserType
+   *
+   * @returns an array of NavItems
    */
   public getNavigationItems(): NavItem[] {
     let items = this.navItems.filter((item) =>

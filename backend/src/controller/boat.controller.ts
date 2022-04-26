@@ -8,6 +8,12 @@ export class BoatController {
 
   constructor(private boatService: BoatService = new BoatService()) {}
 
+  /**
+   * Check that dateString matches dateRegex and return it as a Date object.
+   *
+   * @param dateString
+   * @returns dateString as a date.
+   */
   private getAndValidateDate(dateString: string): Date {
     if (!dateString.match(BoatController.dateRegex)) {
       throw `Invalid date: "${dateString}", required format is YYYY-MM-DD`;
@@ -16,6 +22,13 @@ export class BoatController {
     return new Date(dateString);
   }
 
+  /**
+   * Checks that req.params.dateStart and req.params.dateEnd match dateRegex,
+   * and returns them as Date objects.
+   *
+   * @param req the request containing the dates
+   * @returns the dates as Date objects.
+   */
   private getAndValidateDates(req: Request): [Date, Date] {
     return [
       this.getAndValidateDate(req.params.dateStart),
@@ -33,18 +46,32 @@ export class BoatController {
     }
   }
 
+  /**
+   * Responds with detailed data of boat with id req.params.id
+   * @param req
+   * @param res
+   */
   public async getBoatDetailData(req: Request, res: Response): Promise<void> {
     try {
       // ID is checked by middleware in route.
       const id = +req.params.id;
       const boat = await this.boatService.getBoatDetailData(id);
-      res.status(200).json({ boat });
+      if (boat) {
+        res.status(200).json({ boat });
+      } else {
+        res.status(404).json({ error: `Boat with id ${id} not found!` });
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ error });
     }
   }
 
+  /**
+   * Responds with an array of all boats as BoatOverviewData.
+   * @param req
+   * @param res
+   */
   public async getBoatOverviewData(req: Request, res: Response): Promise<void> {
     try {
       const boats = await this.boatService.getBoatsOverviewData();
@@ -55,6 +82,12 @@ export class BoatController {
     }
   }
 
+  /**
+   * Responds with an array of all boats  that are available on the specified
+   * dates as BoatOverviewData.
+   * @param req
+   * @param res
+   */
   public async getAvailableBoatsOverviewData(
     req: Request,
     res: Response
@@ -73,6 +106,12 @@ export class BoatController {
     }
   }
 
+  /**
+   * Returns an array with all dates on which the specified boat is booked.
+   *
+   * @param req
+   * @param res
+   */
   public async getBookedDates(req: Request, res: Response): Promise<void> {
     // Validated by middleware
     const id = parseInt(req.params.id);
