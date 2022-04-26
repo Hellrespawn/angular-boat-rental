@@ -1,14 +1,8 @@
 import { Table, Column, Model, Unique, HasMany } from 'sequelize-typescript';
 import { Rental } from './rental.model';
-export type SkipperData = {
-  name: string;
-  pricePerDay: number;
-  birthDate: Date;
-  leave: boolean;
-};
 
 @Table
-export class Skipper extends Model implements SkipperData {
+export class Skipper extends Model {
   @Unique @Column public name!: string;
 
   @Column public pricePerDay!: number;
