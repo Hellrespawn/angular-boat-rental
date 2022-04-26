@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
-import { RentalService, LicenseFilter } from '../../rental.service';
+import { LicenseFilter } from '../../rental.service';
+import { BaseFilter } from '../filter';
 
 @Component({
   selector: 'app-filters-license',
   templateUrl: './license.component.html',
-  styleUrls: ['./license.component.scss'],
+  styleUrls: ['../filter.scss'],
 })
-export class LicenseComponent {
-  constructor(public rentalService: RentalService) {}
-
+export class LicenseComponent extends BaseFilter<LicenseFilter> {
   public updateFilter(change: LicenseFilter): void {
     this.rentalService.licenseFilter.next(change);
   }

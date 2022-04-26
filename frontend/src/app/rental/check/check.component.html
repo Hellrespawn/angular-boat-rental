@@ -6,6 +6,8 @@
   <div id="container">
     <section id="boat" class="custom-card">
       <img src="{{ boat.imageRoute }}" alt="{{ boat.name }}" />
+
+      <!-- Boat Details -->
       <section id="details">
         <div>
           <h2>{{ boat.name }}</h2>
@@ -38,23 +40,25 @@
         </div>
       </section>
     </section>
+
+    <!-- Boat invoice -->
     <section id="invoice" class="custom-card with-padding accent">
       <app-filters-date [boatId]="boat.id"></app-filters-date>
-      <h3 *ngIf="!isDateSet()">Kies een datum!</h3>
+      <h3 *ngIf="!dateRange">Kies een datum!</h3>
 
       <h3>
-        <span *ngIf="isDateSet()">{{ getDays() }} dagen à </span>€
+        <span *ngIf="dateRange">{{ getDays() }} dagen à </span>€
         {{ boat.pricePerDay }} per dag
       </h3>
-      <h3 *ngIf="isDateSet()">Subtotaal: € {{ getTotalPrice() }}</h3>
+      <h3 *ngIf="dateRange">Subtotaal: € {{ getTotalPrice() }}</h3>
 
       <button
         *ngIf="isOrderValid()"
-        (click)="confirmOrder()"
+        (click)="handleButton()"
         mat-raised-button
         color="primary"
       >
-        Nu Betalen
+        {{ getButtonText() }}
       </button>
 
       <button
@@ -63,7 +67,7 @@
         color="primary"
         disabled
       >
-        Nu Betalen
+        {{ getButtonText() }}
       </button>
     </section>
   </div>

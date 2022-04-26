@@ -28,7 +28,11 @@
       >
     </div>
 
-    <button mat-raised-button color="primary" (click)="selectBoat()">
+    <button
+      mat-raised-button
+      color="primary"
+      [routerLink]="['/verhuur/controleer', this.boat.id]"
+    >
       Boek {{ boat.name }} nu!
     </button>
   </section>

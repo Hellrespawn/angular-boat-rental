@@ -1,0 +1,18 @@
+@use '@angular/material' as mat;
+@use 'src/custom-theme.scss' as theme;
+
+.custom-card {
+  background-color: mat.get-color-from-palette(
+    theme.$dogstack-project-uml-accent,
+    'lighter'
+  );
+
+  display: flex;
+  justify-content: space-around;
+}
+
+@media only screen and (max-width: 640px) {
+  .custom-card {
+    flex-direction: column;
+  }
+}

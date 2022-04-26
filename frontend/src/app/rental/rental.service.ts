@@ -16,8 +16,6 @@ export type LicenseFilter = 'both' | 'required' | 'not-required';
   providedIn: 'root',
 })
 export class RentalService {
-  public selectedBoatId?: number;
-
   public boats: BehaviorSubject<BoatOverviewData[]> = new BehaviorSubject(
     [] as BoatOverviewData[]
   );
@@ -103,7 +101,6 @@ export class RentalService {
 
   /** Resets all current filters. */
   public reset(): void {
-    this.selectedBoatId = undefined;
     this.licenseFilter.next('both');
     this.typeFilter.next('all');
     this.dateRange.next(null);
@@ -169,12 +166,12 @@ export class RentalService {
    * Creates a rental and returns an observable with the id of the created
    * Rental
    */
-  public addRental(customerId: number): Observable<number> {
+  public addRental(boatId: number, customerId: number): Observable<number> {
     const [dateStart, dateEnd] = this.dateRange.getValue()!;
 
     let observable = this.httpClient
       .post<{ id: number }>(`${environment.backendUrl}/rentals/`, {
-        boatId: this.selectedBoatId,
+        boatId,
         customerId,
         dateStart: dateStart,
         dateEnd: dateEnd,

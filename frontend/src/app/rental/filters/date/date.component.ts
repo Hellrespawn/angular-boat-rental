@@ -5,7 +5,7 @@ import { RentalService } from '../../rental.service';
 @Component({
   selector: 'app-filters-date',
   templateUrl: './date.component.html',
-  styleUrls: ['./date.component.scss'],
+  styleUrls: ['../filter.scss'],
 })
 export class DateComponent implements OnInit {
   @Input() public boatId!: number;
@@ -98,7 +98,7 @@ export class DateComponent implements OnInit {
     // Doing this in ngModelChange means Angular doesn't notice when
     // this.dateEnd is nulled out. Adding a small delay fixes this.
     if (change && this.dateStart) {
-      setTimeout(this.updateDateRange.bind(this), 1);
+      setTimeout(this.updateDateRange.bind(this), 10);
     }
   }
 
