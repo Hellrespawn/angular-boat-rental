@@ -1,16 +1,16 @@
 import { Skipper } from '../model/skipper.model';
 export class SkipperService {
-  private skipperArray: Skipper[] = [];
-
-  private async updateSkippers(): Promise<void> {
-    this.skipperArray = await Skipper.findAll();
-  }
-
+  /**
+   * returns all Skippers in the database
+   */
   public async returnAllSkippers(): Promise<Array<Skipper>> {
-    await this.updateSkippers();
-    return this.skipperArray;
+    return await Skipper.findAll();
   }
-
+  /**
+   * updates the leave boolean of a skipper found by id to new value
+   * @param idOfSkipper id of skipper to be updated
+   * @param updatedValue updated value of leave boolean
+   */
   public async updateSkipper(
     idOfSkipper: number,
     updatedValue: boolean
@@ -24,6 +24,10 @@ export class SkipperService {
     }
   }
 
+  /**
+   * delete skipper from database found by id
+   * @param idOfSkipper id of skipper to be deleted
+   */
   public async deleteSkipper(idOfSkipper: number): Promise<void> {
     const skipperToDelete: Skipper | null = await Skipper.findByPk(idOfSkipper);
     if (skipperToDelete !== null) {
@@ -33,6 +37,12 @@ export class SkipperService {
     }
   }
 
+  /**
+   * adds a skipper to the database
+   * @param name name of new skipper
+   * @param pricePerDay price of skipper per day
+   * @param birthDate birthdate of new skipper
+   */
   public async addSkipper(
     name: string,
     pricePerDay: number,
