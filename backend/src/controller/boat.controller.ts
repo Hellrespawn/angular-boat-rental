@@ -23,6 +23,11 @@ export class BoatController {
     ];
   }
 
+  /**
+   * gets all boats from database through the boat service
+   * @param req the request made to the backend
+   * @param res the response sent back to the client
+   */
   public async getBoats(req: Request, res: Response): Promise<void> {
     try {
       const boats: Boat[] = await this.boatService.returnAllBoats();
@@ -83,6 +88,11 @@ export class BoatController {
     }
   }
 
+  /**
+   * adds a new boat to the database through the service
+   * @param req the request made to the backend
+   * @param res the response sent back to the client
+   */
   public async addBoat(req: Request, res: Response): Promise<void> {
     const name: string = req.body.name;
     const registrationNumber: number = req.body.registrationNumber;
@@ -112,6 +122,11 @@ export class BoatController {
       res.status(400).send(error);
     }
   }
+  /**
+   * deletes a boat by id from the database through the service
+   * @param req the request made to the backend
+   * @param res the response sent back to the client
+   */
   public async deleteBoat(req: Request, res: Response): Promise<void> {
     const idOfBoat: number = +req.params.id;
     try {
@@ -122,6 +137,11 @@ export class BoatController {
     }
   }
 
+  /**
+   * updates the maintenance boolean of a specific boat by id through the service
+   * @param req the request made to the backend
+   * @param res the response sent back to the client
+   */
   public async updateBoat(req: Request, res: Response): Promise<void> {
     const idOfBoat: number = +req.body.id;
     const updatedValue: boolean = req.body.updatedValue;
