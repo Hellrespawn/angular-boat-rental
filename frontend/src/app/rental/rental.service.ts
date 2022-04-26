@@ -5,9 +5,6 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BoatOverviewData } from './rental.component';
 import { BoatDetailData } from './boat-card/boat-details/boat-details.component';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { SuccessDialogComponent } from './success-dialog/success-dialog.component';
 
 type BoatOverviewResponse = { boats: BoatOverviewData[] };
 type BoatDetailResponse = { boat: BoatDetailData };
@@ -35,11 +32,7 @@ export class RentalService {
     'both' as LicenseFilter
   );
 
-  constructor(
-    private httpClient: HttpClient,
-    private dialog: MatDialog,
-    private router: Router
-  ) {
+  constructor(private httpClient: HttpClient) {
     this.updateBoatOverviewData();
   }
 
@@ -215,22 +208,5 @@ export class RentalService {
    */
   public isRangeValid(dateStart: Date, dateEnd: Date): boolean {
     return this.getDays(dateStart, dateEnd) >= 3;
-  }
-
-  public openSuccessDialog(
-    rentalId: number
-  ): MatDialogRef<SuccessDialogComponent, any> {
-    this.reset();
-
-    const dialogRef = this.dialog.open(SuccessDialogComponent, {
-      data: { rentalId },
-    });
-
-    dialogRef.afterClosed().subscribe((_) => {
-      // FIXME Navigate to userpanel.
-      this.router.navigate(['/']);
-    });
-
-    return dialogRef;
   }
 }

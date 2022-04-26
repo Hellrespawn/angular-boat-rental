@@ -52,7 +52,7 @@ import { BoatDetailsComponent } from './rental/boat-card/boat-details/boat-detai
 import { DateComponent } from './rental/filters/date/date.component';
 import { CheckComponent } from './rental/check/check.component';
 import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-customer-overview.component';
-import { SuccessDialogComponent } from './rental/success-dialog/success-dialog.component';
+import { SuccessDialogComponent } from './rental/payment/success-dialog/success-dialog.component';
 import { SelectSkipperComponent } from './rental/skipper/skipper.component';
 import { PaymentComponent } from './rental/payment/payment.component';
 import { FiltersComponent } from './rental/filters/filters.component';

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RentalService } from '../rental.service';
-import { SuccessDialogComponent } from '../success-dialog/success-dialog.component';
+import { SuccessDialogComponent } from './success-dialog/success-dialog.component';
 
 @Component({
   selector: 'app-payment',
@@ -13,7 +13,9 @@ export class PaymentComponent implements OnInit {
   private dialogRef?: MatDialogRef<SuccessDialogComponent, any>;
 
   constructor(
+    private dialog: MatDialog,
     private rentalService: RentalService,
+    private router: Router,
     private route: ActivatedRoute
   ) {}
 
@@ -27,6 +29,15 @@ export class PaymentComponent implements OnInit {
   }
 
   private finishOrder(rentalId: number): void {
-    this.dialogRef = this.rentalService.openSuccessDialog(rentalId);
+    this.rentalService.reset();
+
+    this.dialogRef = this.dialog.open(SuccessDialogComponent, {
+      data: { rentalId },
+    });
+
+    this.dialogRef.afterClosed().subscribe((_) => {
+      // FIXME Navigate to userpanel.
+      this.router.navigate(['/']);
+    });
   }
 }
