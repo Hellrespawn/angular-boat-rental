@@ -14,7 +14,9 @@ import { SnackBarInput, SnackBarService } from '../snack-bar.service';
   styleUrls: ['./admin-customer-overview.component.scss'],
 })
 export class AdminCustomerOverviewComponent implements OnInit {
+  // array of all the customers, gets rendered in html with an *ngFor loop
   public arrayOfCustomers: CustomerForAdmin[] = [];
+  // input for the snackbar on succesvol deletion of a boat
   private readonly succesSnackbarInput: SnackBarInput = {
     message: 'Klant is verwijderd!',
     buttonText: 'Sluit',
@@ -29,11 +31,19 @@ export class AdminCustomerOverviewComponent implements OnInit {
   ngOnInit(): void {
     this.getCustomersFromDatabase();
   }
+  /**
+   * sends a request to the backend via the service to fetch all customers, then stores them in this.arrayOfCustomers
+   */
   private async getCustomersFromDatabase(): Promise<void> {
     this.customerService.getCustomers().subscribe((customers) => {
       this.arrayOfCustomers = customers;
     });
   }
+  /**
+   * sends a request to the backend via the service to delete a customer with a certain id, and if succesful deletes the deleted customer from the frontend
+   * @param id id of customer to be deleted
+   * @param index index of customer to be deleted (to delete from frontend)
+   */
   public async deleteCustomerById(id: number, index: number): Promise<void> {
     this.customerService.deleteCustomerById(id).subscribe(() => {
       this.arrayOfCustomers.splice(index, 1);
@@ -42,6 +52,12 @@ export class AdminCustomerOverviewComponent implements OnInit {
       );
     });
   }
+  /**
+   * sends a request to the backend via the service to update the blocked boolean of a customer with a certain id, and if succesful updates the updated customer in the frontend
+   * @param id id of customer to update
+   * @param updatedValue updated value of the blocked boolean
+   * @param index index of customer to be updated (in frontend)
+   */
   public async updateBlocked(
     id: number,
     updatedValue: boolean,
@@ -51,6 +67,11 @@ export class AdminCustomerOverviewComponent implements OnInit {
       this.arrayOfCustomers[index].blocked = updatedValue;
     });
   }
+  /**
+   * parses a date string to an instance of the Date class, needed because of a bug
+   * @param dateString the string containing the date
+   * @returns an instance of the Date class
+   */
   public parseDateStringToDate(dateString: string | Date): Date {
     return new Date(dateString);
   }
