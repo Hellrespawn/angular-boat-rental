@@ -11,34 +11,13 @@ import { Rental } from './rental.model';
 
 export type BoatType = 'sail' | 'motor';
 
-// This is a type instead of an interface because Sequelize complains with:
-//
-// Argument of type 'BoatData' is not assignable to parameter of type 'Optional<any, string>'.
-// Type 'BoatData' is not assignable to type 'Omit<any, string>'.
-//  Index signature for type 'number' is missing in type 'BoatData'.
-//
-// If it's an interface.
-export type BoatData = {
-  name: string;
-  registrationNumber: number;
-  pricePerDay: number;
-  skipperRequired: boolean;
-  maintenance: boolean;
-  imageRoute: string;
-  lengthInM: number;
-  maxOccupants: number;
-  boatType: BoatType;
-  maxSpeedInKmH?: number;
-  sailAreaInM2?: number;
-};
-
 export type BoatRequirements = 'none' | 'license' | 'skipper';
 
 // Not familiar with a way to construct this from the above type.
 const BOAT_TYPES = ['sail', 'motor'];
 
 @Table
-export class Boat extends Model implements BoatData {
+export class Boat extends Model {
   @AllowNull(false) @Unique @Column public name!: string;
   @AllowNull(false) @Unique @Column public registrationNumber!: number;
   @AllowNull(false) @Column public pricePerDay!: number;

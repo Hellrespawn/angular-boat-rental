@@ -21,17 +21,8 @@ function getRequiredDateString(): string {
   return `${year}-${month}-${day}`;
 }
 
-export type CustomerData = {
-  firstName: string;
-  lastName: string;
-  license: boolean;
-  dateOfBirth: Date;
-  emailAddress: string;
-  password: string;
-};
-
 @Table
-export class Customer extends Model implements CustomerData {
+export class Customer extends Model {
   @AllowNull(false) @Column public firstName!: string;
   @AllowNull(false) @Column public lastName!: string;
   @AllowNull(false) @Column public license!: boolean;

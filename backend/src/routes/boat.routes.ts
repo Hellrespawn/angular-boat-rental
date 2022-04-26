@@ -10,7 +10,7 @@ export function boatRoutes(controller: BoatController): Router {
   });
 
   router.get('/boats/overview', (req: Request, res: Response): void => {
-    controller.getBoatOverviewData(req, res);
+    controller.getBoatsOverviewData(req, res);
   });
 
   // Get all available boats between dates.
