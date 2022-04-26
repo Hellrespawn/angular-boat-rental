@@ -47,32 +47,32 @@ function randomDate(start: Date, end: Date): Date {
 }
 
 async function insertMockBoats() {
-  for (const name of BOAT_NAMES) {
-    const boatType = randomInt(0, 1) ? 'sail' : 'motor';
+  BOAT_NAMES.forEach(async (name, i) => {
+    const boatType = ['sail', 'motor'][i % 2];
 
     const imageRoute =
       boatType == 'sail'
         ? SAILBOAT_PLACEHOLDER_PATH
         : MOTORBOAT_PLACEHOLDER_PATH;
 
-    const sailAreaInM2 = boatType === 'sail' ? randomInt(100, 200) : undefined;
-
-    const maxSpeedInKmH = boatType === 'motor' ? randomInt(10, 30) : undefined;
+    const maxOccupants = [8, 8, 16, 16][i % 4];
+    const sailAreaInM2 = [100, undefined, 200, undefined][i % 4];
+    const maxSpeedInKmH = [undefined, 10, undefined, 30][i % 4];
 
     await Boat.create({
       name,
-      registrationNumber: randomInt(1, 10000),
       imageRoute,
+      registrationNumber: randomInt(1, 10000),
       pricePerDay: randomInt(200, 500),
-      skipperRequired: Boolean(randomInt(0, 1)),
-      maintenance: Boolean(randomInt(0, 1)),
+      skipperRequired: !(i % 3),
+      maintenance: false,
       lengthInM: randomInt(10, 30),
-      maxOccupants: randomInt(8, 16),
+      maxOccupants,
       boatType,
       sailAreaInM2,
       maxSpeedInKmH,
     });
-  }
+  });
 }
 
 async function insertMockCustomers() {
