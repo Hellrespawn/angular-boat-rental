@@ -14,7 +14,9 @@ import { SnackBarInput, SnackBarService } from '../snack-bar.service';
   styleUrls: ['./admin-boat-overview.component.scss'],
 })
 export class AdminBoatOverviewComponent implements OnInit {
+  // array of all the boats, gets rendered in html with an *ngFor loop
   public arrayOfBoats: BoatForAdmin[] = [];
+  // input for the snackbar on succesvol deletion of a boat
   private readonly succesSnackbarInput: SnackBarInput = {
     message: 'Boot is verwijderd!',
     buttonText: 'Sluit',
@@ -26,14 +28,25 @@ export class AdminBoatOverviewComponent implements OnInit {
     private snackBarService: SnackBarService
   ) {}
 
+  /**
+   * gets called when te component if fully loaded
+   */
   ngOnInit(): void {
     this.getBoatsFromDatabase();
   }
+  /**
+   * sends a request to the backend via the service to fetch all boats, then stores them in this.arrayOfBoats
+   */
   private async getBoatsFromDatabase(): Promise<void> {
     this.boatService.getBoats().subscribe(({ boats }) => {
       this.arrayOfBoats = boats;
     });
   }
+  /**
+   * sends a request to the backend via the service to delete a boat with a certain id, and if succesful deletes the deleted boat from the frontend
+   * @param id id of boat to be deleted
+   * @param index index of boat to be deleted (to delete from frontend)
+   */
   public async deleteBoatById(id: number, index: number): Promise<void> {
     this.boatService.deleteBoatById(id).subscribe(() => {
       this.arrayOfBoats.splice(index, 1);
@@ -42,6 +55,12 @@ export class AdminBoatOverviewComponent implements OnInit {
       );
     });
   }
+  /**
+   * sends a request to the backend via the service to update the maintenance boolean of a boat with a certain id, and if succesful updates the updated boat in the frontend
+   * @param id id of boat to update
+   * @param updatedValue updated value of the maintenance boolean
+   * @param index index of boat to be updated (in frontend)
+   */
   public async updateMaintenance(
     id: number,
     updatedValue: boolean,
