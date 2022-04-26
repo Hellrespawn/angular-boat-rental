@@ -1,20 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { requirementsToString } from 'src/app/boat';
 import { BoatDetailData } from '../boat-card/boat-details/boat-details.component';
 import { RentalService } from '../rental.service';
-import { SuccessDialogComponent } from './success-dialog/success-dialog.component';
 
 @Component({
-  selector: 'app-confirm',
-  templateUrl: './confirm.component.html',
-  styleUrls: ['./confirm.component.scss'],
+  selector: 'app-check',
+  templateUrl: './check.component.html',
+  styleUrls: ['./check.component.scss'],
 })
-export class ConfirmComponent implements OnInit {
+export class CheckComponent implements OnInit {
   public dateRange: [Date, Date] | null = null;
   public boat!: BoatDetailData;
-  private dialogRef?: MatDialogRef<SuccessDialogComponent, any>;
 
   constructor(
     private rentalService: RentalService,
@@ -48,19 +45,11 @@ export class ConfirmComponent implements OnInit {
     return 1;
   }
 
-  private selectSkipper(rentalId: number): void {
-    this.router.navigate(['/verhuur/schipper', rentalId]);
-  }
-
-  private finishOrder(rentalId: number): void {
-    this.dialogRef = this.rentalService.openSuccessDialog(rentalId);
-  }
-
   private confirmOrder(rentalId: number): void {
     if (this.boat.requirements === 'skipper') {
-      this.selectSkipper(rentalId);
+      this.router.navigate(['/verhuur/schipper', rentalId]);
     } else {
-      this.finishOrder(rentalId);
+      this.router.navigate(['/verhuur/betalen', rentalId]);
     }
   }
 
@@ -69,7 +58,7 @@ export class ConfirmComponent implements OnInit {
       return 'Selecteer schipper';
     }
 
-    return 'Bestelling bevestigen';
+    return 'Nu betalen';
   }
 
   public isOrderValid(): boolean {

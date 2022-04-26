@@ -5,11 +5,11 @@ import { RentalService } from '../rental.service';
 import { SuccessDialogComponent } from '../success-dialog/success-dialog.component';
 
 @Component({
-  selector: 'app-select-skipper',
-  templateUrl: './skipper.component.html',
-  styleUrls: ['./skipper.component.scss'],
+  selector: 'app-payment',
+  templateUrl: './payment.component.html',
+  styleUrls: ['./payment.component.scss'],
 })
-export class SelectSkipperComponent implements OnInit {
+export class PaymentComponent implements OnInit {
   private dialogRef?: MatDialogRef<SuccessDialogComponent, any>;
 
   constructor(

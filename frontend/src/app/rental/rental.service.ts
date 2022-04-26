@@ -7,7 +7,7 @@ import { BoatOverviewData } from './rental.component';
 import { BoatDetailData } from './boat-card/boat-details/boat-details.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { SuccessDialogComponent } from './confirm/success-dialog/success-dialog.component';
+import { SuccessDialogComponent } from './success-dialog/success-dialog.component';
 
 type BoatOverviewResponse = { boats: BoatOverviewData[] };
 type BoatDetailResponse = { boat: BoatDetailData };

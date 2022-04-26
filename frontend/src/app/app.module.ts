@@ -50,10 +50,11 @@ import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-ove
 import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-skipper-overview.component';
 import { BoatDetailsComponent } from './rental/boat-card/boat-details/boat-details.component';
 import { DateComponent } from './rental/filters/date/date.component';
-import { ConfirmComponent } from './rental/confirm/confirm.component';
+import { CheckComponent } from './rental/check/check.component';
 import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-customer-overview.component';
-import { SuccessDialogComponent } from './rental/confirm/success-dialog/success-dialog.component';
-import { SelectSkipperComponent } from './rental/confirm/skipper/skipper.component';
+import { SuccessDialogComponent } from './rental/success-dialog/success-dialog.component';
+import { SelectSkipperComponent } from './rental/skipper/skipper.component';
+import { PaymentComponent } from './rental/payment/payment.component';
 import { FiltersComponent } from './rental/filters/filters.component';
 
 @NgModule({
@@ -83,10 +84,11 @@ import { FiltersComponent } from './rental/filters/filters.component';
     AdminSkipperOverviewComponent,
     BoatDetailsComponent,
     DateComponent,
-    ConfirmComponent,
+    CheckComponent,
     AdminCustomerOverviewComponent,
     SuccessDialogComponent,
     SelectSkipperComponent,
+    PaymentComponent,
     FiltersComponent,
   ],
   imports: [
