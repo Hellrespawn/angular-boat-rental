@@ -50,8 +50,8 @@ export class SkipperService {
   public updateLeaveStatus(
     id: number,
     updatedValue: boolean
-  ): Observable<Object> {
-    return this.httpClient.patch(`${environment.backendUrl}/skippers`, {
+  ): Observable<void> {
+    return this.httpClient.patch<void>(`${environment.backendUrl}/skippers`, {
       id,
       updatedValue,
     });

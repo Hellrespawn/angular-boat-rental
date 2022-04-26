@@ -14,7 +14,7 @@ export class CustomerService {
    * sends a request to the backend for all skippers in the database
    * @returns an Observable of an array of Customers
    */
-  public getCustomers(): Observable<any> {
+  public getCustomers(): Observable<{ customers: Customer[] }> {
     return this.httpClient.get<{ customers: Customer[] }>(
       `${environment.backendUrl}/customers`
     );
@@ -24,8 +24,10 @@ export class CustomerService {
    * @param id id of the specific Cutsomer
    * @returns an Observable of the response object
    */
-  public deleteCustomerById(id: number): Observable<Object> {
-    return this.httpClient.delete(`${environment.backendUrl}/customers/${id}`);
+  public deleteCustomerById(id: number): Observable<void> {
+    return this.httpClient.delete<void>(
+      `${environment.backendUrl}/customers/${id}`
+    );
   }
   /**
    * sends a request to the backend to update the blocked boolean of a specific Customer by id
