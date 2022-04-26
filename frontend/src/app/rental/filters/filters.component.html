@@ -1,0 +1,21 @@
+<section *ngIf="(isMobile$ | async) === false" class="custom-card">
+  <app-filters-boat-type></app-filters-boat-type>
+  <mat-divider [vertical]="true"></mat-divider>
+  <app-filters-license></app-filters-license>
+  <mat-divider [vertical]="true"></mat-divider>
+  <app-filters-date></app-filters-date>
+</section>
+
+<section *ngIf="isMobile$ | async" class="custom-card">
+  <app-filters-boat-type></app-filters-boat-type>
+  <mat-divider></mat-divider>
+  <app-filters-license></app-filters-license>
+  <mat-divider></mat-divider>
+  <app-filters-date></app-filters-date>
+</section>
+
+<section id="buttons">
+  <button mat-raised-button color="primary" (click)="clearFilters()">
+    Filters herstellen
+  </button>
+</section>

@@ -54,6 +54,7 @@ import { ConfirmComponent } from './rental/confirm/confirm.component';
 import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-customer-overview.component';
 import { SuccessDialogComponent } from './rental/confirm/success-dialog/success-dialog.component';
 import { SelectSkipperComponent } from './rental/confirm/skipper/skipper.component';
+import { FiltersComponent } from './rental/filters/filters.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { SelectSkipperComponent } from './rental/confirm/skipper/skipper.compone
     AdminCustomerOverviewComponent,
     SuccessDialogComponent,
     SelectSkipperComponent,
+    FiltersComponent,
   ],
   imports: [
     BrowserModule,

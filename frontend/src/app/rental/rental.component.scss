@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 @use 'src/custom-theme.scss' as theme;
 
-#container {
+:host {
   display: flex;
   flex-direction: column;
   gap: 4em;
@@ -19,15 +19,6 @@ ul {
 .disabled {
   filter: saturate(0) contrast(0.6);
   order: 999;
-}
-.custom-card {
-  background-color: mat.get-color-from-palette(
-    theme.$dogstack-project-uml-accent,
-    'lighter'
-  );
-
-  display: flex;
-  justify-content: space-around;
 }
 
 @media only screen and (max-width: 640px) {
