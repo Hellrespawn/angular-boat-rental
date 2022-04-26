@@ -77,7 +77,10 @@ export class BoatController {
    * @param req
    * @param res
    */
-  public async getBoatOverviewData(req: Request, res: Response): Promise<void> {
+  public async getBoatsOverviewData(
+    req: Request,
+    res: Response
+  ): Promise<void> {
     try {
       const boats = await this.boatService.getBoatsOverviewData();
       res.status(200).json({ boats });
