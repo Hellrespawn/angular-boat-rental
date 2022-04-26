@@ -5,6 +5,9 @@ import express from 'express';
 export class SkipperController {
   constructor(private skipperService: SkipperService = new SkipperService()) {}
 
+  /**gets all Skippers from the database through the service
+   * @param res the response sent back to the client
+   */
   public async getSkippers(
     req: express.Request,
     res: express.Response
@@ -18,6 +21,11 @@ export class SkipperController {
     }
   }
 
+  /**
+   * adds a Skipper to the database through the service
+   * @param req the request made to the backend
+   * @param res the response sent back to the client
+   */
   public async addSkipper(
     req: express.Request,
     res: express.Response
@@ -37,6 +45,11 @@ export class SkipperController {
     }
   }
 
+  /**
+   * deletes a specific Skipper from the database by id through the service
+   * @param req the request made to the backend
+   * @param res the response sent back to the client
+   */
   public async deleteSkipper(
     req: express.Request,
     res: express.Response
@@ -50,6 +63,11 @@ export class SkipperController {
     }
   }
 
+  /**
+   * updates the leave boolean of a specific skipper by id through the service
+   * @param req the request made to the backend
+   * @param res the response sent back to the client
+   */
   public async updateSkipper(
     req: express.Request,
     res: express.Response
