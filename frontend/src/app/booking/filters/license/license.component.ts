@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LicenseFilter } from '../../rental.service';
+import { LicenseFilter } from '../../booking.service';
 import { BaseFilter } from '../filter';
 
 @Component({
@@ -9,6 +9,6 @@ import { BaseFilter } from '../filter';
 })
 export class LicenseComponent extends BaseFilter<LicenseFilter> {
   public updateFilter(change: LicenseFilter): void {
-    this.rentalService.setLicenseFilter(change);
+    this.bookingService.setLicenseFilter(change);
   }
 }

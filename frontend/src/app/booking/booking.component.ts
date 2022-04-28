@@ -2,7 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { BoatRequirements, BoatType } from '../boat';
 import { BoatService } from '../boat-service.service';
-import { BoatTypeFilter, RentalService, LicenseFilter } from './rental.service';
+import {
+  BoatTypeFilter,
+  BookingService,
+  LicenseFilter,
+} from './booking.service';
 
 export type BoatOverviewData = {
   id: number;
@@ -14,24 +18,24 @@ export type BoatOverviewData = {
 };
 
 @Component({
-  selector: 'app-rental',
-  templateUrl: './rental.component.html',
-  styleUrls: ['./rental.component.scss'],
+  selector: 'app-booking',
+  templateUrl: './booking.component.html',
+  styleUrls: ['./booking.component.scss'],
 })
 export class RentalComponent implements OnInit {
   public boats: BoatOverviewData[] = [];
 
-  constructor(private rentalService: RentalService) {}
+  constructor(private bookingService: BookingService) {}
 
   ngOnInit(): void {
     this.getBoats();
   }
 
   /**
-   * Subscribe to rentalService.boats
+   * Subscribe to bookingService.boats
    */
   private getBoats(): void {
-    this.rentalService.getBoats().subscribe((boats: BoatOverviewData[]) => {
+    this.bookingService.getBoats().subscribe((boats: BoatOverviewData[]) => {
       this.boats = boats;
     });
   }
@@ -40,7 +44,7 @@ export class RentalComponent implements OnInit {
    * Clear all filters
    */
   public clearFilters(): void {
-    this.rentalService.reset();
+    this.bookingService.reset();
   }
 
   /**
@@ -48,6 +52,6 @@ export class RentalComponent implements OnInit {
    * @returns Whether or not a boat is enabled.
    */
   public isEnabled(boat: BoatOverviewData): Observable<boolean> {
-    return this.rentalService.isEnabled(boat);
+    return this.bookingService.isEnabled(boat);
   }
 }

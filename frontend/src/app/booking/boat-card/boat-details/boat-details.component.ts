@@ -1,9 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { requirementsToString } from 'src/app/boat';
-import { BoatOverviewData } from '../../rental.component';
-import { RentalService } from '../../rental.service';
+import { BoatService } from 'src/app/boat-service.service';
+import { BoatOverviewData } from '../../booking.component';
 
 export type BoatDetailData = BoatOverviewData & {
   registrationNumber: number;
@@ -23,8 +22,7 @@ export class BoatDetailsComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { id: number },
-    private rentalService: RentalService,
-    private router: Router
+    private boatService: BoatService
   ) {}
 
   ngOnInit(): void {
@@ -32,7 +30,7 @@ export class BoatDetailsComponent implements OnInit {
   }
 
   private getBoat(): void {
-    this.rentalService
+    this.boatService
       .getBoatDetailData(this.data.id)
       .subscribe((boat) => (this.boat = boat));
   }

@@ -1,19 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, map, merge, Observable } from 'rxjs';
 import { BoatType } from '../boat';
-import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { BoatOverviewData } from './rental.component';
-import { BoatDetailData } from './boat-card/boat-details/boat-details.component';
+import { BoatOverviewData } from './booking.component';
+import { BoatService } from '../boat-service.service';
+import { DateRange, RentalService } from '../rental.service';
 
-type DateRange = [Date, Date];
 export type BoatTypeFilter = 'all' | BoatType;
 export type LicenseFilter = 'both' | 'required' | 'not-required';
 
 @Injectable({
   providedIn: 'root',
 })
-export class RentalService {
+export class BookingService {
   private boats: BehaviorSubject<BoatOverviewData[]> = new BehaviorSubject(
     [] as BoatOverviewData[]
   );
@@ -30,7 +28,10 @@ export class RentalService {
     'both' as LicenseFilter
   );
 
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private boatService: BoatService,
+    private rentalService: RentalService
+  ) {
     this.updateBoatOverviewData();
   }
 
@@ -71,37 +72,6 @@ export class RentalService {
         }
       })
     );
-  }
-
-  /**
-   * Appends relative route to backend URL. Requires leading '/'.
-   *
-   * @param url
-   * @returns complete url
-   */
-  private constructUrl(url: string): string {
-    return `${environment.backendUrl}${url}`;
-  }
-
-  /**
-   * Adds the address of the backend to the imageRoute received from the
-   * backend.
-   *
-   * Will work on any type T that has a property imageRoute: string.
-   *
-   * @param item
-   * @returns modified item.
-   */
-  private modifyImageRoute<T extends { imageRoute: string }>(item: T): T {
-    item.imageRoute = this.constructUrl(item.imageRoute);
-    return item;
-  }
-
-  /**
-   * Formats Date object as YYYY-MM-DD
-   */
-  private dateToYMD(date: Date): string {
-    return date.toISOString().split('T')[0];
   }
 
   // Getters and setters
@@ -157,65 +127,21 @@ export class RentalService {
    * it to subscribers of this.boats
    */
   public updateBoatOverviewData(): void {
-    this.dateRange.subscribe((dateRange) => {
-      let route = '/boats/overview';
-
-      if (dateRange) {
-        let [startDate, endDate] = dateRange;
-
-        route += `/available/${this.dateToYMD(startDate)}/${this.dateToYMD(
-          endDate
-        )}`;
-      }
-
-      this.httpClient
-        .get<{ boats: BoatOverviewData[] }>(this.constructUrl(route))
-        .subscribe(({ boats }) =>
-          this.boats.next(boats.map(this.modifyImageRoute.bind(this)))
-        );
-    });
-  }
-
-  /**
-   * Retrieves detailed data from the backend for boat ${id}
-   */
-  public getBoatDetailData(id: number): Observable<BoatDetailData> {
-    return this.httpClient
-      .get<{ boat: BoatDetailData }>(this.constructUrl(`/boats/${id}/detail`))
-      .pipe(
-        // Destructure object in parameter list.
-        map(({ boat }): BoatDetailData => {
-          return this.modifyImageRoute(boat);
-        })
-      );
-  }
-
-  /**
-   * Returns a list of all booked dates for boat ${id}
-   */
-  public getBookedDates(id: number): Observable<Date[]> {
-    return this.httpClient
-      .get<{ dates: string[] }>(this.constructUrl(`/boats/${id}/bookedDates`))
-      .pipe(
-        map(({ dates }) => dates.map((dateString) => new Date(dateString)))
-      );
+    this.boatService
+      .getBoatOverviewData()
+      .subscribe((boats) => this.boats.next(boats));
   }
 
   /**
    * Creates a rental and returns an observable with the id of the created
    * Rental
    */
-  public addRental(boatId: number, customerId: number): Observable<number> {
-    const [dateStart, dateEnd] = this.dateRange.getValue()!;
-
-    let observable = this.httpClient
-      .post<{ id: number }>(`${environment.backendUrl}/rentals/`, {
-        boatId,
-        customerId,
-        dateStart: dateStart,
-        dateEnd: dateEnd,
-      })
-      .pipe(map(({ id }) => id));
+  public createRental(boatId: number, customerId: number): Observable<number> {
+    let observable = this.rentalService.createRental(
+      boatId,
+      customerId,
+      this.dateRange.getValue()!
+    );
 
     this.reset();
 

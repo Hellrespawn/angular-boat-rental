@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RentalService } from '../rental.service';
+import { BookingService } from '../booking.service';
 import { SuccessDialogComponent } from './success-dialog/success-dialog.component';
 
 @Component({
@@ -14,7 +14,7 @@ export class PaymentComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private rentalService: RentalService,
+    private bookingService: BookingService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -29,7 +29,7 @@ export class PaymentComponent implements OnInit {
   }
 
   private finishOrder(rentalId: number): void {
-    this.rentalService.reset();
+    this.bookingService.reset();
 
     this.dialogRef = this.dialog.open(SuccessDialogComponent, {
       data: { rentalId },

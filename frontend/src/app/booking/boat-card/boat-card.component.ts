@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { BoatOverviewData } from '../rental.component';
+import { BoatOverviewData } from '../booking.component';
 import { BoatDetailsComponent } from './boat-details/boat-details.component';
 import { requirementsToString } from 'src/app/boat';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-rental-boat-card',
+  selector: 'app-booking-boat-card',
   templateUrl: './boat-card.component.html',
   styleUrls: ['./boat-card.component.scss'],
 })

@@ -31,10 +31,10 @@ import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './log-in/log-in.component';
 import { FaqComponent } from './faq/faq.component';
 
-import { RentalComponent } from './rental/rental.component';
-import { LicenseComponent } from './rental/filters/license/license.component';
-import { BoatTypeComponent } from './rental/filters/boat-type/boat-type.component';
-import { BoatCardComponent } from './rental/boat-card/boat-card.component';
+import { RentalComponent } from './booking/booking.component';
+import { LicenseComponent } from './booking/filters/license/license.component';
+import { BoatTypeComponent } from './booking/filters/boat-type/boat-type.component';
+import { BoatCardComponent } from './booking/boat-card/boat-card.component';
 import { MatCardModule } from '@angular/material/card';
 
 // Home components
@@ -48,14 +48,14 @@ import { HeaderComponent } from './header/header.component';
 import { NavbarComponent } from './header/navbar/navbar.component';
 import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
 import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-skipper-overview.component';
-import { BoatDetailsComponent } from './rental/boat-card/boat-details/boat-details.component';
-import { DateComponent } from './rental/filters/date/date.component';
-import { CheckComponent } from './rental/check/check.component';
+import { BoatDetailsComponent } from './booking/boat-card/boat-details/boat-details.component';
+import { DateComponent } from './booking/filters/date/date.component';
+import { CheckComponent } from './booking/check/check.component';
 import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-customer-overview.component';
-import { SuccessDialogComponent } from './rental/payment/success-dialog/success-dialog.component';
-import { SelectSkipperComponent } from './rental/skipper/skipper.component';
-import { PaymentComponent } from './rental/payment/payment.component';
-import { FiltersComponent } from './rental/filters/filters.component';
+import { SuccessDialogComponent } from './booking/payment/success-dialog/success-dialog.component';
+import { SelectSkipperComponent } from './booking/skipper/skipper.component';
+import { PaymentComponent } from './booking/payment/payment.component';
+import { FiltersComponent } from './booking/filters/filters.component';
 
 @NgModule({
   declarations: [
