@@ -45,7 +45,7 @@ export class FaqComponent {
     );
     this.router.navigateByUrl('/veel-gestelde-vragen');
   }
-  
+
   public getMessages() {
     let nameInp: string = this.nameInp.nativeElement.value;
     let emailInp: string = this.emailInp.nativeElement.value;
