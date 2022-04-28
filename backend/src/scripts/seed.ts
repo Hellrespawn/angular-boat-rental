@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { Boat } from '../model/boat.model';
 import { Customer } from '../model/customer.model';
-import { Skipper, SkipperData } from '../model/skipper.model';
+import { Skipper } from '../model/skipper.model';
 import { initSequelize } from '../util/database';
 
 const MOTORBOAT_PLACEHOLDER_PATH = 'motorboot-placeholder.jpg';
@@ -91,7 +91,7 @@ async function insertMockCustomers() {
 }
 
 async function insertMockSkippers() {
-  const skippers = SKIPPER_NAMES.map((name): SkipperData => {
+  const skippers = SKIPPER_NAMES.map((name) => {
     const skipper = {
       name,
       pricePerDay: randomInt(100, 500),
