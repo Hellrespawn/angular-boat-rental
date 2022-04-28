@@ -15,9 +15,6 @@ export class FaqComponent {
     private snackBService: SnackBarService,
     private router: Router
   ) {}
-  @ViewChild('nameForm') nameInp!: ElementRef<HTMLInputElement>;
-  @ViewChild('emailForm') emailInp!: ElementRef<HTMLInputElement>;
-  @ViewChild('textForm') textInp!: ElementRef<HTMLInputElement>;
 
   // snackbar data
   private readonly succesSnackbarInput: SnackBarInput = {
@@ -27,6 +24,12 @@ export class FaqComponent {
     error: false,
   };
 
+  // viewchild instead of getElementById
+  @ViewChild('nameForm') nameInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('emailForm') emailInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('textForm') textInp!: ElementRef<HTMLInputElement>;
+
+  // input Formcontrol
   public emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
@@ -34,6 +37,15 @@ export class FaqComponent {
   public nameFormControl = new FormControl('', [Validators.required]);
   public textFormControl = new FormControl('', [Validators.required]);
 
+  // 2 functions to send the messages to the backend with user input
+  public sendMessageToBackend(): void {
+    this.messageService.addMessages(this.getMessages()).subscribe();
+    this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.succesSnackbarInput
+    );
+    this.router.navigateByUrl('/veel-gestelde-vragen');
+  }
+  
   public getMessages() {
     let nameInp: string = this.nameInp.nativeElement.value;
     let emailInp: string = this.emailInp.nativeElement.value;
@@ -45,13 +57,7 @@ export class FaqComponent {
     return { name: nameInp, email: emailInp, text: textInp };
   }
 
-  public sendMessageToBackend(): void {
-    this.messageService.addMessages(this.getMessages()).subscribe();
-    this.snackBService.makeSnackbarThatClosesAutomatically(
-      this.succesSnackbarInput
-    );
-    this.router.navigateByUrl('/veel-gestelde-vragen');
-  }
+  //  code for error message when user gives wrong input
   public nameErrorMessage(): string {
     let errorMessage: string = '';
     if (this.nameFormControl.hasError('required')) {
