@@ -54,8 +54,10 @@ export class DateComponent implements OnInit {
     );
   }
 
-  public now(): Date {
-    return new Date();
+  public minimumDate(): Date {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    return date;
   }
 
   private isBookedBetweenRange(): boolean {
