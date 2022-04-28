@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { BoatOverviewData } from '../booking.component';
 import { BoatDetailsComponent } from './boat-details/boat-details.component';
 import { Router } from '@angular/router';
-import { BoatService } from 'src/app/boat-service.service';
+import { BoatService } from 'src/app/boat.service';
+import { BoatOverviewData } from 'src/app/boat';
 
 @Component({
   selector: 'app-booking-boat-card',
@@ -29,7 +29,7 @@ export class BoatCardComponent implements OnInit {
   }
 
   /**
-   * Opens boat detail dialog
+   * Opens boat detail dialog.
    */
   public openDialog(): void {
     this.dialogRef = this.dialog.open(BoatDetailsComponent, {
@@ -37,6 +37,9 @@ export class BoatCardComponent implements OnInit {
     });
   }
 
+  /**
+   * Format boat requirements for printing.
+   */
   public requirementsToString(): string {
     return this.boatService.requirementsToString(this.boat);
   }

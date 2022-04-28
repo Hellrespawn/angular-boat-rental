@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, map, merge, Observable } from 'rxjs';
-import { BoatType } from '../boat';
-import { BoatOverviewData } from './booking.component';
-import { BoatService } from '../boat-service.service';
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { BoatOverviewData, BoatType } from '../boat';
+import { BoatService } from '../boat.service';
 import { DateRange, RentalService } from '../rental.service';
 
 export type BoatTypeFilter = 'all' | BoatType;

@@ -46,7 +46,7 @@ function randomDate(start: Date, end: Date): Date {
   );
 }
 
-async function insertMockBoats() {
+async function insertMockBoats(): Promise<void> {
   BOAT_NAMES.forEach(async (name, i) => {
     const boatType = ['sail', 'motor'][i % 2];
 
@@ -75,7 +75,7 @@ async function insertMockBoats() {
   });
 }
 
-async function insertMockCustomers() {
+async function insertMockCustomers(): Promise<void> {
   for (const name of CUSTOMER_NAMES) {
     const [firstName, lastName] = name.split(' ');
     await Customer.create({
@@ -90,7 +90,7 @@ async function insertMockCustomers() {
   }
 }
 
-async function insertMockSkippers() {
+async function insertMockSkippers(): Promise<void> {
   const skippers = SKIPPER_NAMES.map((name) => {
     const skipper = {
       name,

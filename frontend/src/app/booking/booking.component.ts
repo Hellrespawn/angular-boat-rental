@@ -1,16 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BoatRequirements, BoatType } from '../boat';
+import { BoatOverviewData } from '../boat';
 import { BookingService } from './booking.service';
-
-export type BoatOverviewData = {
-  id: number;
-  imageRoute: string;
-  name: string;
-  requirements: BoatRequirements;
-  boatType: BoatType;
-  maxOccupants: number;
-};
 
 @Component({
   selector: 'app-booking',

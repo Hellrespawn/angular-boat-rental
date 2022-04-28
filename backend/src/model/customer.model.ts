@@ -2,7 +2,6 @@ import {
   Table,
   Column,
   Model,
-  IsBefore,
   IsEmail,
   HasMany,
   AllowNull,
