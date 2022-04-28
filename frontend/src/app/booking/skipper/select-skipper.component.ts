@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-select-skipper',
-  templateUrl: './skipper.component.html',
-  styleUrls: ['./skipper.component.scss'],
+  templateUrl: './select-skipper.component.html',
+  styleUrls: ['./select-skipper.component.scss'],
 })
 export class SelectSkipperComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router) {}

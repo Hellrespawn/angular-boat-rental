@@ -53,7 +53,7 @@ import { DateComponent } from './booking/filters/date/date.component';
 import { CheckComponent } from './booking/check/check.component';
 import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-customer-overview.component';
 import { SuccessDialogComponent } from './booking/payment/success-dialog/success-dialog.component';
-import { SelectSkipperComponent } from './booking/skipper/skipper.component';
+import { SelectSkipperComponent } from './booking/skipper/select-skipper.component';
 import { PaymentComponent } from './booking/payment/payment.component';
 import { FiltersComponent } from './booking/filters/filters.component';
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectSkipperComponent } from './skipper.component';
+import { SelectSkipperComponent } from './select-skipper.component';
 
 describe('SkipperComponent', () => {
   let component: SelectSkipperComponent;

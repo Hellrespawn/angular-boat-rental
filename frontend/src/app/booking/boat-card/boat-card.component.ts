@@ -29,7 +29,7 @@ export class BoatCardComponent implements OnInit {
   }
 
   /**
-   * Opens boat detail dialog
+   * Opens boat detail dialog.
    */
   public openDialog(): void {
     this.dialogRef = this.dialog.open(BoatDetailsComponent, {
@@ -37,6 +37,9 @@ export class BoatCardComponent implements OnInit {
     });
   }
 
+  /**
+   * Format boat requirements for printing.
+   */
   public requirementsToString(): string {
     return this.boatService.requirementsToString(this.boat);
   }

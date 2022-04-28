@@ -8,7 +8,7 @@ import { BaseFilter } from '../filter';
   styleUrls: ['../filter.scss'],
 })
 export class LicenseComponent extends BaseFilter<LicenseFilter> {
-  public updateFilter(change: LicenseFilter): void {
-    this.bookingService.setLicenseFilter(change);
+  public updateFilter(value: LicenseFilter): void {
+    this.bookingService.setLicenseFilter(value);
   }
 }

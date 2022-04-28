@@ -8,7 +8,7 @@ import { BaseFilter } from '../filter';
   styleUrls: ['../filter.scss'],
 })
 export class BoatTypeComponent extends BaseFilter<BoatTypeFilter> {
-  public updateFilter(change: BoatTypeFilter): void {
-    this.bookingService.setTypeFilter(change);
+  public updateFilter(value: BoatTypeFilter): void {
+    this.bookingService.setTypeFilter(value);
   }
 }

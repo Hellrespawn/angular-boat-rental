@@ -19,7 +19,7 @@ export class FiltersComponent {
     .observe(['(max-width: 640px)'])
     .pipe(map((state) => state.matches));
 
-  public clearFilters(): void {
+  public resetFilters(): void {
     this.bookingService.reset();
   }
 }

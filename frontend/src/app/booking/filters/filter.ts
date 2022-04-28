@@ -5,5 +5,8 @@ import { BookingService } from '../booking.service';
 export abstract class BaseFilter<T> {
   constructor(public bookingService: BookingService) {}
 
-  public abstract updateFilter(change: T): void;
+  /**
+   * Updates the filter with `value`.
+   */
+  public abstract updateFilter(value: T): void;
 }

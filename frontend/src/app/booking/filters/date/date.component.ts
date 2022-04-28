@@ -9,7 +9,7 @@ import { BookingService } from '../../booking.service';
   styleUrls: ['../filter.scss'],
 })
 export class DateComponent implements OnInit {
-  @Input() public boatId!: number;
+  @Input() public boatId?: number;
   private bookedDates: Date[] = [];
   public dateStart: Date | null = null;
   public dateEnd: Date | null = null;
@@ -22,12 +22,12 @@ export class DateComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDateRange();
-
-    if (this.boatId) {
-      this.getBookedDates();
-    }
+    this.getBookedDates();
   }
 
+  /**
+   * Subscribe to bookingService.dateRange
+   */
   private getDateRange(): void {
     this.bookingService.getDateRange().subscribe((dateRange) => {
       if (dateRange) {
@@ -42,12 +42,20 @@ export class DateComponent implements OnInit {
     });
   }
 
+  /**
+   * If boatId is provided, get dates when boat is booked.
+   */
   private getBookedDates(): void {
-    this.boatService
-      .getBookedDates(this.boatId)
-      .subscribe((bookedDates) => (this.bookedDates = bookedDates));
+    if (this.boatId) {
+      this.boatService
+        .getBookedDates(this.boatId)
+        .subscribe((bookedDates) => (this.bookedDates = bookedDates));
+    }
   }
 
+  /**
+   * Returns true if both dates are on the same day.
+   */
   private isSameDay(date1: Date, date2: Date): boolean {
     return (
       date1.getFullYear() == date2.getFullYear() &&
@@ -56,26 +64,28 @@ export class DateComponent implements OnInit {
     );
   }
 
+  /**
+   * Returns the minimum date for the datepicker.
+   */
   public getMinimumDate(): Date {
     const date = new Date();
     date.setDate(date.getDate() + 1);
     return date;
   }
 
+  /**
+   * Returns true if the boat is booked at any point between the selected dates.
+   */
   private isBookedBetweenRange(): boolean {
-    // Selecting a booked date is disabled in the date picker, so we only need
-    // to check one booked date to ensure that the current range doesn't
-    // encompass it
-    let earliest: Date | undefined = this.bookedDates[0];
-
-    if (earliest) {
-      return this.dateStart! < earliest && this.dateEnd! > earliest;
-    } else {
-      return false;
-    }
+    return this.bookedDates.some(
+      (date) => this.dateStart! < date && this.dateEnd! > date
+    );
   }
 
-  private isRangeValid(): boolean {
+  /**
+   * Checks if the selected dates are valid.
+   */
+  private areDatesValid(): boolean {
     if (this.dateStart && this.dateEnd) {
       return this.bookingService.isRangeValid(this.dateStart, this.dateEnd);
     }
@@ -83,19 +93,31 @@ export class DateComponent implements OnInit {
     return false;
   }
 
-  // Normal function definitions or using .bind(this) all freeze the
-  // datepicker. This workaround was found here:
-  // https://stackoverflow.com/questions/47204329/matdatepickerfilter-filter-function-cant-access-class-variable
+  /**
+   * This function disables all booked dates in the datepicker.
+   *
+   * Normal function definitions or using .bind(this) all freeze the
+   * datepicker. This workaround was found here:
+   * https://stackoverflow.com/questions/47204329/matdatepickerfilter-filter-function-cant-access-class-variable
+   */
   public dateFilter = (date1: Date): boolean => {
     return Boolean(
       !this.bookedDates.find((date2) => this.isSameDay(date1, date2))
     );
   };
 
+  /**
+   * Updates this.dateStart
+   * @param change
+   */
   public updateDateStart(change: Date | null): void {
     this.dateStart = change;
   }
 
+  /**
+   * Updates this.dateEnd and the dateRange
+   * @param change
+   */
   public updateDateEnd(change: Date | null): void {
     this.dateEnd = change;
 
@@ -106,11 +128,15 @@ export class DateComponent implements OnInit {
     }
   }
 
+  /**
+   * Updates the selected dateRange in bookingService.
+   */
   private updateDateRange(): void {
     let dateRange: [Date, Date] | null;
 
-    if (!this.isRangeValid()) {
+    if (!this.areDatesValid()) {
       this.snackBarService.displayError('Je moet minimaal 3 dagen huren!');
+
       this.dateEnd = null;
       this.dateStart = null;
       dateRange = null;
@@ -118,6 +144,7 @@ export class DateComponent implements OnInit {
       this.snackBarService.displayError(
         'Er zit een boeking tussen je selectie!'
       );
+
       this.dateEnd = null;
       this.dateStart = null;
       dateRange = null;
