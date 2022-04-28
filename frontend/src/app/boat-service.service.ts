@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Boat } from './boat';
+import { Boat, BoatRequirements } from './boat';
 import { environment } from 'src/environments/environment';
 import { BoatOverviewData } from './booking/booking.component';
 import { BoatDetailData } from './booking/boat-card/boat-details/boat-details.component';
@@ -11,6 +11,28 @@ import { BoatDetailData } from './booking/boat-card/boat-details/boat-details.co
 })
 export class BoatService {
   constructor(private httpClient: HttpClient) {}
+
+  /**
+   * Creates a string to display from BoatRequirements
+   * @returns
+   */
+  public requirementsToString<T extends { requirements: BoatRequirements }>(
+    item: T
+  ): string {
+    switch (item.requirements) {
+      case 'none':
+        return 'Zelf varen';
+
+      case 'license':
+        return 'Vaarbewijs vereist';
+
+      case 'skipper':
+        return 'Schipper vereist';
+
+      default:
+        throw `Invalid boat.requirements: ${item.requirements}`;
+    }
+  }
 
   /**
    * sends a request to the backend to add a new boat to the database
@@ -91,6 +113,12 @@ export class BoatService {
     return date.toISOString().split('T')[0];
   }
 
+  /**
+   * Gets BoatOverviewData for all boats. Optionally restrict it to dateRange
+   *
+   * @param dateRange
+   * @returns Array of BoatOverviewData
+   */
   public getBoatOverviewData(
     dateRange?: [Date, Date]
   ): Observable<BoatOverviewData[]> {

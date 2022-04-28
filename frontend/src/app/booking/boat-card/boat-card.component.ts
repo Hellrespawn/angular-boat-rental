@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BoatOverviewData } from '../booking.component';
 import { BoatDetailsComponent } from './boat-details/boat-details.component';
-import { requirementsToString } from 'src/app/boat';
 import { Router } from '@angular/router';
+import { BoatService } from 'src/app/boat-service.service';
 
 @Component({
   selector: 'app-booking-boat-card',
@@ -15,7 +15,11 @@ export class BoatCardComponent implements OnInit {
   @Input() public enabled!: boolean;
   private dialogRef?: MatDialogRef<BoatDetailsComponent, any>;
 
-  constructor(private dialog: MatDialog, private router: Router) {}
+  constructor(
+    private dialog: MatDialog,
+    private router: Router,
+    private boatService: BoatService
+  ) {}
 
   ngOnInit(): void {
     // Closes the dialog when navigating away
@@ -34,6 +38,6 @@ export class BoatCardComponent implements OnInit {
   }
 
   public requirementsToString(): string {
-    return requirementsToString(this.boat);
+    return this.boatService.requirementsToString(this.boat);
   }
 }

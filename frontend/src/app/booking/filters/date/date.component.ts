@@ -56,7 +56,7 @@ export class DateComponent implements OnInit {
     );
   }
 
-  public minimumDate(): Date {
+  public getMinimumDate(): Date {
     const date = new Date();
     date.setDate(date.getDate() + 1);
     return date;

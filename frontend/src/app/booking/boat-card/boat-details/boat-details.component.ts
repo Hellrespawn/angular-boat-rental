@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { requirementsToString } from 'src/app/boat';
 import { BoatService } from 'src/app/boat-service.service';
 import { BoatOverviewData } from '../../booking.component';
 
@@ -36,6 +35,6 @@ export class BoatDetailsComponent implements OnInit {
   }
 
   public requirementsToString(): string {
-    return requirementsToString(this.boat);
+    return this.boatService.requirementsToString(this.boat);
   }
 }

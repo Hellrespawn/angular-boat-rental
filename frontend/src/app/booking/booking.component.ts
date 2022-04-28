@@ -1,12 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { BoatRequirements, BoatType } from '../boat';
-import { BoatService } from '../boat-service.service';
-import {
-  BoatTypeFilter,
-  BookingService,
-  LicenseFilter,
-} from './booking.service';
+import { BookingService } from './booking.service';
 
 export type BoatOverviewData = {
   id: number;

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { requirementsToString } from 'src/app/boat';
 import { BoatService } from 'src/app/boat-service.service';
 import { BoatDetailData } from '../boat-card/boat-details/boat-details.component';
 import { BookingService } from '../booking.service';
@@ -76,7 +75,7 @@ export class CheckComponent implements OnInit {
   }
 
   public requirementsToString(): string {
-    return requirementsToString(this.boat!);
+    return this.boatService.requirementsToString(this.boat!);
   }
 
   public getDays(): number {
