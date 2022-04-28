@@ -41,7 +41,7 @@ export function validateIdInUrlParams(
   req: Request,
   res: Response,
   next: NextFunction
-) {
+): void {
   const id = parseInt(req.params.id);
   if (isNaN(id) || id < 0) {
     res

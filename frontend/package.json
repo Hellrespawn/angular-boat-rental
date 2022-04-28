@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "check-formatting": "npx prettier ./src --check && npm run lint",
-    "fix-formatting": "npx prettier ./src --write"
+    "fix-formatting": "npx prettier ./src --write && ng lint --fix"
   },
   "private": true,
   "dependencies": {

@@ -4,7 +4,7 @@ export function addCorsHeaders(
   req: Request,
   res: Response,
   next: NextFunction
-) {
+): void {
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
 
@@ -31,7 +31,7 @@ export function addCorsHeaders(
   // set the 404 status code. The 404 status code takes precedence over the
   // CORS headers and the preflight will fail.
   if (req.method === 'OPTIONS') {
-    return res.status(204).end();
+    res.status(204).end();
   }
 
   // Pass to next layer of middleware

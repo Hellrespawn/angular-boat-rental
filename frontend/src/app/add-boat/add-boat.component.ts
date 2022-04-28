@@ -3,7 +3,7 @@ import { AbstractControl, FormControl, Validators } from '@angular/forms';
 import { catchError, Observable, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
-import { BoatService } from '../boat-service.service';
+import { BoatService } from '../boat.service';
 import { Router } from '@angular/router';
 
 @Component({

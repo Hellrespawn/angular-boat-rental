@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Boat, BoatRequirements } from './boat';
+import {
+  Boat,
+  BoatDetailData,
+  BoatOverviewData,
+  BoatRequirements,
+} from './boat';
 import { environment } from 'src/environments/environment';
-import { BoatOverviewData } from './booking/booking.component';
-import { BoatDetailData } from './booking/boat-card/boat-details/boat-details.component';
 
 @Injectable({
   providedIn: 'root',

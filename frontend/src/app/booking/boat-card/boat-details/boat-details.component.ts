@@ -1,15 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BoatService } from 'src/app/boat-service.service';
-import { BoatOverviewData } from '../../booking.component';
-
-export type BoatDetailData = BoatOverviewData & {
-  registrationNumber: number;
-  pricePerDay: number;
-  lengthInM: number;
-  maxSpeedInKmH?: number;
-  sailAreaInM2?: number;
-};
+import { BoatDetailData } from 'src/app/boat';
+import { BoatService } from 'src/app/boat.service';
 
 @Component({
   selector: 'app-boat-details',

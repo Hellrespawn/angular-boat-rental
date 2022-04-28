@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { BoatOverviewData } from '../booking.component';
 import { BoatDetailsComponent } from './boat-details/boat-details.component';
 import { Router } from '@angular/router';
-import { BoatService } from 'src/app/boat-service.service';
+import { BoatService } from 'src/app/boat.service';
+import { BoatOverviewData } from 'src/app/boat';
 
 @Component({
   selector: 'app-booking-boat-card',

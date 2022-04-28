@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BoatService } from 'src/app/boat-service.service';
+import { BoatService } from 'src/app/boat.service';
 import { SnackBarService } from 'src/app/snack-bar.service';
 import { BookingService } from '../../booking.service';
 

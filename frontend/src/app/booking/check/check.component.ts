@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BoatService } from 'src/app/boat-service.service';
-import { BoatDetailData } from '../boat-card/boat-details/boat-details.component';
+import { BoatDetailData } from 'src/app/boat';
+import { BoatService } from 'src/app/boat.service';
 import { BookingService } from '../booking.service';
 
 @Component({

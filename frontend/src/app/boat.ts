@@ -16,3 +16,20 @@ export type Boat = {
   maxSpeedInKmH?: number;
   sailAreaInM2?: number;
 };
+
+export type BoatOverviewData = {
+  id: number;
+  imageRoute: string;
+  name: string;
+  requirements: BoatRequirements;
+  boatType: BoatType;
+  maxOccupants: number;
+};
+
+export type BoatDetailData = BoatOverviewData & {
+  registrationNumber: number;
+  pricePerDay: number;
+  lengthInM: number;
+  maxSpeedInKmH?: number;
+  sailAreaInM2?: number;
+};

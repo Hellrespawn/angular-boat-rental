@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BoatService } from '../boat-service.service';
+import { BoatService } from '../boat.service';
 import { addToNavBar } from '../navigation.service';
 import { SnackBarInput, SnackBarService } from '../snack-bar.service';
 
