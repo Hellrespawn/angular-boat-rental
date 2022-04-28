@@ -2,6 +2,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
 import { MessageService } from '../message.service';
+import { SnackBarService, SnackBarInput } from '../snack-bar.service';
+
 
 @Component({
   selector: 'app-faq',
@@ -9,10 +11,18 @@ import { MessageService } from '../message.service';
   styleUrls: ['./faq.component.scss'],
 })
 export class FaqComponent {
-  constructor(private messageService: MessageService, private router: Router) {}
+  constructor(private messageService: MessageService, private snackBService: SnackBarService, private router: Router) {}
   @ViewChild('nameForm') nameInp!: ElementRef<HTMLInputElement>;
   @ViewChild('emailForm') emailInp!: ElementRef<HTMLInputElement>;
   @ViewChild('textForm') textInp!: ElementRef<HTMLInputElement>;
+
+  // snackbar data
+  private readonly succesSnackbarInput: SnackBarInput = {
+    message: 'Bericht is verstuurd!',
+    buttonText: 'Sluit',
+    duration: 1000,
+    error: false,
+  };
 
   public emailFormControl = new FormControl('', [
     Validators.required,
@@ -34,6 +44,7 @@ export class FaqComponent {
 
   public sendMessageToBackend(): void {
     this.messageService.addMessages(this.getMessages()).subscribe();
+    this.snackBService.makeSnackbarThatClosesAutomatically(this.succesSnackbarInput);
     this.router.navigateByUrl('/veel-gestelde-vragen');
   }
   public nameErrorMessage(): string {
