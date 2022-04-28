@@ -31,7 +31,7 @@ export class RentalComponent implements OnInit {
    * Subscribe to rentalService.boats
    */
   private getBoats(): void {
-    this.rentalService.boats.subscribe((boats: BoatOverviewData[]) => {
+    this.rentalService.getBoats().subscribe((boats: BoatOverviewData[]) => {
       this.boats = boats;
     });
   }

@@ -1,7 +1,7 @@
 <mat-form-field appearance="fill">
   <mat-label>Type Boot</mat-label>
   <mat-select
-    [ngModel]="rentalService.typeFilter | async"
+    [ngModel]="rentalService.getTypeFilter() | async"
     (ngModelChange)="updateFilter($event)"
   >
     <mat-option value="all"> Alle </mat-option>

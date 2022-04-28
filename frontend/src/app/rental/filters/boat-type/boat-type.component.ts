@@ -9,6 +9,6 @@ import { BaseFilter } from '../filter';
 })
 export class BoatTypeComponent extends BaseFilter<BoatTypeFilter> {
   public updateFilter(change: BoatTypeFilter): void {
-    this.rentalService.typeFilter.next(change);
+    this.rentalService.setTypeFilter(change);
   }
 }

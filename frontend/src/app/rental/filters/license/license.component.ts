@@ -9,6 +9,6 @@ import { BaseFilter } from '../filter';
 })
 export class LicenseComponent extends BaseFilter<LicenseFilter> {
   public updateFilter(change: LicenseFilter): void {
-    this.rentalService.licenseFilter.next(change);
+    this.rentalService.setLicenseFilter(change);
   }
 }

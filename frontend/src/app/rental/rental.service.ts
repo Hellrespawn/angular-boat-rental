@@ -6,9 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { BoatOverviewData } from './rental.component';
 import { BoatDetailData } from './boat-card/boat-details/boat-details.component';
 
-type BoatOverviewResponse = { boats: BoatOverviewData[] };
-type BoatDetailResponse = { boat: BoatDetailData };
-
+type DateRange = [Date, Date];
 export type BoatTypeFilter = 'all' | BoatType;
 export type LicenseFilter = 'both' | 'required' | 'not-required';
 
@@ -16,48 +14,24 @@ export type LicenseFilter = 'both' | 'required' | 'not-required';
   providedIn: 'root',
 })
 export class RentalService {
-  public boats: BehaviorSubject<BoatOverviewData[]> = new BehaviorSubject(
+  private boats: BehaviorSubject<BoatOverviewData[]> = new BehaviorSubject(
     [] as BoatOverviewData[]
   );
 
-  public dateRange: BehaviorSubject<[Date, Date] | null> = new BehaviorSubject(
-    null as [Date, Date] | null
+  private dateRange: BehaviorSubject<DateRange | null> = new BehaviorSubject(
+    null as DateRange | null
   );
 
-  public typeFilter: BehaviorSubject<BoatTypeFilter> = new BehaviorSubject(
+  private typeFilter: BehaviorSubject<BoatTypeFilter> = new BehaviorSubject(
     'all' as BoatTypeFilter
   );
 
-  public licenseFilter: BehaviorSubject<LicenseFilter> = new BehaviorSubject(
+  private licenseFilter: BehaviorSubject<LicenseFilter> = new BehaviorSubject(
     'both' as LicenseFilter
   );
 
   constructor(private httpClient: HttpClient) {
     this.updateBoatOverviewData();
-  }
-
-  /**
-   * Updates the list of valid boats, based on this.dateRange, and broadcasts
-   * it to subscribers of this.boats
-   */
-  public updateBoatOverviewData(): void {
-    this.dateRange.subscribe((dateRange) => {
-      let route = '/boats/overview';
-
-      if (dateRange) {
-        let [startDate, endDate] = dateRange;
-
-        route += `/available/${this.dateToYMD(startDate)}/${this.dateToYMD(
-          endDate
-        )}`;
-      }
-
-      this.httpClient
-        .get<BoatOverviewResponse>(this.constructUrl(route))
-        .subscribe(({ boats }) =>
-          this.boats.next(boats.map(this.modifyImageRoute.bind(this)))
-        );
-    });
   }
 
   /**
@@ -99,13 +73,6 @@ export class RentalService {
     );
   }
 
-  /** Resets all current filters. */
-  public reset(): void {
-    this.licenseFilter.next('both');
-    this.typeFilter.next('all');
-    this.dateRange.next(null);
-  }
-
   /**
    * Appends relative route to backend URL. Requires leading '/'.
    *
@@ -137,15 +104,87 @@ export class RentalService {
     return date.toISOString().split('T')[0];
   }
 
+  // Getters and setters
+  public getBoats(): Observable<BoatOverviewData[]> {
+    return this.boats;
+  }
+
+  public getDateRange(): Observable<DateRange | null> {
+    return this.dateRange;
+  }
+
+  public setDateRange(dateRange: DateRange | null): void {
+    this.dateRange.next(dateRange);
+  }
+
+  public clearDateRange(): void {
+    this.dateRange.next(null);
+  }
+
+  public getTypeFilter(): Observable<BoatTypeFilter> {
+    return this.typeFilter;
+  }
+
+  public setTypeFilter(filter: BoatTypeFilter): void {
+    this.typeFilter.next(filter);
+  }
+
+  public clearTypeFilter(): void {
+    this.setTypeFilter('all');
+  }
+
+  public getLicenseFilter(): Observable<LicenseFilter> {
+    return this.licenseFilter;
+  }
+
+  public setLicenseFilter(filter: LicenseFilter): void {
+    this.licenseFilter.next(filter);
+  }
+
+  public clearLicenseFilter(): void {
+    this.setLicenseFilter('both');
+  }
+
+  /** Resets all current filters. */
+  public reset(): void {
+    this.clearLicenseFilter();
+    this.clearTypeFilter();
+    this.clearDateRange();
+  }
+
+  /**
+   * Updates the list of valid boats, based on this.dateRange, and broadcasts
+   * it to subscribers of this.boats
+   */
+  public updateBoatOverviewData(): void {
+    this.dateRange.subscribe((dateRange) => {
+      let route = '/boats/overview';
+
+      if (dateRange) {
+        let [startDate, endDate] = dateRange;
+
+        route += `/available/${this.dateToYMD(startDate)}/${this.dateToYMD(
+          endDate
+        )}`;
+      }
+
+      this.httpClient
+        .get<{ boats: BoatOverviewData[] }>(this.constructUrl(route))
+        .subscribe(({ boats }) =>
+          this.boats.next(boats.map(this.modifyImageRoute.bind(this)))
+        );
+    });
+  }
+
   /**
    * Retrieves detailed data from the backend for boat ${id}
    */
   public getBoatDetailData(id: number): Observable<BoatDetailData> {
     return this.httpClient
-      .get<BoatDetailResponse>(this.constructUrl(`/boats/${id}/detail`))
+      .get<{ boat: BoatDetailData }>(this.constructUrl(`/boats/${id}/detail`))
       .pipe(
         // Destructure object in parameter list.
-        map(({ boat }: BoatDetailResponse): BoatDetailData => {
+        map(({ boat }): BoatDetailData => {
           return this.modifyImageRoute(boat);
         })
       );

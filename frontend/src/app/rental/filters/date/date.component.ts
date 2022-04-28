@@ -27,7 +27,7 @@ export class DateComponent implements OnInit {
   }
 
   private getDateRange(): void {
-    this.rentalService.dateRange.subscribe((dateRange) => {
+    this.rentalService.getDateRange().subscribe((dateRange) => {
       if (dateRange) {
         const [dateStart, dateEnd] = dateRange;
 
@@ -122,6 +122,6 @@ export class DateComponent implements OnInit {
     } else {
       dateRange = [this.dateStart!, this.dateEnd!];
     }
-    this.rentalService.dateRange.next(dateRange);
+    this.rentalService.setDateRange(dateRange);
   }
 }

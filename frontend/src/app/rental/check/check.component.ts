@@ -36,9 +36,9 @@ export class CheckComponent implements OnInit {
   }
 
   private getDates(): void {
-    this.rentalService.dateRange.subscribe(
-      (dateRange) => (this.dateRange = dateRange)
-    );
+    this.rentalService
+      .getDateRange()
+      .subscribe((dateRange) => (this.dateRange = dateRange));
   }
 
   private getCurrentUserId(): number {
