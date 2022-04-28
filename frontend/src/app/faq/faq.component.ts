@@ -4,14 +4,17 @@ import { FormControl, Validators } from '@angular/forms';
 import { MessageService } from '../message.service';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
 
-
 @Component({
   selector: 'app-faq',
   templateUrl: './faq.component.html',
   styleUrls: ['./faq.component.scss'],
 })
 export class FaqComponent {
-  constructor(private messageService: MessageService, private snackBService: SnackBarService, private router: Router) {}
+  constructor(
+    private messageService: MessageService,
+    private snackBService: SnackBarService,
+    private router: Router
+  ) {}
   @ViewChild('nameForm') nameInp!: ElementRef<HTMLInputElement>;
   @ViewChild('emailForm') emailInp!: ElementRef<HTMLInputElement>;
   @ViewChild('textForm') textInp!: ElementRef<HTMLInputElement>;
@@ -44,7 +47,9 @@ export class FaqComponent {
 
   public sendMessageToBackend(): void {
     this.messageService.addMessages(this.getMessages()).subscribe();
-    this.snackBService.makeSnackbarThatClosesAutomatically(this.succesSnackbarInput);
+    this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.succesSnackbarInput
+    );
     this.router.navigateByUrl('/veel-gestelde-vragen');
   }
   public nameErrorMessage(): string {

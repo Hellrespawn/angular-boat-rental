@@ -32,5 +32,4 @@ describe('Test Message', () => {
     expect(res.body.message[0].email).to.equal('Testgebruiker@hotmail.com');
     expect(res.body.message[0].text).to.equal('Lorem Ipsum');
   });
-
 });
