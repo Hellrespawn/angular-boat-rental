@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { requirementsToString } from 'src/app/boat';
+import { BoatService } from 'src/app/boat-service.service';
 import { BoatDetailData } from '../boat-card/boat-details/boat-details.component';
-import { RentalService } from '../rental.service';
+import { BookingService } from '../booking.service';
 
 @Component({
   selector: 'app-check',
@@ -14,7 +14,8 @@ export class CheckComponent implements OnInit {
   public boat!: BoatDetailData;
 
   constructor(
-    private rentalService: RentalService,
+    private bookingService: BookingService,
+    private boatService: BoatService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -29,16 +30,16 @@ export class CheckComponent implements OnInit {
     const id = parseInt(params.get('boatId') ?? '');
 
     if (!isNaN(id)) {
-      this.rentalService
+      this.boatService
         .getBoatDetailData(id)
         .subscribe((boat) => (this.boat = boat));
     }
   }
 
   private getDates(): void {
-    this.rentalService.dateRange.subscribe(
-      (dateRange) => (this.dateRange = dateRange)
-    );
+    this.bookingService
+      .getDateRange()
+      .subscribe((dateRange) => (this.dateRange = dateRange));
   }
 
   private getCurrentUserId(): number {
@@ -63,7 +64,7 @@ export class CheckComponent implements OnInit {
 
   public isOrderValid(): boolean {
     if (this.dateRange) {
-      return this.rentalService.getDays(...this.dateRange) >= 3;
+      return this.bookingService.getDays(...this.dateRange) >= 3;
     }
 
     return false;
@@ -74,13 +75,13 @@ export class CheckComponent implements OnInit {
   }
 
   public requirementsToString(): string {
-    return requirementsToString(this.boat!);
+    return this.boatService.requirementsToString(this.boat!);
   }
 
   public getDays(): number {
     const [dateStart, dateEnd] = this.dateRange!;
 
-    return this.rentalService.getDays(dateStart, dateEnd);
+    return this.bookingService.getDays(dateStart, dateEnd);
   }
 
   public getTotalPrice(): number {
@@ -88,8 +89,8 @@ export class CheckComponent implements OnInit {
   }
 
   public handleButton(): void {
-    this.rentalService
-      .addRental(this.boat!.id, this.getCurrentUserId())
+    this.bookingService
+      .createRental(this.boat!.id, this.getCurrentUserId())
       .subscribe(this.confirmOrder.bind(this));
   }
 }

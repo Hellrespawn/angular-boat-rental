@@ -1,7 +1,7 @@
 <mat-form-field appearance="fill">
   <mat-label>Vaarbewijs</mat-label>
   <mat-select
-    [ngModel]="rentalService.licenseFilter | async"
+    [ngModel]="bookingService.getLicenseFilter() | async"
     (ngModelChange)="updateFilter($event)"
   >
     <mat-option value="both"> Beide </mat-option>

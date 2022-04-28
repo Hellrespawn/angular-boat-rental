@@ -7,13 +7,13 @@ import { HomeComponent } from './home/home.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './log-in/log-in.component';
 import { FaqComponent } from './faq/faq.component';
-import { RentalComponent } from './rental/rental.component';
+import { RentalComponent } from './booking/booking.component';
 import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
 import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-skipper-overview.component';
-import { CheckComponent } from './rental/check/check.component';
+import { CheckComponent } from './booking/check/check.component';
 import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-customer-overview.component';
-import { SelectSkipperComponent } from './rental/skipper/skipper.component';
-import { PaymentComponent } from './rental/payment/payment.component';
+import { SelectSkipperComponent } from './booking/skipper/skipper.component';
+import { PaymentComponent } from './booking/payment/payment.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },

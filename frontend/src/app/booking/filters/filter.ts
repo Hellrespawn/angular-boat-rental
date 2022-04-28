@@ -1,9 +1,9 @@
 import { Directive } from '@angular/core';
-import { RentalService } from '../rental.service';
+import { BookingService } from '../booking.service';
 
 @Directive()
 export abstract class BaseFilter<T> {
-  constructor(public rentalService: RentalService) {}
+  constructor(public bookingService: BookingService) {}
 
   public abstract updateFilter(change: T): void;
 }

@@ -1,14 +1,38 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Boat } from './boat';
+import { map, Observable } from 'rxjs';
+import { Boat, BoatRequirements } from './boat';
 import { environment } from 'src/environments/environment';
+import { BoatOverviewData } from './booking/booking.component';
+import { BoatDetailData } from './booking/boat-card/boat-details/boat-details.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BoatService {
   constructor(private httpClient: HttpClient) {}
+
+  /**
+   * Creates a string to display from BoatRequirements
+   * @returns
+   */
+  public requirementsToString<T extends { requirements: BoatRequirements }>(
+    item: T
+  ): string {
+    switch (item.requirements) {
+      case 'none':
+        return 'Zelf varen';
+
+      case 'license':
+        return 'Vaarbewijs vereist';
+
+      case 'skipper':
+        return 'Schipper vereist';
+
+      default:
+        throw `Invalid boat.requirements: ${item.requirements}`;
+    }
+  }
 
   /**
    * sends a request to the backend to add a new boat to the database
@@ -56,5 +80,85 @@ export class BoatService {
       id,
       updatedValue,
     });
+  }
+
+  /**
+   * Appends relative route to backend URL. Requires leading '/'.
+   *
+   * @param url
+   * @returns complete url
+   */
+  private constructUrl(url: string): string {
+    return `${environment.backendUrl}${url}`;
+  }
+
+  /**
+   * Adds the address of the backend to the imageRoute received from the
+   * backend.
+   *
+   * Will work on any type T that has a property imageRoute: string.
+   *
+   * @param item
+   * @returns modified item.
+   */
+  private modifyImageRoute<T extends { imageRoute: string }>(item: T): T {
+    item.imageRoute = this.constructUrl(item.imageRoute);
+    return item;
+  }
+
+  /**
+   * Formats Date object as YYYY-MM-DD
+   */
+  private dateToYMD(date: Date): string {
+    return date.toISOString().split('T')[0];
+  }
+
+  /**
+   * Gets BoatOverviewData for all boats. Optionally restrict it to dateRange
+   *
+   * @param dateRange
+   * @returns Array of BoatOverviewData
+   */
+  public getBoatOverviewData(
+    dateRange?: [Date, Date]
+  ): Observable<BoatOverviewData[]> {
+    let route = '/boats/overview';
+
+    if (dateRange) {
+      let [startDate, endDate] = dateRange;
+
+      route += `/available/${this.dateToYMD(startDate)}/${this.dateToYMD(
+        endDate
+      )}`;
+    }
+
+    return this.httpClient
+      .get<{ boats: BoatOverviewData[] }>(this.constructUrl(route))
+      .pipe(map(({ boats }) => boats.map(this.modifyImageRoute.bind(this))));
+  }
+
+  /**
+   * Retrieves detailed data from the backend for boat ${id}
+   */
+  public getBoatDetailData(id: number): Observable<BoatDetailData> {
+    return this.httpClient
+      .get<{ boat: BoatDetailData }>(this.constructUrl(`/boats/${id}/detail`))
+      .pipe(
+        // Destructure object in parameter list.
+        map(({ boat }): BoatDetailData => {
+          return this.modifyImageRoute(boat);
+        })
+      );
+  }
+
+  /**
+   * Returns a list of all booked dates for boat ${id}
+   */
+  public getBookedDates(id: number): Observable<Date[]> {
+    return this.httpClient
+      .get<{ dates: string[] }>(this.constructUrl(`/boats/${id}/bookedDates`))
+      .pipe(
+        map(({ dates }) => dates.map((dateString) => new Date(dateString)))
+      );
   }
 }

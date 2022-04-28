@@ -1,7 +1,7 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { RentalService } from '../rental.service';
+import { BookingService } from '../booking.service';
 
 @Component({
   selector: 'app-filters',
@@ -11,7 +11,7 @@ import { RentalService } from '../rental.service';
 export class FiltersComponent {
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private rentalService: RentalService
+    private bookingService: BookingService
   ) {}
 
   /** Observable that checks whether or not we're on mobile. */
@@ -20,6 +20,6 @@ export class FiltersComponent {
     .pipe(map((state) => state.matches));
 
   public clearFilters(): void {
-    this.rentalService.reset();
+    this.bookingService.reset();
   }
 }

@@ -10,9 +10,9 @@
     *ngFor="let boat of boats"
     [ngClass]="{ disabled: (isEnabled(boat) | async) === false }"
   >
-    <app-rental-boat-card
+    <app-booking-boat-card
       [boat]="boat"
       [enabled]="(isEnabled(boat) | async) === true"
-    ></app-rental-boat-card>
+    ></app-booking-boat-card>
   </li>
 </ul>

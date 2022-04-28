@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BoatTypeFilter } from '../../rental.service';
+import { BoatTypeFilter } from '../../booking.service';
 import { BaseFilter } from '../filter';
 
 @Component({
@@ -9,6 +9,6 @@ import { BaseFilter } from '../filter';
 })
 export class BoatTypeComponent extends BaseFilter<BoatTypeFilter> {
   public updateFilter(change: BoatTypeFilter): void {
-    this.rentalService.typeFilter.next(change);
+    this.bookingService.setTypeFilter(change);
   }
 }

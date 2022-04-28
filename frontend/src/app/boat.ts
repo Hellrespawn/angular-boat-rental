@@ -16,25 +16,3 @@ export type Boat = {
   maxSpeedInKmH?: number;
   sailAreaInM2?: number;
 };
-
-/**
- * Creates a string to display from BoatRequirements
- * @returns
- */
-export function requirementsToString<
-  T extends { requirements: BoatRequirements }
->(item: T): string {
-  switch (item.requirements) {
-    case 'none':
-      return 'Zelf varen';
-
-    case 'license':
-      return 'Vaarbewijs vereist';
-
-    case 'skipper':
-      return 'Schipper vereist';
-
-    default:
-      throw `Invalid boat.requirements: ${item.requirements}`;
-  }
-}
