@@ -25,9 +25,9 @@ export class FaqComponent {
   };
 
   // viewchild instead of getElementById
-  @ViewChild('nameForm') nameInp!: ElementRef<HTMLInputElement>;
-  @ViewChild('emailForm') emailInp!: ElementRef<HTMLInputElement>;
-  @ViewChild('textForm') textInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('nameForm') public nameInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('emailForm') public emailInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('textForm') public textInp!: ElementRef<HTMLInputElement>;
 
   // input Formcontrol
   public emailFormControl = new FormControl('', [
@@ -46,7 +46,7 @@ export class FaqComponent {
     this.router.navigateByUrl('/veel-gestelde-vragen');
   }
 
-  public getMessages() {
+  public getMessages(): MessageData {
     let nameInp: string = this.nameInp.nativeElement.value;
     let emailInp: string = this.emailInp.nativeElement.value;
     let textInp: string = this.textInp.nativeElement.value;
@@ -81,3 +81,9 @@ export class FaqComponent {
     return errorMessage;
   }
 }
+
+export type MessageData = {
+  name: string;
+  email: string;
+  text: string;
+};
