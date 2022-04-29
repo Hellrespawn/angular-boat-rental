@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, tap } from 'rxjs';
 import { BoatOverviewData, BoatType } from '../boat';
 import { BoatService } from '../boat.service';
 import { DateRange, RentalService } from '../rental.service';
@@ -128,10 +128,11 @@ export class BookingService {
    * it to subscribers of this.boats
    */
   public updateBoatOverviewData(): void {
-    // FIXME pass dateRange observable to BoatOverviewData
-    this.boatService
-      .getBoatOverviewData(this.dateRange.getValue() ?? undefined)
-      .subscribe((boats) => this.boats.next(boats));
+    this.dateRange.subscribe((dateRange) =>
+      this.boatService
+        .getBoatOverviewData(dateRange ?? undefined)
+        .subscribe((boats) => this.boats.next(boats))
+    );
   }
 
   /**
@@ -139,15 +140,15 @@ export class BookingService {
    * Rental
    */
   public createRental(boatId: number, customerId: number): Observable<number> {
-    let observable = this.rentalService.createRental(
-      boatId,
-      customerId,
-      this.dateRange.getValue()!
-    );
+    let dateRange = this.dateRange.getValue();
 
-    this.reset();
+    if (!dateRange) {
+      throw 'Called createRental() when dateRange is undefined.';
+    }
 
-    return observable;
+    return this.rentalService
+      .createRental(boatId, customerId, dateRange)
+      .pipe(tap(this.reset.bind(this)));
   }
 
   /**

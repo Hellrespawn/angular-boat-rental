@@ -14,7 +14,7 @@ export type BoatOverviewData = {
 /**
  * type which contains additional information about the boat
  */
-export type BoatDetailData = {
+export type BoatDetailData = BoatOverviewData & {
   registrationNumber: number;
   pricePerDay: number;
   lengthInM: number;
@@ -53,15 +53,14 @@ export class BoatService {
    * @param id the id of the desired boat
    * @returns A type intersection of BoatOverviewData and BoatDetailData
    */
-  public async getBoatDetailData(
-    id: number
-  ): Promise<(BoatOverviewData & BoatDetailData) | null> {
+  public async getBoatDetailData(id: number): Promise<BoatDetailData | null> {
     const boat = await Boat.findByPk(id);
 
     if (boat) {
       const overviewData = this.boatInstanceToOverviewData(boat);
 
       const detailData: BoatDetailData = {
+        ...overviewData,
         registrationNumber: boat.registrationNumber,
         pricePerDay: boat.pricePerDay,
         lengthInM: boat.lengthInM,
@@ -70,7 +69,7 @@ export class BoatService {
         sailAreaInM2: boat.sailAreaInM2,
       };
 
-      return { ...overviewData, ...detailData };
+      return detailData;
     } else {
       return null;
     }
