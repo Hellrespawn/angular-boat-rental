@@ -56,6 +56,7 @@ import { SuccessDialogComponent } from './booking/payment/success-dialog/success
 import { SelectSkipperComponent } from './booking/skipper/select-skipper.component';
 import { PaymentComponent } from './booking/payment/payment.component';
 import { FiltersComponent } from './booking/filters/filters.component';
+import { FineDialogComponent } from './admin-customer-overview/fine-dialog/fine-dialog.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { FiltersComponent } from './booking/filters/filters.component';
     SelectSkipperComponent,
     PaymentComponent,
     FiltersComponent,
+    FineDialogComponent,
   ],
   imports: [
     BrowserModule,

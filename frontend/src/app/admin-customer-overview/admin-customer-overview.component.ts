@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { CustomerService } from '../customer.service';
 import { addToNavBar } from '../navigation.service';
 import { SnackBarInput, SnackBarService } from '../snack-bar.service';
+import { FineDialogComponent } from './fine-dialog/fine-dialog.component';
 
 @addToNavBar({
   name: 'Account-administratie',
@@ -16,21 +18,57 @@ import { SnackBarInput, SnackBarService } from '../snack-bar.service';
 export class AdminCustomerOverviewComponent implements OnInit {
   // array of all the customers, gets rendered in html with an *ngFor loop
   public arrayOfCustomers: CustomerForAdmin[] = [];
-  // input for the snackbar on succesvol deletion of a boat
-  private readonly succesSnackbarInput: SnackBarInput = {
+  // input for the snackbar on succesful deletion of a boat
+  private readonly succesSnackbarInputDeletion: SnackBarInput = {
     message: 'Klant is verwijderd!',
     buttonText: 'Sluit',
     duration: 2000,
     error: false,
   };
+
+  // input for snackbar on succesful fine
+  private readonly succesSnackbarInputFine: SnackBarInput = {
+    message: 'Boete uitgedeeld!',
+    buttonText: 'Sluit',
+    duration: 2000,
+    error: false,
+  };
+
   constructor(
     private customerService: CustomerService,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.getCustomersFromDatabase();
   }
+
+  public openDialog(
+    idOfCustomer: number,
+    firstNameOfCustomer: string,
+    lastNameOfCustomer: string
+  ): void {
+    let fineAmount: number = 80;
+    const dialogRef = this.dialog.open(FineDialogComponent, {
+      width: '400px',
+      data: {
+        idOfCustomer,
+        firstNameOfCustomer,
+        lastNameOfCustomer,
+        fineAmount,
+      },
+      panelClass: 'fine-modalbox',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result)
+        this.snackBarService.makeSnackbarThatClosesAutomatically(
+          this.succesSnackbarInputFine
+        );
+    });
+  }
+
   /**
    * sends a request to the backend via the service to fetch all customers, then stores them in this.arrayOfCustomers
    */
@@ -48,7 +86,7 @@ export class AdminCustomerOverviewComponent implements OnInit {
     this.customerService.deleteCustomerById(id).subscribe(() => {
       this.arrayOfCustomers.splice(index, 1);
       this.snackBarService.makeSnackbarThatClosesAutomatically(
-        this.succesSnackbarInput
+        this.succesSnackbarInputDeletion
       );
     });
   }
