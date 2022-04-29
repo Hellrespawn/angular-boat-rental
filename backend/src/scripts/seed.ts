@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { Boat } from '../model/boat.model';
-import { Customer } from '../model/customer.model';
+import { User } from '../model/user.model';
 import { Skipper } from '../model/skipper.model';
 import { initSequelize } from '../util/database';
 
@@ -75,10 +75,10 @@ async function insertMockBoats(): Promise<void> {
   });
 }
 
-async function insertMockCustomers(): Promise<void> {
+async function insertMockUsers(): Promise<void> {
   for (const name of CUSTOMER_NAMES) {
     const [firstName, lastName] = name.split(' ');
-    await Customer.create({
+    await User.create({
       firstName,
       lastName,
       license: Boolean(randomInt(0, 1)),
@@ -116,7 +116,7 @@ async function seed(): Promise<void> {
     await initSequelize();
     await insertMockBoats();
     await insertMockSkippers();
-    await insertMockCustomers();
+    await insertMockUsers();
     process.exit();
   } catch (error) {
     console.log(error);

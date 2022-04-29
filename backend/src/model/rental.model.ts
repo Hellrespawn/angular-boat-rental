@@ -7,7 +7,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { Boat } from './boat.model';
-import { Customer } from './customer.model';
+import { User } from './user.model';
 import { Skipper } from './skipper.model';
 
 @Table
@@ -20,13 +20,13 @@ export class Rental extends Model {
   @BelongsTo(() => Boat)
   public boat!: Boat;
 
-  @ForeignKey(() => Customer)
+  @ForeignKey(() => User)
   @AllowNull(false)
   @Column
-  public customerId!: number;
+  public userId!: number;
 
-  @BelongsTo(() => Customer)
-  public customer!: Customer;
+  @BelongsTo(() => User)
+  public user!: User;
 
   @ForeignKey(() => Skipper)
   @Column
