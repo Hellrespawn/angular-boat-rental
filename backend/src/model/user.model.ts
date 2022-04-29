@@ -32,7 +32,7 @@ export class User extends Model {
   @AllowNull(false) @IsEmail @Column public emailAddress!: string;
   @AllowNull(false) @Column public password!: string;
   @AllowNull(false) @Column public blocked!: boolean;
-  @AllowNull(false) @Column public admun!: boolean;
+  @AllowNull(false) @Column public admin!: boolean;
 
   @HasMany(() => Rental)
   public rentals!: Rental[];

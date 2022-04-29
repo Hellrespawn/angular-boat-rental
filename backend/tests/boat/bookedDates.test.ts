@@ -29,6 +29,7 @@ async function seedDatabase(): Promise<Boat> {
     emailAddress: 'stef@test.nl',
     password: 'password',
     blocked: false,
+    admin: true,
   });
 
   await Rental.create({

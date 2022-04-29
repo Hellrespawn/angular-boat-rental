@@ -86,6 +86,7 @@ async function insertMockUsers(): Promise<void> {
       emailAddress: 'test@test.test',
       password: 'password',
       blocked: false,
+      admin: false,
     });
   }
 }
