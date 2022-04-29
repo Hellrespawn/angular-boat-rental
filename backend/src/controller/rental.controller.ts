@@ -7,7 +7,7 @@ import { RentalService } from '../services/rental.service';
  */
 type NewRentalData = {
   boatId: number;
-  customerId: number;
+  userId: number;
   dateStart: string;
   dateEnd: string;
 };
@@ -21,7 +21,7 @@ export const newRentalSchema: JSONSchemaType<NewRentalData> = {
     boatId: {
       type: 'number',
     },
-    customerId: {
+    userId: {
       type: 'number',
     },
     dateStart: {
@@ -33,7 +33,7 @@ export const newRentalSchema: JSONSchemaType<NewRentalData> = {
       format: 'date-time',
     },
   },
-  required: ['boatId', 'customerId', 'dateStart', 'dateEnd'],
+  required: ['boatId', 'userId', 'dateStart', 'dateEnd'],
   additionalProperties: false,
 };
 
@@ -49,14 +49,14 @@ export class RentalController {
   public async addRental(req: Request, res: Response): Promise<void> {
     // Validated by middleware in routes.
     const boatId: number = req.body.boatId;
-    const customerId: number = req.body.customerId;
+    const userId: number = req.body.userId;
     const dateStart = new Date(req.body.dateStart);
     const dateEnd = new Date(req.body.dateEnd);
 
     try {
       const rental = await this.rentalService.addRental(
         boatId,
-        customerId,
+        userId,
         dateStart,
         dateEnd
       );
