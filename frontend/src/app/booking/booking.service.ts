@@ -31,7 +31,7 @@ export class BookingService {
     private boatService: BoatService,
     private rentalService: RentalService
   ) {
-    this.updateBoatOverviewData();
+    this.observeBoatOverviewData();
   }
 
   /**
@@ -84,7 +84,7 @@ export class BookingService {
 
   public setDateRange(dateRange: DateRange | null): void {
     this.dateRange.next(dateRange);
-    this.updateBoatOverviewData();
+    this.observeBoatOverviewData();
   }
 
   public clearDateRange(): void {
@@ -120,14 +120,14 @@ export class BookingService {
     this.clearLicenseFilter();
     this.clearTypeFilter();
     this.clearDateRange();
-    this.updateBoatOverviewData();
+    this.observeBoatOverviewData();
   }
 
   /**
    * Updates the list of valid boats, based on this.dateRange, and broadcasts
    * it to subscribers of this.boats
    */
-  public updateBoatOverviewData(): void {
+  public observeBoatOverviewData(): void {
     this.dateRange.subscribe((dateRange) =>
       this.boatService
         .getBoatOverviewData(dateRange ?? undefined)
