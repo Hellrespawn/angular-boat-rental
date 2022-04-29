@@ -84,6 +84,7 @@ export class BookingService {
 
   public setDateRange(dateRange: DateRange | null): void {
     this.dateRange.next(dateRange);
+    this.updateBoatOverviewData();
   }
 
   public clearDateRange(): void {
@@ -119,6 +120,7 @@ export class BookingService {
     this.clearLicenseFilter();
     this.clearTypeFilter();
     this.clearDateRange();
+    this.updateBoatOverviewData();
   }
 
   /**
@@ -126,8 +128,9 @@ export class BookingService {
    * it to subscribers of this.boats
    */
   public updateBoatOverviewData(): void {
+    // FIXME pass dateRange observable to BoatOverviewData
     this.boatService
-      .getBoatOverviewData()
+      .getBoatOverviewData(this.dateRange.getValue() ?? undefined)
       .subscribe((boats) => this.boats.next(boats));
   }
 
