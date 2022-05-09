@@ -11,7 +11,7 @@ import { RentalComponent } from './booking/booking.component';
 import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
 import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-skipper-overview.component';
 import { CheckComponent } from './booking/check/check.component';
-import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-customer-overview.component';
+import { AdminUserOverviewComponent } from './admin-user-overview/admin-user-overview.component';
 import { SelectSkipperComponent } from './booking/skipper/select-skipper.component';
 import { PaymentComponent } from './booking/payment/payment.component';
 
@@ -31,8 +31,8 @@ const routes: Routes = [
   { path: 'boat-overview-admin', component: AdminBoatOverviewComponent },
   { path: 'skipper-overview-admin', component: AdminSkipperOverviewComponent },
   {
-    path: 'customer-overview-admin',
-    component: AdminCustomerOverviewComponent,
+    path: 'user-overview-admin',
+    component: AdminUserOverviewComponent,
   },
 ];
 

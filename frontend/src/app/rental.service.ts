@@ -17,7 +17,7 @@ export class RentalService {
    */
   public createRental(
     boatId: number,
-    customerId: number,
+    userId: number,
     dateRange: DateRange
   ): Observable<number> {
     const [dateStart, dateEnd] = dateRange;
@@ -25,7 +25,7 @@ export class RentalService {
     let observable = this.httpClient
       .post<{ id: number }>(`${environment.backendUrl}/rentals/`, {
         boatId,
-        customerId,
+        userId,
         dateStart: dateStart,
         dateEnd: dateEnd,
       })
