@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+@use 'src/custom-theme.scss' as theme;
+
+img {
+  width: 200px;
+}
+
+.warning {
+  font-weight: bold;
+  color: mat.get-color-from-palette(
+    theme.$dogstack-project-uml-warn,
+    'default'
+  );
+}

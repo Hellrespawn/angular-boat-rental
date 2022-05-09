@@ -35,10 +35,10 @@ export class RentalService {
     return observable;
   }
 
-  public getNextRental(customerId: number): Observable<Rental | null> {
+  public getNextRental(userId: number): Observable<Rental | null> {
     let observable = this.httpClient
       .get<{ rental: Rental | null }>(
-        constructUrl(`/users/${customerId}/rentals/next`)
+        constructUrl(`/users/${userId}/rentals/next`)
       )
       .pipe(
         map(({ rental }) => {
