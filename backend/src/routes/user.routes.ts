@@ -11,7 +11,7 @@ export function userRoutes(controller: UserController): Router {
 
   router.delete(
     '/users/:id',
-    validateIdInUrlParams,
+    validateIdInUrlParams(),
     async (req: Request, res: Response): Promise<void> => {
       controller.deleteUser(req, res);
     }

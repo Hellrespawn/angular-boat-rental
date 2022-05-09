@@ -23,7 +23,7 @@ export function boatRoutes(controller: BoatController): Router {
 
   router.get(
     '/boats/:id/detail',
-    validateIdInUrlParams,
+    validateIdInUrlParams(),
     (req: Request, res: Response): void => {
       controller.getBoatDetailData(req, res);
     }
@@ -31,7 +31,7 @@ export function boatRoutes(controller: BoatController): Router {
 
   router.get(
     '/boats/:id/bookedDates',
-    validateIdInUrlParams,
+    validateIdInUrlParams(),
     async (req: Request, res: Response): Promise<void> => {
       controller.getBookedDates(req, res);
     }
