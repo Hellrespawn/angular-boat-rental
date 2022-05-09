@@ -1,0 +1,47 @@
+<p *ngIf="arrayOfUsers.length === 0">
+  Er zijn nog geen accounts geregistreerd!
+</p>
+<mat-card *ngFor="let user of arrayOfUsers; index as i">
+  <mat-card-title>{{
+    user.firstName + ' ' + user.lastName
+  }}</mat-card-title>
+  <mat-card-subtitle
+    >Email adres: {{ user.emailAddress }}</mat-card-subtitle
+  >
+  <mat-card-subtitle
+    >Geboorte datum:
+    {{ parseDateStringToDate(user.dateOfBirth).getDate() }}-{{
+      parseDateStringToDate(user.dateOfBirth).getMonth()
+    }}-{{
+      parseDateStringToDate(user.dateOfBirth).getFullYear()
+    }}</mat-card-subtitle
+  >
+  <mat-card-subtitle *ngIf="user.blocked" style="color: red"
+    >Geblokkeerd!</mat-card-subtitle
+  >
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="deleteUserById(user.id, i)"
+    >
+      Verwijder
+    </button>
+    <button
+      *ngIf="!user.blocked"
+      mat-raised-button
+      color="primary"
+      (click)="updateBlocked(user.id, true, i)"
+    >
+      Blokkeer
+    </button>
+    <button
+      *ngIf="user.blocked"
+      mat-raised-button
+      color="primary"
+      (click)="updateBlocked(user.id, false, i)"
+    >
+      De-blokkeer
+    </button>
+  </mat-card-actions>
+</mat-card>

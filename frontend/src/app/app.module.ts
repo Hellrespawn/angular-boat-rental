@@ -51,7 +51,7 @@ import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-sk
 import { BoatDetailsComponent } from './booking/boat-card/boat-details/boat-details.component';
 import { DateComponent } from './booking/filters/date/date.component';
 import { CheckComponent } from './booking/check/check.component';
-import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-customer-overview.component';
+import { AdminUserOverviewComponent } from './admin-user-overview/admin-user-overview.component';
 import { SuccessDialogComponent } from './booking/payment/success-dialog/success-dialog.component';
 import { SelectSkipperComponent } from './booking/skipper/select-skipper.component';
 import { PaymentComponent } from './booking/payment/payment.component';
@@ -85,7 +85,7 @@ import { FiltersComponent } from './booking/filters/filters.component';
     BoatDetailsComponent,
     DateComponent,
     CheckComponent,
-    AdminCustomerOverviewComponent,
+    AdminUserOverviewComponent,
     SuccessDialogComponent,
     SelectSkipperComponent,
     PaymentComponent,

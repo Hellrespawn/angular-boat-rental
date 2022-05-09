@@ -19,7 +19,7 @@ const BOAT_NAMES = [
   'Terrible',
 ];
 
-const CUSTOMER_NAMES = [
+const USER_NAMES = [
   'Baran Enriquez',
   'Chloe-Ann Bryant',
   'Lyndsey Chamberlain',
@@ -76,7 +76,7 @@ async function insertMockBoats(): Promise<void> {
 }
 
 async function insertMockUsers(): Promise<void> {
-  for (const name of CUSTOMER_NAMES) {
+  for (const name of USER_NAMES) {
     const [firstName, lastName] = name.split(' ');
     await User.create({
       firstName,

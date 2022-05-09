@@ -15,7 +15,7 @@ BoatRequirements
 "skipper"</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1200</x><y>490</y><w>30</w><h>140</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>360</x><y>610</y><w>420</w><h>280</h></coordinates><panel_attributes>Rental
 --
 +boatId: number
-+customerId: number
++userId: number
 +skipperId?: number
 +dateStart: Date
 +dateEnd: Date
@@ -31,10 +31,10 @@ BoatRequirements
 +isCurrent(): boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>770</x><y>640</y><w>160</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=boat
 m2=1</panel_attributes><additional_attributes>10;10;140;10</additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>630</y><w>180</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m1=customer
+m1=user
 m2=1</panel_attributes><additional_attributes>160;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>250</y><w>580</w><h>380</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;360;10;10;560;10</additional_attributes></element><element><id>Relation</id><coordinates><x>600</x><y>460</y><w>70</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=skipper
-m2=[0..1]</panel_attributes><additional_attributes>10;150;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>600</y><w>210</w><h>180</h></coordinates><panel_attributes>Customer
+m2=[0..1]</panel_attributes><additional_attributes>10;150;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>600</y><w>210</w><h>180</h></coordinates><panel_attributes>User
 --
 firstName: string
 lastName: string
