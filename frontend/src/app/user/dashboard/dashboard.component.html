@@ -1,2 +1,13 @@
-<section *ngIf="this.nextRental" class="custom-card">next rental</section>
-<section class="custom-card">hello</section>
+<section *ngIf="this.nextRental" class="custom-card with-padding">
+  <img [src]="this.nextRental.boat.imageRoute" />
+  <div>
+    <p>{{ this.nextRental.boat.name }}</p>
+    <p *ngIf="this.nextRental.skipper">
+      Bestuurd door {{ this.nextRental.skipper.name }}
+    </p>
+    <p>van {{ this.formatDateStart() }}</p>
+    <p>tot {{ this.formatDateEnd() }}</p>
+    <p *ngIf="this.nextRental.paid">Betaald</p>
+    <p *ngIf="!this.nextRental.paid">Nog niet betaald!</p>
+  </div>
+</section>

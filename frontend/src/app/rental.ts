@@ -5,9 +5,10 @@ export interface Rental {
   paid: boolean;
   boat: {
     id: number;
+    name: string;
     imageRoute: string;
   };
-  skipper: {
+  skipper?: {
     name: string;
   };
 }

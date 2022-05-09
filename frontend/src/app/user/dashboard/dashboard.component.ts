@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { addToNavBar } from 'src/app/navigation.service';
+import { formatDate } from '../../date';
 import { Rental } from '../../rental';
 import { RentalService } from '../../rental.service';
 
@@ -35,5 +36,13 @@ export class UserDashboardComponent implements OnInit {
   private getCurrentUserId(): number {
     // FIXME Echte implementatie
     return 1;
+  }
+
+  public formatDateStart(): string {
+    return formatDate(this.nextRental!.dateStart);
+  }
+
+  public formatDateEnd(): string {
+    return formatDate(this.nextRental!.dateEnd);
   }
 }

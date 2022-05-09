@@ -57,6 +57,9 @@ import { SelectSkipperComponent } from './booking/skipper/select-skipper.compone
 import { PaymentComponent } from './booking/payment/payment.component';
 import { FiltersComponent } from './booking/filters/filters.component';
 import { UserDashboardComponent } from './user/dashboard/dashboard.component';
+import { UserComponent } from './user/user.component';
+import { UserRentalsComponent } from './user/rentals/rentals.component';
+import { UserSettingsComponent } from './user/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -92,6 +95,9 @@ import { UserDashboardComponent } from './user/dashboard/dashboard.component';
     PaymentComponent,
     FiltersComponent,
     UserDashboardComponent,
+    UserComponent,
+    UserRentalsComponent,
+    UserSettingsComponent,
   ],
   imports: [
     BrowserModule,

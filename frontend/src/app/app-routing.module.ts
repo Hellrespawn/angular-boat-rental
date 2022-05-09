@@ -15,6 +15,9 @@ import { AdminUserOverviewComponent } from './admin-user-overview/admin-user-ove
 import { SelectSkipperComponent } from './booking/skipper/select-skipper.component';
 import { PaymentComponent } from './booking/payment/payment.component';
 import { UserDashboardComponent } from './user/dashboard/dashboard.component';
+import { UserComponent } from './user/user.component';
+import { UserRentalsComponent } from './user/rentals/rentals.component';
+import { UserSettingsComponent } from './user/settings/settings.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -22,7 +25,15 @@ const routes: Routes = [
   { path: 'admin-panel', component: AdminPanelComponent },
   { path: 'add-boat', component: AddBoatComponent },
   { path: 'add-skipper', component: AddSkipperComponent },
-  { path: 'gebruiker', component: UserDashboardComponent },
+  {
+    path: 'gebruiker',
+    component: UserComponent,
+    children: [
+      { path: 'dashboard', component: UserDashboardComponent },
+      { path: 'boekingen', component: UserRentalsComponent },
+      { path: 'gegevens', component: UserSettingsComponent },
+    ],
+  },
   { path: 'registratie-pagina', component: RegistrationComponent },
   { path: 'log-In', component: LoginComponent },
   { path: 'veel-gestelde-vragen', component: FaqComponent },
