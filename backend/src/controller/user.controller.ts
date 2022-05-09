@@ -52,4 +52,34 @@ export class UserController {
       res.status(400).send(error);
     }
   }
+  // send users to Database
+
+  public async sendUserToDB(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
+    const firstName: string = req.body.firstName;
+    const lastName: string = req.body.lastName;
+    const dateOfBirth: Date = req.body.dateOfBirth;
+    const emailAddress: string = req.body.emailAddress;
+    const password: string = req.body.password;
+    const license: boolean = req.body.license;
+
+    try {
+      const result = User.create({
+        firstName,
+        lastName,
+        dateOfBirth,
+        emailAddress,
+        password,
+        license,
+        blocked: false,
+        admin: false
+      });
+      res.status(200).json(result);
+    } catch {
+      console.error();
+      res.status(400).json('User cant be send to database');
+    }
+  }
 }

@@ -24,15 +24,15 @@ function getRequiredDateString(): string {
 export class User extends Model {
   @AllowNull(false) @Column public firstName!: string;
   @AllowNull(false) @Column public lastName!: string;
-  @AllowNull(false) @Column public license!: boolean;
+  @AllowNull(true) @Column public license!: boolean;
   @AllowNull(false)
   //@IsBefore(getRequiredDateString())
   @Column
   public dateOfBirth!: Date;
   @AllowNull(false) @IsEmail @Column public emailAddress!: string;
   @AllowNull(false) @Column public password!: string;
-  @AllowNull(false) @Column public blocked!: boolean;
-  @AllowNull(false) @Column public admin!: boolean;
+  @AllowNull(true) @Column public blocked!: boolean;
+  @AllowNull(true) @Column public admin!: boolean;
 
   @HasMany(() => Rental)
   public rentals!: Rental[];

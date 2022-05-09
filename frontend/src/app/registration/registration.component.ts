@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -64,5 +64,16 @@ export class RegistrationComponent {
     // if (!number.test(password)) {
     //   console.log('Wachtwoord heeft minimaal 1 getal nodig!');
     // }
+  }
+
+
+  @ViewChild('firstNameInp') public firstNameInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('lastNameInp') public lastNameInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('dateOfBirthInp') public dateOfBirthInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('emailAdressInp') public emailAdressInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('passwordInp') public passwordInp!: ElementRef<HTMLInputElement>;
+
+  public sendDataToBackend() {
+    console.log(ViewChild)
   }
 }

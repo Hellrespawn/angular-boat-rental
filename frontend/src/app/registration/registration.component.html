@@ -9,6 +9,7 @@
         [formControl]="firstName"
         placeholder="Voornaam"
         id="firstname-input"
+        #firstNameInp
       />
 
       <mat-error *ngIf="firstName.invalid"
@@ -26,6 +27,7 @@
         [formControl]="lastName"
         placeholder="Achternaam"
         id="lastName-input"
+        #lastNameInp
       />
       <mat-error *ngIf="lastName.invalid"
         >{{ lastNameErrorMessage() }}
@@ -36,33 +38,11 @@
   <form class="form">
     <mat-form-field appearance="fill">
       <mat-label>Geboortedatum*</mat-label>
-      <input matInput [matDatepicker]="picker" id="age-input" />
+      <input matInput [matDatepicker]="picker" id="age-input" #dateOfBirthInp />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
   </form>
-
-  <!-- <form class="form">
-    <mat-form-field class="form-field" appearance="fill">
-      <mat-label>Leeftijd</mat-label>
-      <input
-        type="number"
-        matInput
-        placeholder="Leeftijd"
-        id="leeftijd-input"
-      />
-      <mat-error
-        *ngIf="
-        
-        "
-      >
-        Voer uw leeftijd in
-      </mat-error>
-      <mat-error *ngIf="">
-        Leeftijd is <strong>vereist</strong>
-      </mat-error>
-    </mat-form-field>
-  </form> -->
 
   <section class="registratie-sectie">
     <form class="form">
@@ -74,6 +54,7 @@
           [formControl]="email"
           placeholder="Emailadres"
           id="emailadres-input"
+          #emailAdressInp
         />
 
         <mat-error *ngIf="email.invalid">{{ emailErrorMessage() }} </mat-error>
@@ -88,6 +69,7 @@
           matInput
           placeholder="password"
           id="password-input"
+          #passwordInp
         />
 
         <mat-error *ngIf="password.invalid"
@@ -99,6 +81,8 @@
         color="primary"
         id="registration-btn"
         (click)="validatePassword()"
+        (click)="sendDataToBackend()"
+
       >
         Registreer!
       </button>
