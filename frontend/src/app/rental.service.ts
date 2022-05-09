@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Rental } from './rental';
 
 export type DateRange = [Date, Date];
 
@@ -30,6 +31,16 @@ export class RentalService {
         dateEnd: dateEnd,
       })
       .pipe(map(({ id }) => id));
+
+    return observable;
+  }
+
+  public getNextRental(customerId: number): Observable<Rental | null> {
+    let observable = this.httpClient
+      .get<{ rental: Rental | null }>(
+        `${environment.backendUrl}/users/${customerId}/rentals/next`
+      )
+      .pipe(map(({ rental }) => rental));
 
     return observable;
   }

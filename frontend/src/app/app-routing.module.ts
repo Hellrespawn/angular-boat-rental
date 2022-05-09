@@ -14,6 +14,7 @@ import { CheckComponent } from './booking/check/check.component';
 import { AdminUserOverviewComponent } from './admin-user-overview/admin-user-overview.component';
 import { SelectSkipperComponent } from './booking/skipper/select-skipper.component';
 import { PaymentComponent } from './booking/payment/payment.component';
+import { UserDashboardComponent } from './user/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'admin-panel', component: AdminPanelComponent },
   { path: 'add-boat', component: AddBoatComponent },
   { path: 'add-skipper', component: AddSkipperComponent },
+  { path: 'gebruiker', component: UserDashboardComponent },
   { path: 'registratie-pagina', component: RegistrationComponent },
   { path: 'log-In', component: LoginComponent },
   { path: 'veel-gestelde-vragen', component: FaqComponent },
