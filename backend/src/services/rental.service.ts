@@ -1,6 +1,7 @@
 import { Boat } from '../model/boat.model';
 import { Rental } from '../model/rental.model';
 import { User } from '../model/user.model';
+import { Skipper } from '../model/skipper.model';
 
 export class RentalService {
   /**
@@ -52,5 +53,15 @@ export class RentalService {
       dateEnd,
       paid: false,
     });
+  }
+
+  public async getNextRentalByUserId(userId: number): Promise<Rental | null> {
+    const rentals = (
+      await Rental.findAll({ where: { userId }, include: [Boat, Skipper] })
+    ).filter((rental) => rental.isCurrent() || rental.isUpcoming());
+
+    rentals.sort((a, b) => b.dateStart.getTime() - a.dateStart.getTime());
+
+    return rentals[0] ?? null;
   }
 }
