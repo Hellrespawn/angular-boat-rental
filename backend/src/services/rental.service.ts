@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import { Boat } from '../model/boat.model';
 import { Rental } from '../model/rental.model';
 import { User } from '../model/user.model';
@@ -56,11 +57,24 @@ export class RentalService {
   }
 
   public async getNextRentalByUserId(userId: number): Promise<Rental | null> {
-    const rentals = (
-      await Rental.findAll({ where: { userId }, include: [Boat, Skipper] })
-    ).filter((rental) => rental.isCurrent() || rental.isUpcoming());
+    const now = new Date();
 
-    rentals.sort((a, b) => b.dateStart.getTime() - a.dateStart.getTime());
+    const rentals = await Rental.findAll({
+      include: [Boat, Skipper],
+      where: {
+        userId,
+        [Op.or]: [
+          {
+            dateStart: { [Op.gt]: now },
+          },
+          {
+            dateStart: { [Op.lte]: now },
+            dateEnd: { [Op.gt]: now },
+          },
+        ],
+      },
+      order: [['dateStart', 'ASC']],
+    });
 
     return rentals[0] ?? null;
   }
