@@ -16,6 +16,9 @@ import * as path from 'path';
 import { Server } from 'http';
 import { rentalRoutes } from './routes/rental.routes';
 import { RentalController } from './controller/rental.controller';
+import { SessionController } from './controller/session.controller';
+import { sessionRoutes } from './routes/session.routes';
+import { requireAdmin } from './middleware/authenticate';
 
 initSequelize();
 
@@ -25,6 +28,7 @@ const rentalController: RentalController = new RentalController();
 const imageController: ImageController = new ImageController();
 const messageController: MessageController = new MessageController();
 const userController: UserController = new UserController();
+const sessionController: SessionController = new SessionController();
 
 export const app: Application = express();
 const port = +(process.env.SRV_PORT ?? 3000);
@@ -43,6 +47,11 @@ app.use(rentalRoutes(rentalController));
 app.use(imageRoutes(imageController));
 addMessageRoute(app, messageController);
 app.use(userRoutes(userController));
+app.use(sessionRoutes(sessionController));
+
+app.get('/', requireAdmin, (_req, res) => {
+  res.json({ status: 'online' });
+});
 
 export let server: Server;
 

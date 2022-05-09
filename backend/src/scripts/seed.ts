@@ -77,17 +77,18 @@ async function insertMockBoats(): Promise<void> {
 }
 
 async function insertMockUsers(): Promise<void> {
-  for (const name of USER_NAMES) {
+  for (let i = 0; i < USER_NAMES.length; i++) {
+    const name = USER_NAMES[i];
     const [firstName, lastName] = name.split(' ');
     await User.create({
       firstName,
       lastName,
       license: Boolean(randomInt(0, 1)),
       dateOfBirth: new Date('1991-01-01'),
-      emailAddress: 'test@test.test',
+      emailAddress: `test${i}@test.test`,
       password: 'password',
       blocked: false,
-      admin: false,
+      admin: i === 0 ? true : false,
     });
   }
 }
