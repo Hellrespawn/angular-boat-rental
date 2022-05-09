@@ -2,15 +2,10 @@
   Er zijn nog geen accounts geregistreerd!
 </p>
 <mat-card *ngFor="let user of arrayOfUsers; index as i">
-  <mat-card-title>{{
-    user.firstName + ' ' + user.lastName
-  }}</mat-card-title>
+  <mat-card-title>{{ user.firstName + ' ' + user.lastName }}</mat-card-title>
+  <mat-card-subtitle>Email adres: {{ user.emailAddress }}</mat-card-subtitle>
   <mat-card-subtitle
-    >Email adres: {{ user.emailAddress }}</mat-card-subtitle
-  >
-  <mat-card-subtitle
-    >Geboorte datum:
-    {{ parseDateStringToDate(user.dateOfBirth).getDate() }}-{{
+    >Geboorte datum: {{ parseDateStringToDate(user.dateOfBirth).getDate() }}-{{
       parseDateStringToDate(user.dateOfBirth).getMonth()
     }}-{{
       parseDateStringToDate(user.dateOfBirth).getFullYear()

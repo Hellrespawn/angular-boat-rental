@@ -15,9 +15,7 @@ export class UserService {
    * @returns an Observable of an array of Users
    */
   public getUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(
-      `${environment.backendUrl}/users`
-    );
+    return this.httpClient.get<User[]>(`${environment.backendUrl}/users`);
   }
   /**
    * sends a request to the backend to delete a specific User by id
