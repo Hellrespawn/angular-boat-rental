@@ -66,7 +66,7 @@ export class UserController {
     const license: boolean = req.body.license;
 
     try {
-      const result = User.create({
+      const result = await User.create({
         firstName,
         lastName,
         dateOfBirth,
