@@ -61,6 +61,8 @@ import { UserComponent } from './user/user.component';
 import { UserRentalsComponent } from './user/rentals/rentals.component';
 import { UserSettingsComponent } from './user/settings/settings.component';
 
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -134,7 +136,10 @@ import { UserSettingsComponent } from './user/settings/settings.component';
     MatDialogModule,
     MatProgressSpinnerModule,
   ],
-  providers: [MatSnackBarModule],
+  providers: [
+    MatSnackBarModule,
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
