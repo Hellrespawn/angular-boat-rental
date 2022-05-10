@@ -6,7 +6,7 @@ import { RentalService } from '../../rental.service';
 
 @addToNavBar({
   name: 'Klantenpaneel',
-  route: '/gebruiker',
+  route: '/gebruiker/dashboard',
   userTypes: ['user', 'admin'],
 })
 @Component({
