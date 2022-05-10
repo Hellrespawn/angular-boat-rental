@@ -1,7 +1,7 @@
 <nav>
   <a mat-button routerLink="/">Home</a>
   <a mat-button routerLink="/verhuur">Verhuur</a>
-  <a *ngIf="isGuest()" mat-button routerLink="/log-In">Login</a>
+  <a *ngIf="isGuest()" mat-button routerLink="/login">Login</a>
 
   <!-- Menu button -->
   <!-- This button is hidden for guests because there are no nav items for
@@ -18,16 +18,5 @@
       mat-menu-item
       >{{ item.name }}</a
     >
-
-    <!-- Debug -->
-    <mat-divider></mat-divider>
-    <button mat-menu-item (click)="debugUserType = 'guest'">
-      guest (Debug)
-    </button>
-    <button mat-menu-item (click)="debugUserType = 'user'">user (Debug)</button>
-    <button mat-menu-item (click)="debugUserType = 'admin'">
-      admin (Debug)
-    </button>
-    <!-- Debug -->
   </mat-menu>
 </nav>

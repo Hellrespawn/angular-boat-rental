@@ -28,7 +28,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RegistrationComponent } from './registration/registration.component';
-import { LoginComponent } from './log-in/log-in.component';
+import { LoginComponent } from './login/login.component';
+import { LogoutComponent } from './logout/logout.component';
 import { FaqComponent } from './faq/faq.component';
 
 import { RentalComponent } from './booking/booking.component';
@@ -100,6 +101,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     UserComponent,
     UserRentalsComponent,
     UserSettingsComponent,
+    LogoutComponent,
   ],
   imports: [
     BrowserModule,
