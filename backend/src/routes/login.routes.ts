@@ -1,6 +1,6 @@
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
 import { loginSchema, LoginController } from '../controller/login.controller';
-import { requireAdmin } from '../middleware/authenticate';
+import { authenticate } from '../middleware/authenticate';
 
 import {
   createMiddlewareFromValidator,
@@ -14,10 +14,12 @@ const validateLogin = createMiddlewareFromValidator(
 export function loginRoutes(controller: LoginController): Router {
   const router = Router();
 
-  router.post('/login', validateLogin, controller.login.bind(controller));
+  router.post('/login', validateLogin, (req: Request, res: Response) =>
+    controller.login(req, res)
+  );
 
-  router.get('/login/test', requireAdmin, (req, res) =>
-    res.json({ response: 'Authorized' })
+  router.get('/login/test', authenticate, (req, res) =>
+    res.json({ response: 'Authenticated', payload: req.payload })
   );
 
   return router;

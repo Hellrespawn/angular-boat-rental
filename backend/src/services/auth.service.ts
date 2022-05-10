@@ -6,16 +6,18 @@ type Token = string;
 
 export type Payload = {
   userId: number;
-  emailAddress: string;
   firstName: string;
   admin: boolean;
 };
 
-export function getSecret(): string {
-  return 'secret_password';
-}
-
 export class AuthService {
+  // Format described here: https://github.com/vercel/ms
+  public static MAX_TOKEN_AGE = '7 days';
+
+  public static getSecret(): string {
+    return 'secret_password';
+  }
+
   public async login(email: string, password: string): Promise<Token> {
     const user = await User.findOne({
       where: {
@@ -34,12 +36,11 @@ export class AuthService {
   public async generateToken(user: User): Promise<Token> {
     const payload: Payload = {
       userId: user.id,
-      emailAddress: user.emailAddress,
       firstName: user.firstName,
       admin: user.admin,
     };
 
-    const token = jwt.sign(payload, getSecret());
+    const token = jwt.sign(payload, AuthService.getSecret());
 
     return token;
   }
