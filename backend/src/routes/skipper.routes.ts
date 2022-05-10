@@ -6,7 +6,7 @@ export function skipperRoutes(controller: SkipperController): Router {
   const router = Router();
 
   // TODO Check if skipper available between dates
-  router.get('/skippers/:id/:dateStart/:dateEnd', validateIdInUrlParams);
+  router.get('/skippers/:id/:dateStart/:dateEnd', validateIdInUrlParams());
 
   // TODO Get availability for all skippers
   router.get('/skippers/:dateStart/:dateEnd');
@@ -24,7 +24,7 @@ export function skipperRoutes(controller: SkipperController): Router {
 
   router.delete(
     '/skippers/:id',
-    validateIdInUrlParams,
+    validateIdInUrlParams(),
     async (req: Request, res: Response): Promise<void> => {
       controller.deleteSkipper(req, res);
     }

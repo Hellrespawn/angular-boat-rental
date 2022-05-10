@@ -56,6 +56,12 @@ import { SuccessDialogComponent } from './booking/payment/success-dialog/success
 import { SelectSkipperComponent } from './booking/skipper/select-skipper.component';
 import { PaymentComponent } from './booking/payment/payment.component';
 import { FiltersComponent } from './booking/filters/filters.component';
+import { UserDashboardComponent } from './user/dashboard/dashboard.component';
+import { UserComponent } from './user/user.component';
+import { UserRentalsComponent } from './user/rentals/rentals.component';
+import { UserSettingsComponent } from './user/settings/settings.component';
+
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -90,6 +96,10 @@ import { FiltersComponent } from './booking/filters/filters.component';
     SelectSkipperComponent,
     PaymentComponent,
     FiltersComponent,
+    UserDashboardComponent,
+    UserComponent,
+    UserRentalsComponent,
+    UserSettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -126,7 +136,10 @@ import { FiltersComponent } from './booking/filters/filters.component';
     MatDialogModule,
     MatProgressSpinnerModule,
   ],
-  providers: [MatSnackBarModule],
+  providers: [
+    MatSnackBarModule,
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

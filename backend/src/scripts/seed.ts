@@ -3,6 +3,7 @@ import { Boat } from '../model/boat.model';
 import { User } from '../model/user.model';
 import { Skipper } from '../model/skipper.model';
 import { initSequelize } from '../util/database';
+import { Rental } from '../model/rental.model';
 
 const MOTORBOAT_PLACEHOLDER_PATH = 'motorboot-placeholder.jpg';
 
@@ -112,12 +113,32 @@ async function insertMockSkippers(): Promise<void> {
   }
 }
 
+async function insertMockRentals(): Promise<void> {
+  const boats = await Boat.findAll();
+  const users = await User.findAll();
+
+  for (let i = 0; i < Math.min(boats.length, users.length); i++) {
+    await insertMockRental(boats[i], users[users.length - 1 - i]);
+  }
+}
+
+async function insertMockRental(boat: Boat, user: User): Promise<void> {
+  const dateStart = new Date();
+  dateStart.setDate(dateStart.getDate() + randomInt(3, 60));
+
+  const dateEnd = new Date(dateStart);
+  dateEnd.setDate(dateEnd.getDate() + randomInt(4, 8));
+
+  await Rental.create({ boatId: boat.id, userId: user.id, dateStart, dateEnd });
+}
+
 async function seed(): Promise<void> {
   try {
     await initSequelize();
     await insertMockBoats();
     await insertMockSkippers();
     await insertMockUsers();
+    await insertMockRentals();
     process.exit();
   } catch (error) {
     console.log(error);

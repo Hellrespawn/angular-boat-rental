@@ -1,9 +1,13 @@
 import { UserService } from '../services/user.service';
 import { User } from '../model/user.model';
 import express from 'express';
+import { RentalService } from '../services/rental.service';
 
 export class UserController {
-  constructor(private userService: UserService = new UserService()) {}
+  constructor(
+    private userService: UserService = new UserService(),
+    private rentalService = new RentalService()
+  ) {}
 
   /**gets all Users from the database through the service
    * @param res the response sent back to the client
@@ -50,6 +54,20 @@ export class UserController {
       res.status(200).json(result);
     } catch (error) {
       res.status(400).send(error);
+    }
+  }
+
+  public async getNextRentalForUser(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
+    // Checked by middleware in route
+    const id = +req.params.id;
+    try {
+      const rental = await this.rentalService.getNextRentalByUserId(id);
+      res.json({ rental });
+    } catch (error) {
+      res.status(400).json({ error });
     }
   }
 }

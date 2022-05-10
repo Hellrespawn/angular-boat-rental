@@ -9,9 +9,17 @@ export function userRoutes(controller: UserController): Router {
     controller.getUsers(res);
   });
 
+  router.get(
+    '/users/:id/rentals/next',
+    validateIdInUrlParams(),
+    async (req: Request, res: Response): Promise<void> => {
+      controller.getNextRentalForUser(req, res);
+    }
+  );
+
   router.delete(
     '/users/:id',
-    validateIdInUrlParams,
+    validateIdInUrlParams(),
     async (req: Request, res: Response): Promise<void> => {
       controller.deleteUser(req, res);
     }

@@ -5,6 +5,7 @@ import {
   ForeignKey,
   Model,
   Table,
+  Default,
 } from 'sequelize-typescript';
 import { Boat } from './boat.model';
 import { User } from './user.model';
@@ -43,7 +44,7 @@ export class Rental extends Model {
   @Column
   public dateEnd!: Date;
 
-  @AllowNull(false)
+  @Default(false)
   @Column
   public paid!: boolean;
 
