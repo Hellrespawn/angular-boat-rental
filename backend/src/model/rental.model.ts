@@ -50,8 +50,8 @@ export class Rental extends Model {
   /**
    * Returns the number of days between dateStart and dateEnd (inclusive)
    */
-  public days(): number {
-    const ms = this.dateEnd.getTime() - this.dateStart.getTime();
+  public static days(dateStart: Date, dateEnd: Date): number {
+    const ms = dateEnd.getTime() - dateStart.getTime();
     return Math.ceil(ms / 1000 / 60 / 60 / 24) + 1;
   }
 
@@ -64,7 +64,7 @@ export class Rental extends Model {
     const skipper: Skipper | null =
       this.skipper ?? (await this.$get('skipper'));
 
-    const days = this.days();
+    const days = Rental.days(this.dateStart, this.dateEnd);
     let total = days * boat.pricePerDay;
     if (skipper) {
       total += days * skipper.pricePerDay;
