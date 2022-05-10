@@ -106,7 +106,8 @@ describe('Test /boats/:id/bookedDates', () => {
       expect(res.status).to.equal(400);
 
       const { error } = res.body;
-      expect(error).to.contain('Invalid date');
+      expect(error).to.have.property('message');
+      expect(error.message).to.contain('Invalid date');
     });
   });
 });
