@@ -1,6 +1,8 @@
-import { Session } from '../model/session.model';
 import { User } from '../model/user.model';
 import jwt from 'jsonwebtoken';
+import { ErrorType, ServerError } from '../util/error';
+
+type Token = string;
 
 export type Payload = {
   userId: number;
@@ -13,8 +15,8 @@ export function getSecret(): string {
   return 'secret_password';
 }
 
-export class SessionService {
-  public async login(email: string, password: string): Promise<Session> {
+export class AuthService {
+  public async login(email: string, password: string): Promise<Token> {
     const user = await User.findOne({
       where: {
         emailAddress: email,
@@ -23,13 +25,13 @@ export class SessionService {
     });
 
     if (user) {
-      return this.createSession(user);
+      return this.generateToken(user);
     } else {
-      throw 'Invalid credentials!';
+      throw new ServerError('Invalid credentials!', ErrorType.Forbidden);
     }
   }
 
-  public async createSession(user: User): Promise<Session> {
+  public async generateToken(user: User): Promise<Token> {
     const payload: Payload = {
       userId: user.id,
       emailAddress: user.emailAddress,
@@ -39,6 +41,6 @@ export class SessionService {
 
     const token = jwt.sign(payload, getSecret());
 
-    return await Session.create({ userId: user.id, token });
+    return token;
   }
 }

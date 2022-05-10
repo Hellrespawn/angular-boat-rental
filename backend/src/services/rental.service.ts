@@ -3,6 +3,7 @@ import { Boat } from '../model/boat.model';
 import { Rental } from '../model/rental.model';
 import { User } from '../model/user.model';
 import { Skipper } from '../model/skipper.model';
+import { ErrorType, ServerError } from '../util/error';
 
 export class RentalService {
   /**
@@ -24,26 +25,28 @@ export class RentalService {
     const boat = await Boat.findByPk(boatId);
 
     if (!boat) {
-      throw `No boat with id ${boatId}.`;
+      throw new ServerError(`No boat with id ${boatId}.`);
     }
 
     // Check user exists
     const user = await User.findByPk(userId);
 
     if (!user) {
-      throw `No user with id ${userId}.`;
+      throw new ServerError(`No user with id ${userId}.`);
     }
 
     // Check dates are valid
     if (Rental.days(dateStart, dateEnd) < 3) {
-      throw 'Rental period must be at least three days!';
+      throw new ServerError('Rental period must be at least three days!');
     }
 
     // Check if boat is available (most performance intensive, so last)
     const isAvailable = await boat.isAvailable(dateStart, dateEnd);
 
     if (!isAvailable) {
-      throw `Boat is not available from ${dateStart} to ${dateEnd}`;
+      throw new ServerError(
+        `Boat is not available from ${dateStart} to ${dateEnd}`
+      );
     }
 
     // Create new Rental

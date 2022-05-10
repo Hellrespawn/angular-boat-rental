@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { getSecret, Payload } from '../services/session.service';
+import { getSecret, Payload } from '../services/auth.service';
 
 export function requireAdmin(
   req: Request,

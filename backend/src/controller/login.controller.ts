@@ -1,6 +1,7 @@
 import { JSONSchemaType } from 'ajv';
 import { Request, Response } from 'express';
-import { SessionService } from '../services/session.service';
+import { AuthService } from '../services/auth.service';
+import { ServerError } from '../util/error';
 
 type LoginData = {
   email: string;
@@ -22,8 +23,8 @@ export const loginSchema: JSONSchemaType<LoginData> = {
   additionalProperties: false,
 };
 
-export class SessionController {
-  constructor(private sessionService = new SessionService()) {}
+export class LoginController {
+  constructor(private authService = new AuthService()) {}
 
   public async login(req: Request, res: Response): Promise<void> {
     // Validated by middleware
@@ -31,12 +32,11 @@ export class SessionController {
     const password: string = req.body.password;
 
     try {
-      const session = await this.sessionService.login(email, password);
+      const token = await this.authService.login(email, password);
 
-      res.json({ token: session.token });
+      res.json({ token });
     } catch (error) {
-      console.error(error);
-      res.status(400).json({ error });
+      ServerError.respond(error, res);
     }
   }
 }

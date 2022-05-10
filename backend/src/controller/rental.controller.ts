@@ -1,6 +1,7 @@
 import { JSONSchemaType } from 'ajv';
 import { Request, Response } from 'express';
 import { RentalService } from '../services/rental.service';
+import { ServerError } from '../util/error';
 
 /**
  * Interface matching the expected data for a new rental.
@@ -62,8 +63,7 @@ export class RentalController {
       );
       res.json({ id: rental.id });
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ error });
+      ServerError.respond(error, res);
     }
   }
 }
