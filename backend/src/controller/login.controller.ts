@@ -26,6 +26,9 @@ export const loginSchema: JSONSchemaType<LoginData> = {
 export class LoginController {
   constructor(private authService = new AuthService()) {}
 
+  /**
+   * Handles login requests.
+   */
   public async login(req: Request, res: Response): Promise<void> {
     // Validated by middleware
     const email: string = req.body.email;

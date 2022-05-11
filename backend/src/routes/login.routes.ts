@@ -18,6 +18,7 @@ export function loginRoutes(controller: LoginController): Router {
     controller.login(req, res)
   );
 
+  // FIXME Remove debug route
   router.get('/login/test', authenticate, (req, res) =>
     res.json({ response: 'Authenticated', payload: req.payload })
   );
