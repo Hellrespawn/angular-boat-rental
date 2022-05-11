@@ -51,7 +51,10 @@ export class SessionService {
   public logout(): void {
     this.token.next(null);
     localStorage.removeItem(SessionService.STORAGE_KEY);
+
     this.snackbarService.displaySuccess('Tot de volgende keer!');
+
+    this.router.navigate(['/']);
   }
 
   /**

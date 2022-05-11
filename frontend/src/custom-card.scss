@@ -67,6 +67,9 @@
   .custom-card .card {
     flex-direction: column;
     overflow-x: clip;
+  }
+
+  .custom-card.with-padding {
     gap: 1em;
     padding: 1em;
   }

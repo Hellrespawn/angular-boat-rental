@@ -1,6 +1,10 @@
 @use '@angular/material' as mat;
 @use 'src/custom-theme.scss' as theme;
 
+h2.center {
+  text-align: center;
+}
+
 img {
   width: 200px;
 }
