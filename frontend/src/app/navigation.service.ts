@@ -10,24 +10,7 @@ export type NavItem = {
   order?: number; // Relatieve volgorde. Hoger is later in de lijst.
 };
 
-export const NAVIGATION: NavItem[] = [
-  {
-    name: 'Account-opties',
-    route: '/user',
-    userTypes: ['user', 'admin'],
-  },
-  {
-    name: 'Bestelgeschiedenis',
-    route: '/history',
-    userTypes: ['user'],
-  },
-  {
-    name: 'Log Uit',
-    route: '/logout',
-    userTypes: ['user', 'admin'],
-    order: 999,
-  },
-];
+export const NAVIGATION: NavItem[] = [];
 
 /**
  * Decorator om item aan navbar toe te voegen. Deze moet buiten de

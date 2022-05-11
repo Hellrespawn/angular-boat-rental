@@ -51,6 +51,7 @@ export class SessionService {
   public logout(): void {
     this.token.next(null);
     localStorage.removeItem(SessionService.STORAGE_KEY);
+    this.snackbarService.displaySuccess('Tot de volgende keer!');
   }
 
   /**
@@ -79,7 +80,12 @@ export class SessionService {
   private handleSuccessfulLogin(token: Token): void {
     localStorage.setItem(SessionService.STORAGE_KEY, token);
     this.token.next(token);
-    this.snackbarService.displaySuccess('U bent ingelogd!');
+
+    const currentUserData = decodeToken(token);
+    this.snackbarService.displaySuccess(
+      `Welkom ${currentUserData.firstName}, je bent ingelogd!`
+    );
+
     this.router.navigate(['/']);
   }
 }

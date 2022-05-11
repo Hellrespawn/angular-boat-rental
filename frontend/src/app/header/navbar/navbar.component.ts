@@ -34,6 +34,10 @@ export class NavbarComponent implements OnInit {
     });
   }
 
+  public logout(): void {
+    this.sessionService.logout();
+  }
+
   /**
    * @returns true if the current user is a guest
    */

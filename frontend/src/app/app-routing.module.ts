@@ -6,7 +6,6 @@ import { AddSkipperComponent } from './add-skipper/add-skipper.component';
 import { HomeComponent } from './home/home.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
-import { LogoutComponent } from './logout/logout.component';
 import { FaqComponent } from './faq/faq.component';
 import { RentalComponent } from './booking/booking.component';
 import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
@@ -37,7 +36,6 @@ const routes: Routes = [
   },
   { path: 'registratie-pagina', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'logout', component: LogoutComponent },
   { path: 'veel-gestelde-vragen', component: FaqComponent },
   { path: 'verhuur', component: RentalComponent },
   { path: 'verhuur/controleer/:boatId', component: CheckComponent },
