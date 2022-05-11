@@ -10,6 +10,7 @@ type Token = string;
 export type Payload = {
   sub: number; // Registered claim
   firstName: string; // Private claim
+  license: boolean; // Private claim
   admin: boolean; // Private claim
 };
 
@@ -56,6 +57,7 @@ export class AuthService {
     const payload: Payload = {
       sub: user.id,
       firstName: user.firstName,
+      license: user.license,
       admin: user.admin,
     };
 

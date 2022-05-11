@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationService, NavItem, UserType } from '../../navigation.service';
-import { decodeToken } from '../../session';
 import { SessionService } from '../../session.service';
 
 @Component({
@@ -26,12 +25,11 @@ export class NavbarComponent implements OnInit {
   }
 
   private getCurrentUserType(): void {
-    this.sessionService.getToken().subscribe((token) => {
-      if (!token) {
+    this.sessionService.getCurrentUserData().subscribe((currentUserData) => {
+      if (!currentUserData) {
         this.currentUserType = 'guest';
       } else {
-        const payload = decodeToken(token);
-        this.currentUserType = payload.admin ? 'admin' : 'user';
+        this.currentUserType = currentUserData.admin ? 'admin' : 'user';
       }
     });
   }

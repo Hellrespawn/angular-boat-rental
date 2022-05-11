@@ -1,31 +1,43 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, map, Observable } from 'rxjs';
 import { constructUrl } from './http';
-import { Token } from './session';
+import { decodeToken, CurrentUserData, Token } from './session';
 import { SnackBarService } from './snack-bar.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SessionService {
+  /** Local storage key */
   private static STORAGE_KEY = 'token';
 
   private token: BehaviorSubject<Token | null>;
 
   constructor(
     private httpClient: HttpClient,
-    private snackbarService: SnackBarService
+    private snackbarService: SnackBarService,
+    private router: Router
   ) {
     this.token = new BehaviorSubject(
       localStorage.getItem(SessionService.STORAGE_KEY)
     );
   }
 
-  public getToken(): Observable<Token | null> {
-    return this.token;
+  /**
+   * If there is a token, returns the data in the payload.
+   * @returns
+   */
+  public getCurrentUserData(): Observable<CurrentUserData | null> {
+    return this.token.pipe(map((token) => (token ? decodeToken(token) : null)));
   }
 
+  /**
+   * Attempts to login with the provided credentials.
+   * @param email
+   * @param password
+   */
   public login(email: string, password: string): void {
     this.doLoginRequest(email, password).subscribe({
       next: (token: Token) => this.handleSuccessfulLogin(token),
@@ -33,16 +45,19 @@ export class SessionService {
     });
   }
 
+  /**
+   * Logs out by deleting the current token.
+   */
   public logout(): void {
     this.token.next(null);
+    localStorage.removeItem(SessionService.STORAGE_KEY);
   }
 
-  private handleSuccessfulLogin(token: Token): void {
-    localStorage.setItem(SessionService.STORAGE_KEY, token);
-    this.token.next(token);
-    this.snackbarService.displaySuccess('U bent ingelogd!');
-  }
-
+  /**
+   * Performs a login request to the backend
+   * @param email
+   * @param password
+   */
   private doLoginRequest(email: string, password: string): Observable<Token> {
     return (
       this.httpClient
@@ -56,5 +71,15 @@ export class SessionService {
         // Destructure token
         .pipe(map(({ token }) => token))
     );
+  }
+
+  /**
+   * Handles successful login.
+   */
+  private handleSuccessfulLogin(token: Token): void {
+    localStorage.setItem(SessionService.STORAGE_KEY, token);
+    this.token.next(token);
+    this.snackbarService.displaySuccess('U bent ingelogd!');
+    this.router.navigate(['/']);
   }
 }

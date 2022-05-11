@@ -3,6 +3,7 @@ import { BehaviorSubject, combineLatest, map, Observable, tap } from 'rxjs';
 import { BoatOverviewData, BoatType } from '../boat';
 import { BoatService } from '../boat.service';
 import { DateRange, RentalService } from '../rental.service';
+import { SessionService } from '../session.service';
 
 export type BoatTypeFilter = 'all' | BoatType;
 export type LicenseFilter = 'both' | 'required' | 'not-required';
@@ -29,9 +30,24 @@ export class BookingService {
 
   constructor(
     private boatService: BoatService,
-    private rentalService: RentalService
+    private rentalService: RentalService,
+    private sessionService: SessionService
   ) {
+    this.observeCurrentUserData();
     this.observeBoatOverviewData();
+  }
+
+  /**
+   * Observes currentUserData and sets the license filter based on it.
+   */
+  private observeCurrentUserData(): void {
+    this.sessionService.getCurrentUserData().subscribe((currentUserData) => {
+      if (currentUserData && !currentUserData.license) {
+        this.licenseFilter.next('not-required');
+      } else {
+        this.licenseFilter.next('both');
+      }
+    });
   }
 
   /**
