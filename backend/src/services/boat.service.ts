@@ -1,5 +1,5 @@
 import { Boat, BoatRequirements, BoatType } from '../model/boat.model';
-import { ErrorType, ServerError } from '../util/error';
+import { ServerError } from '../util/error';
 
 /**
  * type which is required by the boat rental overview page

@@ -3,7 +3,7 @@ import { Boat } from '../model/boat.model';
 import { Rental } from '../model/rental.model';
 import { User } from '../model/user.model';
 import { Skipper } from '../model/skipper.model';
-import { ErrorType, ServerError } from '../util/error';
+import { ServerError } from '../util/error';
 
 export class RentalService {
   /**
