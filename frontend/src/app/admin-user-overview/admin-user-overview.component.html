@@ -38,5 +38,12 @@
     >
       De-blokkeer
     </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openDialog(user.id, user.firstName, user.lastName)"
+    >
+      Deel een boete uit
+    </button>
   </mat-card-actions>
 </mat-card>

@@ -34,6 +34,14 @@ export class AdminUserOverviewComponent implements OnInit {
     error: false,
   };
 
+  // input for snackbar on succesful fine
+  private readonly errorSnackbarInputFine: SnackBarInput = {
+    message: 'Voer een geldige waarde in!',
+    buttonText: 'Sluit',
+    duration: 2000,
+    error: true,
+  };
+
   constructor(
     private userService: UserService,
     private snackBarService: SnackBarService,
@@ -55,23 +63,26 @@ export class AdminUserOverviewComponent implements OnInit {
     firstNameOfCustomer: string,
     lastNameOfCustomer: string
   ): void {
-    let fineAmount: number = 80;
     const dialogRef = this.dialog.open(FineDialogComponent, {
       width: '400px',
       data: {
         idOfCustomer,
         firstNameOfCustomer,
         lastNameOfCustomer,
-        fineAmount,
       },
       panelClass: 'fine-modalbox',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result)
+      if (result && result > 0)
         this.snackBarService.makeSnackbarThatClosesAutomatically(
           this.succesSnackbarInputFine
         );
+      else if (result <= 0) {
+        this.snackBarService.makeSnackbarThatClosesAutomatically(
+          this.errorSnackbarInputFine
+        );
+      }
     });
   }
 
