@@ -53,7 +53,7 @@ export class AdminUserOverviewComponent implements OnInit {
   }
 
   /**
-   * opens a dialog for a new fine
+   * opens a dialog to get the input for a new fine
    * @param idOfCustomer id of the specific customer
    * @param firstNameOfCustomer firstname of customer to be shown in the modal
    * @param lastNameOfCustomer lastname of customer to be shown in the modal
