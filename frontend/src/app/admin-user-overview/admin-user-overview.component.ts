@@ -6,8 +6,6 @@ import { SnackBarInput, SnackBarService } from '../snack-bar.service';
 import { FineDialogComponent } from './fine-dialog/fine-dialog.component';
 import { Fine } from '../fine';
 import { FineService } from '../fine.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, catchError } from 'rxjs';
 
 @addToNavBar({
   name: 'Account-administratie',
