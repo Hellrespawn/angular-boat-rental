@@ -1,5 +1,5 @@
 export interface Fine {
-  userId: number;
+  userID: number;
   amount: number;
   paid: boolean;
 }

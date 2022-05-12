@@ -1,3 +1,5 @@
+import { Fine } from './fine';
+
 export interface User {
   id: number;
   firstName: string;
@@ -7,4 +9,5 @@ export interface User {
   emailAddress: string;
   password: string;
   blocked: boolean;
+  arrayOfFines: Fine[];
 }
