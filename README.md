@@ -13,6 +13,8 @@
 
 De testgebruikers hebben `test[0-4]@test.test` als email-address en `password` als wachtwoord.
 
+`test0@test.test` is een beheerder.
+
 ## Backend starten
 
 1. Navigeer naar de `backend`-map.
@@ -44,3 +46,5 @@ De testgebruikers hebben `test[0-4]@test.test` als email-address en `password` a
 In plaats van los `drop`, `sync`, en `debug` uit te voeren, is er ook `npm run debug` die deze stappen achter elkaar doet.
 
 De testgebruikers hebben `test[0-4]@test.test` als emailaddress en `password` als wachtwoord.
+
+`test0@test.test` is een beheerder.
