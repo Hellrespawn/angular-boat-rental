@@ -79,7 +79,7 @@ export class AdminUserOverviewComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result > 0) {
         this.sendNewFineToBackend(idOfCustomer, result);
-      } else if (result <= 0) {
+      } else if (result <= 0 || typeof result != 'number') {
         this.snackBarService.makeSnackbarThatClosesAutomatically(
           this.errorSnackbarInputFine
         );
