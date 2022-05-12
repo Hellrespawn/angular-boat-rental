@@ -47,14 +47,14 @@ app.use(authenticator);
 app.use('/images', express.static(path.join(__dirname, '..', 'media')));
 
 // Routes
-app.use(boatRoutes(boatController));
+app.use('/boats', boatRoutes(boatController));
 app.use(skipperRoutes(skipperController));
-app.use(rentalRoutes(rentalController));
-app.use(imageRoutes(imageController));
+app.use('/rentals', rentalRoutes(rentalController));
+app.use('/images', imageRoutes(imageController));
 addMessageRoute(app, messageController);
-app.use(userRoutes(userController));
-app.use(loginRoutes(loginController));
 app.use(fineRoutes(fineController));
+app.use('/users', userRoutes(userController));
+app.use('/login', loginRoutes(loginController));
 
 app.get('/', (_req, res) => {
   res.json({ status: 'online' });

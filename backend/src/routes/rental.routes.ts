@@ -15,15 +15,6 @@ const validateNewRental = createMiddlewareFromValidator(
 export function rentalRoutes(controller: RentalController): Router {
   const router = Router();
 
-  router.post(
-    '/rentals/',
-    validateNewRental,
-    controller.addRental.bind(controller)
-  );
-
-  router.get('/rentals/upcoming');
-  router.get('/rentals/current');
-  router.get('/rentals/past');
-
+  router.post('/', validateNewRental, controller.addRental.bind(controller));
   return router;
 }

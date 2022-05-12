@@ -14,7 +14,7 @@ const validateLogin = createMiddlewareFromValidator(
 export function loginRoutes(controller: LoginController): Router {
   const router = Router();
 
-  router.post('/login', validateLogin, (req: Request, res: Response) =>
+  router.post('/', validateLogin, (req: Request, res: Response) =>
     controller.login(req, res)
   );
 
@@ -30,8 +30,8 @@ export function loginRoutes(controller: LoginController): Router {
   // FIXME Remove debug route
   router.get('/login/test', testFunction);
 
-  router.get('/login/test/admin', requireAdminRights, testFunction);
   // FIXME Remove debug functions
+  router.get('/login/test/admin', requireAdminRights, testFunction);
 
   return router;
 }
