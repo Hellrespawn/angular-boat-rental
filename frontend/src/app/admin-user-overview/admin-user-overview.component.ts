@@ -4,6 +4,10 @@ import { UserService } from '../user.service';
 import { addToNavBar } from '../navigation.service';
 import { SnackBarInput, SnackBarService } from '../snack-bar.service';
 import { FineDialogComponent } from './fine-dialog/fine-dialog.component';
+import { Fine } from '../fine';
+import { FineService } from '../fine.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError, catchError } from 'rxjs';
 
 @addToNavBar({
   name: 'Account-administratie',
@@ -45,7 +49,8 @@ export class AdminUserOverviewComponent implements OnInit {
   constructor(
     private userService: UserService,
     private snackBarService: SnackBarService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private fineService: FineService
   ) {}
 
   ngOnInit(): void {
@@ -74,15 +79,29 @@ export class AdminUserOverviewComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result && result > 0)
-        this.snackBarService.makeSnackbarThatClosesAutomatically(
-          this.succesSnackbarInputFine
-        );
-      else if (result <= 0) {
+      if (result && result > 0) {
+        this.sendNewFineToBackend(idOfCustomer, result);
+      } else if (result <= 0) {
         this.snackBarService.makeSnackbarThatClosesAutomatically(
           this.errorSnackbarInputFine
         );
       }
+    });
+  }
+
+  /**
+   * sends a request to the backend via the service to add a new fine to the database
+   * @param userID id of user
+   * @param amount fine-amount
+   */
+  private async sendNewFineToBackend(
+    userID: number,
+    amount: number
+  ): Promise<void> {
+    this.fineService.addFine({ userID, amount, paid: false }).subscribe(() => {
+      this.snackBarService.makeSnackbarThatClosesAutomatically(
+        this.succesSnackbarInputFine
+      );
     });
   }
 
