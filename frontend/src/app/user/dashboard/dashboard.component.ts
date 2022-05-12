@@ -26,7 +26,7 @@ export class UserDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.observeToken();
+    this.getCurrentUserData();
     this.getNextRental();
   }
 

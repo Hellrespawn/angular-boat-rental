@@ -18,7 +18,7 @@ export class SessionService {
     private snackbarService: SnackBarService,
     private router: Router
   ) {
-    this.initSessionData();
+    this.readSessionDataFromCookie();
   }
 
   /**
@@ -48,7 +48,7 @@ export class SessionService {
     return this.sessionData.asObservable();
   }
 
-  private initSessionData(): void {
+  private readSessionDataFromCookie(): void {
     const session = Cookies.get('session');
 
     this.sessionData.next(session ? JSON.parse(session) : null);
@@ -82,7 +82,7 @@ export class SessionService {
    * Handles successful login.
    */
   private handleSuccessfulLogin(): void {
-    this.initSessionData();
+    this.readSessionDataFromCookie();
 
     this.snackbarService.displaySuccess(`Welkom, je bent ingelogd!`);
 

@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { constructUrl } from './http';
 import { Rental } from './rental';
+
+import { SessionService } from './session.service';
 
 export type DateRange = [Date, Date];
 
@@ -10,7 +12,10 @@ export type DateRange = [Date, Date];
   providedIn: 'root',
 })
 export class RentalService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private sessionService: SessionService
+  ) {}
 
   /**
    * Creates a rental and returns an observable with the id of the created
@@ -37,8 +42,6 @@ export class RentalService {
 
   /**
    * Retrieves the current user's next rental from the backend.
-   *
-   * @param token
    */
   public getNextRental(): Observable<Rental | null> {
     return this.httpClient
