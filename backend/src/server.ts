@@ -18,6 +18,8 @@ import { rentalRoutes } from './routes/rental.routes';
 import { RentalController } from './controller/rental.controller';
 import { LoginController } from './controller/login.controller';
 import { loginRoutes } from './routes/login.routes';
+import { FineController } from './controller/fine.controller';
+import { fineRoutes } from './routes/fine.routes';
 
 initSequelize();
 
@@ -28,6 +30,7 @@ const imageController: ImageController = new ImageController();
 const messageController: MessageController = new MessageController();
 const userController: UserController = new UserController();
 const loginController: LoginController = new LoginController();
+const fineController: FineController = new FineController();
 
 export const app: Application = express();
 const port = +(process.env.SRV_PORT ?? 3000);
@@ -47,6 +50,7 @@ app.use(imageRoutes(imageController));
 addMessageRoute(app, messageController);
 app.use(userRoutes(userController));
 app.use(loginRoutes(loginController));
+app.use(fineRoutes(fineController));
 
 app.get('/', (_req, res) => {
   res.json({ status: 'online' });
