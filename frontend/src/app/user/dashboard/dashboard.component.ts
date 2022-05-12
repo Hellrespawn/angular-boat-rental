@@ -3,7 +3,7 @@ import { addToNavBar } from 'src/app/navigation.service';
 import { formatDate } from '../../date';
 import { Rental } from '../../rental';
 import { RentalService } from '../../rental.service';
-import { CurrentUserData } from '../../session';
+import { CurrentUserData, decodeToken, Token } from '../../session';
 import { SessionService } from '../../session.service';
 
 @addToNavBar({
@@ -17,7 +17,7 @@ import { SessionService } from '../../session.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class UserDashboardComponent implements OnInit {
-  private currentUserData!: CurrentUserData | null;
+  private token!: Token | null;
   public nextRental?: Rental;
 
   constructor(
@@ -26,32 +26,32 @@ export class UserDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getCurrentUserData();
+    this.observeToken();
     this.getNextRental();
   }
 
-  private getCurrentUserData(): void {
-    this.sessionService
-      .getCurrentUserData()
-      .subscribe((data) => (this.currentUserData = data));
+  private observeToken(): void {
+    this.sessionService.getToken().subscribe((token) => (this.token = token));
   }
 
   private getNextRental(): void {
-    let id = this.getCurrentUserId();
-
-    this.rentalService.getNextRental(id).subscribe((rental) => {
+    this.rentalService.getNextRental(this.token!).subscribe((rental) => {
       if (rental) {
         this.nextRental = rental;
       }
     });
   }
 
-  private getCurrentUserId(): number {
-    return this.currentUserData!.sub;
+  public getCurrentUserData(): CurrentUserData | null {
+    if (this.token) {
+      return decodeToken(this.token);
+    }
+
+    return null;
   }
 
   public getName(): string {
-    return this.currentUserData!.firstName;
+    return this.getCurrentUserData()!.firstName;
   }
 
   public formatDateStart(): string {

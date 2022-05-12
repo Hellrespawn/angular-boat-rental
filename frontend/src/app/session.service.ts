@@ -25,6 +25,10 @@ export class SessionService {
     );
   }
 
+  public getToken(): Observable<Token | null> {
+    return this.token;
+  }
+
   /**
    * If there is a token, returns the data in the payload.
    * @returns

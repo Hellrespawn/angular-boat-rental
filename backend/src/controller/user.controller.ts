@@ -58,12 +58,19 @@ export class UserController {
     }
   }
 
+  /**
+   * Returns the next rental for the authenticated user.
+   *
+   * @param req
+   * @param res
+   */
   public async getNextRentalForUser(
     req: express.Request,
     res: express.Response
   ): Promise<void> {
     // Checked by middleware in route
-    const id = +req.params.id;
+    const id = req.payload!.sub;
+
     try {
       const rental = await this.rentalService.getNextRentalByUserId(id);
       res.json({ rental });
