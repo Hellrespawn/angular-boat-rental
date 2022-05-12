@@ -2,6 +2,7 @@ import { UserService } from '../services/user.service';
 import { User } from '../model/user.model';
 import express from 'express';
 import { RentalService } from '../services/rental.service';
+import { ServerError } from '../util/error';
 
 export class UserController {
   constructor(
@@ -57,17 +58,24 @@ export class UserController {
     }
   }
 
+  /**
+   * Returns the next rental for the authenticated user.
+   *
+   * @param req
+   * @param res
+   */
   public async getNextRentalForUser(
     req: express.Request,
     res: express.Response
   ): Promise<void> {
     // Checked by middleware in route
-    const id = +req.params.id;
+    const id = req.payload!.sub;
+
     try {
       const rental = await this.rentalService.getNextRentalByUserId(id);
       res.json({ rental });
     } catch (error) {
-      res.status(400).json({ error });
+      ServerError.respond(error, res);
     }
   }
 }

@@ -1,22 +1,28 @@
-<nav>
-  <a
-    mat-raised-button
-    routerLink="/gebruiker/dashboard"
-    routerLinkActive="active"
-    >Overzicht</a
-  >
-  <a
-    mat-raised-button
-    routerLink="/gebruiker/boekingen"
-    routerLinkActive="active"
-    >Mijn boekingen</a
-  >
-  <a
-    mat-raised-button
-    routerLink="/gebruiker/gegevens"
-    routerLinkActive="active"
-    >Mijn gegevens</a
-  >
-</nav>
+<div *ngIf="isLoggedIn()" class="container">
+  <nav>
+    <a
+      mat-raised-button
+      routerLink="/gebruiker/dashboard"
+      routerLinkActive="active"
+      >Overzicht</a
+    >
+    <a
+      mat-raised-button
+      routerLink="/gebruiker/boekingen"
+      routerLinkActive="active"
+      >Mijn boekingen</a
+    >
+    <a
+      mat-raised-button
+      routerLink="/gebruiker/gegevens"
+      routerLinkActive="active"
+      >Mijn gegevens</a
+    >
+  </nav>
 
-<section><router-outlet></router-outlet></section>
+  <section><router-outlet></router-outlet></section>
+</div>
+
+<section *ngIf="!isLoggedIn()" class="custom-card with-padding">
+  <p><a routerLink="/login">Log nu in</a> om deze pagina te zien.</p>
+</section>
