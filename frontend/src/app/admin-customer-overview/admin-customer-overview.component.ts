@@ -44,6 +44,12 @@ export class AdminCustomerOverviewComponent implements OnInit {
     this.getCustomersFromDatabase();
   }
 
+  /**
+   * opens a dialog for a new fine
+   * @param idOfCustomer id of the specific customer
+   * @param firstNameOfCustomer firstname of customer to be shown in the modal
+   * @param lastNameOfCustomer lastname of customer to be shown in the modal
+   */
   public openDialog(
     idOfCustomer: number,
     firstNameOfCustomer: string,
