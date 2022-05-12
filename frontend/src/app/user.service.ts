@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from './user';
 
@@ -15,7 +15,15 @@ export class UserService {
    * @returns an Observable of an array of Users
    */
   public getUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${environment.backendUrl}/users`);
+    return this.httpClient.get<User[]>(`${environment.backendUrl}/users`).pipe(
+      map((users) => {
+        users.map((user) => {
+          user.dateOfBirth = new Date(user.dateOfBirth);
+          return user;
+        });
+        return users;
+      })
+    );
   }
   /**
    * sends a request to the backend to delete a specific User by id

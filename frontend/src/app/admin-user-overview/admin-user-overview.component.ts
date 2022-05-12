@@ -6,6 +6,7 @@ import { SnackBarInput, SnackBarService } from '../snack-bar.service';
 import { FineDialogComponent } from './fine-dialog/fine-dialog.component';
 import { Fine } from '../fine';
 import { FineService } from '../fine.service';
+import { formatDate } from '../date';
 
 @addToNavBar({
   name: 'Account-administratie',
@@ -53,6 +54,10 @@ export class AdminUserOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUsersFromDatabase();
+  }
+
+  public formatDate(date: Date): string {
+    return formatDate(date);
   }
 
   /**
@@ -161,14 +166,6 @@ export class AdminUserOverviewComponent implements OnInit {
       this.arrayOfUsers[index].blocked = updatedValue;
     });
   }
-  /**
-   * parses a date string to an instance of the Date class, needed because of a bug
-   * @param dateString the string containing the date
-   * @returns an instance of the Date class
-   */
-  public parseDateStringToDate(dateString: string | Date): Date {
-    return new Date(dateString);
-  }
 }
 
 interface UserForAdmin {
@@ -176,7 +173,7 @@ interface UserForAdmin {
   firstName: string;
   lastName: string;
   licence: boolean;
-  dateOfBirth: Date | string;
+  dateOfBirth: Date;
   emailAddress: string;
   password: string;
   blocked: boolean;
