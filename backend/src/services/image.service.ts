@@ -15,7 +15,7 @@ export class ImageService {
     if (await this.fileExists(destination)) {
       await fsp.unlink(destination);
       try {
-        // Remove empty dirs only
+        // Remove dir if empty
         await fsp.rmdir(path.dirname(destination));
       } catch {
         // Errors on non-empty dir, ignore it

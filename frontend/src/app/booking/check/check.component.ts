@@ -79,13 +79,6 @@ export class CheckComponent implements OnInit {
   }
 
   /**
-   * Format date for printing.
-   */
-  public formatDate(date: Date): string {
-    return date.toLocaleDateString();
-  }
-
-  /**
    * Format boat requirements for printing.
    */
   public requirementsToString(): string {

@@ -28,7 +28,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RegistrationComponent } from './registration/registration.component';
-import { LoginComponent } from './log-in/log-in.component';
+import { LoginComponent } from './login/login.component';
 import { FaqComponent } from './faq/faq.component';
 
 import { RentalComponent } from './booking/booking.component';
@@ -51,12 +51,18 @@ import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-sk
 import { BoatDetailsComponent } from './booking/boat-card/boat-details/boat-details.component';
 import { DateComponent } from './booking/filters/date/date.component';
 import { CheckComponent } from './booking/check/check.component';
-import { AdminCustomerOverviewComponent } from './admin-customer-overview/admin-customer-overview.component';
+import { AdminUserOverviewComponent } from './admin-user-overview/admin-user-overview.component';
 import { SuccessDialogComponent } from './booking/payment/success-dialog/success-dialog.component';
 import { SelectSkipperComponent } from './booking/skipper/select-skipper.component';
 import { PaymentComponent } from './booking/payment/payment.component';
 import { FiltersComponent } from './booking/filters/filters.component';
-import { FineDialogComponent } from './admin-customer-overview/fine-dialog/fine-dialog.component';
+import { FineDialogComponent } from './admin-user-overview/fine-dialog/fine-dialog.component';
+import { UserDashboardComponent } from './user/dashboard/dashboard.component';
+import { UserComponent } from './user/user.component';
+import { UserRentalsComponent } from './user/rentals/rentals.component';
+import { UserSettingsComponent } from './user/settings/settings.component';
+
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -86,12 +92,16 @@ import { FineDialogComponent } from './admin-customer-overview/fine-dialog/fine-
     BoatDetailsComponent,
     DateComponent,
     CheckComponent,
-    AdminCustomerOverviewComponent,
+    AdminUserOverviewComponent,
     SuccessDialogComponent,
     SelectSkipperComponent,
     PaymentComponent,
     FiltersComponent,
     FineDialogComponent,
+    UserDashboardComponent,
+    UserComponent,
+    UserRentalsComponent,
+    UserSettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -128,7 +138,10 @@ import { FineDialogComponent } from './admin-customer-overview/fine-dialog/fine-
     MatDialogModule,
     MatProgressSpinnerModule,
   ],
-  providers: [MatSnackBarModule],
+  providers: [
+    MatSnackBarModule,
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,0 +1,35 @@
+@use '@angular/material' as mat;
+@use 'src/custom-theme.scss' as theme;
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.container nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.container section {
+  flex-grow: 1;
+}
+
+.container header {
+  text-align: center;
+}
+
+.container a.active {
+  background-color: mat.get-color-from-palette(
+    theme.$dogstack-project-uml-accent,
+    'default'
+  );
+}
+
+@media only screen and (max-width: 640px) {
+  .container {
+    flex-direction: column;
+  }
+}

@@ -8,6 +8,7 @@ import {
   BoatRequirements,
 } from './boat';
 import { environment } from 'src/environments/environment';
+import { constructUrl } from './http';
 
 @Injectable({
   providedIn: 'root',
@@ -86,16 +87,6 @@ export class BoatService {
   }
 
   /**
-   * Appends relative route to backend URL. Requires leading '/'.
-   *
-   * @param url
-   * @returns complete url
-   */
-  private constructUrl(url: string): string {
-    return `${environment.backendUrl}${url}`;
-  }
-
-  /**
    * Adds the address of the backend to the imageRoute received from the
    * backend.
    *
@@ -105,7 +96,7 @@ export class BoatService {
    * @returns modified item.
    */
   private modifyImageRoute<T extends { imageRoute: string }>(item: T): T {
-    item.imageRoute = this.constructUrl(item.imageRoute);
+    item.imageRoute = constructUrl(item.imageRoute);
     return item;
   }
 
@@ -136,7 +127,7 @@ export class BoatService {
     }
 
     return this.httpClient
-      .get<{ boats: BoatOverviewData[] }>(this.constructUrl(route))
+      .get<{ boats: BoatOverviewData[] }>(constructUrl(route))
       .pipe(map(({ boats }) => boats.map(this.modifyImageRoute.bind(this))));
   }
 
@@ -145,7 +136,7 @@ export class BoatService {
    */
   public getBoatDetailData(id: number): Observable<BoatDetailData> {
     return this.httpClient
-      .get<{ boat: BoatDetailData }>(this.constructUrl(`/boats/${id}/detail`))
+      .get<{ boat: BoatDetailData }>(constructUrl(`/boats/${id}/detail`))
       .pipe(
         // Destructure object in parameter list.
         map(({ boat }): BoatDetailData => {
@@ -159,7 +150,7 @@ export class BoatService {
    */
   public getBookedDates(id: number): Observable<Date[]> {
     return this.httpClient
-      .get<{ dates: string[] }>(this.constructUrl(`/boats/${id}/bookedDates`))
+      .get<{ dates: string[] }>(constructUrl(`/boats/${id}/bookedDates`))
       .pipe(
         map(({ dates }) => dates.map((dateString) => new Date(dateString)))
       );

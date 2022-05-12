@@ -5,9 +5,10 @@ import {
   ForeignKey,
   Model,
   Table,
+  Default,
 } from 'sequelize-typescript';
 import { Boat } from './boat.model';
-import { Customer } from './customer.model';
+import { User } from './user.model';
 import { Skipper } from './skipper.model';
 
 @Table
@@ -20,13 +21,13 @@ export class Rental extends Model {
   @BelongsTo(() => Boat)
   public boat!: Boat;
 
-  @ForeignKey(() => Customer)
+  @ForeignKey(() => User)
   @AllowNull(false)
   @Column
-  public customerId!: number;
+  public userId!: number;
 
-  @BelongsTo(() => Customer)
-  public customer!: Customer;
+  @BelongsTo(() => User)
+  public user!: User;
 
   @ForeignKey(() => Skipper)
   @Column
@@ -43,15 +44,15 @@ export class Rental extends Model {
   @Column
   public dateEnd!: Date;
 
-  @AllowNull(false)
+  @Default(false)
   @Column
   public paid!: boolean;
 
   /**
    * Returns the number of days between dateStart and dateEnd (inclusive)
    */
-  public days(): number {
-    const ms = this.dateEnd.getTime() - this.dateStart.getTime();
+  public static days(dateStart: Date, dateEnd: Date): number {
+    const ms = dateEnd.getTime() - dateStart.getTime();
     return Math.ceil(ms / 1000 / 60 / 60 / 24) + 1;
   }
 
@@ -64,7 +65,7 @@ export class Rental extends Model {
     const skipper: Skipper | null =
       this.skipper ?? (await this.$get('skipper'));
 
-    const days = this.days();
+    const days = Rental.days(this.dateStart, this.dateEnd);
     let total = days * boat.pricePerDay;
     if (skipper) {
       total += days * skipper.pricePerDay;

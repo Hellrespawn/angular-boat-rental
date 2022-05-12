@@ -22,7 +22,7 @@ describe('Test rental.model.ts', () => {
   describe('Test Rental.days()', () => {
     it('Correctly handles the inclusivity of the rental period', () => {
       const expected = 6;
-      const actual = rental.days();
+      const actual = Rental.days(rental.dateStart, rental.dateEnd);
       expect(expected).to.equal(actual);
     });
   });

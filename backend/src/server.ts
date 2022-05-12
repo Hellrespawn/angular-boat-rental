@@ -10,12 +10,14 @@ import { ImageController } from './controller/image.controller';
 import { imageRoutes } from './routes/image.routes';
 import { MessageController } from './controller/message.controller';
 import { addMessageRoute } from './routes/message.routes';
-import { CustomerController } from './controller/customer.controller';
-import { customerRoutes } from './routes/customer.routes';
+import { UserController } from './controller/user.controller';
+import { userRoutes } from './routes/user.routes';
 import * as path from 'path';
 import { Server } from 'http';
 import { rentalRoutes } from './routes/rental.routes';
 import { RentalController } from './controller/rental.controller';
+import { LoginController } from './controller/login.controller';
+import { loginRoutes } from './routes/login.routes';
 
 initSequelize();
 
@@ -24,7 +26,8 @@ const skipperController: SkipperController = new SkipperController();
 const rentalController: RentalController = new RentalController();
 const imageController: ImageController = new ImageController();
 const messageController: MessageController = new MessageController();
-const customerController: CustomerController = new CustomerController();
+const userController: UserController = new UserController();
+const loginController: LoginController = new LoginController();
 
 export const app: Application = express();
 const port = +(process.env.SRV_PORT ?? 3000);
@@ -42,7 +45,12 @@ app.use(skipperRoutes(skipperController));
 app.use(rentalRoutes(rentalController));
 app.use(imageRoutes(imageController));
 addMessageRoute(app, messageController);
-app.use(customerRoutes(customerController));
+app.use(userRoutes(userController));
+app.use(loginRoutes(loginController));
+
+app.get('/', (_req, res) => {
+  res.json({ status: 'online' });
+});
 
 export let server: Server;
 

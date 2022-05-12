@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationService, NavItem, UserType } from '../../navigation.service';
+import { SessionService } from '../../session.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,34 +8,48 @@ import { NavigationService, NavItem, UserType } from '../../navigation.service';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
-  public debugUserType: UserType = 'user';
+  public currentUserType: UserType = 'guest';
   private navItems: NavItem[] = [];
 
-  constructor(private navigationService: NavigationService) {}
+  constructor(
+    private navigationService: NavigationService,
+    private sessionService: SessionService
+  ) {}
 
   ngOnInit(): void {
     this.navigationService
       .getNavigationItems()
       .subscribe((navItems) => (this.navItems = navItems));
+
+    this.getCurrentUserType();
   }
 
-  private getCurrentUserType(): UserType {
-    // FIXME Maak echte versie van deze functie.
-    return this.debugUserType;
+  private getCurrentUserType(): void {
+    this.sessionService.getCurrentUserData().subscribe((currentUserData) => {
+      if (!currentUserData) {
+        this.currentUserType = 'guest';
+      } else {
+        this.currentUserType = currentUserData.admin ? 'admin' : 'user';
+      }
+    });
+  }
+
+  public logout(): void {
+    this.sessionService.logout();
   }
 
   /**
    * @returns true if the current user is a guest
    */
   public isGuest(): boolean {
-    return this.debugUserType === 'guest';
+    return this.currentUserType === 'guest';
   }
 
   /**
    * @returns icon name based on current user type
    */
   public getIconName(): string {
-    const currentUserType = this.getCurrentUserType();
+    const currentUserType = this.currentUserType;
 
     switch (currentUserType) {
       case 'guest':
@@ -62,7 +77,7 @@ export class NavbarComponent implements OnInit {
    */
   public getNavigationItems(): NavItem[] {
     let items = this.navItems.filter((item) =>
-      item.userTypes.includes(this.getCurrentUserType())
+      item.userTypes.includes(this.currentUserType)
     );
     items.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     return items;

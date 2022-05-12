@@ -1,8 +1,9 @@
 import 'dotenv/config';
 import { Boat } from '../model/boat.model';
-import { Customer } from '../model/customer.model';
+import { User } from '../model/user.model';
 import { Skipper } from '../model/skipper.model';
 import { initSequelize } from '../util/database';
+import { Rental } from '../model/rental.model';
 
 const MOTORBOAT_PLACEHOLDER_PATH = 'motorboot-placeholder.jpg';
 
@@ -19,7 +20,7 @@ const BOAT_NAMES = [
   'Terrible',
 ];
 
-const CUSTOMER_NAMES = [
+const USER_NAMES = [
   'Baran Enriquez',
   'Chloe-Ann Bryant',
   'Lyndsey Chamberlain',
@@ -75,17 +76,19 @@ async function insertMockBoats(): Promise<void> {
   });
 }
 
-async function insertMockCustomers(): Promise<void> {
-  for (const name of CUSTOMER_NAMES) {
+async function insertMockUsers(): Promise<void> {
+  for (let i = 0; i < USER_NAMES.length; i++) {
+    const name = USER_NAMES[i];
     const [firstName, lastName] = name.split(' ');
-    await Customer.create({
+    await User.create({
       firstName,
       lastName,
       license: Boolean(randomInt(0, 1)),
       dateOfBirth: new Date('1991-01-01'),
-      emailAddress: 'test@test.test',
+      emailAddress: `test${i}@test.test`,
       password: 'password',
       blocked: false,
+      admin: i === 0 ? true : false,
     });
   }
 }
@@ -111,12 +114,32 @@ async function insertMockSkippers(): Promise<void> {
   }
 }
 
+async function insertMockRentals(): Promise<void> {
+  const boats = await Boat.findAll();
+  const users = await User.findAll();
+
+  for (let i = 0; i < Math.min(boats.length, users.length); i++) {
+    await insertMockRental(boats[i], users[users.length - 1 - i]);
+  }
+}
+
+async function insertMockRental(boat: Boat, user: User): Promise<void> {
+  const dateStart = new Date();
+  dateStart.setDate(dateStart.getDate() + randomInt(3, 60));
+
+  const dateEnd = new Date(dateStart);
+  dateEnd.setDate(dateEnd.getDate() + randomInt(4, 8));
+
+  await Rental.create({ boatId: boat.id, userId: user.id, dateStart, dateEnd });
+}
+
 async function seed(): Promise<void> {
   try {
     await initSequelize();
     await insertMockBoats();
     await insertMockSkippers();
-    await insertMockCustomers();
+    await insertMockUsers();
+    await insertMockRentals();
     process.exit();
   } catch (error) {
     console.log(error);

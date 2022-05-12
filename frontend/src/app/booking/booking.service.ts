@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, tap } from 'rxjs';
 import { BoatOverviewData, BoatType } from '../boat';
 import { BoatService } from '../boat.service';
 import { DateRange, RentalService } from '../rental.service';
+import { SessionService } from '../session.service';
 
 export type BoatTypeFilter = 'all' | BoatType;
 export type LicenseFilter = 'both' | 'required' | 'not-required';
@@ -29,9 +30,24 @@ export class BookingService {
 
   constructor(
     private boatService: BoatService,
-    private rentalService: RentalService
+    private rentalService: RentalService,
+    private sessionService: SessionService
   ) {
-    this.updateBoatOverviewData();
+    this.observeCurrentUserData();
+    this.observeBoatOverviewData();
+  }
+
+  /**
+   * Observes currentUserData and sets the license filter based on it.
+   */
+  private observeCurrentUserData(): void {
+    this.sessionService.getCurrentUserData().subscribe((currentUserData) => {
+      if (currentUserData && !currentUserData.license) {
+        this.licenseFilter.next('not-required');
+      } else {
+        this.licenseFilter.next('both');
+      }
+    });
   }
 
   /**
@@ -84,7 +100,7 @@ export class BookingService {
 
   public setDateRange(dateRange: DateRange | null): void {
     this.dateRange.next(dateRange);
-    this.updateBoatOverviewData();
+    this.observeBoatOverviewData();
   }
 
   public clearDateRange(): void {
@@ -120,34 +136,35 @@ export class BookingService {
     this.clearLicenseFilter();
     this.clearTypeFilter();
     this.clearDateRange();
-    this.updateBoatOverviewData();
+    this.observeBoatOverviewData();
   }
 
   /**
    * Updates the list of valid boats, based on this.dateRange, and broadcasts
    * it to subscribers of this.boats
    */
-  public updateBoatOverviewData(): void {
-    // FIXME pass dateRange observable to BoatOverviewData
-    this.boatService
-      .getBoatOverviewData(this.dateRange.getValue() ?? undefined)
-      .subscribe((boats) => this.boats.next(boats));
+  public observeBoatOverviewData(): void {
+    this.dateRange.subscribe((dateRange) =>
+      this.boatService
+        .getBoatOverviewData(dateRange ?? undefined)
+        .subscribe((boats) => this.boats.next(boats))
+    );
   }
 
   /**
    * Creates a rental and returns an observable with the id of the created
    * Rental
    */
-  public createRental(boatId: number, customerId: number): Observable<number> {
-    let observable = this.rentalService.createRental(
-      boatId,
-      customerId,
-      this.dateRange.getValue()!
-    );
+  public createRental(boatId: number, userId: number): Observable<number> {
+    let dateRange = this.dateRange.getValue();
 
-    this.reset();
+    if (!dateRange) {
+      throw 'Called createRental() when dateRange is undefined.';
+    }
 
-    return observable;
+    return this.rentalService
+      .createRental(boatId, userId, dateRange)
+      .pipe(tap(this.reset.bind(this)));
   }
 
   /**

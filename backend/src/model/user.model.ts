@@ -21,7 +21,7 @@ function getRequiredDateString(): string {
 }
 
 @Table
-export class Customer extends Model {
+export class User extends Model {
   @AllowNull(false) @Column public firstName!: string;
   @AllowNull(false) @Column public lastName!: string;
   @AllowNull(false) @Column public license!: boolean;
@@ -32,6 +32,7 @@ export class Customer extends Model {
   @AllowNull(false) @IsEmail @Column public emailAddress!: string;
   @AllowNull(false) @Column public password!: string;
   @AllowNull(false) @Column public blocked!: boolean;
+  @AllowNull(false) @Column public admin!: boolean;
 
   @HasMany(() => Rental)
   public rentals!: Rental[];

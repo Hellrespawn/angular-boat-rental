@@ -61,8 +61,12 @@ export class Boat extends Model {
       requirements = 'skipper';
     } else if (this.maxOccupants > 12) {
       requirements = 'license';
+      // This is required by the sequelize models
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     } else if (this.boatType == 'sail' && this.sailAreaInM2! > 150) {
       requirements = 'license';
+      // This is required by the sequelize models
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     } else if (this.boatType == 'motor' && this.maxSpeedInKmH! > 20) {
       requirements = 'license';
     }

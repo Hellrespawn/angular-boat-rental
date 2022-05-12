@@ -42,6 +42,19 @@ export class SnackBarService {
       message,
     });
   }
+
+  /**
+   * summons a standard snackbar
+   * @param message a string that is showed on the snackbar.
+   */
+  public displaySuccess(message: string): void {
+    this.makeSnackbarThatClosesAutomatically({
+      buttonText: 'OK',
+      duration: 5000,
+      error: false,
+      message,
+    });
+  }
 }
 
 export interface SnackBarInput {

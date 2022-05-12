@@ -3,7 +3,7 @@ import { Boat } from '../../src/model/boat.model';
 import { app } from '../../src/server';
 import { expect } from 'chai';
 import { closeDatabase, initDatabase } from '../mocha-setup';
-import { Customer } from '../../src/model/customer.model';
+import { User } from '../../src/model/user.model';
 import { Rental } from '../../src/model/rental.model';
 
 async function seedDatabase(): Promise<Boat> {
@@ -21,7 +21,7 @@ async function seedDatabase(): Promise<Boat> {
     sailAreaInM2: undefined,
   });
 
-  const customer = await Customer.create({
+  const user = await User.create({
     firstName: 'Stef',
     lastName: 'Korporaal',
     license: true,
@@ -29,11 +29,12 @@ async function seedDatabase(): Promise<Boat> {
     emailAddress: 'stef@test.nl',
     password: 'password',
     blocked: false,
+    admin: true,
   });
 
   await Rental.create({
     boatId: boat.id,
-    customerId: customer.id,
+    userId: user.id,
     dateStart: new Date('2022-01-01'),
     dateEnd: new Date('2022-01-10'),
     paid: true,
@@ -105,7 +106,8 @@ describe('Test /boats/:id/bookedDates', () => {
       expect(res.status).to.equal(400);
 
       const { error } = res.body;
-      expect(error).to.contain('Invalid date');
+      expect(error).to.have.property('message');
+      expect(error.message).to.contain('Invalid date');
     });
   });
 });

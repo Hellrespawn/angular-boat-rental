@@ -1,25 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CustomerService } from '../customer.service';
+import { UserService } from '../user.service';
 import { addToNavBar } from '../navigation.service';
 import { SnackBarInput, SnackBarService } from '../snack-bar.service';
 import { FineDialogComponent } from './fine-dialog/fine-dialog.component';
 
 @addToNavBar({
   name: 'Account-administratie',
-  route: '/customer-overview-admin',
+  route: '/user-overview-admin',
   userTypes: ['admin'],
 })
 @Component({
-  selector: 'app-admin-customer-overview',
-  templateUrl: './admin-customer-overview.component.html',
-  styleUrls: ['./admin-customer-overview.component.scss'],
+  selector: 'app-admin-user-overview',
+  templateUrl: './admin-user-overview.component.html',
+  styleUrls: ['./admin-user-overview.component.scss'],
 })
-export class AdminCustomerOverviewComponent implements OnInit {
-  // array of all the customers, gets rendered in html with an *ngFor loop
-  public arrayOfCustomers: CustomerForAdmin[] = [];
-  // input for the snackbar on succesful deletion of a boat
-  private readonly succesSnackbarInputDeletion: SnackBarInput = {
+export class AdminUserOverviewComponent implements OnInit {
+  // array of all the users, gets rendered in html with an *ngFor loop
+  public arrayOfUsers: UserForAdmin[] = [];
+  // input for the snackbar on succesvol deletion of a boat
+  private readonly succesSnackbarInput: SnackBarInput = {
     message: 'Klant is verwijderd!',
     buttonText: 'Sluit',
     duration: 2000,
@@ -35,13 +35,13 @@ export class AdminCustomerOverviewComponent implements OnInit {
   };
 
   constructor(
-    private customerService: CustomerService,
+    private userService: UserService,
     private snackBarService: SnackBarService,
-    public dialog: MatDialog
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.getCustomersFromDatabase();
+    this.getUsersFromDatabase();
   }
 
   /**
@@ -76,39 +76,39 @@ export class AdminCustomerOverviewComponent implements OnInit {
   }
 
   /**
-   * sends a request to the backend via the service to fetch all customers, then stores them in this.arrayOfCustomers
+   * sends a request to the backend via the service to fetch all users, then stores them in this.arrayOfusers
    */
-  private async getCustomersFromDatabase(): Promise<void> {
-    this.customerService.getCustomers().subscribe((customers) => {
-      this.arrayOfCustomers = customers;
+  private async getUsersFromDatabase(): Promise<void> {
+    this.userService.getUsers().subscribe((users) => {
+      this.arrayOfUsers = users;
     });
   }
   /**
-   * sends a request to the backend via the service to delete a customer with a certain id, and if succesful deletes the deleted customer from the frontend
-   * @param id id of customer to be deleted
-   * @param index index of customer to be deleted (to delete from frontend)
+   * sends a request to the backend via the service to delete a user with a certain id, and if succesful deletes the deleted user from the frontend
+   * @param id id of user to be deleted
+   * @param index index of user to be deleted (to delete from frontend)
    */
-  public async deleteCustomerById(id: number, index: number): Promise<void> {
-    this.customerService.deleteCustomerById(id).subscribe(() => {
-      this.arrayOfCustomers.splice(index, 1);
+  public async deleteUserById(id: number, index: number): Promise<void> {
+    this.userService.deleteUserById(id).subscribe(() => {
+      this.arrayOfUsers.splice(index, 1);
       this.snackBarService.makeSnackbarThatClosesAutomatically(
-        this.succesSnackbarInputDeletion
+        this.succesSnackbarInput
       );
     });
   }
   /**
-   * sends a request to the backend via the service to update the blocked boolean of a customer with a certain id, and if succesful updates the updated customer in the frontend
-   * @param id id of customer to update
+   * sends a request to the backend via the service to update the blocked boolean of a user with a certain id, and if succesful updates the updated user in the frontend
+   * @param id id of user to update
    * @param updatedValue updated value of the blocked boolean
-   * @param index index of customer to be updated (in frontend)
+   * @param index index of user to be updated (in frontend)
    */
   public async updateBlocked(
     id: number,
     updatedValue: boolean,
     index: number
   ): Promise<void> {
-    this.customerService.updateBlockedStatus(id, updatedValue).subscribe(() => {
-      this.arrayOfCustomers[index].blocked = updatedValue;
+    this.userService.updateBlockedStatus(id, updatedValue).subscribe(() => {
+      this.arrayOfUsers[index].blocked = updatedValue;
     });
   }
   /**
@@ -121,7 +121,7 @@ export class AdminCustomerOverviewComponent implements OnInit {
   }
 }
 
-interface CustomerForAdmin {
+interface UserForAdmin {
   id: number;
   firstName: string;
   lastName: string;
