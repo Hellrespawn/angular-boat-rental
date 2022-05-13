@@ -6,6 +6,7 @@ import { Message } from '../model/message.model';
 export class MessageController {
   constructor(private messageService: MessageService = new MessageService()) {}
 
+  // get messages from database
   public async getMessages(
     req: express.Request,
     res: express.Response
@@ -14,6 +15,7 @@ export class MessageController {
     res.json({ message });
   }
 
+  // add messages to database
   public async addMessages(
     req: express.Request,
     res: express.Response

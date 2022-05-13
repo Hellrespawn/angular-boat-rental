@@ -1,13 +1,11 @@
 import { Message } from '../model/message.model';
+
 export class MessageService {
   private messageArray: Message[] = [];
 
-  private async updateMessages(): Promise<void> {
-    this.messageArray = await Message.findAll();
-  }
-
+  // function to return all messages from database
   public async returnAllMessages(): Promise<Array<Message>> {
-    await this.updateMessages();
+    this.messageArray = await Message.findAll();
     return this.messageArray;
   }
 }
