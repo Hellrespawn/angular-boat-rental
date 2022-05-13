@@ -29,6 +29,16 @@ export class FaqComponent {
   @ViewChild('emailForm') public emailInp!: ElementRef<HTMLInputElement>;
   @ViewChild('textForm') public textInp!: ElementRef<HTMLInputElement>;
 
+ /* 2 functions to send the messages to the backend with user input
+   addMessages(this.getMessages()) invokes the message service with getMessages() function input */
+   public sendMessageToBackend(): void {
+    this.messageService.addMessages(this.getMessages()).subscribe();
+    this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.succesSnackbarInput
+    );
+    this.router.navigateByUrl('/veel-gestelde-vragen');
+  }
+
   // input Formcontrol
   public emailFormControl = new FormControl('', [
     Validators.required,
@@ -37,22 +47,10 @@ export class FaqComponent {
   public nameFormControl = new FormControl('', [Validators.required]);
   public textFormControl = new FormControl('', [Validators.required]);
 
-  // 2 functions to send the messages to the backend with user input
-  public sendMessageToBackend(): void {
-    this.messageService.addMessages(this.getMessages()).subscribe();
-    this.snackBService.makeSnackbarThatClosesAutomatically(
-      this.succesSnackbarInput
-    );
-    this.router.navigateByUrl('/veel-gestelde-vragen');
-  }
-
   public getMessages(): MessageData {
     let nameInp: string = this.nameInp.nativeElement.value;
     let emailInp: string = this.emailInp.nativeElement.value;
     let textInp: string = this.textInp.nativeElement.value;
-    console.log(nameInp);
-    console.log(emailInp);
-    console.log(textInp);
 
     return { name: nameInp, email: emailInp, text: textInp };
   }

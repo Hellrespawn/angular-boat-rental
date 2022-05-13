@@ -25,11 +25,11 @@ export class User extends Model {
   @AllowNull(false) @Column public firstName!: string;
   @AllowNull(false) @Column public lastName!: string;
   @AllowNull(true) @Column public license!: boolean;
-  @AllowNull(false)
+  @AllowNull(true)
   //@IsBefore(getRequiredDateString())
   @Column
   public dateOfBirth!: Date;
-  @AllowNull(false) @IsEmail @Column public emailAddress!: string;
+  @AllowNull(true) @IsEmail @Column public emailAddress!: string;
   @AllowNull(false) @Column public password!: string;
   @AllowNull(true) @Column public blocked!: boolean;
   @AllowNull(true) @Column public admin!: boolean;

@@ -60,7 +60,7 @@ export class UserController {
   ): Promise<void> {
     const firstName: string = req.body.firstName;
     const lastName: string = req.body.lastName;
-    const dateOfBirth: Date = req.body.dateOfBirth;
+    // const dateOfBirth: Date = req.body.dateOfBirth;
     const emailAddress: string = req.body.emailAddress;
     const password: string = req.body.password;
     const license: boolean = req.body.license;
@@ -69,17 +69,17 @@ export class UserController {
       const result = await User.create({
         firstName,
         lastName,
-        dateOfBirth,
         emailAddress,
         password,
         license,
         blocked: false,
         admin: false
       });
+      console.log(emailAddress)
       res.status(200).json(result);
-    } catch {
+    } catch (error) {
       console.error();
-      res.status(400).json('User cant be send to database');
+      res.status(400).json(error);
     }
   }
 }

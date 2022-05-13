@@ -1,4 +1,4 @@
-<h2><p>registratie pagina DogStack-bootverhuur</p></h2>
+<h2><p>Maak account aan</p></h2>
 <section class="registration-section">
   <form class="form">
     <mat-form-field class="form-field" appearance="fill">
@@ -35,16 +35,15 @@
     </mat-form-field>
   </form>
 
-  <form class="form">
+  <!-- <form class="form">
     <mat-form-field appearance="fill">
       <mat-label>Geboortedatum*</mat-label>
       <input matInput [matDatepicker]="picker" id="age-input" #dateOfBirthInp />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-  </form>
+  </form> -->
 
-  <section class="registratie-sectie">
     <form class="form">
       <mat-form-field class="form-field" appearance="fill">
         <mat-label>Emailadres</mat-label>
@@ -54,7 +53,7 @@
           [formControl]="email"
           placeholder="Emailadres"
           id="emailadres-input"
-          #emailAdressInp
+          #emailAddressInp
         />
 
         <mat-error *ngIf="email.invalid">{{ emailErrorMessage() }} </mat-error>
@@ -71,21 +70,28 @@
           id="password-input"
           #passwordInp
         />
-
+        <mat-hint align="end">Wachtwoord heeft minimaal 1 hoofdletter, 1 kleine letter en 1 cijfer nodig, wachtwoord moet bestaan uit minimaal 6 karakters.</mat-hint>
         <mat-error *ngIf="password.invalid"
           >{{ passwordErrorMessage() }}
         </mat-error>
       </mat-form-field>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-radio-button id="btn-18-years" #radioBtnInp required formControlName="name">Ik verklaar hiermee dat ik ouder ben dan 18 jaar.</mat-radio-button>
+        <!-- <mat-error *ngIf="radioBtn.invalid"
+          >{{ radioErrorMessage() }}
+        </mat-error> -->
+      </form>
+      <br>
       <button
         mat-raised-button
         color="primary"
         id="registration-btn"
-        (click)="validatePassword()"
         (click)="sendDataToBackend()"
-
+        (click)="radioButtonNotSet()"
       >
         Registreer!
       </button>
     </form>
   </section>
-</section>
+

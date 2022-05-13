@@ -1,5 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { UserService } from '../user.service';
+import { SnackBarService, SnackBarInput } from '../snack-bar.service';
+import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
   selector: 'app-registration',
@@ -8,13 +12,43 @@ import { FormControl, Validators } from '@angular/forms';
 })
 // nog een enum toevoegen voor beheerder/klant/gast
 export class RegistrationComponent {
-  constructor() {}
+    form = new FormGroup({
+        name: new FormControl(
+        ),
+        rollno: new FormControl()
+    });
 
+  constructor(
+    private userService: UserService,
+    private snackBService: SnackBarService,
+    private router: Router
+  ) {}
+
+  // snackbar data
+  private readonly succesSnackbarInput: SnackBarInput = {
+    message: 'Registratie succesvol!',
+    buttonText: 'Sluit',
+    duration: 1000,
+    error: false,
+  };
+
+  private readonly falsePaswordSnackbarInput: SnackBarInput = {
+    message: 'Wachtwoord voldoet niet aan de eisen',
+    buttonText: 'Sluit',
+    duration: 1000,
+    error: true,
+  };
+
+  private readonly wrongRadioButtonInput: SnackBarInput = {
+    message: 'Geef aan dat u tenminste 18 jaar oud bent.',
+    buttonText: 'Sluit',
+    duration: 1000,
+    error: true,
+  };
   public firstName = new FormControl('', [Validators.required]);
   public lastName = new FormControl('', [Validators.required]);
   public email = new FormControl('', [Validators.required, Validators.email]);
   public password = new FormControl('', [Validators.required]);
-
   public firstNameErrorMessage(): string {
     let errorMessage: string = '';
     if (this.firstName.hasError('required')) {
@@ -48,32 +82,97 @@ export class RegistrationComponent {
     return errorMessage;
   }
 
-  public validatePassword(): void {
-    const regex = /([0-9])+([A-Z])+([a-z])/;
-    let password = (
-      document.getElementById('password-input') as HTMLTextAreaElement
-    ).value;
-    if (!regex.test(password)) {
-      console.log(
-        'Wachtwoord heeft minimaal 1 hoofdletter, 1 kleine letter en 1 cijfer nodig!'
-      );
-    }
-    // if (!regexNormal.test(password)) {
-    //   console.log('Wachtwoord heeft minimaal 1 kleine letter nodig!');
-    // }
-    // if (!number.test(password)) {
-    //   console.log('Wachtwoord heeft minimaal 1 getal nodig!');
-    // }
+//   public radioErrorMessage(): string {
+//     let errorMessage: string = '';
+//     if (this.radioBtn.hasError('required')) {
+//       errorMessage = 'Geef aan dat u minimaal 18 jaar of ouder bent';
+//     }
+//     return errorMessage;
+//   }
+get name(): any {
+    return this.form.get('name');
   }
-
-
+  
+onSubmit(): void {
+    console.log("Form is touched : ",this.form.touched);
+  }
   @ViewChild('firstNameInp') public firstNameInp!: ElementRef<HTMLInputElement>;
   @ViewChild('lastNameInp') public lastNameInp!: ElementRef<HTMLInputElement>;
-  @ViewChild('dateOfBirthInp') public dateOfBirthInp!: ElementRef<HTMLInputElement>;
-  @ViewChild('emailAdressInp') public emailAdressInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('dateOfBirthInp')
+  public dateOfBirthInp!: ElementRef<HTMLInputElement>;
+  @ViewChild('emailAddressInp')
+  public emailAddressInp!: ElementRef<HTMLInputElement>;
   @ViewChild('passwordInp') public passwordInp!: ElementRef<HTMLInputElement>;
 
   public sendDataToBackend() {
-    console.log(ViewChild)
+    const regex = /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$/;
+    let passwordInp: string = this.passwordInp.nativeElement.value;
+    if (!regex.test(passwordInp)) {
+      this.falseEntryForm();
+    } else {
+      this.succesEntryForm();
+      this.userService.addUsers(this.getUsers()).subscribe();
+      this.router.navigateByUrl('/registratie-pagina');
+    }
   }
+
+  public getUsers() {
+    let firstNameInp: string = this.firstNameInp.nativeElement.value;
+    let lastNameInp: string = this.lastNameInp.nativeElement.value;
+    // let dateOfBirthInp: string = this.dateOfBirthInp.nativeElement.value;
+    let emailAddressInp: string = this.emailAddressInp.nativeElement.value!;
+    let passwordInp: string = this.passwordInp.nativeElement.value;
+
+    return {
+      firstName: firstNameInp,
+      lastName: lastNameInp,
+      //   dateOfBirth: dateOfBirthInp,
+      email: emailAddressInp,
+      password: passwordInp,
+    };
+  }
+
+  // password wrong entry triggers false snackbar
+  public falseEntryForm(): void {
+    this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.falsePaswordSnackbarInput
+    );
+  }
+
+  public succesEntryForm(): void {
+    this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.succesSnackbarInput
+    );
+  }
+
+  public radioButtonNotSet() {
+    // let radioBtnInp = this.firstNameInp.nativeElement.value;
+
+    // if (!radioBtnInp) {
+    //   this.snackBService.makeSnackbarThatClosesAutomatically(
+    //     this.wrongRadioButtonInput
+    //   );
+    //   console.log('werkt')
+    //   return
+    // }
+    // return
+
+    // const btn = document.querySelector('#btn-18-years')!;
+    // const btns = document.querySelectorAll('')!;
+
+    // btn.addEventListener('click', () => {
+    //     let selected
+    //     for (const btns of btn) {
+
+    //     }
+    // })
+  }
+  //   public radioButtonNotSet() {
+  //     //   let radioBtnInp: HTMLButtonElement = (document.getElementById('btn-18-years').value as HTMLInputElement;
+  //     let radioBtnInp: Element | null = document.querySelector('btn-18-years')
+
+  //       if (radioBtnInp) {
+  //           console.log('werkt')
+  //       }
+  //   }
 }

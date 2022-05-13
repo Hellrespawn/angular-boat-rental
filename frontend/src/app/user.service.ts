@@ -42,4 +42,11 @@ export class UserService {
       updatedValue,
     });
   }
+
+  public addUsers(UserObject: {}): Observable<Object> {
+    return this.httpClient.post(
+        `${environment.backendUrl}/registratie-pagina`,
+        UserObject
+      );
+  }
 }
