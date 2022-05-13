@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, map, Observable, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  map,
+  Observable,
+  Subscriber,
+  Subscription,
+  tap,
+} from 'rxjs';
 import { BoatOverviewData, BoatType } from '../boat';
 import { BoatService } from '../boat.service';
 import { DateRange, RentalService } from '../rental.service';
@@ -28,13 +36,15 @@ export class BookingService {
     'both' as LicenseFilter
   );
 
+  private boatSubscription?: Subscription;
+
   constructor(
     private boatService: BoatService,
     private rentalService: RentalService,
     private sessionService: SessionService
   ) {
     this.observeCurrentUserData();
-    this.observeBoatOverviewData();
+    this.getBoatOverviewData();
   }
 
   /**
@@ -100,7 +110,7 @@ export class BookingService {
 
   public setDateRange(dateRange: DateRange | null): void {
     this.dateRange.next(dateRange);
-    this.observeBoatOverviewData();
+    this.getBoatOverviewData();
   }
 
   public clearDateRange(): void {
@@ -136,15 +146,21 @@ export class BookingService {
     this.clearLicenseFilter();
     this.clearTypeFilter();
     this.clearDateRange();
-    this.observeBoatOverviewData();
+    this.getBoatOverviewData();
+  }
+
+  public updateBoats(): void {
+    this.getBoatOverviewData();
   }
 
   /**
    * Updates the list of valid boats, based on this.dateRange, and broadcasts
    * it to subscribers of this.boats
    */
-  public observeBoatOverviewData(): void {
-    this.dateRange.subscribe((dateRange) =>
+  private getBoatOverviewData(): void {
+    this.boatSubscription?.unsubscribe();
+
+    this.boatSubscription = this.dateRange.subscribe((dateRange) =>
       this.boatService
         .getBoatOverviewData(dateRange ?? undefined)
         .subscribe((boats) => this.boats.next(boats))
