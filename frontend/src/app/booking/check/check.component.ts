@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BoatDetailData } from 'src/app/boat';
 import { BoatService } from 'src/app/boat.service';
+import { CurrentUserData } from '../../session';
+import { SessionService } from '../../session.service';
 import { BookingService } from '../booking.service';
 
 @Component({
@@ -12,17 +14,20 @@ import { BookingService } from '../booking.service';
 export class CheckComponent implements OnInit {
   public dateRange: [Date, Date] | null = null;
   public boat!: BoatDetailData;
+  public currentUserData: CurrentUserData | null = null;
 
   constructor(
     private bookingService: BookingService,
     private boatService: BoatService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private sessionService: SessionService
   ) {}
 
   ngOnInit(): void {
     this.getBoat();
     this.getDates();
+    this.getCurrentUserData();
   }
 
   /**
@@ -48,14 +53,11 @@ export class CheckComponent implements OnInit {
       .subscribe((dateRange) => (this.dateRange = dateRange));
   }
 
-  /**
-   * Get current user id.
-   * FIXME Actually implement this.
-   */
-  private getCurrentUserId(): number {
-    return 1;
+  private getCurrentUserData(): void {
+    this.sessionService
+      .getCurrentUserData()
+      .subscribe((data) => (this.currentUserData = data));
   }
-
   /**
    * Get correct text for button.
    */
@@ -106,7 +108,7 @@ export class CheckComponent implements OnInit {
    */
   public handleButton(): void {
     this.bookingService
-      .createRental(this.boat!.id, this.getCurrentUserId())
+      .createRental(this.boat!.id, this.currentUserData!.sub)
       .subscribe((rentalId) => {
         if (this.boat.requirements === 'skipper') {
           this.router.navigate(['/verhuur/schipper', rentalId]);
