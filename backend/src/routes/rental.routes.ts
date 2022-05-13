@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-  newRentalSchema,
+  NEW_RENTAL_SCHEMA,
   RentalController,
 } from '../controller/rental.controller';
 import {
@@ -9,7 +9,7 @@ import {
 } from '../middleware/validate';
 
 const validateNewRental = createMiddlewareFromValidator(
-  createValidatorFromSchema(newRentalSchema)
+  createValidatorFromSchema(NEW_RENTAL_SCHEMA)
 );
 
 export function rentalRoutes(controller: RentalController): Router {

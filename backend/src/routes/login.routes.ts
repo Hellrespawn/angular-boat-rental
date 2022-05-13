@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { loginSchema, LoginController } from '../controller/login.controller';
+import { LOGIN_SCHEMA, LoginController } from '../controller/login.controller';
 import { authenticate } from '../middleware/authenticate';
 
 import {
@@ -8,7 +8,7 @@ import {
 } from '../middleware/validate';
 
 const validateLogin = createMiddlewareFromValidator(
-  createValidatorFromSchema(loginSchema)
+  createValidatorFromSchema(LOGIN_SCHEMA)
 );
 
 export function loginRoutes(controller: LoginController): Router {
