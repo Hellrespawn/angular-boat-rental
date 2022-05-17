@@ -56,6 +56,7 @@ import { SuccessDialogComponent } from './booking/payment/success-dialog/success
 import { SelectSkipperComponent } from './booking/skipper/select-skipper.component';
 import { PaymentComponent } from './booking/payment/payment.component';
 import { FiltersComponent } from './booking/filters/filters.component';
+import { FineDialogComponent } from './admin-user-overview/fine-dialog/fine-dialog.component';
 import { UserDashboardComponent } from './user/dashboard/dashboard.component';
 import { UserComponent } from './user/user.component';
 import { UserRentalsComponent } from './user/rentals/rentals.component';
@@ -96,6 +97,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     SelectSkipperComponent,
     PaymentComponent,
     FiltersComponent,
+    FineDialogComponent,
     UserDashboardComponent,
     UserComponent,
     UserRentalsComponent,

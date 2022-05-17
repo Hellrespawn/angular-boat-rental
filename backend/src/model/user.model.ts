@@ -6,6 +6,7 @@ import {
   HasMany,
   AllowNull,
 } from 'sequelize-typescript';
+import { Fine } from './fine.model';
 import { Rental } from './rental.model';
 
 const REQUIRED_AGE_IN_YEARS = 18;
@@ -36,4 +37,6 @@ export class User extends Model {
 
   @HasMany(() => Rental)
   public rentals!: Rental[];
+  @HasMany(() => Fine)
+  public arrayOfFines!: Fine[];
 }
