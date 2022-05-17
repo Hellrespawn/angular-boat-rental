@@ -118,24 +118,6 @@ export class AdminUserOverviewComponent implements OnInit {
   private async getUsersFromDatabase(): Promise<void> {
     this.userService.getUsers().subscribe((users) => {
       this.arrayOfUsers = users;
-      this.getFinesFromDatabase();
-    });
-  }
-
-  /**
-   * gets all the fines from the backend and inserts them into the correct user objects
-   */
-  private async getFinesFromDatabase(): Promise<void> {
-    this.fineService.getFines().subscribe((fines) => {
-      console.log(fines);
-      for (let user of this.arrayOfUsers) {
-        user.arrayOfFines = [];
-        for (const fine of fines) {
-          if (user.id === fine.userID) {
-            user.arrayOfFines.push(fine);
-          }
-        }
-      }
     });
   }
   /**

@@ -38,5 +38,5 @@ export class User extends Model {
   @HasMany(() => Rental)
   public rentals!: Rental[];
   @HasMany(() => Fine)
-  public Fines!: Fine[];
+  public arrayOfFines!: Fine[];
 }

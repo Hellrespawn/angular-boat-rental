@@ -1,10 +1,13 @@
+import { Fine } from '../model/fine.model';
 import { User } from '../model/user.model';
 export class UserService {
   /**
    * returns all Users from the database
    */
   public async returnAllUsers(): Promise<Array<User>> {
-    return await User.findAll();
+    return await User.findAll({
+      include: [Fine],
+    });
   }
 
   /**
