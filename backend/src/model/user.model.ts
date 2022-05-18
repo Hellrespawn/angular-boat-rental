@@ -45,7 +45,7 @@ export class User extends Model {
     return await argon2.hash(plaintext);
   }
 
-  public async verify(password: string): Promise<boolean> {
+  public async verifyPassword(password: string): Promise<boolean> {
     return await argon2.verify(this.password, password);
   }
 

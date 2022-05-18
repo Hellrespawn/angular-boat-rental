@@ -20,6 +20,7 @@ import { LoginController } from './controller/login.controller';
 import { loginRoutes } from './routes/login.routes';
 import { FineController } from './controller/fine.controller';
 import { fineRoutes } from './routes/fine.routes';
+import cookieParser from 'cookie-parser';
 
 initSequelize();
 
@@ -35,9 +36,10 @@ const fineController: FineController = new FineController();
 export const app: Application = express();
 const port = +(process.env.SRV_PORT ?? 3000);
 
-app.use(addCorsHeaders);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(addCorsHeaders);
+app.use(cookieParser());
 
 // Statically serve images.
 app.use('/images', express.static(path.join(__dirname, '..', 'media')));

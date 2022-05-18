@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { LOGIN_SCHEMA, LoginController } from '../controller/login.controller';
-import { authenticate } from '../middleware/authenticate';
+import { authenticate, requireAdminRights } from '../middleware/auth';
 
 import {
   createMiddlewareFromValidator,
@@ -18,10 +18,25 @@ export function loginRoutes(controller: LoginController): Router {
     controller.login(req, res)
   );
 
+  // FIXME Remove debug functions
+  const testFunction = (req: Request, res: Response): void => {
+    res.json({
+      firstName: req.currentUser!.firstName,
+      lastName: req.currentUser!.lastName,
+      admin: req.currentUser!.admin,
+    });
+  };
+
   // FIXME Remove debug route
-  router.get('/login/test', authenticate, (req, res) =>
-    res.json({ response: 'Authenticated', payload: req.payload })
+  router.get('/login/test', authenticate, testFunction);
+
+  router.get(
+    '/login/test/admin',
+    authenticate,
+    requireAdminRights,
+    testFunction
   );
+  // FIXME Remove debug functions
 
   return router;
 }

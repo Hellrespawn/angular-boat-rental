@@ -68,8 +68,8 @@ export class UserController {
     req: express.Request,
     res: express.Response
   ): Promise<void> {
-    // Checked by middleware in route
-    const id = req.payload!.sub;
+    // FIXME use new login
+    const id = 1;
 
     try {
       const rental = await this.rentalService.getNextRentalByUserId(id);
