@@ -17,7 +17,9 @@ export class SessionService {
     private httpClient: HttpClient,
     private snackbarService: SnackBarService,
     private router: Router
-  ) {}
+  ) {
+    this.initSessionData();
+  }
 
   /**
    * Attempts to login with the provided credentials.
@@ -26,7 +28,7 @@ export class SessionService {
    */
   public login(email: string, password: string): void {
     this.doLoginRequest(email, password).subscribe({
-      next: (sessionId: string) => this.handleSuccessfulLogin(sessionId),
+      next: (_) => this.handleSuccessfulLogin(),
       error: (error: string) => this.snackbarService.displayError(error),
     });
   }
@@ -46,12 +48,19 @@ export class SessionService {
     return this.sessionData.asObservable();
   }
 
+  private initSessionData(): void {
+    const session = Cookies.get('session');
+
+    this.sessionData.next(session ? JSON.parse(session) : null);
+  }
+
   /**
    * Performs a login request to the backend
    * @param email
    * @param password
    */
-  private doLoginRequest(email: string, password: string): Observable<string> {
+  private doLoginRequest(email: string, password: string): Observable<null> {
+    // FIXME make this a boolean?
     return (
       this.httpClient
         .post<{ sessionId: string }>('/api/login', {
@@ -65,17 +74,15 @@ export class SessionService {
           })
         )
         // Destructure token
-        .pipe(map(({ sessionId }) => sessionId))
+        .pipe(map(({ sessionId }) => null))
     );
   }
 
   /**
    * Handles successful login.
    */
-  private handleSuccessfulLogin(sessionId: string): void {
-    const session = Cookies.get('session')!;
-
-    this.sessionData.next(JSON.parse(session));
+  private handleSuccessfulLogin(): void {
+    this.initSessionData();
 
     this.snackbarService.displaySuccess(`Welkom, je bent ingelogd!`);
 
