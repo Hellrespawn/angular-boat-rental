@@ -21,7 +21,7 @@ async function seedDatabase(): Promise<Boat> {
     sailAreaInM2: undefined,
   });
 
-  const user = await User.create({
+  const user = await User.createWithPlaintextPassword({
     firstName: 'Stef',
     lastName: 'Korporaal',
     license: true,
