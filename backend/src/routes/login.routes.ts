@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { LOGIN_SCHEMA, LoginController } from '../controller/login.controller';
-import { authenticate, requireAdminRights } from '../middleware/auth';
+import { requireAdminRights } from '../middleware/auth';
 
 import {
   createMiddlewareFromValidator,
@@ -28,14 +28,9 @@ export function loginRoutes(controller: LoginController): Router {
   };
 
   // FIXME Remove debug route
-  router.get('/login/test', authenticate, testFunction);
+  router.get('/login/test', testFunction);
 
-  router.get(
-    '/login/test/admin',
-    authenticate,
-    requireAdminRights,
-    testFunction
-  );
+  router.get('/login/test/admin', requireAdminRights, testFunction);
   // FIXME Remove debug functions
 
   return router;

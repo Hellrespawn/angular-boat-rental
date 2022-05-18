@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { UserController } from '../controller/user.controller';
+import { requireAuthentication } from '../middleware/auth';
 import { validateIdInUrlParams } from '../middleware/validate';
 
 export function userRoutes(controller: UserController): Router {
@@ -11,6 +12,7 @@ export function userRoutes(controller: UserController): Router {
 
   router.get(
     '/users/rentals/next',
+    requireAuthentication,
     async (req: Request, res: Response): Promise<void> => {
       controller.getNextRentalForUser(req, res);
     }

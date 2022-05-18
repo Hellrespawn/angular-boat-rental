@@ -21,6 +21,7 @@ import { loginRoutes } from './routes/login.routes';
 import { FineController } from './controller/fine.controller';
 import { fineRoutes } from './routes/fine.routes';
 import cookieParser from 'cookie-parser';
+import { authenticator } from './middleware/auth';
 
 initSequelize();
 
@@ -40,6 +41,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(addCorsHeaders);
 app.use(cookieParser());
+app.use(authenticator);
 
 // Statically serve images.
 app.use('/images', express.static(path.join(__dirname, '..', 'media')));

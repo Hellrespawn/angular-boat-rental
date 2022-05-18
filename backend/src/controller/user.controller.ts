@@ -68,8 +68,10 @@ export class UserController {
     req: express.Request,
     res: express.Response
   ): Promise<void> {
-    // FIXME use new login
-    const id = 1;
+    // Ensured by middleware in route
+
+    console.log(req.currentUser);
+    const id: number = req.currentUser!.id;
 
     try {
       const rental = await this.rentalService.getNextRentalByUserId(id);
