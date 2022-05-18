@@ -1,5 +1,6 @@
 import { randomBytes } from 'crypto';
 import {
+  AllowNull,
   BelongsTo,
   Column,
   CreatedAt,
@@ -16,6 +17,7 @@ export class Session extends Model {
   @Column
   public sessionId!: string;
 
+  @AllowNull(false)
   @Column
   @ForeignKey(() => User)
   private userId!: number;

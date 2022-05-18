@@ -1,6 +1,6 @@
 import { JSONSchemaType } from 'ajv';
 import { Request, Response } from 'express';
-import { SessionService } from '../services/session.service';
+import { SessionData, SessionService } from '../services/session.service';
 import { ServerError } from '../util/error';
 
 type LoginData = {
@@ -37,9 +37,18 @@ export class LoginController {
     try {
       const session = await this.sessionService.login(email, password);
 
+      const user = (await session.$get('user'))!;
+
+      const sessionData: SessionData = {
+        sessionId: session.sessionId,
+        license: user.license,
+        admin: user.admin,
+        firstName: user.firstName,
+      };
+
       res
-        .cookie('session', session.sessionId)
-        .json({ session: session.sessionId });
+        .cookie('session', JSON.stringify(sessionData), { sameSite: 'lax' })
+        .json({ session: sessionData });
     } catch (error) {
       ServerError.respond(error, res);
     }

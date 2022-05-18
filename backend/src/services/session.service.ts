@@ -2,6 +2,13 @@ import { Session } from '../model/session.model';
 import { User } from '../model/user.model';
 import { ErrorType, ServerError } from '../util/error';
 
+export type SessionData = {
+  sessionId: string;
+  license: boolean;
+  admin: boolean;
+  firstName: string;
+};
+
 export class SessionService {
   // Format described here: https://github.com/vercel/ms
   public static MAX_SESSION_AGE = 14;
@@ -33,6 +40,6 @@ export class SessionService {
   }
 
   private async generateSession(user: User): Promise<Session> {
-    return Session.create({ userId: user.id });
+    return Session.create({ userId: user.id }, { include: [User] });
   }
 }

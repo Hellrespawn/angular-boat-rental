@@ -21,9 +21,9 @@ export function loginRoutes(controller: LoginController): Router {
   // FIXME Remove debug functions
   const testFunction = (req: Request, res: Response): void => {
     res.json({
-      firstName: req.currentUser!.firstName,
-      lastName: req.currentUser!.lastName,
-      admin: req.currentUser!.admin,
+      firstName: req.currentUser?.firstName,
+      lastName: req.currentUser?.lastName,
+      admin: req.currentUser?.admin,
     });
   };
 

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { constructUrl } from './http';
 import { Rental } from './rental';
-import { Token } from './session';
 
 export type DateRange = [Date, Date];
 
@@ -41,13 +40,9 @@ export class RentalService {
    *
    * @param token
    */
-  public getNextRental(token: Token): Observable<Rental | null> {
+  public getNextRental(): Observable<Rental | null> {
     return this.httpClient
-      .get<{ rental: Rental | null }>(constructUrl(`/users/rentals/next`), {
-        headers: {
-          authorization: token,
-        },
-      })
+      .get<{ rental: Rental | null }>(constructUrl(`/users/rentals/next`))
       .pipe(
         map(({ rental }) => {
           if (rental) {

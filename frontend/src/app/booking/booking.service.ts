@@ -4,7 +4,6 @@ import {
   combineLatest,
   map,
   Observable,
-  Subscriber,
   Subscription,
   tap,
 } from 'rxjs';
@@ -51,13 +50,13 @@ export class BookingService {
    * Observes currentUserData and sets the license filter based on it.
    */
   private observeCurrentUserData(): void {
-    this.sessionService.getCurrentUserData().subscribe((currentUserData) => {
-      if (currentUserData && !currentUserData.license) {
-        this.licenseFilter.next('not-required');
-      } else {
-        this.licenseFilter.next('both');
-      }
-    });
+    // this.sessionService.getCurrentUserData().subscribe((currentUserData) => {
+    //   if (currentUserData && !currentUserData.license) {
+    //     this.licenseFilter.next('not-required');
+    //   } else {
+    //     this.licenseFilter.next('both');
+    //   }
+    // });
   }
 
   /**

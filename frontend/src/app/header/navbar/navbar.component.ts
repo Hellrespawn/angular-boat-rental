@@ -25,13 +25,13 @@ export class NavbarComponent implements OnInit {
   }
 
   private getCurrentUserType(): void {
-    this.sessionService.getCurrentUserData().subscribe((currentUserData) => {
-      if (!currentUserData) {
-        this.currentUserType = 'guest';
-      } else {
-        this.currentUserType = currentUserData.admin ? 'admin' : 'user';
-      }
-    });
+    const sessionData = this.sessionService.getSessionData();
+
+    if (!sessionData) {
+      this.currentUserType = 'guest';
+    } else {
+      this.currentUserType = sessionData.admin ? 'admin' : 'user';
+    }
   }
 
   public logout(): void {
