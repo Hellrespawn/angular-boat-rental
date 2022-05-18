@@ -12,7 +12,9 @@ export class UserComponent implements OnInit {
   constructor(private sessionService: SessionService) {}
 
   ngOnInit(): void {
-    this.sessionData = this.sessionService.getSessionData();
+    this.sessionService
+      .getSessionData()
+      .subscribe((sessionData) => (this.sessionData = sessionData));
   }
 
   public isLoggedIn(): boolean {

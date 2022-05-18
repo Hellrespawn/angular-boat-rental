@@ -31,7 +31,9 @@ export class UserDashboardComponent implements OnInit {
   }
 
   private observeToken(): void {
-    this.sessionData = this.sessionService.getSessionData();
+    this.sessionService
+      .getSessionData()
+      .subscribe((sessionData) => (this.sessionData = sessionData));
   }
 
   private getNextRental(): void {

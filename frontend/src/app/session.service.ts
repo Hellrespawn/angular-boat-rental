@@ -10,6 +10,9 @@ import { SnackBarService } from './snack-bar.service';
   providedIn: 'root',
 })
 export class SessionService {
+  private sessionData: BehaviorSubject<SessionData | null> =
+    new BehaviorSubject(null as SessionData | null);
+
   constructor(
     private httpClient: HttpClient,
     private snackbarService: SnackBarService,
@@ -32,19 +35,15 @@ export class SessionService {
    * Logs out by deleting the current token.
    */
   public logout(): void {
-    Cookies.remove('session');
+    this.sessionData.next(null);
 
     this.snackbarService.displaySuccess('Tot de volgende keer!');
 
     this.router.navigate(['/']);
   }
 
-  public getSessionData(): SessionData | null {
-    const session = Cookies.get('session');
-
-    console.log(session);
-
-    return session ? JSON.parse(session) : null;
+  public getSessionData(): Observable<SessionData | null> {
+    return this.sessionData.asObservable();
   }
 
   /**
@@ -74,6 +73,10 @@ export class SessionService {
    * Handles successful login.
    */
   private handleSuccessfulLogin(sessionId: string): void {
+    const session = Cookies.get('session')!;
+
+    this.sessionData.next(JSON.parse(session));
+
     this.snackbarService.displaySuccess(`Welkom, je bent ingelogd!`);
 
     this.router.navigate(['/']);
