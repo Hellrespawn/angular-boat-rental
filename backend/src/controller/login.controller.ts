@@ -8,7 +8,7 @@ type LoginData = {
   password: string;
 };
 
-export const loginSchema: JSONSchemaType<LoginData> = {
+export const LOGIN_SCHEMA: JSONSchemaType<LoginData> = {
   type: 'object',
   properties: {
     email: {

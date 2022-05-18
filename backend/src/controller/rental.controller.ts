@@ -16,7 +16,7 @@ type NewRentalData = {
 /**
  * JSON Schema describing NewRentalData
  */
-export const newRentalSchema: JSONSchemaType<NewRentalData> = {
+export const NEW_RENTAL_SCHEMA: JSONSchemaType<NewRentalData> = {
   type: 'object',
   properties: {
     boatId: {
