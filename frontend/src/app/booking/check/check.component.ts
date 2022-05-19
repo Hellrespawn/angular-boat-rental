@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BoatDetailData } from 'src/app/boat';
 import { BoatService } from 'src/app/boat.service';
-import { CurrentUserData } from '../../session';
+import { SessionData } from '../../session';
 import { SessionService } from '../../session.service';
 import { BookingService } from '../booking.service';
 
@@ -12,9 +12,9 @@ import { BookingService } from '../booking.service';
   styleUrls: ['./check.component.scss'],
 })
 export class CheckComponent implements OnInit {
+  public sessionData: SessionData | null = null;
   public dateRange: [Date, Date] | null = null;
   public boat!: BoatDetailData;
-  public currentUserData: CurrentUserData | null = null;
 
   constructor(
     private bookingService: BookingService,
@@ -25,9 +25,15 @@ export class CheckComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getSessionData();
     this.getBoat();
     this.getDates();
-    this.getCurrentUserData();
+  }
+
+  private getSessionData(): void {
+    this.sessionService
+      .getSessionData()
+      .subscribe((sessionData) => (this.sessionData = sessionData));
   }
 
   /**
@@ -53,11 +59,6 @@ export class CheckComponent implements OnInit {
       .subscribe((dateRange) => (this.dateRange = dateRange));
   }
 
-  private getCurrentUserData(): void {
-    this.sessionService
-      .getCurrentUserData()
-      .subscribe((data) => (this.currentUserData = data));
-  }
   /**
    * Get correct text for button.
    */
@@ -107,14 +108,12 @@ export class CheckComponent implements OnInit {
    * Create rental and navigate to next page.
    */
   public handleButton(): void {
-    this.bookingService
-      .createRental(this.boat!.id, this.currentUserData!.sub)
-      .subscribe((rentalId) => {
-        if (this.boat.requirements === 'skipper') {
-          this.router.navigate(['/verhuur/schipper', rentalId]);
-        } else {
-          this.router.navigate(['/verhuur/betalen', rentalId]);
-        }
-      });
+    this.bookingService.createRental(this.boat!.id).subscribe((rentalId) => {
+      if (this.boat.requirements === 'skipper') {
+        this.router.navigate(['/verhuur/schipper', rentalId]);
+      } else {
+        this.router.navigate(['/verhuur/betalen', rentalId]);
+      }
+    });
   }
 }

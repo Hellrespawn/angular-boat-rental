@@ -23,15 +23,13 @@ export class RentalService {
    */
   public createRental(
     boatId: number,
-    userId: number,
     dateRange: DateRange
   ): Observable<number> {
     const [dateStart, dateEnd] = dateRange;
 
     let observable = this.httpClient
-      .post<{ id: number }>(constructUrl('/rentals'), {
+      .post<{ id: number }>('/api/rentals', {
         boatId,
-        userId,
         dateStart: dateStart,
         dateEnd: dateEnd,
       })

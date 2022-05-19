@@ -170,7 +170,7 @@ export class BookingService {
    * Creates a rental and returns an observable with the id of the created
    * Rental
    */
-  public createRental(boatId: number, userId: number): Observable<number> {
+  public createRental(boatId: number): Observable<number> {
     let dateRange = this.dateRange.getValue();
 
     if (!dateRange) {
@@ -178,7 +178,7 @@ export class BookingService {
     }
 
     return this.rentalService
-      .createRental(boatId, userId, dateRange)
+      .createRental(boatId, dateRange)
       .pipe(tap(this.reset.bind(this)));
   }
 
