@@ -11,7 +11,7 @@ export function userRoutes(controller: UserController): Router {
   });
 
   router.get(
-    '/users/rentals/next',
+    '/rentals/next',
     requireAuthentication,
     async (req: Request, res: Response): Promise<void> => {
       controller.getNextRentalForUser(req, res);

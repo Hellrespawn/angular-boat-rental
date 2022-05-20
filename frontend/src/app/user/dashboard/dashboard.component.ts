@@ -26,11 +26,11 @@ export class UserDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getCurrentUserData();
+    this.getCurrentUserType();
     this.getNextRental();
   }
 
-  private observeToken(): void {
+  private getCurrentUserType(): void {
     this.sessionService
       .getSessionData()
       .subscribe((sessionData) => (this.sessionData = sessionData));

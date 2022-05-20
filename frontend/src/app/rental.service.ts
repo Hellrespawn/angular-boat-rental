@@ -43,7 +43,7 @@ export class RentalService {
    */
   public getNextRental(): Observable<Rental | null> {
     return this.httpClient
-      .get<{ rental: Rental | null }>(`/api/users/rentals/next`)
+      .get<{ rental: Rental | null }>('/api/users/rentals/next')
       .pipe(
         map(({ rental }) => {
           if (rental) {
