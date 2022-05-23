@@ -8,7 +8,6 @@ import { ServerError } from '../util/error';
  */
 type NewRentalData = {
   boatId: number;
-  userId: number;
   dateStart: string;
   dateEnd: string;
 };
@@ -22,9 +21,6 @@ export const NEW_RENTAL_SCHEMA: JSONSchemaType<NewRentalData> = {
     boatId: {
       type: 'number',
     },
-    userId: {
-      type: 'number',
-    },
     dateStart: {
       type: 'string',
       format: 'date-time',
@@ -34,7 +30,7 @@ export const NEW_RENTAL_SCHEMA: JSONSchemaType<NewRentalData> = {
       format: 'date-time',
     },
   },
-  required: ['boatId', 'userId', 'dateStart', 'dateEnd'],
+  required: ['boatId', 'dateStart', 'dateEnd'],
   additionalProperties: false,
 };
 
@@ -50,9 +46,10 @@ export class RentalController {
   public async addRental(req: Request, res: Response): Promise<void> {
     // Validated by middleware in routes.
     const boatId: number = req.body.boatId;
-    const userId: number = req.body.userId;
     const dateStart = new Date(req.body.dateStart);
     const dateEnd = new Date(req.body.dateEnd);
+
+    const userId: number = req.currentUser!.id;
 
     try {
       const rental = await this.rentalService.addRental(

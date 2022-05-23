@@ -1,40 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import Cookies from 'js-cookie';
 import { BehaviorSubject, catchError, map, Observable } from 'rxjs';
-import { constructUrl } from './http';
-import { decodeToken, CurrentUserData, Token } from './session';
+import { SessionData } from './session';
 import { SnackBarService } from './snack-bar.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SessionService {
-  /** Local storage key */
-  private static STORAGE_KEY = 'token';
-
-  private token: BehaviorSubject<Token | null>;
+  private sessionData: BehaviorSubject<SessionData | null> =
+    new BehaviorSubject(null as SessionData | null);
 
   constructor(
     private httpClient: HttpClient,
     private snackbarService: SnackBarService,
     private router: Router
   ) {
-    this.token = new BehaviorSubject(
-      localStorage.getItem(SessionService.STORAGE_KEY)
-    );
-  }
-
-  public getToken(): Observable<Token | null> {
-    return this.token;
-  }
-
-  /**
-   * If there is a token, returns the data in the payload.
-   * @returns
-   */
-  public getCurrentUserData(): Observable<CurrentUserData | null> {
-    return this.token.pipe(map((token) => (token ? decodeToken(token) : null)));
+    this.readSessionDataFromCookie();
   }
 
   /**
@@ -44,7 +28,7 @@ export class SessionService {
    */
   public login(email: string, password: string): void {
     this.doLoginRequest(email, password).subscribe({
-      next: (token: Token) => this.handleSuccessfulLogin(token),
+      next: (_) => this.handleSuccessfulLogin(),
       error: (error: string) => this.snackbarService.displayError(error),
     });
   }
@@ -53,12 +37,21 @@ export class SessionService {
    * Logs out by deleting the current token.
    */
   public logout(): void {
-    this.token.next(null);
-    localStorage.removeItem(SessionService.STORAGE_KEY);
+    this.sessionData.next(null);
 
     this.snackbarService.displaySuccess('Tot de volgende keer!');
 
     this.router.navigate(['/']);
+  }
+
+  public getSessionData(): Observable<SessionData | null> {
+    return this.sessionData.asObservable();
+  }
+
+  private readSessionDataFromCookie(): void {
+    const session = Cookies.get('session');
+
+    this.sessionData.next(session ? JSON.parse(session) : null);
   }
 
   /**
@@ -66,10 +59,14 @@ export class SessionService {
    * @param email
    * @param password
    */
-  private doLoginRequest(email: string, password: string): Observable<Token> {
+  private doLoginRequest(email: string, password: string): Observable<null> {
+    // FIXME make this a boolean?
     return (
       this.httpClient
-        .post<{ token: Token }>(constructUrl('/login'), { email, password })
+        .post<{ sessionId: string }>('/api/login', {
+          email,
+          password,
+        })
         // Transform error
         .pipe(
           catchError((_) => {
@@ -77,21 +74,17 @@ export class SessionService {
           })
         )
         // Destructure token
-        .pipe(map(({ token }) => token))
+        .pipe(map(({ sessionId }) => null))
     );
   }
 
   /**
    * Handles successful login.
    */
-  private handleSuccessfulLogin(token: Token): void {
-    localStorage.setItem(SessionService.STORAGE_KEY, token);
-    this.token.next(token);
+  private handleSuccessfulLogin(): void {
+    this.readSessionDataFromCookie();
 
-    const currentUserData = decodeToken(token);
-    this.snackbarService.displaySuccess(
-      `Welkom ${currentUserData.firstName}, je bent ingelogd!`
-    );
+    this.snackbarService.displaySuccess(`Welkom, je bent ingelogd!`);
 
     this.router.navigate(['/']);
   }

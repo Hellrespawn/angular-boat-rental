@@ -4,5 +4,6 @@ import { User } from './user.model';
 import { Rental } from './rental.model';
 import { Message } from './message.model';
 import { Fine } from './fine.model';
+import { Session } from './session.model';
 
-export const MODELS = [Skipper, Boat, User, Rental, Message, Fine];
+export const MODELS = [Skipper, Boat, User, Rental, Message, Fine, Session];

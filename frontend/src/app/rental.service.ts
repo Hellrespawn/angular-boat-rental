@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { constructUrl } from './http';
 import { Rental } from './rental';
-import { Token } from './session';
+
+import { SessionService } from './session.service';
 
 export type DateRange = [Date, Date];
 
@@ -11,7 +12,10 @@ export type DateRange = [Date, Date];
   providedIn: 'root',
 })
 export class RentalService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private sessionService: SessionService
+  ) {}
 
   /**
    * Creates a rental and returns an observable with the id of the created
@@ -19,15 +23,13 @@ export class RentalService {
    */
   public createRental(
     boatId: number,
-    userId: number,
     dateRange: DateRange
   ): Observable<number> {
     const [dateStart, dateEnd] = dateRange;
 
     let observable = this.httpClient
-      .post<{ id: number }>(constructUrl('/rentals'), {
+      .post<{ id: number }>('/api/rentals', {
         boatId,
-        userId,
         dateStart: dateStart,
         dateEnd: dateEnd,
       })
@@ -38,16 +40,10 @@ export class RentalService {
 
   /**
    * Retrieves the current user's next rental from the backend.
-   *
-   * @param token
    */
-  public getNextRental(token: Token): Observable<Rental | null> {
+  public getNextRental(): Observable<Rental | null> {
     return this.httpClient
-      .get<{ rental: Rental | null }>(constructUrl(`/users/rentals/next`), {
-        headers: {
-          authorization: token,
-        },
-      })
+      .get<{ rental: Rental | null }>('/api/users/rentals/next')
       .pipe(
         map(({ rental }) => {
           if (rental) {

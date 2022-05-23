@@ -3,6 +3,7 @@ import {
   NEW_RENTAL_SCHEMA,
   RentalController,
 } from '../controller/rental.controller';
+import { requireAuthentication } from '../middleware/auth';
 import {
   createMiddlewareFromValidator,
   createValidatorFromSchema,
@@ -16,14 +17,15 @@ export function rentalRoutes(controller: RentalController): Router {
   const router = Router();
 
   router.post(
-    '/rentals/',
+    '/',
+    requireAuthentication,
     validateNewRental,
     controller.addRental.bind(controller)
   );
 
-  router.get('/rentals/upcoming');
-  router.get('/rentals/current');
-  router.get('/rentals/past');
+  router.get('/upcoming');
+  router.get('/current');
+  router.get('/past');
 
   return router;
 }

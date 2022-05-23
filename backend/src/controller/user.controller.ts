@@ -68,8 +68,10 @@ export class UserController {
     req: express.Request,
     res: express.Response
   ): Promise<void> {
-    // Checked by middleware in route
-    const id = req.payload!.sub;
+    // Ensured by middleware in route
+
+    console.log(req.currentUser);
+    const id: number = req.currentUser!.id;
 
     try {
       const rental = await this.rentalService.getNextRentalByUserId(id);

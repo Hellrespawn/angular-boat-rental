@@ -20,6 +20,8 @@ import { LoginController } from './controller/login.controller';
 import { loginRoutes } from './routes/login.routes';
 import { FineController } from './controller/fine.controller';
 import { fineRoutes } from './routes/fine.routes';
+import cookieParser from 'cookie-parser';
+import { authenticator } from './middleware/auth';
 
 initSequelize();
 
@@ -35,22 +37,24 @@ const fineController: FineController = new FineController();
 export const app: Application = express();
 const port = +(process.env.SRV_PORT ?? 3000);
 
-app.use(addCorsHeaders);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(addCorsHeaders);
+app.use(cookieParser());
+app.use(authenticator);
 
 // Statically serve images.
 app.use('/images', express.static(path.join(__dirname, '..', 'media')));
 
 // Routes
-app.use(boatRoutes(boatController));
+app.use('/boats', boatRoutes(boatController));
 app.use(skipperRoutes(skipperController));
-app.use(rentalRoutes(rentalController));
-app.use(imageRoutes(imageController));
+app.use('/rentals', rentalRoutes(rentalController));
+app.use('/images', imageRoutes(imageController));
 addMessageRoute(app, messageController);
-app.use(userRoutes(userController));
-app.use(loginRoutes(loginController));
 app.use(fineRoutes(fineController));
+app.use('/users', userRoutes(userController));
+app.use('/login', loginRoutes(loginController));
 
 app.get('/', (_req, res) => {
   res.json({ status: 'online' });

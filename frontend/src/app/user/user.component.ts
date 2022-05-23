@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrentUserData } from '../session';
+import { SessionData } from '../session';
 import { SessionService } from '../session.service';
 
 @Component({
@@ -8,20 +8,20 @@ import { SessionService } from '../session.service';
   styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnInit {
-  private currentUserData!: CurrentUserData | null;
+  private sessionData!: SessionData | null;
   constructor(private sessionService: SessionService) {}
 
   ngOnInit(): void {
     this.sessionService
-      .getCurrentUserData()
-      .subscribe((data) => (this.currentUserData = data));
+      .getSessionData()
+      .subscribe((sessionData) => (this.sessionData = sessionData));
   }
 
   public isLoggedIn(): boolean {
-    return Boolean(this.currentUserData);
+    return Boolean(this.sessionData);
   }
 
   public getName(): string {
-    return this.currentUserData!.firstName;
+    return this.sessionData!.firstName;
   }
 }

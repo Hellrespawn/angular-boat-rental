@@ -1,8 +1,8 @@
-<div *ngIf="!boat" class="custom-card with-padding">
+<div *ngIf="!boat || !sessionData" class="custom-card with-padding">
   <h2>Er is wat fout gegaan! Probeer het nog eens.</h2>
 </div>
 
-<div *ngIf="boat">
+<div *ngIf="boat && sessionData">
   <div id="container">
     <section id="boat" class="custom-card">
       <img src="{{ boat.imageRoute }}" alt="{{ boat.name }}" />

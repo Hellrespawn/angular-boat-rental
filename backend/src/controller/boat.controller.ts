@@ -5,7 +5,7 @@ import { ServerError } from '../util/error';
 
 export class BoatController {
   // YYYY-MM-DD
-  public static dateRegex = /\d{4}-\d{2}-\d{2}/;
+  public static dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
   constructor(private boatService: BoatService = new BoatService()) {}
 
@@ -112,7 +112,7 @@ export class BoatController {
 
       res.json({ boats });
     } catch (error) {
-      res.status(400).json({ error });
+      ServerError.respond(error, res);
     }
   }
 

@@ -1,6 +1,6 @@
 import { JSONSchemaType } from 'ajv';
 import { Request, Response } from 'express';
-import { AuthService } from '../services/auth.service';
+import { SessionData, SessionService } from '../services/session.service';
 import { ServerError } from '../util/error';
 
 type LoginData = {
@@ -24,7 +24,7 @@ export const LOGIN_SCHEMA: JSONSchemaType<LoginData> = {
 };
 
 export class LoginController {
-  constructor(private authService = new AuthService()) {}
+  constructor(private sessionService = new SessionService()) {}
 
   /**
    * Handles login requests.
@@ -35,9 +35,20 @@ export class LoginController {
     const password: string = req.body.password;
 
     try {
-      const token = await this.authService.login(email, password);
+      const session = await this.sessionService.login(email, password);
 
-      res.json({ token });
+      const user = (await session.$get('user'))!;
+
+      const sessionData: SessionData = {
+        sessionId: session.sessionId,
+        license: user.license,
+        admin: user.admin,
+        firstName: user.firstName,
+      };
+
+      res
+        .cookie('session', JSON.stringify(sessionData), { sameSite: 'lax' })
+        .json({ session: sessionData });
     } catch (error) {
       ServerError.respond(error, res);
     }

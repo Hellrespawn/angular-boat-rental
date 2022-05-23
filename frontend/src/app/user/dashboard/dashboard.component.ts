@@ -3,7 +3,7 @@ import { addToNavBar } from 'src/app/navigation.service';
 import { formatDate } from '../../date';
 import { Rental } from '../../rental';
 import { RentalService } from '../../rental.service';
-import { CurrentUserData, decodeToken, Token } from '../../session';
+import { SessionData } from '../../session';
 import { SessionService } from '../../session.service';
 
 @addToNavBar({
@@ -17,7 +17,7 @@ import { SessionService } from '../../session.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class UserDashboardComponent implements OnInit {
-  private token!: Token | null;
+  public sessionData!: SessionData | null;
   public nextRental?: Rental;
 
   constructor(
@@ -26,32 +26,26 @@ export class UserDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.observeToken();
+    this.getCurrentUserType();
     this.getNextRental();
   }
 
-  private observeToken(): void {
-    this.sessionService.getToken().subscribe((token) => (this.token = token));
+  private getCurrentUserType(): void {
+    this.sessionService
+      .getSessionData()
+      .subscribe((sessionData) => (this.sessionData = sessionData));
   }
 
   private getNextRental(): void {
-    this.rentalService.getNextRental(this.token!).subscribe((rental) => {
+    this.rentalService.getNextRental().subscribe((rental) => {
       if (rental) {
         this.nextRental = rental;
       }
     });
   }
 
-  public getCurrentUserData(): CurrentUserData | null {
-    if (this.token) {
-      return decodeToken(this.token);
-    }
-
-    return null;
-  }
-
   public getName(): string {
-    return this.getCurrentUserData()!.firstName;
+    return this.sessionData!.firstName;
   }
 
   public formatDateStart(): string {

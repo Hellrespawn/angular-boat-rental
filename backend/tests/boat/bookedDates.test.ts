@@ -21,7 +21,7 @@ async function seedDatabase(): Promise<Boat> {
     sailAreaInM2: undefined,
   });
 
-  const user = await User.create({
+  const user = await User.createWithPlaintextPassword({
     firstName: 'Stef',
     lastName: 'Korporaal',
     license: true,
@@ -106,8 +106,7 @@ describe('Test /boats/:id/bookedDates', () => {
       expect(res.status).to.equal(400);
 
       const { error } = res.body;
-      expect(error).to.have.property('message');
-      expect(error.message).to.contain('Invalid date');
+      expect(error).to.contain('Invalid date');
     });
   });
 });

@@ -80,7 +80,7 @@ async function insertMockUsers(): Promise<void> {
   for (let i = 0; i < USER_NAMES.length; i++) {
     const name = USER_NAMES[i];
     const [firstName, lastName] = name.split(' ');
-    await User.create({
+    await User.createWithPlaintextPassword({
       firstName,
       lastName,
       license: Boolean(randomInt(0, 1)),

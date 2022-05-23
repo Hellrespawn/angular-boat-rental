@@ -8,6 +8,7 @@ import {
 } from 'sequelize-typescript';
 import { Fine } from './fine.model';
 import { Rental } from './rental.model';
+import * as argon2 from 'argon2';
 
 const REQUIRED_AGE_IN_YEARS = 18;
 
@@ -39,4 +40,20 @@ export class User extends Model {
   public rentals!: Rental[];
   @HasMany(() => Fine)
   public arrayOfFines!: Fine[];
+
+  public static async hashPassword(plaintext: string): Promise<string> {
+    return await argon2.hash(plaintext);
+  }
+
+  public async verifyPassword(password: string): Promise<boolean> {
+    return await argon2.verify(this.password, password);
+  }
+
+  public static async createWithPlaintextPassword(data: {
+    password: string;
+    [key: string]: any;
+  }): Promise<User> {
+    data.password = await User.hashPassword(data.password);
+    return User.create(data);
+  }
 }
