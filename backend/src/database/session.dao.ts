@@ -1,78 +1,43 @@
-import { Request, Response } from 'express';
-import { Model } from 'sequelize-typescript';
+import {
+  AllowNull,
+  BelongsTo,
+  Column,
+  CreatedAt,
+  ForeignKey,
+  Model,
+  Table,
+} from 'sequelize-typescript';
+import { Session } from '../model/session';
+import { UserModel } from './user.dao';
 
-class LoginController {
-  private sessionService: SessionService = new SessionService();
-
-  public async login(req: Request, res: Response): Promise<void> {
-    // get vars from req
-    //
-    const session = await this.sessionService.login('username', 'password');
-    //
-    // put session into cookie or handle error
-  }
-}
-
-class SessionService {
-  private userService: UserService = new UserService();
-  private sessionDao: SessionDao = new SessionDao();
-
-  public async login(email: string, password: string): Promise<Session> {
-    const user = await this.userService.getUser(email);
-
-    if (!user || !user.verifyPassword(password)) {
-      throw '401';
-    }
-
-    const session = Session.createSessionForUser(user);
-
-    await this.sessionDao.saveSession(session);
-
-    return session;
-  }
-}
-
-class Session {
-  public static createSessionForUser(user: User): Session {
-    return new Session();
-  }
-}
-
-class SessionDao {
+export class SessionDao {
   public async saveSession(session: Session): Promise<void> {
-    await SessionModel.create({ ...session });
+    await SessionModel.create({
+      sessionId: session.sessionId,
+      userId: session.user.id,
+    });
+  }
+
+  public async getSession(sessionId: string): Promise<Session | null> {
+    const model = await SessionModel.findOne({ where: { sessionId } });
+    return model ? Session.fromModel(model) : null;
   }
 }
 
-class SessionModel extends Model {}
+@Table
+export class SessionModel extends Model {
+  @AllowNull(false)
+  @Column
+  public sessionId!: string;
 
-class UserService {
-  private userDao: UserDao = new UserDao();
+  @AllowNull(false)
+  @Column
+  @ForeignKey(() => UserModel)
+  private userId!: number;
 
-  public async getUser(email: string): Promise<User | null> {
-    return this.userDao.getUser(email);
-  }
+  @BelongsTo(() => UserModel)
+  public user!: UserModel;
+
+  @CreatedAt
+  public createdAt!: Date;
 }
-
-class User {
-  public static fromModel(model: UserModel): User {
-    return new User();
-  }
-
-  public verifyPassword(password: string): boolean {
-    return true;
-  }
-}
-
-class UserDao {
-  public async getUser(email: string): Promise<User | null> {
-    const model = await UserModel.findOne();
-
-    if (model) {
-      return User.fromModel(model);
-    }
-
-    throw 'User not found!';
-  }
-}
-class UserModel extends Model {}

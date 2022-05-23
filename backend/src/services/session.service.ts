@@ -1,6 +1,6 @@
-import { Session } from '../model/session.model';
-import { User } from '../model/user.model';
-import { ErrorType, ServerError } from '../util/error';
+import { SessionDao } from '../database/session.dao';
+import { Session } from '../model/session';
+import { UserService } from './user.service';
 
 export type SessionData = {
   sessionId: string;
@@ -10,6 +10,9 @@ export type SessionData = {
 };
 
 export class SessionService {
+  private userService: UserService = new UserService();
+  private sessionDao: SessionDao = new SessionDao();
+
   // Format described here: https://github.com/vercel/ms
   public static MAX_SESSION_AGE = 14;
 
@@ -22,24 +25,20 @@ export class SessionService {
    * @returns - token
    */
   public async login(email: string, password: string): Promise<Session> {
-    const user = await User.findOne({
-      where: {
-        emailAddress: email,
-      },
-    });
+    const user = await this.userService.getUser(email);
 
-    if (!user || !(await user.verifyPassword(password))) {
-      throw new ServerError('Invalid credentials!', ErrorType.Forbidden);
+    if (!user || !user.verifyPassword(password)) {
+      throw '401';
     }
 
-    return this.generateSession(user);
+    const session = Session.createSessionForUser(user);
+
+    await this.sessionDao.saveSession(session);
+
+    return session;
   }
 
   public async getSession(sessionId: string): Promise<Session | null> {
-    return Session.findOne({ where: { sessionId }, include: [User] });
-  }
-
-  private async generateSession(user: User): Promise<Session> {
-    return Session.create({ userId: user.id }, { include: [User] });
+    return await this.sessionDao.getSession(sessionId);
   }
 }

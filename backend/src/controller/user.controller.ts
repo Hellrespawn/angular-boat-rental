@@ -1,8 +1,8 @@
 import { UserService } from '../services/user.service';
-import { User } from '../model/user.model';
 import express from 'express';
 import { RentalService } from '../services/rental.service';
 import { ServerError } from '../util/error';
+import { UserModel } from '../database/user.dao';
 
 export class UserController {
   constructor(
@@ -15,7 +15,7 @@ export class UserController {
    */
   public async getUsers(res: express.Response): Promise<void> {
     try {
-      const result: User[] = await this.userService.returnAllUsers();
+      const result: UserModel[] = await this.userService.returnAllUsers();
       res.status(200).json(result);
     } catch {
       console.error();

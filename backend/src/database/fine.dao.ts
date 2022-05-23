@@ -6,17 +6,17 @@ import {
   BelongsTo,
   ForeignKey,
 } from 'sequelize-typescript';
-import { User } from './user.model';
+import { UserModel } from './user.dao';
 
 @Table
-export class Fine extends Model {
-  @ForeignKey(() => User)
+export class FineModel extends Model {
+  @ForeignKey(() => UserModel)
   @AllowNull(false)
   @Column
   public userID!: number;
 
-  @BelongsTo(() => User)
-  public user!: User;
+  @BelongsTo(() => UserModel)
+  public user!: UserModel;
 
   @Column public amount!: number;
 

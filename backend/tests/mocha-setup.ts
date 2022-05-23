@@ -1,11 +1,7 @@
 import 'dotenv/config';
 import 'regenerator-runtime';
 import { Sequelize } from 'sequelize-typescript';
-import {
-  createDatabase,
-  dropDatabase,
-  initSequelize,
-} from '../src/util/database';
+import { createDatabase, dropDatabase, initSequelize } from '../src/database';
 
 export let sequelize: Sequelize;
 

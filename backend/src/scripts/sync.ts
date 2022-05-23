@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { createDatabase, initSequelize } from '../util/database';
+import { createDatabase, initSequelize } from '../database';
 
 async function sync(): Promise<void> {
   try {

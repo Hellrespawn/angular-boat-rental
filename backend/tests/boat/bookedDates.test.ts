@@ -1,13 +1,14 @@
 import request from 'supertest';
-import { Boat } from '../../src/model/boat.model';
+import { BoatModel } from '../../src/database/boat.dao';
 import { app } from '../../src/server';
 import { expect } from 'chai';
 import { closeDatabase, initDatabase } from '../mocha-setup';
-import { User } from '../../src/model/user.model';
-import { Rental } from '../../src/model/rental.model';
+import { User } from '../../src/model/user';
+import { RentalModel } from '../../src/database/rental.dao';
+import { UserModel } from '../../src/database/user.dao';
 
-async function seedDatabase(): Promise<Boat> {
-  const boat = await Boat.create({
+async function seedDatabase(): Promise<BoatModel> {
+  const boat = await BoatModel.create({
     name: 'testboat',
     registrationNumber: 1234,
     pricePerDay: 1234,
@@ -21,18 +22,18 @@ async function seedDatabase(): Promise<Boat> {
     sailAreaInM2: undefined,
   });
 
-  const user = await User.createWithPlaintextPassword({
+  const user = await UserModel.create({
     firstName: 'Stef',
     lastName: 'Korporaal',
     license: true,
     dateOfBirth: new Date('1991-09-25'),
     emailAddress: 'stef@test.nl',
-    password: 'password',
+    password: await User.hashPassword('password'),
     blocked: false,
     admin: true,
   });
 
-  await Rental.create({
+  await RentalModel.create({
     boatId: boat.id,
     userId: user.id,
     dateStart: new Date('2022-01-01'),
@@ -44,7 +45,7 @@ async function seedDatabase(): Promise<Boat> {
 }
 
 describe('Test /boats/:id/bookedDates', () => {
-  let boat: Boat;
+  let boat: BoatModel;
 
   before(async () => {
     await initDatabase();

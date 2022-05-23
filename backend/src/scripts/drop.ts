@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { dropDatabase } from '../util/database';
+import { dropDatabase } from '../database';
 
 async function drop(): Promise<void> {
   try {

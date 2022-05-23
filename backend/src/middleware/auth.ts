@@ -16,12 +16,10 @@ export async function authenticator(
 
   const session = await new SessionService().getSession(sessionData.sessionId);
 
-  if (!session) {
-    res.status(403).json({ error: 'Session invalid!' });
-    return;
+  if (session) {
+    req.currentUser = session.user;
   }
 
-  req.currentUser = session.user;
   next();
 }
 

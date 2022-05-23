@@ -1,5 +1,5 @@
 import { SkipperService } from '../services/skipper.service';
-import { Skipper } from '../model/skipper.model';
+import { SkipperModel } from '../database/skipper.dao';
 import express from 'express';
 
 export class SkipperController {
@@ -13,7 +13,8 @@ export class SkipperController {
     res: express.Response
   ): Promise<void> {
     try {
-      const result: Skipper[] = await this.skipperService.returnAllSkippers();
+      const result: SkipperModel[] =
+        await this.skipperService.returnAllSkippers();
       res.status(200).json(result);
     } catch {
       console.error();
