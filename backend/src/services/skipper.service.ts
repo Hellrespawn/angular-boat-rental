@@ -39,6 +39,11 @@ export class SkipperService {
     pricePerDay: number,
     birthDate: Date
   ): Promise<void> {
-    this.skipperDao.saveNewSkipper({ name, pricePerDay, birthDate });
+    this.skipperDao.saveNewSkipper({
+      name,
+      pricePerDay,
+      birthDate,
+      leave: false,
+    });
   }
 }

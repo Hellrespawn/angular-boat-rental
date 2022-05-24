@@ -11,7 +11,7 @@ export class SkipperDao {
       name: newSkipper.name,
       pricePerDay: newSkipper.pricePerDay,
       birthDate: newSkipper.birthDate,
-      leave: false,
+      leave: newSkipper.leave,
     });
   }
   public async updateLeaveValueInSkipper(
