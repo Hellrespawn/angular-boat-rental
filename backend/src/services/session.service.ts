@@ -1,5 +1,6 @@
 import { SessionDao } from '../database/session.dao';
 import { Session } from '../model/session';
+import { ErrorType, ServerError } from '../util/error';
 import { UserService } from './user.service';
 
 export type SessionData = {
@@ -28,7 +29,7 @@ export class SessionService {
     const user = await this.userService.getUser(email);
 
     if (!user || !user.verifyPassword(password)) {
-      throw '401';
+      throw new ServerError('Invalid Credentials', ErrorType.Forbidden);
     }
 
     const session = Session.createSessionForUser(user);
