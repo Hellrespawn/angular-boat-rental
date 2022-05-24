@@ -38,6 +38,7 @@ export class SessionService {
    */
   public logout(): void {
     this.sessionData.next(null);
+    Cookies.remove('session');
 
     this.snackbarService.displaySuccess('Tot de volgende keer!');
 
