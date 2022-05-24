@@ -20,7 +20,6 @@ describe('Test Message', () => {
 
   it('Check if fields are same as DB fields', async () => {
     const res = await request(app).get(`/faq`);
-    console.log(res.body.message[0]);
     expect(res.body.message[0].name).to.equal('Testgebruiker1');
     expect(res.body.message[0].email).to.equal('Testgebruiker@hotmail.com');
     expect(res.body.message[0].text).to.equal('Lorem Ipsum');
