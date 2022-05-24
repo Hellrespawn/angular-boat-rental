@@ -1,9 +1,9 @@
 import { Op } from 'sequelize';
-import { Boat } from '../model/boat.model';
-import { Rental } from '../model/rental.model';
-import { User } from '../model/user.model';
-import { Skipper } from '../model/skipper.model';
+import { BoatModel } from '../database/boat.dao';
+import { RentalModel } from '../database/rental.dao';
+import { SkipperModel } from '../database/skipper.dao';
 import { ServerError } from '../util/error';
+import { UserModel } from '../database/user.dao';
 
 export class RentalService {
   /**
@@ -20,23 +20,23 @@ export class RentalService {
     userId: number,
     dateStart: Date,
     dateEnd: Date
-  ): Promise<Rental> {
+  ): Promise<RentalModel> {
     // Check boat exists
-    const boat = await Boat.findByPk(boatId);
+    const boat = await BoatModel.findByPk(boatId);
 
     if (!boat) {
       throw new ServerError(`No boat with id ${boatId}.`);
     }
 
     // Check user exists
-    const user = await User.findByPk(userId);
+    const user = await UserModel.findByPk(userId);
 
     if (!user) {
       throw new ServerError(`No user with id ${userId}.`);
     }
 
     // Check dates are valid
-    if (Rental.days(dateStart, dateEnd) < 3) {
+    if (RentalModel.days(dateStart, dateEnd) < 3) {
       throw new ServerError('Rental period must be at least three days!');
     }
 
@@ -50,7 +50,7 @@ export class RentalService {
     }
 
     // Create new Rental
-    return Rental.create({
+    return RentalModel.create({
       boatId,
       userId,
       dateStart,
@@ -59,11 +59,13 @@ export class RentalService {
     });
   }
 
-  public async getNextRentalByUserId(userId: number): Promise<Rental | null> {
+  public async getNextRentalByUserId(
+    userId: number
+  ): Promise<RentalModel | null> {
     const now = new Date();
 
-    const rentals = await Rental.findAll({
-      include: [Boat, Skipper],
+    const rentals = await RentalModel.findAll({
+      include: [BoatModel, SkipperModel],
       where: {
         userId,
         [Op.or]: [

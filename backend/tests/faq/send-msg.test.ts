@@ -1,16 +1,16 @@
 import { expect } from 'chai';
 import { closeDatabase, initDatabase } from '../mocha-setup';
-import { Message } from '../../src/model/message.model';
+import { MessageModel } from '../../src/database/message.dao';
 import request from 'supertest';
 import { app } from '../../src/server';
 
 // test to check if messages go to DB
 describe('Test Message', () => {
-  let message: Message;
+  let message: MessageModel;
   before(async () => {
     await initDatabase();
 
-    message = await Message.create({
+    message = await MessageModel.create({
       name: 'Testgebruiker1',
       email: 'Testgebruiker@hotmail.com',
       text: 'Lorem Ipsum',

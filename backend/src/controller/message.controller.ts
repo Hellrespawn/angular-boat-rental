@@ -1,7 +1,7 @@
 import { MessageService } from '../services/message.service';
 
 import express from 'express';
-import { Message } from '../model/message.model';
+import { MessageModel } from '../database/message.dao';
 
 export class MessageController {
   constructor(private messageService: MessageService = new MessageService()) {}
@@ -11,7 +11,8 @@ export class MessageController {
     req: express.Request,
     res: express.Response
   ): Promise<void> {
-    const message: Message[] = await this.messageService.returnAllMessages();
+    const message: MessageModel[] =
+      await this.messageService.returnAllMessages();
     res.json({ message });
   }
 
@@ -25,7 +26,7 @@ export class MessageController {
     const text: string = req.body.text;
     {
       try {
-        const result = Message.create({ name, email, text });
+        const result = MessageModel.create({ name, email, text });
         res.status(200).json(result);
       } catch {
         console.error();

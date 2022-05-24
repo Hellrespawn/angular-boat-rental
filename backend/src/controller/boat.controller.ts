@@ -1,5 +1,5 @@
 import { BoatService } from '../services/boat.service';
-import { Boat } from '../model/boat.model';
+import { BoatModel } from '../database/boat.dao';
 import { Request, Response } from 'express';
 import { ServerError } from '../util/error';
 
@@ -46,7 +46,7 @@ export class BoatController {
    */
   public async getBoats(req: Request, res: Response): Promise<void> {
     try {
-      const boats: Boat[] = await this.boatService.returnAllBoats();
+      const boats: BoatModel[] = await this.boatService.returnAllBoats();
       res.status(200).json({ boats });
     } catch (error) {
       console.error(error);

@@ -1,7 +1,7 @@
 // This is necessary, for unknown reasons.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Express } from 'express-serve-static-core';
-import { User } from './model/user.model';
+import { User } from './model/user';
 
 // Found here: https://stackoverflow.com/a/55718334
 

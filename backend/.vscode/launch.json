@@ -22,6 +22,24 @@
         "tsconfig-paths/register",
         "./src/server.ts"
       ]
+    },
+    {
+      "name": "ts-node seed",
+      "type": "node",
+      "request": "launch",
+      "protocol": "inspector",
+      "restart": true,
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/ts-node-dev",
+      "cwd": "${workspaceRoot}",
+      "internalConsoleOptions": "openOnSessionStart",
+      "args": [
+        "--inspect",
+        "--respawn",
+        "--no-notify",
+        "--require",
+        "tsconfig-paths/register",
+        "./src/scripts/seed.ts"
+      ]
     }
   ]
 }

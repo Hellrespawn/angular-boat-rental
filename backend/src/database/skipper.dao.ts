@@ -1,8 +1,8 @@
 import { Table, Column, Model, Unique, HasMany } from 'sequelize-typescript';
-import { Rental } from './rental.model';
+import { RentalModel } from './rental.dao';
 
 @Table
-export class Skipper extends Model {
+export class SkipperModel extends Model {
   @Unique @Column public name!: string;
 
   @Column public pricePerDay!: number;
@@ -11,6 +11,6 @@ export class Skipper extends Model {
 
   @Column public leave!: boolean;
 
-  @HasMany(() => Rental)
-  public rentals!: Rental[];
+  @HasMany(() => RentalModel)
+  public rentals!: RentalModel[];
 }

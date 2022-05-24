@@ -1,6 +1,23 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import mysql, { Connection } from 'mysql2/promise';
-import { MODELS } from '../model';
+
+import { SkipperModel } from './skipper.dao';
+import { BoatModel } from './boat.dao';
+import { RentalModel } from './rental.dao';
+import { MessageModel } from './message.dao';
+import { FineModel } from './fine.dao';
+import { SessionModel } from './session.dao';
+import { UserModel } from './user.dao';
+
+export const MODELS = [
+  SkipperModel,
+  BoatModel,
+  UserModel,
+  RentalModel,
+  MessageModel,
+  FineModel,
+  SessionModel,
+];
 
 export async function initSequelize(
   options?: SequelizeOptions

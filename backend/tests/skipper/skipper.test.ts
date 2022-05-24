@@ -1,14 +1,14 @@
 import request from 'supertest';
-import { Skipper } from '../../src/model/skipper.model';
+import { SkipperModel } from '../../src/database/skipper.dao';
 import { app } from '../../src/server';
 import { expect } from 'chai';
 import { initDatabase } from '../mocha-setup';
-import { dropDatabase } from '../../src/util/database';
+import { dropDatabase } from '../../src/database';
 
 describe('Test Skipper insertion into database', () => {
   before(async () => {
     await initDatabase();
-    await Skipper.create({
+    await SkipperModel.create({
       name: 'Kees',
       pricePerDay: 250,
       birthDate: new Date('05-15-1996'),

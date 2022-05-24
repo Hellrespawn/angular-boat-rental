@@ -1,11 +1,11 @@
-import { Message } from '../model/message.model';
+import { MessageModel } from '../database/message.dao';
 
 export class MessageService {
-  private messageArray: Message[] = [];
+  private messageArray: MessageModel[] = [];
 
   // function to return all messages from database
-  public async returnAllMessages(): Promise<Array<Message>> {
-    this.messageArray = await Message.findAll();
+  public async returnAllMessages(): Promise<Array<MessageModel>> {
+    this.messageArray = await MessageModel.findAll();
     return this.messageArray;
   }
 }

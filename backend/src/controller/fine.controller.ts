@@ -1,5 +1,5 @@
 import { FineService } from '../services/fine.service';
-import { Fine } from '../model/fine.model';
+import { FineModel } from '../database/fine.dao';
 import express from 'express';
 
 export class FineController {
@@ -10,7 +10,7 @@ export class FineController {
    */
   public async getFines(res: express.Response): Promise<void> {
     try {
-      const result: Fine[] = await this.fineService.returnAllFines();
+      const result: FineModel[] = await this.fineService.returnAllFines();
       res.status(200).json(result);
     } catch {
       console.error();

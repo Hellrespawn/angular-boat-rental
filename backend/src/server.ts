@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import express, { Application } from 'express';
-import { initSequelize } from './util/database';
 import { BoatController } from './controller/boat.controller';
 import { SkipperController } from './controller/skipper.controller';
 import { addCorsHeaders } from './middleware/cors';
@@ -22,6 +21,7 @@ import { FineController } from './controller/fine.controller';
 import { fineRoutes } from './routes/fine.routes';
 import cookieParser from 'cookie-parser';
 import { authenticator } from './middleware/auth';
+import { initSequelize } from './database';
 
 initSequelize();
 

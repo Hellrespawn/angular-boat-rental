@@ -6,9 +6,9 @@ import {
   HasMany,
   AllowNull,
 } from 'sequelize-typescript';
-import { Fine } from './fine.model';
-import { Rental } from './rental.model';
-import * as argon2 from 'argon2';
+import { User } from '../model/user';
+import { RentalModel } from './rental.dao';
+import { FineModel } from './fine.dao';
 
 const REQUIRED_AGE_IN_YEARS = 18;
 
@@ -22,8 +22,20 @@ function getRequiredDateString(): string {
   return `${year}-${month}-${day}`;
 }
 
+export class UserDao {
+  public async getUser(emailAddress: string): Promise<User | null> {
+    const model = await UserModel.findOne({ where: { emailAddress } });
+
+    if (model) {
+      return User.fromModel(model);
+    }
+
+    throw 'User not found!';
+  }
+}
+
 @Table
-export class User extends Model {
+export class UserModel extends Model {
   @AllowNull(false) @Column public firstName!: string;
   @AllowNull(false) @Column public lastName!: string;
   @AllowNull(false) @Column public license!: boolean;
@@ -36,24 +48,8 @@ export class User extends Model {
   @AllowNull(false) @Column public blocked!: boolean;
   @AllowNull(false) @Column public admin!: boolean;
 
-  @HasMany(() => Rental)
-  public rentals!: Rental[];
-  @HasMany(() => Fine)
-  public arrayOfFines!: Fine[];
-
-  public static async hashPassword(plaintext: string): Promise<string> {
-    return await argon2.hash(plaintext);
-  }
-
-  public async verifyPassword(password: string): Promise<boolean> {
-    return await argon2.verify(this.password, password);
-  }
-
-  public static async createWithPlaintextPassword(data: {
-    password: string;
-    [key: string]: any;
-  }): Promise<User> {
-    data.password = await User.hashPassword(data.password);
-    return User.create(data);
-  }
+  @HasMany(() => RentalModel)
+  public rentals!: RentalModel[];
+  @HasMany(() => FineModel)
+  public arrayOfFines!: FineModel[];
 }

@@ -1,9 +1,10 @@
 import 'dotenv/config';
-import { Boat } from '../model/boat.model';
-import { User } from '../model/user.model';
-import { Skipper } from '../model/skipper.model';
-import { initSequelize } from '../util/database';
-import { Rental } from '../model/rental.model';
+import { BoatModel } from '../database/boat.dao';
+import { SkipperModel } from '../database/skipper.dao';
+import { RentalModel } from '../database/rental.dao';
+import { initSequelize } from '../database';
+import { UserModel } from '../database/user.dao';
+import { User } from '../model/user';
 
 const MOTORBOAT_PLACEHOLDER_PATH = 'motorboot-placeholder.jpg';
 
@@ -60,7 +61,7 @@ async function insertMockBoats(): Promise<void> {
     const sailAreaInM2 = [100, undefined, 200, undefined][i % 4];
     const maxSpeedInKmH = [undefined, 10, undefined, 30][i % 4];
 
-    await Boat.create({
+    await BoatModel.create({
       name,
       imageRoute,
       registrationNumber: randomInt(1, 10000),
@@ -80,13 +81,13 @@ async function insertMockUsers(): Promise<void> {
   for (let i = 0; i < USER_NAMES.length; i++) {
     const name = USER_NAMES[i];
     const [firstName, lastName] = name.split(' ');
-    await User.createWithPlaintextPassword({
+    await UserModel.create({
       firstName,
       lastName,
       license: Boolean(randomInt(0, 1)),
       dateOfBirth: new Date('1991-01-01'),
       emailAddress: `test${i}@test.test`,
-      password: 'password',
+      password: await User.hashPassword('password'),
       blocked: false,
       admin: i === 0 ? true : false,
     });
@@ -106,7 +107,7 @@ async function insertMockSkippers(): Promise<void> {
 
   for (const skipper of skippers) {
     try {
-      await Skipper.create(skipper);
+      await SkipperModel.create(skipper);
     } catch (error) {
       console.log(error);
       process.exit(1);
@@ -115,22 +116,30 @@ async function insertMockSkippers(): Promise<void> {
 }
 
 async function insertMockRentals(): Promise<void> {
-  const boats = await Boat.findAll();
-  const users = await User.findAll();
+  const boats = await BoatModel.findAll();
+  const users = await UserModel.findAll();
 
   for (let i = 0; i < Math.min(boats.length, users.length); i++) {
     await insertMockRental(boats[i], users[users.length - 1 - i]);
   }
 }
 
-async function insertMockRental(boat: Boat, user: User): Promise<void> {
+async function insertMockRental(
+  boat: BoatModel,
+  user: UserModel
+): Promise<void> {
   const dateStart = new Date();
   dateStart.setDate(dateStart.getDate() + randomInt(3, 60));
 
   const dateEnd = new Date(dateStart);
   dateEnd.setDate(dateEnd.getDate() + randomInt(4, 8));
 
-  await Rental.create({ boatId: boat.id, userId: user.id, dateStart, dateEnd });
+  await RentalModel.create({
+    boatId: boat.id,
+    userId: user.id,
+    dateStart,
+    dateEnd,
+  });
 }
 
 async function seed(): Promise<void> {

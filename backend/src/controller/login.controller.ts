@@ -24,7 +24,7 @@ export const LOGIN_SCHEMA: JSONSchemaType<LoginData> = {
 };
 
 export class LoginController {
-  constructor(private sessionService = new SessionService()) {}
+  private sessionService: SessionService = new SessionService();
 
   /**
    * Handles login requests.
@@ -37,13 +37,11 @@ export class LoginController {
     try {
       const session = await this.sessionService.login(email, password);
 
-      const user = (await session.$get('user'))!;
-
       const sessionData: SessionData = {
         sessionId: session.sessionId,
-        license: user.license,
-        admin: user.admin,
-        firstName: user.firstName,
+        license: session.user.license,
+        admin: session.user.admin,
+        firstName: session.user.firstName,
       };
 
       res
