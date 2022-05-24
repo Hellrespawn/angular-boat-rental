@@ -15,21 +15,20 @@ export class SessionService {
 
   private sessionDao: SessionDao = new SessionDao();
 
-  // Format described here: https://github.com/vercel/ms
   public static MAX_SESSION_AGE = 14;
 
   /**
-   * Checks if there is a user identified by email and password and creates a
-   * JSON Web Token for them.
+   * Checks user existence and password and, if applicable , creates a session
    *
-   * @param email - email address
-   * @param password - password
-   * @returns - token
+   * @param email - email of user to check
+   * @param password - password to check
+   * @returns a session
    */
   public async login(email: string, password: string): Promise<Session> {
     const user = await this.userService.getUser(email);
 
     if (!user || !user.verifyPassword(password)) {
+      // Single error, so as to not provide more information than necessary.
       throw new ServerError('Invalid Credentials', ErrorType.Forbidden);
     }
 
@@ -40,6 +39,11 @@ export class SessionService {
     return session;
   }
 
+  /**
+   * Attempts to return a session
+   * @param sessionId
+   * @returns
+   */
   public async getSession(sessionId: string): Promise<Session | null> {
     return await this.sessionDao.getSession(sessionId);
   }

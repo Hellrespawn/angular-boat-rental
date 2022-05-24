@@ -17,6 +17,9 @@ export class User {
     public arrayOfFines: FineModel[]
   ) {}
 
+  /**
+   * Create business model from persistence model.
+   */
   public static fromModel(model: UserModel): User {
     return new User(
       model.id,
@@ -31,6 +34,9 @@ export class User {
     );
   }
 
+  /**
+   * Create a user with a plaintext password that gets hashed.
+   */
   public static async createWithPlaintextPassword(
     firstName: string,
     lastName: string,
@@ -53,14 +59,23 @@ export class User {
     );
   }
 
+  /**
+   * Hash a plaintext password with argon.
+   */
   public static async hashPassword(plaintext: string): Promise<string> {
     return await argon2.hash(plaintext);
   }
 
+  /**
+   * Verify a plaintext password
+   */
   public async verifyPassword(password: string): Promise<boolean> {
     return await argon2.verify(this.password, password);
   }
 
+  /**
+   * Retrieve User rentals.
+   */
   public async getRentals(): Promise<RentalModel[]> {
     return await RentalModel.findAll({ where: { userId: this.id } });
   }

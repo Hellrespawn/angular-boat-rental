@@ -5,6 +5,9 @@ import { User } from './user';
 export class Session {
   constructor(public sessionId: string, public user: User) {}
 
+  /**
+   * Create session from model.
+   */
   public static async fromModel(model: SessionModel): Promise<Session> {
     const user = model.user ?? (await model.$get('user'));
     return new Session(model.sessionId, User.fromModel(user));

@@ -4,6 +4,11 @@ import { User } from '../model/user';
 export class UserService {
   private userDao: UserDao = new UserDao();
 
+  /**
+   * Attempts to get a user identified by email
+   * @param email
+   * @returns User if it exists, or null
+   */
   public async getUser(email: string): Promise<User | null> {
     return this.userDao.getUser(email);
   }
