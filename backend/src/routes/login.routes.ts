@@ -1,20 +1,14 @@
 import { Request, Response, Router } from 'express';
 import { LOGIN_SCHEMA, LoginController } from '../controller/login.controller';
 import { requireAdminRights } from '../middleware/auth';
+import { Validator } from '../util/validator';
 
-import {
-  createMiddlewareFromValidator,
-  createValidatorFromSchema,
-} from '../middleware/validate';
-
-const validateLogin = createMiddlewareFromValidator(
-  createValidatorFromSchema(LOGIN_SCHEMA)
-);
+const loginValidator = new Validator(LOGIN_SCHEMA);
 
 export function loginRoutes(controller: LoginController): Router {
   const router = Router();
 
-  router.post('/', validateLogin, (req: Request, res: Response) =>
+  router.post('/', loginValidator.middleware(), (req: Request, res: Response) =>
     controller.login(req, res)
   );
 
