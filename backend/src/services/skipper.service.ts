@@ -1,12 +1,14 @@
 import { Skipper } from '../model/skipper';
-import { SkipperDao } from '../database/skipper.dao';
+import { SkipperDao, SkipperModel } from '../database/skipper.dao';
 export class SkipperService {
   private skipperDao: SkipperDao = new SkipperDao();
   /**
    * returns all Skippers in the database
    */
   public async returnAllSkippers(): Promise<Array<Skipper>> {
-    return this.skipperDao.getSkippers();
+    return (await this.skipperDao.getSkippers()).map((skipper: SkipperModel) =>
+      Skipper.fromModel(skipper)
+    );
   }
   /**
    * updates the leave boolean of a skipper found by id to new value
