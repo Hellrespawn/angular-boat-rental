@@ -33,7 +33,7 @@ export function skipperRoutes(controller: SkipperController): Router {
   router.patch(
     '/skippers',
     async (req: Request, res: Response): Promise<void> => {
-      controller.updateSkipper(req, res);
+      controller.updateLeaveOfSkipper(req, res);
     }
   );
 

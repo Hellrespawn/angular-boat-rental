@@ -2,6 +2,7 @@ import { BoatService } from '../services/boat.service';
 import { BoatModel } from '../database/boat.dao';
 import { Request, Response } from 'express';
 import { ServerError } from '../util/error';
+import { Boat } from 'src/model/boat';
 
 export class BoatController {
   // YYYY-MM-DD
@@ -46,7 +47,7 @@ export class BoatController {
    */
   public async getBoats(req: Request, res: Response): Promise<void> {
     try {
-      const boats: BoatModel[] = await this.boatService.returnAllBoats();
+      const boats: Boat[] = await this.boatService.returnAllBoats();
       res.status(200).json({ boats });
     } catch (error) {
       console.error(error);
@@ -190,7 +191,10 @@ export class BoatController {
     const idOfBoat: number = +req.body.id;
     const updatedValue: boolean = req.body.updatedValue;
     try {
-      const result = await this.boatService.updateBoat(idOfBoat, updatedValue);
+      const result = await this.boatService.updateMaintenanceOfBoat(
+        idOfBoat,
+        updatedValue
+      );
       res.status(200).json(result);
     } catch (error) {
       res.status(400).send(error);
