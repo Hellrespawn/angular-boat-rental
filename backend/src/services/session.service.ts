@@ -27,7 +27,7 @@ export class SessionService {
   public async login(email: string, password: string): Promise<Session> {
     const user = await this.userService.getUser(email);
 
-    if (!user || !user.verifyPassword(password)) {
+    if (!user || !(await user.verifyPassword(password))) {
       // Single error, so as to not provide more information than necessary.
       throw new ServerError('Invalid Credentials', ErrorType.Forbidden);
     }
