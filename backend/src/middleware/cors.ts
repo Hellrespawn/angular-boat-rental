@@ -32,6 +32,7 @@ export function addCorsHeaders(
   // CORS headers and the preflight will fail.
   if (req.method === 'OPTIONS') {
     res.status(204).end();
+    return;
   }
 
   // Pass to next layer of middleware
