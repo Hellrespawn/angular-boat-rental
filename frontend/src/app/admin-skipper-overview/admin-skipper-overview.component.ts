@@ -40,7 +40,7 @@ export class AdminSkipperOverviewComponent implements OnInit {
     });
   }
   /**
-   * sends a request to the backend via the service to delete a skipper with a certain id, and if succesful deletes the deleted skipper from the frontend
+   * sends a request to the backend via the service to delete a skipper with a certain id, and if successful deletes the deleted skipper from the frontend
    * @param id id of skipper to be deleted
    * @param index index of skipper to be deleted (to delete from frontend)
    */
