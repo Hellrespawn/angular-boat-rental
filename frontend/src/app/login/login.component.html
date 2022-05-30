@@ -15,8 +15,8 @@
       <mat-error *ngIf="email.invalid">{{ emailErrorMessage() }} </mat-error>
     </mat-form-field>
   </form>
-
-  <form class="form">
+  <!-- Disable default submit handler. -->
+  <form class="form" (submit)="(false)">
     <mat-form-field class="form-field" appearance="fill">
       <mat-label>Wachtwoord</mat-label>
       <input
