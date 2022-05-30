@@ -24,6 +24,7 @@
         }
       }
     ],
-    "@typescript-eslint/explicit-function-return-type": ["warn"]
+    "@typescript-eslint/explicit-function-return-type": ["warn"],
+    "@typescript-eslint/lines-between-class-members": ["warn", "always"]
   }
 }
