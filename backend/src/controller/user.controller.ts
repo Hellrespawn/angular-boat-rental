@@ -79,7 +79,7 @@ export class UserController {
       // const dateOfBirth: Date = req.body.dateOfBirth;
       const emailAddress: string = req.body.emailAddress;
       const password: string = req.body.password;
-      const license: boolean = req.body.license;
+      const license: number = (req.body.license = 0);
 
       try {
         const result = await UserModel.create({

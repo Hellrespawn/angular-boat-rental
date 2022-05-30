@@ -1,11 +1,10 @@
-import { Application, Request, Response, Router } from 'express';
+import { Application, Request, Response } from 'express';
 import { MessageController } from '../controller/message.controller';
 
 export function addMessageRoute(
   app: Application,
   controller: MessageController
 ): void {
-
   // get request from backend url
   app.get('/faq', (req: Request, res: Response): void => {
     controller.getMessages(req, res);
