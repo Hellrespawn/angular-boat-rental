@@ -1,6 +1,7 @@
 import * as argon2 from 'argon2';
 import { UserModel } from '../database/user.dao';
 import { RentalModel } from '../database/rental.dao';
+import { FineModel } from 'src/database/fine.dao';
 
 export class User {
   constructor(
@@ -13,7 +14,8 @@ export class User {
     public emailAddress: string,
     public password: string,
     public blocked: boolean,
-    public admin: boolean
+    public admin: boolean,
+    public arrayOfFines: FineModel[] = []
   ) {}
 
   public static fromModel(model: UserModel): User {
