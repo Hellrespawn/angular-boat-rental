@@ -33,4 +33,12 @@ export class UserService {
   public async deleteUser(idOfUser: number): Promise<void> {
     return this.userDao.deleteUser(idOfUser);
   }
+
+  public async checkEmail(email: string): Promise<UserModel | null> {
+    const emailAd = await UserModel.findOne({ where: { emailAddress: email } });
+    if (emailAd !== null) {
+      console.log('email found');
+    }
+    return emailAd;
+  }
 }

@@ -50,4 +50,11 @@ export class UserService {
       updatedValue,
     });
   }
+
+  public addUsers(UserObject: {}): Observable<Object> {
+    return this.httpClient.post(
+      `${environment.backendUrl}/users/registratie-pagina`,
+      UserObject
+    );
+  }
 }

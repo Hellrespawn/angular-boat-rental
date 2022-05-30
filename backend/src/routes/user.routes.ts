@@ -10,6 +10,12 @@ export function userRoutes(controller: UserController): Router {
     controller.getUsers(res);
   });
 
+  router.post(
+    '/registratie-pagina',
+    async (req: Request, res: Response): Promise<void> => {
+      controller.sendUserToDB(req, res);
+    }
+  );
   router.get(
     '/rentals/next',
     requireAuthentication,

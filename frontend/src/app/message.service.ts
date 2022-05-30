@@ -10,6 +10,7 @@ import { Message } from './message';
 export class MessageService {
   constructor(private httpClient: HttpClient) {}
 
+  // 2 functions to send messagesobject to backend
   // function to add messageObject to /veel-gestelde-vragen
   public addMessages(MessagesObject: {}): Observable<Object> {
     return this.httpClient.post(
