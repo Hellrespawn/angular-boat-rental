@@ -1,6 +1,5 @@
 import { UserService } from '../services/user.service';
 import express from 'express';
-import e from 'express';
 import { RentalService } from '../services/rental.service';
 import { ServerError } from '../util/error';
 import { UserModel } from '../database/user.dao';
@@ -59,27 +58,23 @@ export class UserController {
     }
   }
 
-  public getRoleFromDB(): Promise<number> {
-    const role = UserModel.count();
-    return role;
+  // get usercount from DB, if count > 1 User role = guest else role = admin
+  public getUserCountfromDB(): Promise<number> {
+    const usercount = UserModel.count();
+    return usercount;
   }
   // send users to Database
   public async sendUserToDB(
     req: express.Request,
     res: express.Response
   ): Promise<void> {
-    enum Role {
-      Admin,
-      Guest,
-    }
     if (!(await this.checkUserMail(req, res))) {
-      const role = (await this.getRoleFromDB()) ? Role.Guest : Role.Admin;
+      const isAdmin = (await this.getUserCountfromDB()) ? false : true;
       const firstName: string = req.body.firstName;
       const lastName: string = req.body.lastName;
       // const dateOfBirth: Date = req.body.dateOfBirth;
       const emailAddress: string = req.body.emailAddress;
       const password: string = req.body.password;
-      const license: number = (req.body.license = 0);
 
       try {
         const result = await UserModel.create({
@@ -87,9 +82,9 @@ export class UserController {
           lastName,
           emailAddress,
           password,
-          license,
+          license: false,
           blocked: false,
-          admin: role,
+          admin: isAdmin,
         });
         res.status(200).json(result);
       } catch (error) {

@@ -1,4 +1,3 @@
-import { ResolveOptions } from 'dns';
 import { Request, Response, Router } from 'express';
 import { UserController } from '../controller/user.controller';
 import { requireAuthentication } from '../middleware/auth';
