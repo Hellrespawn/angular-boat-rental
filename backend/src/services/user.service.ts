@@ -47,4 +47,12 @@ export class UserService {
       throw 'userToDelete not found';
     }
   }
+
+  public async checkEmail(email: string): Promise<UserModel | null> {
+    const emailAd = await UserModel.findOne({ where: { emailAddress: email } });
+    if (emailAd !== null) {
+      console.log('email found');
+    }
+    return emailAd;
+  }
 }

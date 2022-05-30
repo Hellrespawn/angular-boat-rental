@@ -58,6 +58,52 @@ export class UserController {
     }
   }
 
+  // get usercount from DB, if count > 1 User role = guest else role = admin
+  public getUserCountfromDB(): Promise<number> {
+    const usercount = UserModel.count();
+    return usercount;
+  }
+  // send users to Database
+  public async sendUserToDB(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
+    if (!(await this.checkUserMail(req, res))) {
+      const isAdmin = (await this.getUserCountfromDB()) ? false : true;
+      const firstName: string = req.body.firstName;
+      const lastName: string = req.body.lastName;
+      // const dateOfBirth: Date = req.body.dateOfBirth;
+      const emailAddress: string = req.body.emailAddress;
+      const password: string = req.body.password;
+
+      try {
+        const result = await UserModel.create({
+          firstName,
+          lastName,
+          emailAddress,
+          password,
+          license: false,
+          blocked: false,
+          admin: isAdmin,
+        });
+        res.status(200).json(result);
+      } catch (error) {
+        console.error();
+        res.status(400).json(error);
+      }
+    } else {
+      return;
+    }
+  }
+
+  public async checkUserMail(
+    req: express.Request,
+    res: express.Response
+  ): Promise<UserModel | null> {
+    const emailAddress: string = req.body.emailAddress;
+    const result = await this.userService.checkEmail(emailAddress);
+    return result;
+  }
   /**
    * Returns the next rental for the authenticated user.
    *
