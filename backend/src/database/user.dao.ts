@@ -32,6 +32,31 @@ export class UserDao {
 
     throw 'User not found!';
   }
+  public async getUsers(): Promise<UserModel[]> {
+    return UserModel.findAll({
+      include: [FineModel],
+    });
+  }
+  public async updateBlockedValueOfUser(
+    idOfUser: number,
+    updatedValue: boolean
+  ): Promise<void> {
+    const userToUpdate: UserModel | null = await UserModel.findByPk(idOfUser);
+    if (userToUpdate !== null) {
+      userToUpdate.blocked = updatedValue;
+      await userToUpdate.save();
+    } else {
+      throw 'User not found';
+    }
+  }
+  public async deleteUser(idOfUser: number): Promise<void> {
+    const userToDelete: UserModel | null = await UserModel.findByPk(idOfUser);
+    if (userToDelete !== null) {
+      await userToDelete.destroy();
+    } else {
+      throw 'userToDelete not found';
+    }
+  }
 }
 
 @Table
