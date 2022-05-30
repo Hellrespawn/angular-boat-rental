@@ -31,7 +31,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { FaqComponent } from './faq/faq.component';
 
-import { RentalComponent } from './booking/booking.component';
+import { BookingComponent } from './booking/booking.component';
 import { LicenseComponent } from './booking/filters/license/license.component';
 import { BoatTypeComponent } from './booking/filters/boat-type/boat-type.component';
 import { BoatCardComponent } from './booking/boat-card/boat-card.component';
@@ -83,7 +83,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     FeatureBadgeComponent,
     RegistrationComponent,
     LoginComponent,
-    RentalComponent,
+    BookingComponent,
     LicenseComponent,
     BoatTypeComponent,
     BoatCardComponent,
