@@ -39,10 +39,10 @@ export class UserModel extends Model {
   @AllowNull(false) @Column public firstName!: string;
   @AllowNull(false) @Column public lastName!: string;
   @AllowNull(true) @Column public license!: boolean;
-//   @AllowNull(true)
+  //   @AllowNull(true)
   //@IsBefore(getRequiredDateString())
-//   @Column
-//   public dateOfBirth!: Date;
+  //   @Column
+  //   public dateOfBirth!: Date;
   @AllowNull(false) @IsEmail @Column public emailAddress!: string;
   @AllowNull(false) @Column public password!: string;
   @AllowNull(false) @Column public blocked!: boolean;
