@@ -44,7 +44,6 @@ app.use(imageRoutes(imageController));
 addMessageRoute(app, messageController);
 app.use(userRoutes(userController));
 
-
 export let server: Server;
 
 try {

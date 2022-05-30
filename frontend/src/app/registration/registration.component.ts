@@ -105,7 +105,7 @@ export class RegistrationComponent {
   public emailAddressInp!: ElementRef<HTMLInputElement>;
   @ViewChild('passwordInp') public passwordInp!: ElementRef<HTMLInputElement>;
 
-  public sendDataToBackend() {
+  public sendDataToBackend(): void {
     if (this.radioButtonNotSet()) {
       const regex = /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$/;
       let passwordInp: string = this.passwordInp.nativeElement.value;
@@ -150,7 +150,7 @@ export class RegistrationComponent {
     );
   }
 
-  public radioButtonNotSet() {
+  public radioButtonNotSet(): boolean {
     const item = document.getElementById('btn-18-input') as HTMLInputElement;
     const checked = item!.checked;
     if (!checked === true) {
@@ -161,17 +161,17 @@ export class RegistrationComponent {
     return checked;
   }
 
-  nameTouched() {
+  public nameTouched(): void {
     if (this.firstNameInp.nativeElement.value === '') {
       this.snackBService.makeSnackbarThatClosesAutomatically(
         this.emptyNameInput
       );
       console.log('name');
-      return
+      return;
     }
   }
 
-  lastNameTouched() {
+  public lastNameTouched(): void {
     if (this.lastNameInp.nativeElement.value === '') {
       this.snackBService.makeSnackbarThatClosesAutomatically(
         this.emptyLastNameInput
@@ -180,13 +180,13 @@ export class RegistrationComponent {
       return;
     }
   }
-  emailTouched() {
+  public emailTouched(): void {
     if (this.emailAddressInp.nativeElement.value === '') {
       this.snackBService.makeSnackbarThatClosesAutomatically(
         this.emptyEmailInput
       );
       console.log('email');
-      return
+      return;
     }
   }
 }

@@ -45,8 +45,8 @@ export class UserService {
 
   public addUsers(UserObject: {}): Observable<Object> {
     return this.httpClient.post(
-        `${environment.backendUrl}/registratie-pagina`,
-        UserObject
-      );
+      `${environment.backendUrl}/registratie-pagina`,
+      UserObject
+    );
   }
 }

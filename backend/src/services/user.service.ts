@@ -42,7 +42,7 @@ export class UserService {
   public async checkEmail(email: string): Promise<User | null> {
     const emailAd = await User.findOne({ where: { emailAddress: email } });
     if (emailAd !== null) {
-        console.log('email found')
+      console.log('email found');
     }
     return emailAd;
   }

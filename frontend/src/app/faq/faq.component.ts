@@ -50,18 +50,18 @@ export class FaqComponent {
   @ViewChild('emailForm') public emailInp!: ElementRef<HTMLInputElement>;
   @ViewChild('textForm') public textInp!: ElementRef<HTMLInputElement>;
 
- /* 2 functions to send the messages to the backend with user input
+  /* 2 functions to send the messages to the backend with user input
    addMessages(this.getMessages()) invokes the message service with getMessages() function input */
-   public sendMessageToBackend(): void {
+  public sendMessageToBackend(): void {
     this.messageService.addMessages(this.getMessages()).subscribe();
     this.snackBService.makeSnackbarThatClosesAutomatically(
       this.succesSnackbarInput
     );
     // this.router.navigateByUrl('/veel-gestelde-vragen');
-    
+
     setTimeout(() => {
-        this.pageReload();
-        this.router.navigateByUrl('/veel-gestelde-vragen');
+      this.pageReload();
+      this.router.navigateByUrl('/veel-gestelde-vragen');
     }, 2500);
   }
 
@@ -105,37 +105,37 @@ export class FaqComponent {
     return errorMessage;
   }
 
-  nameTouched() {
+  public nameTouched(): void {
     if (this.nameInp.nativeElement.value === '') {
       this.snackBService.makeSnackbarThatClosesAutomatically(
         this.emptyNameInput
       );
       console.log('name');
-      return
+      return;
     }
   }
 
-  emailTouched() {
+  public emailTouched(): void {
     if (this.emailInp.nativeElement.value === '') {
       this.snackBService.makeSnackbarThatClosesAutomatically(
         this.emptyEmailInput
       );
       console.log('email');
-      return
+      return;
     }
   }
 
-  textBoxTouched() {
+  public textBoxTouched(): void {
     if (this.textInp.nativeElement.value === '') {
       this.snackBService.makeSnackbarThatClosesAutomatically(
         this.emptyTextInput
       );
       console.log('email');
-      return
+      return;
     }
   }
 
-  pageReload() {
+  public pageReload(): void {
     this.nameInp.nativeElement.value = '';
     this.emailInp.nativeElement.value = '';
     this.textInp.nativeElement.value = '';

@@ -54,7 +54,7 @@ export class UserController {
     }
   }
 
-  public getRoleFromDB() {
+  public getRoleFromDB(): Promise<number> {
     const role = User.count();
     return role;
   }
@@ -90,13 +90,16 @@ export class UserController {
       } catch (error) {
         console.error();
         res.status(400).json(error);
-      } 
+      }
     } else {
-        return
-    } 
+      return;
+    }
   }
 
-  public async checkUserMail(req: express.Request, res: express.Response) {
+  public async checkUserMail(
+    req: express.Request,
+    res: express.Response
+  ): Promise<User | null> {
     const emailAddress: string = req.body.emailAddress;
     const result = await this.userService.checkEmail(emailAddress);
     return result;
