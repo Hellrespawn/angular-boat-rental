@@ -1,6 +1,6 @@
 import { FineService } from '../services/fine.service';
-import { FineModel } from '../database/fine.dao';
 import express from 'express';
+import { Fine } from '../model/fine';
 
 export class FineController {
   constructor(private fineService: FineService = new FineService()) {}
@@ -10,7 +10,7 @@ export class FineController {
    */
   public async getFines(res: express.Response): Promise<void> {
     try {
-      const result: FineModel[] = await this.fineService.returnAllFines();
+      const result: Fine[] = await this.fineService.returnAllFines();
       res.status(200).json(result);
     } catch {
       console.error();
@@ -27,11 +27,11 @@ export class FineController {
     req: express.Request,
     res: express.Response
   ): Promise<void> {
-    const userID: number = req.body.userID;
+    const userId: number = req.body.userID;
     const amount: number = req.body.amount;
     const paid: boolean = req.body.paid;
     try {
-      const result = await this.fineService.addFine(userID, amount, paid);
+      const result = await this.fineService.addFine(userId, amount, paid);
       res.status(200).json(result);
     } catch (error) {
       res.status(400).json(error);

@@ -32,24 +32,63 @@ export class UserDao {
 
     throw 'User not found!';
   }
+
+  public async getUsers(): Promise<User[]> {
+    return (
+      await UserModel.findAll({
+        include: [FineModel],
+      })
+    ).map((userModel) => {
+      return User.fromModel(userModel);
+    });
+  }
+
+  public async updateBlockedValueOfUser(
+    idOfUser: number,
+    updatedValue: boolean
+  ): Promise<void> {
+    const userToUpdate: UserModel | null = await UserModel.findByPk(idOfUser);
+    if (userToUpdate !== null) {
+      userToUpdate.blocked = updatedValue;
+      await userToUpdate.save();
+    } else {
+      throw 'User not found';
+    }
+  }
+
+  public async deleteUser(idOfUser: number): Promise<void> {
+    const userToDelete: UserModel | null = await UserModel.findByPk(idOfUser);
+    if (userToDelete !== null) {
+      await userToDelete.destroy();
+    } else {
+      throw 'userToDelete not found';
+    }
+  }
 }
 
 @Table
 export class UserModel extends Model {
   @AllowNull(false) @Column public firstName!: string;
+
   @AllowNull(false) @Column public lastName!: string;
+
   @AllowNull(false) @Column public license!: boolean;
+
   //   @AllowNull(true)
   //@IsBefore(getRequiredDateString())
   //   @Column
   //   public dateOfBirth!: Date;
   @AllowNull(false) @IsEmail @Column public emailAddress!: string;
+
   @AllowNull(false) @Column public password!: string;
+
   @AllowNull(false) @Column public blocked!: boolean;
+
   @AllowNull(false) @Column public admin!: boolean;
 
   @HasMany(() => RentalModel)
   public rentals!: RentalModel[];
+
   @HasMany(() => FineModel)
   public arrayOfFines!: FineModel[];
 }

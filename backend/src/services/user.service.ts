@@ -1,5 +1,4 @@
 import { UserDao, UserModel } from '../database/user.dao';
-import { FineModel } from '../database/fine.dao';
 import { User } from '../model/user';
 export class UserService {
   private userDao: UserDao = new UserDao();
@@ -11,10 +10,8 @@ export class UserService {
   /**
    * returns all Users from the database
    */
-  public async returnAllUsers(): Promise<Array<UserModel>> {
-    return await UserModel.findAll({
-      include: [FineModel],
-    });
+  public async returnAllUsers(): Promise<Array<User>> {
+    return this.userDao.getUsers();
   }
 
   /**
@@ -22,17 +19,11 @@ export class UserService {
    * @param idOfUser id of user to be updated
    * @param updatedValue new value of the blocked boolean
    */
-  public async updateUser(
+  public async updateBlockedValueOfUser(
     idOfUser: number,
     updatedValue: boolean
   ): Promise<void> {
-    const userToUpdate: UserModel | null = await UserModel.findByPk(idOfUser);
-    if (userToUpdate !== null) {
-      userToUpdate.blocked = updatedValue;
-      await userToUpdate.save();
-    } else {
-      throw 'User not found';
-    }
+    return this.userDao.updateBlockedValueOfUser(idOfUser, updatedValue);
   }
 
   /**
@@ -40,12 +31,7 @@ export class UserService {
    * @param idOfUser the id of the user to be deleted
    */
   public async deleteUser(idOfUser: number): Promise<void> {
-    const userToDelete: UserModel | null = await UserModel.findByPk(idOfUser);
-    if (userToDelete !== null) {
-      await userToDelete.destroy();
-    } else {
-      throw 'userToDelete not found';
-    }
+    return this.userDao.deleteUser(idOfUser);
   }
 
   public async checkEmail(email: string): Promise<UserModel | null> {

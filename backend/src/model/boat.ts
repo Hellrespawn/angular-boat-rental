@@ -1,5 +1,5 @@
 import { BoatModel, BoatRequirements, BoatType } from 'src/database/boat.dao';
-import { RentalModel } from 'src/database/rental.dao';
+import { RentalModel } from '../database/rental.dao';
 
 export class Boat {
   constructor(
@@ -17,6 +17,7 @@ export class Boat {
     public sailAreaInM2?: number,
     public id?: number
   ) {}
+
   public static fromModel(boatModel: BoatModel): Boat {
     return new Boat(
       boatModel.name,
@@ -34,6 +35,7 @@ export class Boat {
       boatModel.id
     );
   }
+
   /**
    * Calculates the boat's requirements.
    *

@@ -1,15 +1,15 @@
 import { Skipper } from '../model/skipper';
-import { SkipperDao, SkipperModel } from '../database/skipper.dao';
+import { SkipperDao } from '../database/skipper.dao';
 export class SkipperService {
   private skipperDao: SkipperDao = new SkipperDao();
+
   /**
    * returns all Skippers in the database
    */
   public async returnAllSkippers(): Promise<Array<Skipper>> {
-    return (await this.skipperDao.getSkippers()).map((skipper: SkipperModel) =>
-      Skipper.fromModel(skipper)
-    );
+    return this.skipperDao.getSkippers();
   }
+
   /**
    * updates the leave boolean of a skipper found by id to new value
    * @param idOfSkipper id of skipper to be updated
@@ -19,7 +19,7 @@ export class SkipperService {
     idOfSkipper: number,
     updatedValue: boolean
   ): Promise<void> {
-    this.skipperDao.updateLeaveValueInSkipper(idOfSkipper, updatedValue);
+    return this.skipperDao.updateLeaveValueInSkipper(idOfSkipper, updatedValue);
   }
 
   /**
@@ -27,7 +27,7 @@ export class SkipperService {
    * @param idOfSkipper id of skipper to be deleted
    */
   public async deleteSkipper(idOfSkipper: number): Promise<void> {
-    this.skipperDao.deleteSkipper(idOfSkipper);
+    return this.skipperDao.deleteSkipper(idOfSkipper);
   }
 
   /**
@@ -42,7 +42,7 @@ export class SkipperService {
     birthDate: Date,
     leave: boolean
   ): Promise<void> {
-    this.skipperDao.saveNewSkipper({
+    return this.skipperDao.saveNewSkipper({
       name,
       pricePerDay,
       birthDate,

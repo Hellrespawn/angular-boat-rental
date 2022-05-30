@@ -1,8 +1,7 @@
 import { BoatService } from '../services/boat.service';
-import { BoatModel } from '../database/boat.dao';
 import { Request, Response } from 'express';
 import { ServerError } from '../util/error';
-import { Boat } from 'src/model/boat';
+import { Boat } from '../model/boat';
 
 export class BoatController {
   // YYYY-MM-DD
@@ -167,6 +166,7 @@ export class BoatController {
       res.status(400).send(error);
     }
   }
+
   /**
    * deletes a boat by id from the database through the service
    * @param req the request made to the backend
@@ -187,7 +187,10 @@ export class BoatController {
    * @param req the request made to the backend
    * @param res the response sent back to the client
    */
-  public async updateBoat(req: Request, res: Response): Promise<void> {
+  public async updateMaintenanceValueOfBoat(
+    req: Request,
+    res: Response
+  ): Promise<void> {
     const idOfBoat: number = +req.body.id;
     const updatedValue: boolean = req.body.updatedValue;
     try {

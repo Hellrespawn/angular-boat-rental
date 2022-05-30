@@ -7,7 +7,7 @@ import {
   Unique,
   HasMany,
 } from 'sequelize-typescript';
-import { Boat } from 'src/model/boat';
+import { Boat } from '../model/boat';
 import { RentalModel } from './rental.dao';
 
 export type BoatType = 'sail' | 'motor';
@@ -18,9 +18,12 @@ export type BoatRequirements = 'none' | 'license' | 'skipper';
 const BOAT_TYPES = ['sail', 'motor'];
 
 export class BoatDao {
-  public async getBoats(): Promise<BoatModel[]> {
-    return BoatModel.findAll();
+  public async getBoats(): Promise<Boat[]> {
+    return (await BoatModel.findAll()).map((boat: BoatModel) =>
+      Boat.fromModel(boat)
+    );
   }
+
   public async saveNewBoat(newBoat: Boat): Promise<void> {
     BoatModel.create({
       name: newBoat.name,
@@ -36,6 +39,7 @@ export class BoatDao {
       sailAreaInM2: newBoat.sailAreaInM2 ?? null,
     });
   }
+
   public async updateMaintenanceValueInBoat(
     idOfBoat: number,
     updatedValue: boolean
@@ -48,6 +52,7 @@ export class BoatDao {
       throw 'Boat not found';
     }
   }
+
   public async deleteBoat(idOfBoat: number): Promise<void> {
     const boatToDelete: BoatModel | null = await BoatModel.findByPk(idOfBoat);
     if (boatToDelete !== null) {
@@ -61,9 +66,13 @@ export class BoatDao {
 @Table
 export class BoatModel extends Model {
   @AllowNull(false) @Unique @Column public name!: string;
+
   @AllowNull(false) @Unique @Column public registrationNumber!: number;
+
   @AllowNull(false) @Column public pricePerDay!: number;
+
   @AllowNull(false) @Column public skipperRequired!: boolean;
+
   @AllowNull(false) @Column public maintenance!: boolean;
 
   // Could not get this to work with the getter being transformed, so the
@@ -79,6 +88,7 @@ export class BoatModel extends Model {
   }
 
   @AllowNull(false) @Column public lengthInM!: number;
+
   @AllowNull(false) @Column public maxOccupants!: number;
 
   @AllowNull(false)
@@ -86,6 +96,7 @@ export class BoatModel extends Model {
   public boatType!: BoatType;
 
   @Column public maxSpeedInKmH?: number;
+
   @Column public sailAreaInM2?: number;
 
   @HasMany(() => RentalModel)

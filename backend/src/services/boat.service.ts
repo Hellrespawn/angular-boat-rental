@@ -31,6 +31,7 @@ export type BoatDetailData = BoatOverviewData & {
 
 export class BoatService {
   private boatDao: BoatDao = new BoatDao();
+
   /**
    * Converts a Boat into BoatOverviewData.
    *
@@ -47,14 +48,13 @@ export class BoatService {
       maxOccupants: boat.maxOccupants,
     };
   }
+
   /**
    * requests all Boats from the database
    * @returns all boats from the database
    */
   public async returnAllBoats(): Promise<Array<Boat>> {
-    return (await this.boatDao.getBoats()).map((boat: BoatModel) =>
-      Boat.fromModel(boat)
-    );
+    return this.boatDao.getBoats();
   }
 
   /**
@@ -96,6 +96,7 @@ export class BoatService {
 
     return boats.map(this.boatInstanceToOverviewData);
   }
+
   /**
    * adds a boat to the database if possible (name and registration have to be unique)
    * @param name name of new boat
@@ -122,7 +123,7 @@ export class BoatService {
     maxSpeedInKmH: number,
     sailAreaInM2: number
   ): Promise<void> {
-    this.boatDao.saveNewBoat(
+    return this.boatDao.saveNewBoat(
       new Boat(
         name,
         registrationNumber,
@@ -139,13 +140,15 @@ export class BoatService {
       )
     );
   }
+
   /**
    * deletes a boat by id from the database
    * @param idOfBoat id of the boat to identify the specific boat
    */
   public async deleteBoat(idOfBoat: number): Promise<void> {
-    this.boatDao.deleteBoat(idOfBoat);
+    return this.boatDao.deleteBoat(idOfBoat);
   }
+
   /**
    * updates the maintenance boolean in a specific boat found by id
    * @param idOfBoat id of the boat to be updated
@@ -155,7 +158,7 @@ export class BoatService {
     idOfBoat: number,
     updatedValue: boolean
   ): Promise<void> {
-    this.boatDao.updateMaintenanceValueInBoat(idOfBoat, updatedValue);
+    return this.boatDao.updateMaintenanceValueInBoat(idOfBoat, updatedValue);
   }
 
   /**

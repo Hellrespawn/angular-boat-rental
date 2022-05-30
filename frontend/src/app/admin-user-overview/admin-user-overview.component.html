@@ -4,9 +4,6 @@
 <mat-card *ngFor="let user of arrayOfUsers; index as i">
   <mat-card-title>{{ user.firstName + ' ' + user.lastName }}</mat-card-title>
   <mat-card-subtitle>Email adres: {{ user.emailAddress }}</mat-card-subtitle>
-  <mat-card-subtitle
-    >Geboorte datum: {{ formatDate(user.dateOfBirth) }}</mat-card-subtitle
-  >
   <mat-card-subtitle *ngIf="user.blocked" style="color: red"
     >Geblokkeerd!</mat-card-subtitle
   >

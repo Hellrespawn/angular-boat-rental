@@ -2,6 +2,7 @@ import { UserService } from '../services/user.service';
 import express from 'express';
 import { RentalService } from '../services/rental.service';
 import { ServerError } from '../util/error';
+import { User } from '../model/user';
 import { UserModel } from '../database/user.dao';
 
 export class UserController {
@@ -15,7 +16,7 @@ export class UserController {
    */
   public async getUsers(res: express.Response): Promise<void> {
     try {
-      const result: UserModel[] = await this.userService.returnAllUsers();
+      const result: User[] = await this.userService.returnAllUsers();
       res.status(200).json(result);
     } catch {
       console.error();
@@ -40,18 +41,22 @@ export class UserController {
       res.status(400).json(error);
     }
   }
+
   /**updates the blocked-boolean in a User in the database by id through the service
    * @param req the request made to the backend
    * @param res the response sent back to the client
    */
-  public async updateUser(
+  public async updateBlockedValueOfUser(
     req: express.Request,
     res: express.Response
   ): Promise<void> {
     const idOfUser: number = +req.body.id;
     const updatedValue: boolean = req.body.updatedValue;
     try {
-      const result = await this.userService.updateUser(idOfUser, updatedValue);
+      const result = await this.userService.updateBlockedValueOfUser(
+        idOfUser,
+        updatedValue
+      );
       res.status(200).json(result);
     } catch (error) {
       res.status(400).send(error);
@@ -63,6 +68,7 @@ export class UserController {
     const usercount = UserModel.count();
     return usercount;
   }
+
   // send users to Database
   public async sendUserToDB(
     req: express.Request,
@@ -104,6 +110,7 @@ export class UserController {
     const result = await this.userService.checkEmail(emailAddress);
     return result;
   }
+
   /**
    * Returns the next rental for the authenticated user.
    *

@@ -33,7 +33,7 @@ export function userRoutes(controller: UserController): Router {
   );
 
   router.patch('/', async (req: Request, res: Response): Promise<void> => {
-    controller.updateUser(req, res);
+    controller.updateBlockedValueOfUser(req, res);
   });
 
   return router;
