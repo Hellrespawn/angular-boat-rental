@@ -187,7 +187,10 @@ export class BoatController {
    * @param req the request made to the backend
    * @param res the response sent back to the client
    */
-  public async updateBoat(req: Request, res: Response): Promise<void> {
+  public async updateMaintenanceValueOfBoat(
+    req: Request,
+    res: Response
+  ): Promise<void> {
     const idOfBoat: number = +req.body.id;
     const updatedValue: boolean = req.body.updatedValue;
     try {

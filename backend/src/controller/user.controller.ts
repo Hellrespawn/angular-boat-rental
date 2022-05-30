@@ -44,7 +44,7 @@ export class UserController {
    * @param req the request made to the backend
    * @param res the response sent back to the client
    */
-  public async updateUser(
+  public async updateBlockedValueOfUser(
     req: express.Request,
     res: express.Response
   ): Promise<void> {

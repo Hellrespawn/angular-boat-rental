@@ -46,7 +46,7 @@ export function boatRoutes(controller: BoatController): Router {
   });
 
   router.patch('/', async (req: Request, res: Response): Promise<void> => {
-    controller.updateBoat(req, res);
+    controller.updateMaintenanceValueOfBoat(req, res);
   });
 
   return router;
