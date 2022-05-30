@@ -40,6 +40,7 @@ export class UserController {
       res.status(400).json(error);
     }
   }
+
   /**updates the blocked-boolean in a User in the database by id through the service
    * @param req the request made to the backend
    * @param res the response sent back to the client

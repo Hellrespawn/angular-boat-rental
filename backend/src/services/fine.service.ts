@@ -3,6 +3,7 @@ import { FineDao, FineModel } from '../database/fine.dao';
 
 export class FineService {
   private fineDao: FineDao = new FineDao();
+
   /**
    * returns all Fines in the database
    */

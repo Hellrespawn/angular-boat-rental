@@ -31,6 +31,7 @@ export type BoatDetailData = BoatOverviewData & {
 
 export class BoatService {
   private boatDao: BoatDao = new BoatDao();
+
   /**
    * Converts a Boat into BoatOverviewData.
    *
@@ -47,6 +48,7 @@ export class BoatService {
       maxOccupants: boat.maxOccupants,
     };
   }
+
   /**
    * requests all Boats from the database
    * @returns all boats from the database
@@ -96,6 +98,7 @@ export class BoatService {
 
     return boats.map(this.boatInstanceToOverviewData);
   }
+
   /**
    * adds a boat to the database if possible (name and registration have to be unique)
    * @param name name of new boat
@@ -139,6 +142,7 @@ export class BoatService {
       )
     );
   }
+
   /**
    * deletes a boat by id from the database
    * @param idOfBoat id of the boat to identify the specific boat
@@ -146,6 +150,7 @@ export class BoatService {
   public async deleteBoat(idOfBoat: number): Promise<void> {
     return this.boatDao.deleteBoat(idOfBoat);
   }
+
   /**
    * updates the maintenance boolean in a specific boat found by id
    * @param idOfBoat id of the boat to be updated

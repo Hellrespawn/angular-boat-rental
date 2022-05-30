@@ -12,6 +12,7 @@ export type SessionData = {
 
 export class SessionService {
   private userService: UserService = new UserService();
+
   private sessionDao: SessionDao = new SessionDao();
 
   // Format described here: https://github.com/vercel/ms

@@ -2,6 +2,7 @@ import { Skipper } from '../model/skipper';
 import { SkipperDao, SkipperModel } from '../database/skipper.dao';
 export class SkipperService {
   private skipperDao: SkipperDao = new SkipperDao();
+
   /**
    * returns all Skippers in the database
    */
@@ -10,6 +11,7 @@ export class SkipperService {
       Skipper.fromModel(skipper)
     );
   }
+
   /**
    * updates the leave boolean of a skipper found by id to new value
    * @param idOfSkipper id of skipper to be updated

@@ -6,6 +6,7 @@ export class SkipperDao {
   public async getSkippers(): Promise<SkipperModel[]> {
     return SkipperModel.findAll();
   }
+
   public async saveNewSkipper(newSkipper: Skipper): Promise<void> {
     SkipperModel.create({
       name: newSkipper.name,
@@ -14,6 +15,7 @@ export class SkipperDao {
       leave: newSkipper.leave,
     });
   }
+
   public async updateLeaveValueInSkipper(
     idOfSkipper: number,
     updatedValue: boolean
@@ -28,6 +30,7 @@ export class SkipperDao {
       throw 'Skipper not found';
     }
   }
+
   public async deleteSkipper(idOfSkipper: number): Promise<void> {
     const skipperToDelete: SkipperModel | null = await SkipperModel.findByPk(
       idOfSkipper

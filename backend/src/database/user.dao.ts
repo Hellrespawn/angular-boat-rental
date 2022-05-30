@@ -32,11 +32,13 @@ export class UserDao {
 
     throw 'User not found!';
   }
+
   public async getUsers(): Promise<UserModel[]> {
     return UserModel.findAll({
       include: [FineModel],
     });
   }
+
   public async updateBlockedValueOfUser(
     idOfUser: number,
     updatedValue: boolean
@@ -49,6 +51,7 @@ export class UserDao {
       throw 'User not found';
     }
   }
+
   public async deleteUser(idOfUser: number): Promise<void> {
     const userToDelete: UserModel | null = await UserModel.findByPk(idOfUser);
     if (userToDelete !== null) {
@@ -62,19 +65,27 @@ export class UserDao {
 @Table
 export class UserModel extends Model {
   @AllowNull(false) @Column public firstName!: string;
+
   @AllowNull(false) @Column public lastName!: string;
+
   @AllowNull(false) @Column public license!: boolean;
+
   @AllowNull(false)
   //@IsBefore(getRequiredDateString())
   @Column
   public dateOfBirth!: Date;
+
   @AllowNull(false) @IsEmail @Column public emailAddress!: string;
+
   @AllowNull(false) @Column public password!: string;
+
   @AllowNull(false) @Column public blocked!: boolean;
+
   @AllowNull(false) @Column public admin!: boolean;
 
   @HasMany(() => RentalModel)
   public rentals!: RentalModel[];
+
   @HasMany(() => FineModel)
   public arrayOfFines!: FineModel[];
 }

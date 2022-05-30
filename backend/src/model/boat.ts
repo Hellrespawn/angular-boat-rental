@@ -17,6 +17,7 @@ export class Boat {
     public sailAreaInM2?: number,
     public id?: number
   ) {}
+
   public static fromModel(boatModel: BoatModel): Boat {
     return new Boat(
       boatModel.name,
@@ -34,6 +35,7 @@ export class Boat {
       boatModel.id
     );
   }
+
   /**
    * Calculates the boat's requirements.
    *

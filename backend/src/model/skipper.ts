@@ -8,6 +8,7 @@ export class Skipper {
     public leave: boolean,
     public id?: number
   ) {}
+
   public static fromModel(skipperModel: SkipperModel): Skipper {
     return new Skipper(
       skipperModel.name,

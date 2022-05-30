@@ -1,4 +1,4 @@
-import { UserDao, UserModel } from '../database/user.dao';
+import { UserDao } from '../database/user.dao';
 import { User } from '../model/user';
 export class UserService {
   private userDao: UserDao = new UserDao();
