@@ -1,4 +1,4 @@
-import { Boat } from 'src/model/boat';
+import { Boat } from '../model/boat';
 import {
   BoatDao,
   BoatModel,
