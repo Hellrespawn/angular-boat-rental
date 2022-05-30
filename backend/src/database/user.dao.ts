@@ -38,7 +38,7 @@ export class UserDao {
 export class UserModel extends Model {
   @AllowNull(false) @Column public firstName!: string;
   @AllowNull(false) @Column public lastName!: string;
-  @AllowNull(true) @Column public license!: boolean;
+  @AllowNull(false) @Column public license!: boolean;
   //   @AllowNull(true)
   //@IsBefore(getRequiredDateString())
   //   @Column
