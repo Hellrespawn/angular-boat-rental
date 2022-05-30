@@ -54,9 +54,7 @@ export class BoatService {
    * @returns all boats from the database
    */
   public async returnAllBoats(): Promise<Array<Boat>> {
-    return (await this.boatDao.getBoats()).map((boat: BoatModel) =>
-      Boat.fromModel(boat)
-    );
+    return this.boatDao.getBoats();
   }
 
   /**

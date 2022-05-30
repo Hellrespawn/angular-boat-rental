@@ -13,8 +13,10 @@ export class FineDao {
   /**
    * returns all Fines in the database
    */
-  public async returnAllFines(): Promise<Array<FineModel>> {
-    return FineModel.findAll();
+  public async returnAllFines(): Promise<Array<Fine>> {
+    return (await FineModel.findAll()).map((fine: FineModel) =>
+      Fine.fromModel(fine)
+    );
   }
 
   /**

@@ -1,7 +1,7 @@
 import { BoatService } from '../services/boat.service';
 import { Request, Response } from 'express';
 import { ServerError } from '../util/error';
-import { Boat } from 'src/model/boat';
+import { Boat } from '../model/boat';
 
 export class BoatController {
   // YYYY-MM-DD

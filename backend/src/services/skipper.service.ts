@@ -1,5 +1,5 @@
 import { Skipper } from '../model/skipper';
-import { SkipperDao, SkipperModel } from '../database/skipper.dao';
+import { SkipperDao } from '../database/skipper.dao';
 export class SkipperService {
   private skipperDao: SkipperDao = new SkipperDao();
 
@@ -7,9 +7,7 @@ export class SkipperService {
    * returns all Skippers in the database
    */
   public async returnAllSkippers(): Promise<Array<Skipper>> {
-    return (await this.skipperDao.getSkippers()).map((skipper: SkipperModel) =>
-      Skipper.fromModel(skipper)
-    );
+    return this.skipperDao.getSkippers();
   }
 
   /**

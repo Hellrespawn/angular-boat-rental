@@ -1,3 +1,5 @@
+import { FineModel } from '../database/fine.dao';
+
 export class Fine {
   constructor(
     public userId: number,
@@ -5,4 +7,13 @@ export class Fine {
     public paid: boolean,
     public id?: number
   ) {}
+
+  public static fromModel(fineModel: FineModel): Fine {
+    return new Fine(
+      fineModel.userId,
+      fineModel.amount,
+      fineModel.paid,
+      fineModel.id
+    );
+  }
 }

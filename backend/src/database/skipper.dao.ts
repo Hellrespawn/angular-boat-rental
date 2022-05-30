@@ -3,8 +3,10 @@ import { RentalModel } from './rental.dao';
 import { Skipper } from '../model/skipper';
 
 export class SkipperDao {
-  public async getSkippers(): Promise<SkipperModel[]> {
-    return SkipperModel.findAll();
+  public async getSkippers(): Promise<Skipper[]> {
+    return (await SkipperModel.findAll()).map((skipper: SkipperModel) =>
+      Skipper.fromModel(skipper)
+    );
   }
 
   public async saveNewSkipper(newSkipper: Skipper): Promise<void> {

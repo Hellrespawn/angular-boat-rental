@@ -2,7 +2,7 @@ import { UserService } from '../services/user.service';
 import express from 'express';
 import { RentalService } from '../services/rental.service';
 import { ServerError } from '../util/error';
-import { User } from 'src/model/user';
+import { User } from '../model/user';
 
 export class UserController {
   constructor(

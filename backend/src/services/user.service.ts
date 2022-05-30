@@ -11,9 +11,7 @@ export class UserService {
    * returns all Users from the database
    */
   public async returnAllUsers(): Promise<Array<User>> {
-    return (await this.userDao.getUsers()).map((userModel) => {
-      return User.fromModel(userModel);
-    });
+    return this.userDao.getUsers();
   }
 
   /**

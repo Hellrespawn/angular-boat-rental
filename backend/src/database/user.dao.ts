@@ -33,9 +33,13 @@ export class UserDao {
     throw 'User not found!';
   }
 
-  public async getUsers(): Promise<UserModel[]> {
-    return UserModel.findAll({
-      include: [FineModel],
+  public async getUsers(): Promise<User[]> {
+    return (
+      await UserModel.findAll({
+        include: [FineModel],
+      })
+    ).map((userModel) => {
+      return User.fromModel(userModel);
     });
   }
 

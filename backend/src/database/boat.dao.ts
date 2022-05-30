@@ -7,7 +7,7 @@ import {
   Unique,
   HasMany,
 } from 'sequelize-typescript';
-import { Boat } from 'src/model/boat';
+import { Boat } from '../model/boat';
 import { RentalModel } from './rental.dao';
 
 export type BoatType = 'sail' | 'motor';
@@ -18,8 +18,10 @@ export type BoatRequirements = 'none' | 'license' | 'skipper';
 const BOAT_TYPES = ['sail', 'motor'];
 
 export class BoatDao {
-  public async getBoats(): Promise<BoatModel[]> {
-    return BoatModel.findAll();
+  public async getBoats(): Promise<Boat[]> {
+    return (await BoatModel.findAll()).map((boat: BoatModel) =>
+      Boat.fromModel(boat)
+    );
   }
 
   public async saveNewBoat(newBoat: Boat): Promise<void> {

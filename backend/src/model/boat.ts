@@ -1,5 +1,5 @@
 import { BoatModel, BoatRequirements, BoatType } from 'src/database/boat.dao';
-import { RentalModel } from 'src/database/rental.dao';
+import { RentalModel } from '../database/rental.dao';
 
 export class Boat {
   constructor(
