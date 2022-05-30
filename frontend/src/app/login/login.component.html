@@ -3,7 +3,7 @@
 <section class="LogIn-sectie">
   <form class="form">
     <mat-form-field class="form-field" appearance="fill">
-      <mat-label>Emailadress</mat-label>
+      <mat-label>Email-adres</mat-label>
       <input
         type="name"
         matInput
@@ -22,6 +22,7 @@
       <input
         type="password"
         matInput
+        [formControl]="wachtwoord"
         placeholder="Wachtwoord"
         id="wachtwoord-input"
       />
@@ -31,7 +32,14 @@
       </mat-error>
     </mat-form-field>
     <div id="button-holder">
-      <button mat-raised-button color="primary" id="LogIn-btn">Log In!</button>
+      <button
+        mat-raised-button
+        color="primary"
+        id="LogIn-btn"
+        (click)="login()"
+      >
+        Log In!
+      </button>
       <button
         routerLink="/registratie-pagina"
         mat-raised-button

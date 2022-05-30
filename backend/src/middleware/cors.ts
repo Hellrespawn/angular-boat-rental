@@ -17,7 +17,7 @@ export function addCorsHeaders(
   // Request headers you wish to allow
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'X-Requested-With,content-type'
+    'X-Requested-With,content-type,authorization'
   );
 
   res.setHeader('Access-Control-Allow-Credentials', 'true');

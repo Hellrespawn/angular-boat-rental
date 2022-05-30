@@ -123,7 +123,7 @@ export class RegistrationComponent {
     }
   }
 
-  public getUsers() {
+  public getUsers(): object {
     let firstNameInp: string = this.firstNameInp.nativeElement.value;
     let lastNameInp: string = this.lastNameInp.nativeElement.value;
     let emailAddressInp: string = this.emailAddressInp.nativeElement.value!;

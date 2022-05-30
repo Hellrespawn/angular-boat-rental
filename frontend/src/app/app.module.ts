@@ -28,7 +28,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RegistrationComponent } from './registration/registration.component';
-import { LoginComponent } from './log-in/log-in.component';
+import { LoginComponent } from './login/login.component';
 import { FaqComponent } from './faq/faq.component';
 
 import { RentalComponent } from './booking/booking.component';
@@ -56,6 +56,13 @@ import { SuccessDialogComponent } from './booking/payment/success-dialog/success
 import { SelectSkipperComponent } from './booking/skipper/select-skipper.component';
 import { PaymentComponent } from './booking/payment/payment.component';
 import { FiltersComponent } from './booking/filters/filters.component';
+import { FineDialogComponent } from './admin-user-overview/fine-dialog/fine-dialog.component';
+import { UserDashboardComponent } from './user/dashboard/dashboard.component';
+import { UserComponent } from './user/user.component';
+import { UserRentalsComponent } from './user/rentals/rentals.component';
+import { UserSettingsComponent } from './user/settings/settings.component';
+
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -90,6 +97,11 @@ import { FiltersComponent } from './booking/filters/filters.component';
     SelectSkipperComponent,
     PaymentComponent,
     FiltersComponent,
+    FineDialogComponent,
+    UserDashboardComponent,
+    UserComponent,
+    UserRentalsComponent,
+    UserSettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -126,7 +138,10 @@ import { FiltersComponent } from './booking/filters/filters.component';
     MatDialogModule,
     MatProgressSpinnerModule,
   ],
-  providers: [MatSnackBarModule],
+  providers: [
+    MatSnackBarModule,
+    { provide: MAT_DATE_LOCALE, useValue: 'nl-NL' },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

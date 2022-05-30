@@ -6,7 +6,9 @@ import {
   HasMany,
   AllowNull,
 } from 'sequelize-typescript';
-import { Rental } from './rental.model';
+import { User } from '../model/user';
+import { RentalModel } from './rental.dao';
+import { FineModel } from './fine.dao';
 
 const REQUIRED_AGE_IN_YEARS = 18;
 
@@ -20,8 +22,20 @@ function getRequiredDateString(): string {
   return `${year}-${month}-${day}`;
 }
 
+export class UserDao {
+  public async getUser(emailAddress: string): Promise<User | null> {
+    const model = await UserModel.findOne({ where: { emailAddress } });
+
+    if (model) {
+      return User.fromModel(model);
+    }
+
+    throw 'User not found!';
+  }
+}
+
 @Table
-export class User extends Model {
+export class UserModel extends Model {
   @AllowNull(false) @Column public firstName!: string;
   @AllowNull(false) @Column public lastName!: string;
   @AllowNull(true) @Column public license!: boolean;
@@ -34,6 +48,8 @@ export class User extends Model {
   @AllowNull(false) @Column public blocked!: boolean;
   @AllowNull(false) @Column public admin!: boolean;
 
-  @HasMany(() => Rental)
-  public rentals!: Rental[];
+  @HasMany(() => RentalModel)
+  public rentals!: RentalModel[];
+  @HasMany(() => FineModel)
+  public arrayOfFines!: FineModel[];
 }

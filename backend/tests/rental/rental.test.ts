@@ -1,5 +1,5 @@
-import { Rental } from '../../src/model/rental.model';
-import { MODELS } from '../../src/model';
+import { RentalModel } from '../../src/database/rental.dao';
+import { MODELS } from '../../src/database';
 import { expect } from 'chai';
 import { Sequelize } from 'sequelize-typescript';
 
@@ -11,10 +11,10 @@ describe('Test rental.model.ts', () => {
     });
   });
 
-  let rental: Rental;
+  let rental: RentalModel;
 
   beforeEach(() => {
-    rental = new Rental();
+    rental = new RentalModel();
     rental.dateStart = new Date('2022-01-10');
     rental.dateEnd = new Date('2022-01-15');
   });
@@ -22,7 +22,7 @@ describe('Test rental.model.ts', () => {
   describe('Test Rental.days()', () => {
     it('Correctly handles the inclusivity of the rental period', () => {
       const expected = 6;
-      const actual = rental.days();
+      const actual = RentalModel.days(rental.dateStart, rental.dateEnd);
       expect(expected).to.equal(actual);
     });
   });

@@ -11,16 +11,11 @@ export class MessageService {
   constructor(private httpClient: HttpClient) {}
 
   // 2 functions to send messagesobject to backend
+  // function to add messageObject to /veel-gestelde-vragen
   public addMessages(MessagesObject: {}): Observable<Object> {
     return this.httpClient.post(
       `${environment.backendUrl}/veel-gestelde-vragen`,
       MessagesObject
-    );
-  }
-
-  public getMessages(): Observable<any> {
-    return this.httpClient.get<{ message: Message[] }>(
-      `${environment.backendUrl}/faq`
     );
   }
 }

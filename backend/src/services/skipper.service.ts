@@ -1,10 +1,14 @@
-import { Skipper } from '../model/skipper.model';
+import { Skipper } from '../model/skipper';
+import { SkipperDao, SkipperModel } from '../database/skipper.dao';
 export class SkipperService {
+  private skipperDao: SkipperDao = new SkipperDao();
   /**
    * returns all Skippers in the database
    */
   public async returnAllSkippers(): Promise<Array<Skipper>> {
-    return await Skipper.findAll();
+    return (await this.skipperDao.getSkippers()).map((skipper: SkipperModel) =>
+      Skipper.fromModel(skipper)
+    );
   }
   /**
    * updates the leave boolean of a skipper found by id to new value
@@ -15,13 +19,7 @@ export class SkipperService {
     idOfSkipper: number,
     updatedValue: boolean
   ): Promise<void> {
-    const skipperToUpdate: Skipper | null = await Skipper.findByPk(idOfSkipper);
-    if (skipperToUpdate !== null) {
-      skipperToUpdate.leave = updatedValue;
-      await skipperToUpdate.save();
-    } else {
-      throw 'Skipper not found';
-    }
+    await this.skipperDao.updateLeaveValueInSkipper(idOfSkipper, updatedValue);
   }
 
   /**
@@ -29,12 +27,7 @@ export class SkipperService {
    * @param idOfSkipper id of skipper to be deleted
    */
   public async deleteSkipper(idOfSkipper: number): Promise<void> {
-    const skipperToDelete: Skipper | null = await Skipper.findByPk(idOfSkipper);
-    if (skipperToDelete !== null) {
-      await skipperToDelete.destroy();
-    } else {
-      throw 'Skipper not found';
-    }
+    this.skipperDao.deleteSkipper(idOfSkipper);
   }
 
   /**
@@ -48,6 +41,11 @@ export class SkipperService {
     pricePerDay: number,
     birthDate: Date
   ): Promise<void> {
-    await Skipper.create({ name, pricePerDay, birthDate });
+    this.skipperDao.saveNewSkipper({
+      name,
+      pricePerDay,
+      birthDate,
+      leave: false,
+    });
   }
 }

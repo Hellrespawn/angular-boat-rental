@@ -13,7 +13,7 @@ import { SkipperService } from '../skipper.service';
 })
 export class AddSkipperComponent {
   // input error messages
-  private readonly ERROR_MESSAGE_NUMER_UNDER_ONE: string =
+  private readonly ERROR_MESSAGE_NUMBER_UNDER_ONE: string =
     'voer a.u.b. een getal boven de 0 in';
   private readonly REQUIRED: string = 'required';
   private readonly ERROR_KEY_NUMBER_UNDER_ONE: string = 'kleinerOfGelijkAanNul';
@@ -64,7 +64,7 @@ export class AddSkipperComponent {
     return this.priceControl.hasError(this.REQUIRED)
       ? 'Vul a.u.b. een prijs in'
       : this.priceControl.hasError(this.ERROR_KEY_NUMBER_UNDER_ONE)
-      ? this.ERROR_MESSAGE_NUMER_UNDER_ONE
+      ? this.ERROR_MESSAGE_NUMBER_UNDER_ONE
       : '';
   }
 

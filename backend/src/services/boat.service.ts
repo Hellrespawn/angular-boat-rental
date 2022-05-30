@@ -1,4 +1,5 @@
-import { Boat, BoatRequirements, BoatType } from '../model/boat.model';
+import { BoatModel, BoatRequirements, BoatType } from '../database/boat.dao';
+import { ServerError } from '../util/error';
 
 /**
  * type which is required by the boat rental overview page
@@ -29,7 +30,7 @@ export class BoatService {
    * @param boat the boat to convert
    * @returns the converted boat
    */
-  private boatInstanceToOverviewData(boat: Boat): BoatOverviewData {
+  private boatInstanceToOverviewData(boat: BoatModel): BoatOverviewData {
     return {
       id: boat.id,
       name: boat.name,
@@ -43,8 +44,8 @@ export class BoatService {
    * requests all Boats from the database
    * @returns all boats from the database
    */
-  public async returnAllBoats(): Promise<Array<Boat>> {
-    return await Boat.findAll();
+  public async returnAllBoats(): Promise<Array<BoatModel>> {
+    return await BoatModel.findAll();
   }
 
   /**
@@ -54,7 +55,7 @@ export class BoatService {
    * @returns A type intersection of BoatOverviewData and BoatDetailData
    */
   public async getBoatDetailData(id: number): Promise<BoatDetailData | null> {
-    const boat = await Boat.findByPk(id);
+    const boat = await BoatModel.findByPk(id);
 
     if (boat) {
       const overviewData = this.boatInstanceToOverviewData(boat);
@@ -110,8 +111,8 @@ export class BoatService {
     boatType: string,
     maxSpeedInKmH: number,
     sailAreaInM2: number
-  ): Promise<Boat> {
-    return await Boat.create({
+  ): Promise<BoatModel> {
+    return await BoatModel.create({
       name,
       registrationNumber,
       pricePerDay,
@@ -130,7 +131,7 @@ export class BoatService {
    * @param idOfBoat id of the boat to identify the specific boat
    */
   public async deleteBoat(idOfBoat: number): Promise<void> {
-    const boatToDelete: Boat | null = await Boat.findByPk(idOfBoat);
+    const boatToDelete: BoatModel | null = await BoatModel.findByPk(idOfBoat);
     if (boatToDelete !== null) {
       await boatToDelete.destroy();
     } else {
@@ -146,7 +147,7 @@ export class BoatService {
     idOfBoat: number,
     updatedValue: boolean
   ): Promise<void> {
-    const boatToUpdate: Boat | null = await Boat.findByPk(idOfBoat);
+    const boatToUpdate: BoatModel | null = await BoatModel.findByPk(idOfBoat);
     if (boatToUpdate !== null) {
       boatToUpdate.maintenance = updatedValue;
       await boatToUpdate.save();
@@ -167,7 +168,7 @@ export class BoatService {
     dateStart: Date,
     dateEnd: Date
   ): Promise<BoatOverviewData[]> {
-    const boats = await Boat.findAll();
+    const boats = await BoatModel.findAll();
 
     // Can't use async function with filter, get and await availability first.
     const availability = await Promise.all(
@@ -190,10 +191,10 @@ export class BoatService {
    * @returns an array of Dates
    */
   public async getBookedDates(id: number): Promise<Date[]> {
-    const boat = await Boat.findByPk(id);
+    const boat = await BoatModel.findByPk(id);
 
     if (!boat) {
-      throw `Boat with id ${id} doesn't exist!`;
+      throw new ServerError(`Boat with id ${id} doesn't exist.`);
     }
 
     return boat.getBookedDates();

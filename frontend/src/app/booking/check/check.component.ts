@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BoatDetailData } from 'src/app/boat';
 import { BoatService } from 'src/app/boat.service';
+import { SessionData } from '../../session';
+import { SessionService } from '../../session.service';
 import { BookingService } from '../booking.service';
 
 @Component({
@@ -10,6 +12,7 @@ import { BookingService } from '../booking.service';
   styleUrls: ['./check.component.scss'],
 })
 export class CheckComponent implements OnInit {
+  public sessionData: SessionData | null = null;
   public dateRange: [Date, Date] | null = null;
   public boat!: BoatDetailData;
 
@@ -17,12 +20,20 @@ export class CheckComponent implements OnInit {
     private bookingService: BookingService,
     private boatService: BoatService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private sessionService: SessionService
   ) {}
 
   ngOnInit(): void {
+    this.getSessionData();
     this.getBoat();
     this.getDates();
+  }
+
+  private getSessionData(): void {
+    this.sessionService
+      .getSessionData()
+      .subscribe((sessionData) => (this.sessionData = sessionData));
   }
 
   /**
@@ -49,14 +60,6 @@ export class CheckComponent implements OnInit {
   }
 
   /**
-   * Get current user id.
-   * FIXME Actually implement this.
-   */
-  private getCurrentUserId(): number {
-    return 1;
-  }
-
-  /**
    * Get correct text for button.
    */
   public getButtonText(): string {
@@ -76,13 +79,6 @@ export class CheckComponent implements OnInit {
     }
 
     return false;
-  }
-
-  /**
-   * Format date for printing.
-   */
-  public formatDate(date: Date): string {
-    return date.toLocaleDateString();
   }
 
   /**
@@ -112,14 +108,12 @@ export class CheckComponent implements OnInit {
    * Create rental and navigate to next page.
    */
   public handleButton(): void {
-    this.bookingService
-      .createRental(this.boat!.id, this.getCurrentUserId())
-      .subscribe((rentalId) => {
-        if (this.boat.requirements === 'skipper') {
-          this.router.navigate(['/verhuur/schipper', rentalId]);
-        } else {
-          this.router.navigate(['/verhuur/betalen', rentalId]);
-        }
-      });
+    this.bookingService.createRental(this.boat!.id).subscribe((rentalId) => {
+      if (this.boat.requirements === 'skipper') {
+        this.router.navigate(['/verhuur/schipper', rentalId]);
+      } else {
+        this.router.navigate(['/verhuur/betalen', rentalId]);
+      }
+    });
   }
 }

@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '../user.service';
 import { addToNavBar } from '../navigation.service';
 import { SnackBarInput, SnackBarService } from '../snack-bar.service';
+import { FineDialogComponent } from './fine-dialog/fine-dialog.component';
+import { Fine } from '../fine';
+import { FineService } from '../fine.service';
+import { formatDate } from '../date';
 
 @addToNavBar({
   name: 'Account-administratie',
@@ -23,14 +28,90 @@ export class AdminUserOverviewComponent implements OnInit {
     duration: 2000,
     error: false,
   };
+
+  // input for snackbar on succesful fine
+  private readonly succesSnackbarInputFine: SnackBarInput = {
+    message: 'Boete uitgedeeld!',
+    buttonText: 'Sluit',
+    duration: 2000,
+    error: false,
+  };
+
+  // input for snackbar on succesful fine
+  private readonly errorSnackbarInputFine: SnackBarInput = {
+    message: 'Voer een geldige waarde in!',
+    buttonText: 'Sluit',
+    duration: 2000,
+    error: true,
+  };
+
   constructor(
     private userService: UserService,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    private dialog: MatDialog,
+    private fineService: FineService
   ) {}
 
   ngOnInit(): void {
     this.getUsersFromDatabase();
   }
+
+  public formatDate(date: Date): string {
+    return formatDate(date);
+  }
+
+  /**
+   * opens a dialog to get the input for a new fine
+   * @param idOfCustomer id of the specific customer
+   * @param firstNameOfCustomer firstname of customer to be shown in the modal
+   * @param lastNameOfCustomer lastname of customer to be shown in the modal
+   */
+  public openDialog(
+    idOfCustomer: number,
+    firstNameOfCustomer: string,
+    lastNameOfCustomer: string
+  ): void {
+    const dialogRef = this.dialog.open(FineDialogComponent, {
+      width: '400px',
+      data: {
+        idOfCustomer,
+        firstNameOfCustomer,
+        lastNameOfCustomer,
+      },
+      panelClass: 'fine-modalbox',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result > 0) {
+        this.sendNewFineToBackend(idOfCustomer, result);
+      } else if (result <= 0 || typeof result != 'number') {
+        this.snackBarService.makeSnackbarThatClosesAutomatically(
+          this.errorSnackbarInputFine
+        );
+      }
+    });
+  }
+
+  /**
+   * sends a request to the backend via the service to add a new fine to the database
+   * @param userID id of user
+   * @param amount fine-amount
+   */
+  private async sendNewFineToBackend(
+    userID: number,
+    amount: number
+  ): Promise<void> {
+    this.fineService.addFine({ userID, amount, paid: false }).subscribe(() => {
+      for (let user of this.arrayOfUsers) {
+        if (user.id === userID)
+          user.arrayOfFines.push({ userID, amount, paid: false });
+      }
+      this.snackBarService.makeSnackbarThatClosesAutomatically(
+        this.succesSnackbarInputFine
+      );
+    });
+  }
+
   /**
    * sends a request to the backend via the service to fetch all users, then stores them in this.arrayOfusers
    */
@@ -67,14 +148,6 @@ export class AdminUserOverviewComponent implements OnInit {
       this.arrayOfUsers[index].blocked = updatedValue;
     });
   }
-  /**
-   * parses a date string to an instance of the Date class, needed because of a bug
-   * @param dateString the string containing the date
-   * @returns an instance of the Date class
-   */
-  public parseDateStringToDate(dateString: string | Date): Date {
-    return new Date(dateString);
-  }
 }
 
 interface UserForAdmin {
@@ -82,8 +155,9 @@ interface UserForAdmin {
   firstName: string;
   lastName: string;
   licence: boolean;
-  dateOfBirth: Date | string;
+  dateOfBirth: Date;
   emailAddress: string;
   password: string;
   blocked: boolean;
+  arrayOfFines: Fine[];
 }

@@ -11,6 +11,10 @@
 1. Voer `npm run sync` uit om de database te initialiseren.
 1. Voer eventueel `npm run seed` uit om test-data in de database te zetten.
 
+De testgebruikers hebben `test[0-4]@test.test` als email-address en `password` als wachtwoord.
+
+`test0@test.test` is een beheerder.
+
 ## Backend starten
 
 1. Navigeer naar de `backend`-map.
@@ -40,3 +44,7 @@
 1. Voer eventueel `npm run seed` uit om test-data in de database te zetten.
 
 In plaats van los `drop`, `sync`, en `debug` uit te voeren, is er ook `npm run debug` die deze stappen achter elkaar doet.
+
+De testgebruikers hebben `test[0-4]@test.test` als emailaddress en `password` als wachtwoord.
+
+`test0@test.test` is een beheerder.

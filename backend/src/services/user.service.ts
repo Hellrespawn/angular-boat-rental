@@ -1,11 +1,20 @@
-import { User } from '../model/user.model';
-
+import { UserDao, UserModel } from '../database/user.dao';
+import { FineModel } from '../database/fine.dao';
+import { User } from '../model/user';
 export class UserService {
+  private userDao: UserDao = new UserDao();
+
+  public async getUser(email: string): Promise<User | null> {
+    return this.userDao.getUser(email);
+  }
+
   /**
    * returns all Users from the database
    */
-  public async returnAllUsers(): Promise<Array<User>> {
-    return await User.findAll();
+  public async returnAllUsers(): Promise<Array<UserModel>> {
+    return await UserModel.findAll({
+      include: [FineModel],
+    });
   }
 
   /**
@@ -17,7 +26,7 @@ export class UserService {
     idOfUser: number,
     updatedValue: boolean
   ): Promise<void> {
-    const userToUpdate: User | null = await User.findByPk(idOfUser);
+    const userToUpdate: UserModel | null = await UserModel.findByPk(idOfUser);
     if (userToUpdate !== null) {
       userToUpdate.blocked = updatedValue;
       await userToUpdate.save();
@@ -31,7 +40,7 @@ export class UserService {
    * @param idOfUser the id of the user to be deleted
    */
   public async deleteUser(idOfUser: number): Promise<void> {
-    const userToDelete: User | null = await User.findByPk(idOfUser);
+    const userToDelete: UserModel | null = await UserModel.findByPk(idOfUser);
     if (userToDelete !== null) {
       await userToDelete.destroy();
     } else {
@@ -39,8 +48,8 @@ export class UserService {
     }
   }
 
-  public async checkEmail(email: string): Promise<User | null> {
-    const emailAd = await User.findOne({ where: { emailAddress: email } });
+  public async checkEmail(email: string): Promise<UserModel | null> {
+    const emailAd = await UserModel.findOne({ where: { emailAddress: email } });
     if (emailAd !== null) {
       console.log('email found');
     }

@@ -1,17 +1,22 @@
 import { UserService } from '../services/user.service';
-import { User } from '../model/user.model';
 import express from 'express';
 import e from 'express';
+import { RentalService } from '../services/rental.service';
+import { ServerError } from '../util/error';
+import { UserModel } from '../database/user.dao';
 
 export class UserController {
-  constructor(private userService: UserService = new UserService()) {}
+  constructor(
+    private userService: UserService = new UserService(),
+    private rentalService = new RentalService()
+  ) {}
 
   /**gets all Users from the database through the service
    * @param res the response sent back to the client
    */
   public async getUsers(res: express.Response): Promise<void> {
     try {
-      const result: User[] = await this.userService.returnAllUsers();
+      const result: UserModel[] = await this.userService.returnAllUsers();
       res.status(200).json(result);
     } catch {
       console.error();
@@ -55,7 +60,7 @@ export class UserController {
   }
 
   public getRoleFromDB(): Promise<number> {
-    const role = User.count();
+    const role = UserModel.count();
     return role;
   }
   // send users to Database
@@ -77,7 +82,7 @@ export class UserController {
       const license: boolean = req.body.license;
 
       try {
-        const result = await User.create({
+        const result = await UserModel.create({
           firstName,
           lastName,
           emailAddress,
@@ -99,9 +104,31 @@ export class UserController {
   public async checkUserMail(
     req: express.Request,
     res: express.Response
-  ): Promise<User | null> {
+  ): Promise<UserModel | null> {
     const emailAddress: string = req.body.emailAddress;
     const result = await this.userService.checkEmail(emailAddress);
     return result;
+  }
+  /**
+   * Returns the next rental for the authenticated user.
+   *
+   * @param req
+   * @param res
+   */
+  public async getNextRentalForUser(
+    req: express.Request,
+    res: express.Response
+  ): Promise<void> {
+    // Ensured by middleware in route
+
+    console.log(req.currentUser);
+    const id: number = req.currentUser!.id;
+
+    try {
+      const rental = await this.rentalService.getNextRentalByUserId(id);
+      res.json({ rental });
+    } catch (error) {
+      ServerError.respond(error, res);
+    }
   }
 }

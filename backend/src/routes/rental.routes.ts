@@ -1,29 +1,26 @@
 import { Router } from 'express';
 import {
-  newRentalSchema,
+  NEW_RENTAL_SCHEMA,
   RentalController,
 } from '../controller/rental.controller';
-import {
-  createMiddlewareFromValidator,
-  createValidatorFromSchema,
-} from '../middleware/validate';
+import { requireAuthentication } from '../middleware/auth';
+import { Validator } from '../util/validator';
 
-const validateNewRental = createMiddlewareFromValidator(
-  createValidatorFromSchema(newRentalSchema)
-);
+const newRentalValidator = new Validator(NEW_RENTAL_SCHEMA);
 
 export function rentalRoutes(controller: RentalController): Router {
   const router = Router();
 
   router.post(
-    '/rentals/',
-    validateNewRental,
+    '/',
+    requireAuthentication,
+    newRentalValidator.middleware(),
     controller.addRental.bind(controller)
   );
 
-  router.get('/rentals/upcoming');
-  router.get('/rentals/current');
-  router.get('/rentals/past');
+  router.get('/upcoming');
+  router.get('/current');
+  router.get('/past');
 
   return router;
 }

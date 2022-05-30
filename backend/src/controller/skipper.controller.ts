@@ -1,6 +1,6 @@
 import { SkipperService } from '../services/skipper.service';
-import { Skipper } from '../model/skipper.model';
 import express from 'express';
+import { Skipper } from 'src/model/skipper';
 
 export class SkipperController {
   constructor(private skipperService: SkipperService = new SkipperService()) {}

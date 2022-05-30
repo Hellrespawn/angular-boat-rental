@@ -5,7 +5,7 @@ import { AddBoatComponent } from './add-boat/add-boat.component';
 import { AddSkipperComponent } from './add-skipper/add-skipper.component';
 import { HomeComponent } from './home/home.component';
 import { RegistrationComponent } from './registration/registration.component';
-import { LoginComponent } from './log-in/log-in.component';
+import { LoginComponent } from './login/login.component';
 import { FaqComponent } from './faq/faq.component';
 import { RentalComponent } from './booking/booking.component';
 import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
@@ -14,6 +14,10 @@ import { CheckComponent } from './booking/check/check.component';
 import { AdminUserOverviewComponent } from './admin-user-overview/admin-user-overview.component';
 import { SelectSkipperComponent } from './booking/skipper/select-skipper.component';
 import { PaymentComponent } from './booking/payment/payment.component';
+import { UserDashboardComponent } from './user/dashboard/dashboard.component';
+import { UserComponent } from './user/user.component';
+import { UserRentalsComponent } from './user/rentals/rentals.component';
+import { UserSettingsComponent } from './user/settings/settings.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -21,8 +25,17 @@ const routes: Routes = [
   { path: 'admin-panel', component: AdminPanelComponent },
   { path: 'add-boat', component: AddBoatComponent },
   { path: 'add-skipper', component: AddSkipperComponent },
+  {
+    path: 'gebruiker',
+    component: UserComponent,
+    children: [
+      { path: 'dashboard', component: UserDashboardComponent },
+      { path: 'boekingen', component: UserRentalsComponent },
+      { path: 'gegevens', component: UserSettingsComponent },
+    ],
+  },
   { path: 'registratie-pagina', component: RegistrationComponent },
-  { path: 'log-In', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'veel-gestelde-vragen', component: FaqComponent },
   { path: 'verhuur', component: RentalComponent },
   { path: 'verhuur/controleer/:boatId', component: CheckComponent },

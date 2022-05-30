@@ -1,10 +1,11 @@
 import { BoatService } from '../services/boat.service';
-import { Boat } from '../model/boat.model';
+import { BoatModel } from '../database/boat.dao';
 import { Request, Response } from 'express';
+import { ServerError } from '../util/error';
 
 export class BoatController {
   // YYYY-MM-DD
-  public static dateRegex = /\d{4}-\d{2}-\d{2}/;
+  public static dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
   constructor(private boatService: BoatService = new BoatService()) {}
 
@@ -16,7 +17,9 @@ export class BoatController {
    */
   private getAndValidateDate(dateString: string): Date {
     if (!dateString.match(BoatController.dateRegex)) {
-      throw `Invalid date: "${dateString}", required format is YYYY-MM-DD`;
+      throw new ServerError(
+        `Invalid date: "${dateString}", required format is YYYY-MM-DD`
+      );
     }
 
     return new Date(dateString);
@@ -43,7 +46,7 @@ export class BoatController {
    */
   public async getBoats(req: Request, res: Response): Promise<void> {
     try {
-      const boats: Boat[] = await this.boatService.returnAllBoats();
+      const boats: BoatModel[] = await this.boatService.returnAllBoats();
       res.status(200).json({ boats });
     } catch (error) {
       console.error(error);
@@ -67,8 +70,7 @@ export class BoatController {
         res.status(404).json({ error: `Boat with id ${id} not found!` });
       }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error });
+      ServerError.respond(error, res);
     }
   }
 
@@ -110,7 +112,7 @@ export class BoatController {
 
       res.json({ boats });
     } catch (error) {
-      res.status(400).json({ error });
+      ServerError.respond(error, res);
     }
   }
 

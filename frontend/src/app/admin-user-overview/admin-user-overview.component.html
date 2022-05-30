@@ -5,15 +5,25 @@
   <mat-card-title>{{ user.firstName + ' ' + user.lastName }}</mat-card-title>
   <mat-card-subtitle>Email adres: {{ user.emailAddress }}</mat-card-subtitle>
   <mat-card-subtitle
-    >Geboorte datum: {{ parseDateStringToDate(user.dateOfBirth).getDate() }}-{{
-      parseDateStringToDate(user.dateOfBirth).getMonth()
-    }}-{{
-      parseDateStringToDate(user.dateOfBirth).getFullYear()
-    }}</mat-card-subtitle
+    >Geboorte datum: {{ formatDate(user.dateOfBirth) }}</mat-card-subtitle
   >
   <mat-card-subtitle *ngIf="user.blocked" style="color: red"
     >Geblokkeerd!</mat-card-subtitle
   >
+  <mat-card-subtitle *ngIf="user.arrayOfFines.length > 0"
+    >Boetes van dit account:</mat-card-subtitle
+  >
+  <mat-card *ngFor="let fine of user.arrayOfFines">
+    <mat-card-subtitle style="color: red"
+      >{{ fine.amount }} euro</mat-card-subtitle
+    >
+    <mat-card-subtitle *ngIf="fine.paid" style="color: green"
+      >al betaald!</mat-card-subtitle
+    >
+    <mat-card-subtitle *ngIf="!fine.paid" style="color: red"
+      >nog niet betaald!</mat-card-subtitle
+    >
+  </mat-card>
   <mat-card-actions>
     <button
       mat-raised-button
@@ -37,6 +47,13 @@
       (click)="updateBlocked(user.id, false, i)"
     >
       De-blokkeer
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openDialog(user.id, user.firstName, user.lastName)"
+    >
+      Deel een boete uit
     </button>
   </mat-card-actions>
 </mat-card>

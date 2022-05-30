@@ -7,7 +7,7 @@ import {
   Unique,
   HasMany,
 } from 'sequelize-typescript';
-import { Rental } from './rental.model';
+import { RentalModel } from './rental.dao';
 
 export type BoatType = 'sail' | 'motor';
 
@@ -17,7 +17,7 @@ export type BoatRequirements = 'none' | 'license' | 'skipper';
 const BOAT_TYPES = ['sail', 'motor'];
 
 @Table
-export class Boat extends Model {
+export class BoatModel extends Model {
   @AllowNull(false) @Unique @Column public name!: string;
   @AllowNull(false) @Unique @Column public registrationNumber!: number;
   @AllowNull(false) @Column public pricePerDay!: number;
@@ -46,8 +46,8 @@ export class Boat extends Model {
   @Column public maxSpeedInKmH?: number;
   @Column public sailAreaInM2?: number;
 
-  @HasMany(() => Rental)
-  public rentals!: Rental[];
+  @HasMany(() => RentalModel)
+  public rentals!: RentalModel[];
 
   /**
    * Calculates the boat's requirements.
@@ -61,8 +61,12 @@ export class Boat extends Model {
       requirements = 'skipper';
     } else if (this.maxOccupants > 12) {
       requirements = 'license';
+      // This is required by the sequelize models
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     } else if (this.boatType == 'sail' && this.sailAreaInM2! > 150) {
       requirements = 'license';
+      // This is required by the sequelize models
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     } else if (this.boatType == 'motor' && this.maxSpeedInKmH! > 20) {
       requirements = 'license';
     }

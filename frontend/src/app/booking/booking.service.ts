@@ -1,8 +1,16 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, map, Observable, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  map,
+  Observable,
+  Subscription,
+  tap,
+} from 'rxjs';
 import { BoatOverviewData, BoatType } from '../boat';
 import { BoatService } from '../boat.service';
 import { DateRange, RentalService } from '../rental.service';
+import { SessionService } from '../session.service';
 
 export type BoatTypeFilter = 'all' | BoatType;
 export type LicenseFilter = 'both' | 'required' | 'not-required';
@@ -27,11 +35,28 @@ export class BookingService {
     'both' as LicenseFilter
   );
 
+  private boatSubscription?: Subscription;
+
   constructor(
     private boatService: BoatService,
-    private rentalService: RentalService
+    private rentalService: RentalService,
+    private sessionService: SessionService
   ) {
-    this.observeBoatOverviewData();
+    this.getCurrentUserLicense();
+    this.getBoatOverviewData();
+  }
+
+  /**
+   * Observes currentUserData and sets the license filter based on it.
+   */
+  private getCurrentUserLicense(): void {
+    this.sessionService.getSessionData().subscribe((sessionData) => {
+      if (sessionData && !sessionData.license) {
+        this.licenseFilter.next('not-required');
+      } else {
+        this.licenseFilter.next('both');
+      }
+    });
   }
 
   /**
@@ -75,16 +100,16 @@ export class BookingService {
 
   // Getters and setters
   public getBoats(): Observable<BoatOverviewData[]> {
-    return this.boats;
+    return this.boats.asObservable();
   }
 
   public getDateRange(): Observable<DateRange | null> {
-    return this.dateRange;
+    return this.dateRange.asObservable();
   }
 
   public setDateRange(dateRange: DateRange | null): void {
     this.dateRange.next(dateRange);
-    this.observeBoatOverviewData();
+    this.getBoatOverviewData();
   }
 
   public clearDateRange(): void {
@@ -92,7 +117,7 @@ export class BookingService {
   }
 
   public getTypeFilter(): Observable<BoatTypeFilter> {
-    return this.typeFilter;
+    return this.typeFilter.asObservable();
   }
 
   public setTypeFilter(filter: BoatTypeFilter): void {
@@ -104,7 +129,7 @@ export class BookingService {
   }
 
   public getLicenseFilter(): Observable<LicenseFilter> {
-    return this.licenseFilter;
+    return this.licenseFilter.asObservable();
   }
 
   public setLicenseFilter(filter: LicenseFilter): void {
@@ -120,15 +145,21 @@ export class BookingService {
     this.clearLicenseFilter();
     this.clearTypeFilter();
     this.clearDateRange();
-    this.observeBoatOverviewData();
+    this.getBoatOverviewData();
+  }
+
+  public updateBoats(): void {
+    this.getBoatOverviewData();
   }
 
   /**
    * Updates the list of valid boats, based on this.dateRange, and broadcasts
    * it to subscribers of this.boats
    */
-  public observeBoatOverviewData(): void {
-    this.dateRange.subscribe((dateRange) =>
+  private getBoatOverviewData(): void {
+    this.boatSubscription?.unsubscribe();
+
+    this.boatSubscription = this.dateRange.subscribe((dateRange) =>
       this.boatService
         .getBoatOverviewData(dateRange ?? undefined)
         .subscribe((boats) => this.boats.next(boats))
@@ -139,7 +170,7 @@ export class BookingService {
    * Creates a rental and returns an observable with the id of the created
    * Rental
    */
-  public createRental(boatId: number, userId: number): Observable<number> {
+  public createRental(boatId: number): Observable<number> {
     let dateRange = this.dateRange.getValue();
 
     if (!dateRange) {
@@ -147,7 +178,7 @@ export class BookingService {
     }
 
     return this.rentalService
-      .createRental(boatId, userId, dateRange)
+      .createRental(boatId, dateRange)
       .pipe(tap(this.reset.bind(this)));
   }
 
