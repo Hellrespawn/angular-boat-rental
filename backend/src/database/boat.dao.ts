@@ -7,6 +7,7 @@ import {
   Unique,
   HasMany,
 } from 'sequelize-typescript';
+import { Boat } from 'src/model/boat';
 import { RentalModel } from './rental.dao';
 
 export type BoatType = 'sail' | 'motor';
@@ -15,6 +16,47 @@ export type BoatRequirements = 'none' | 'license' | 'skipper';
 
 // Not familiar with a way to construct this from the above type.
 const BOAT_TYPES = ['sail', 'motor'];
+
+export class BoatDao {
+  public async getBoats(): Promise<BoatModel[]> {
+    return BoatModel.findAll();
+  }
+  public async saveNewBoat(newBoat: Boat): Promise<void> {
+    BoatModel.create({
+      name: newBoat.name,
+      registrationNumber: newBoat.registrationNumber,
+      pricePerDay: newBoat.pricePerDay,
+      skipperRequired: newBoat.skipperRequired,
+      maintenance: newBoat.maintenance,
+      imageRoute: newBoat.imageRoute,
+      lengthInM: newBoat.lengthInM,
+      maxOccupants: newBoat.maxOccupants,
+      boatType: newBoat.boatType,
+      maxSpeedInKmH: newBoat.maxSpeedInKmH ?? null,
+      sailAreaInM2: newBoat.sailAreaInM2 ?? null,
+    });
+  }
+  public async updateMaintenanceValueInBoat(
+    idOfBoat: number,
+    updatedValue: boolean
+  ): Promise<void> {
+    const boatToUpdate: BoatModel | null = await BoatModel.findByPk(idOfBoat);
+    if (boatToUpdate !== null) {
+      boatToUpdate.maintenance = updatedValue;
+      boatToUpdate.save();
+    } else {
+      throw 'Boat not found';
+    }
+  }
+  public async deleteBoat(idOfBoat: number): Promise<void> {
+    const boatToDelete: BoatModel | null = await BoatModel.findByPk(idOfBoat);
+    if (boatToDelete !== null) {
+      boatToDelete.destroy();
+    } else {
+      throw 'Boat not found';
+    }
+  }
+}
 
 @Table
 export class BoatModel extends Model {
