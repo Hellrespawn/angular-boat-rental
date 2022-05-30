@@ -3,6 +3,7 @@ import express from 'express';
 import { RentalService } from '../services/rental.service';
 import { ServerError } from '../util/error';
 import { User } from '../model/user';
+import { UserModel } from '../database/user.dao';
 
 export class UserController {
   constructor(
@@ -67,6 +68,7 @@ export class UserController {
     const usercount = UserModel.count();
     return usercount;
   }
+
   // send users to Database
   public async sendUserToDB(
     req: express.Request,
@@ -108,6 +110,7 @@ export class UserController {
     const result = await this.userService.checkEmail(emailAddress);
     return result;
   }
+
   /**
    * Returns the next rental for the authenticated user.
    *

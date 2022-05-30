@@ -56,10 +56,6 @@ export class AdminUserOverviewComponent implements OnInit {
     this.getUsersFromDatabase();
   }
 
-  public formatDate(date: Date): string {
-    return formatDate(date);
-  }
-
   /**
    * opens a dialog to get the input for a new fine
    * @param idOfCustomer id of the specific customer
