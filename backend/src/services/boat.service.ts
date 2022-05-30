@@ -91,8 +91,8 @@ export class BoatService {
    * @param name name of new boat
    * @param registrationNumber registration number of new boat
    * @param pricePerDay price per day of boat
-   * @param skipperRequired boolean describing wheter or not a skipper is needed
-   * @param imageRoute route to the image of the baot
+   * @param skipperRequired boolean describing whether or not a skipper is needed
+   * @param imageRoute route to the image of the boat
    * @param lengthInM length in meters of the boat
    * @param maxOccupants maximum amount of people that can be on the boat
    * @param boatType describes the type of boat, either motor of sail

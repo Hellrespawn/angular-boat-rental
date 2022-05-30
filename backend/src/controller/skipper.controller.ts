@@ -68,14 +68,14 @@ export class SkipperController {
    * @param req the request made to the backend
    * @param res the response sent back to the client
    */
-  public async updateSkipper(
+  public async updateLeaveOfSkipper(
     req: express.Request,
     res: express.Response
   ): Promise<void> {
     const idOfSkipper: number = +req.body.id;
     const updatedValue: boolean = req.body.updatedValue;
     try {
-      const result = await this.skipperService.updateSkipper(
+      const result = await this.skipperService.updateLeaveOfSkipper(
         idOfSkipper,
         updatedValue
       );

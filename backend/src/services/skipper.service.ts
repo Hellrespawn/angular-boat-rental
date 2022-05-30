@@ -15,7 +15,7 @@ export class SkipperService {
    * @param idOfSkipper id of skipper to be updated
    * @param updatedValue updated value of leave boolean
    */
-  public async updateSkipper(
+  public async updateLeaveOfSkipper(
     idOfSkipper: number,
     updatedValue: boolean
   ): Promise<void> {
