@@ -122,7 +122,7 @@ export class BoatService {
     maxSpeedInKmH: number,
     sailAreaInM2: number
   ): Promise<void> {
-    this.boatDao.saveNewBoat(
+    return this.boatDao.saveNewBoat(
       new Boat(
         name,
         registrationNumber,
@@ -144,7 +144,7 @@ export class BoatService {
    * @param idOfBoat id of the boat to identify the specific boat
    */
   public async deleteBoat(idOfBoat: number): Promise<void> {
-    this.boatDao.deleteBoat(idOfBoat);
+    return this.boatDao.deleteBoat(idOfBoat);
   }
   /**
    * updates the maintenance boolean in a specific boat found by id
@@ -155,7 +155,7 @@ export class BoatService {
     idOfBoat: number,
     updatedValue: boolean
   ): Promise<void> {
-    this.boatDao.updateMaintenanceValueInBoat(idOfBoat, updatedValue);
+    return this.boatDao.updateMaintenanceValueInBoat(idOfBoat, updatedValue);
   }
 
   /**

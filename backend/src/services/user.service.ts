@@ -25,7 +25,7 @@ export class UserService {
     idOfUser: number,
     updatedValue: boolean
   ): Promise<void> {
-    this.userDao.updateBlockedValueOfUser(idOfUser, updatedValue);
+    return this.userDao.updateBlockedValueOfUser(idOfUser, updatedValue);
   }
 
   /**
@@ -33,6 +33,6 @@ export class UserService {
    * @param idOfUser the id of the user to be deleted
    */
   public async deleteUser(idOfUser: number): Promise<void> {
-    this.userDao.deleteUser(idOfUser);
+    return this.userDao.deleteUser(idOfUser);
   }
 }

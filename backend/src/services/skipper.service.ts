@@ -19,7 +19,7 @@ export class SkipperService {
     idOfSkipper: number,
     updatedValue: boolean
   ): Promise<void> {
-    this.skipperDao.updateLeaveValueInSkipper(idOfSkipper, updatedValue);
+    return this.skipperDao.updateLeaveValueInSkipper(idOfSkipper, updatedValue);
   }
 
   /**
@@ -27,7 +27,7 @@ export class SkipperService {
    * @param idOfSkipper id of skipper to be deleted
    */
   public async deleteSkipper(idOfSkipper: number): Promise<void> {
-    this.skipperDao.deleteSkipper(idOfSkipper);
+    return this.skipperDao.deleteSkipper(idOfSkipper);
   }
 
   /**
@@ -42,7 +42,7 @@ export class SkipperService {
     birthDate: Date,
     leave: boolean
   ): Promise<void> {
-    this.skipperDao.saveNewSkipper({
+    return this.skipperDao.saveNewSkipper({
       name,
       pricePerDay,
       birthDate,

@@ -27,11 +27,11 @@ export class FineController {
     req: express.Request,
     res: express.Response
   ): Promise<void> {
-    const userID: number = req.body.userID;
+    const userId: number = req.body.userID;
     const amount: number = req.body.amount;
     const paid: boolean = req.body.paid;
     try {
-      const result = await this.fineService.addFine(userID, amount, paid);
+      const result = await this.fineService.addFine(userId, amount, paid);
       res.status(200).json(result);
     } catch (error) {
       res.status(400).json(error);

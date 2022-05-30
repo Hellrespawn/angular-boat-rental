@@ -15,7 +15,7 @@ export class User {
     public password: string,
     public blocked: boolean,
     public admin: boolean,
-    public arrayOfFines: FineModel[] = []
+    public arrayOfFines: FineModel[]
   ) {}
 
   public static fromModel(model: UserModel): User {
@@ -28,7 +28,8 @@ export class User {
       model.emailAddress,
       model.password,
       model.blocked,
-      model.admin
+      model.admin,
+      model.arrayOfFines
     );
   }
 
@@ -51,7 +52,8 @@ export class User {
       emailAddress,
       await User.hashPassword(password),
       blocked,
-      admin
+      admin,
+      []
     );
   }
 
