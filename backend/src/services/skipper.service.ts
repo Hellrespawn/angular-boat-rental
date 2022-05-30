@@ -19,7 +19,7 @@ export class SkipperService {
     idOfSkipper: number,
     updatedValue: boolean
   ): Promise<void> {
-    await this.skipperDao.updateLeaveValueInSkipper(idOfSkipper, updatedValue);
+    this.skipperDao.updateLeaveValueInSkipper(idOfSkipper, updatedValue);
   }
 
   /**
@@ -39,13 +39,14 @@ export class SkipperService {
   public async addSkipper(
     name: string,
     pricePerDay: number,
-    birthDate: Date
+    birthDate: Date,
+    leave: boolean
   ): Promise<void> {
     this.skipperDao.saveNewSkipper({
       name,
       pricePerDay,
       birthDate,
-      leave: false,
+      leave,
     });
   }
 }

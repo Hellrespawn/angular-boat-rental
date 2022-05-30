@@ -37,7 +37,8 @@ export class SkipperController {
       const result = await this.skipperService.addSkipper(
         name,
         pricePerDay,
-        birthDate
+        birthDate,
+        false
       );
       res.status(200).json(result);
     } catch (error) {

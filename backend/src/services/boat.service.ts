@@ -1,4 +1,10 @@
-import { BoatModel, BoatRequirements, BoatType } from '../database/boat.dao';
+import { Boat } from 'src/model/boat';
+import {
+  BoatDao,
+  BoatModel,
+  BoatRequirements,
+  BoatType,
+} from '../database/boat.dao';
 import { ServerError } from '../util/error';
 
 /**
@@ -24,15 +30,16 @@ export type BoatDetailData = BoatOverviewData & {
 };
 
 export class BoatService {
+  private boatDao: BoatDao = new BoatDao();
   /**
    * Converts a Boat into BoatOverviewData.
    *
    * @param boat the boat to convert
    * @returns the converted boat
    */
-  private boatInstanceToOverviewData(boat: BoatModel): BoatOverviewData {
+  private boatInstanceToOverviewData(boat: Boat): BoatOverviewData {
     return {
-      id: boat.id,
+      id: boat.id!,
       name: boat.name,
       imageRoute: boat.imageRoute,
       requirements: boat.getRequirements(),
@@ -44,8 +51,10 @@ export class BoatService {
    * requests all Boats from the database
    * @returns all boats from the database
    */
-  public async returnAllBoats(): Promise<Array<BoatModel>> {
-    return await BoatModel.findAll();
+  public async returnAllBoats(): Promise<Array<Boat>> {
+    return (await this.boatDao.getBoats()).map((boat: BoatModel) =>
+      Boat.fromModel(boat)
+    );
   }
 
   /**
@@ -58,7 +67,8 @@ export class BoatService {
     const boat = await BoatModel.findByPk(id);
 
     if (boat) {
-      const overviewData = this.boatInstanceToOverviewData(boat);
+      const boatModel = Boat.fromModel(boat);
+      const overviewData = this.boatInstanceToOverviewData(boatModel);
 
       const detailData: BoatDetailData = {
         ...overviewData,
@@ -108,52 +118,44 @@ export class BoatService {
     imageRoute: string,
     lengthInM: number,
     maxOccupants: number,
-    boatType: string,
+    boatType: BoatType,
     maxSpeedInKmH: number,
     sailAreaInM2: number
-  ): Promise<BoatModel> {
-    return await BoatModel.create({
-      name,
-      registrationNumber,
-      pricePerDay,
-      skipperRequired,
-      maintenance: false,
-      imageRoute,
-      lengthInM,
-      maxOccupants,
-      boatType,
-      maxSpeedInKmH,
-      sailAreaInM2,
-    });
+  ): Promise<void> {
+    this.boatDao.saveNewBoat(
+      new Boat(
+        name,
+        registrationNumber,
+        pricePerDay,
+        skipperRequired,
+        false,
+        imageRoute,
+        lengthInM,
+        maxOccupants,
+        boatType,
+        [],
+        maxSpeedInKmH ?? null,
+        sailAreaInM2 ?? null
+      )
+    );
   }
   /**
    * deletes a boat by id from the database
    * @param idOfBoat id of the boat to identify the specific boat
    */
   public async deleteBoat(idOfBoat: number): Promise<void> {
-    const boatToDelete: BoatModel | null = await BoatModel.findByPk(idOfBoat);
-    if (boatToDelete !== null) {
-      await boatToDelete.destroy();
-    } else {
-      throw 'Boat not found';
-    }
+    this.boatDao.deleteBoat(idOfBoat);
   }
   /**
    * updates the maintenance boolean in a specific boat found by id
    * @param idOfBoat id of the boat to be updated
    * @param updatedValue new boolean value to which the maintenance boolean of the boat will be updated
    */
-  public async updateBoat(
+  public async updateMaintenanceOfBoat(
     idOfBoat: number,
     updatedValue: boolean
   ): Promise<void> {
-    const boatToUpdate: BoatModel | null = await BoatModel.findByPk(idOfBoat);
-    if (boatToUpdate !== null) {
-      boatToUpdate.maintenance = updatedValue;
-      await boatToUpdate.save();
-    } else {
-      throw 'Boat not found';
-    }
+    this.boatDao.updateMaintenanceValueInBoat(idOfBoat, updatedValue);
   }
 
   /**
@@ -176,10 +178,12 @@ export class BoatService {
     );
 
     // Then filter with indices.
-    const filteredBoats = boats.filter((_, index) => {
+    const filteredBoatModels = boats.filter((_, index) => {
       return availability[index];
     });
-
+    const filteredBoats = filteredBoatModels.map((boatModel) => {
+      return Boat.fromModel(boatModel);
+    });
     return filteredBoats.map(this.boatInstanceToOverviewData);
   }
 
