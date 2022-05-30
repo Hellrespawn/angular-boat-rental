@@ -29,10 +29,10 @@ export class User extends Model {
   //@IsBefore(getRequiredDateString())
   @Column
   public dateOfBirth!: Date;
-  @AllowNull(true) @IsEmail @Column public emailAddress!: string;
+  @AllowNull(false) @IsEmail @Column public emailAddress!: string;
   @AllowNull(false) @Column public password!: string;
-  @AllowNull(true) @Column public blocked!: boolean;
-  @AllowNull(true) @Column public admin!: boolean;
+  @AllowNull(false) @Column public blocked!: boolean;
+  @AllowNull(false) @Column public admin!: boolean;
 
   @HasMany(() => Rental)
   public rentals!: Rental[];

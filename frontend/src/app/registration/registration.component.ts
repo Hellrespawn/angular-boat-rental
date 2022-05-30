@@ -12,12 +12,6 @@ import { MatRadioModule } from '@angular/material/radio';
 })
 // nog een enum toevoegen voor beheerder/klant/gast
 export class RegistrationComponent {
-    form = new FormGroup({
-        name: new FormControl(
-        ),
-        rollno: new FormControl()
-    });
-
   constructor(
     private userService: UserService,
     private snackBService: SnackBarService,
@@ -41,6 +35,27 @@ export class RegistrationComponent {
 
   private readonly wrongRadioButtonInput: SnackBarInput = {
     message: 'Geef aan dat u tenminste 18 jaar oud bent.',
+    buttonText: 'Sluit',
+    duration: 1000,
+    error: true,
+  };
+
+  private readonly emptyNameInput: SnackBarInput = {
+    message: 'Voer uw naam in',
+    buttonText: 'Sluit',
+    duration: 1000,
+    error: true,
+  };
+
+  private readonly emptyLastNameInput: SnackBarInput = {
+    message: 'Voer uw achternaamnaam in',
+    buttonText: 'Sluit',
+    duration: 1000,
+    error: true,
+  };
+
+  private readonly emptyEmailInput: SnackBarInput = {
+    message: 'Voer uw emailadres in',
     buttonText: 'Sluit',
     duration: 1000,
     error: true,
@@ -69,7 +84,7 @@ export class RegistrationComponent {
     let errorMessage: string = '';
     if (this.email.hasError('required')) {
       errorMessage =
-        'Je moet een geldig emailadres invullen, bijvoorbeeld: naam@domein.nl';
+        'Voer een geldig emailadres in, bijvoorbeeld: naam@domein.nl';
     }
     return errorMessage;
   }
@@ -82,20 +97,6 @@ export class RegistrationComponent {
     return errorMessage;
   }
 
-//   public radioErrorMessage(): string {
-//     let errorMessage: string = '';
-//     if (this.radioBtn.hasError('required')) {
-//       errorMessage = 'Geef aan dat u minimaal 18 jaar of ouder bent';
-//     }
-//     return errorMessage;
-//   }
-get name(): any {
-    return this.form.get('name');
-  }
-  
-onSubmit(): void {
-    console.log("Form is touched : ",this.form.touched);
-  }
   @ViewChild('firstNameInp') public firstNameInp!: ElementRef<HTMLInputElement>;
   @ViewChild('lastNameInp') public lastNameInp!: ElementRef<HTMLInputElement>;
   @ViewChild('dateOfBirthInp')
@@ -105,29 +106,33 @@ onSubmit(): void {
   @ViewChild('passwordInp') public passwordInp!: ElementRef<HTMLInputElement>;
 
   public sendDataToBackend() {
-    const regex = /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$/;
-    let passwordInp: string = this.passwordInp.nativeElement.value;
-    if (!regex.test(passwordInp)) {
-      this.falseEntryForm();
-    } else {
-      this.succesEntryForm();
-      this.userService.addUsers(this.getUsers()).subscribe();
-      this.router.navigateByUrl('/registratie-pagina');
+    if (this.radioButtonNotSet()) {
+      const regex = /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$/;
+      let passwordInp: string = this.passwordInp.nativeElement.value;
+      this.nameTouched();
+      this.lastNameTouched();
+      this.emailTouched();
+      if (!regex.test(passwordInp)) {
+        this.falseEntryForm();
+        return;
+      } else {
+        this.succesEntryForm();
+        this.userService.addUsers(this.getUsers()).subscribe();
+        this.router.navigateByUrl('/registratie-pagina');
+      }
     }
   }
 
   public getUsers() {
     let firstNameInp: string = this.firstNameInp.nativeElement.value;
     let lastNameInp: string = this.lastNameInp.nativeElement.value;
-    // let dateOfBirthInp: string = this.dateOfBirthInp.nativeElement.value;
     let emailAddressInp: string = this.emailAddressInp.nativeElement.value!;
     let passwordInp: string = this.passwordInp.nativeElement.value;
 
     return {
       firstName: firstNameInp,
       lastName: lastNameInp,
-      //   dateOfBirth: dateOfBirthInp,
-      email: emailAddressInp,
+      emailAddress: emailAddressInp,
       password: passwordInp,
     };
   }
@@ -146,33 +151,42 @@ onSubmit(): void {
   }
 
   public radioButtonNotSet() {
-    // let radioBtnInp = this.firstNameInp.nativeElement.value;
-
-    // if (!radioBtnInp) {
-    //   this.snackBService.makeSnackbarThatClosesAutomatically(
-    //     this.wrongRadioButtonInput
-    //   );
-    //   console.log('werkt')
-    //   return
-    // }
-    // return
-
-    // const btn = document.querySelector('#btn-18-years')!;
-    // const btns = document.querySelectorAll('')!;
-
-    // btn.addEventListener('click', () => {
-    //     let selected
-    //     for (const btns of btn) {
-
-    //     }
-    // })
+    const item = document.getElementById('btn-18-input') as HTMLInputElement;
+    const checked = item!.checked;
+    if (!checked === true) {
+      this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.wrongRadioButtonInput
+      );
+    }
+    return checked;
   }
-  //   public radioButtonNotSet() {
-  //     //   let radioBtnInp: HTMLButtonElement = (document.getElementById('btn-18-years').value as HTMLInputElement;
-  //     let radioBtnInp: Element | null = document.querySelector('btn-18-years')
 
-  //       if (radioBtnInp) {
-  //           console.log('werkt')
-  //       }
-  //   }
+  nameTouched() {
+    if (this.firstNameInp.nativeElement.value === '') {
+      this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.emptyNameInput
+      );
+      console.log('name');
+      return
+    }
+  }
+
+  lastNameTouched() {
+    if (this.lastNameInp.nativeElement.value === '') {
+      this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.emptyLastNameInput
+      );
+      console.log('lastname');
+      return;
+    }
+  }
+  emailTouched() {
+    if (this.emailAddressInp.nativeElement.value === '') {
+      this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.emptyEmailInput
+      );
+      console.log('email');
+      return
+    }
+  }
 }

@@ -1,4 +1,5 @@
 import { User } from '../model/user.model';
+
 export class UserService {
   /**
    * returns all Users from the database
@@ -36,5 +37,13 @@ export class UserService {
     } else {
       throw 'userToDelete not found';
     }
+  }
+
+  public async checkEmail(email: string): Promise<User | null> {
+    const emailAd = await User.findOne({ where: { emailAddress: email } });
+    if (emailAd !== null) {
+        console.log('email found')
+    }
+    return emailAd;
   }
 }

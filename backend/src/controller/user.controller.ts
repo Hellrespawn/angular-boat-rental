@@ -1,6 +1,7 @@
 import { UserService } from '../services/user.service';
 import { User } from '../model/user.model';
 import express from 'express';
+import e from 'express';
 
 export class UserController {
   constructor(private userService: UserService = new UserService()) {}
@@ -52,34 +53,52 @@ export class UserController {
       res.status(400).send(error);
     }
   }
-  // send users to Database
 
+  public getRoleFromDB() {
+    const role = User.count();
+    return role;
+  }
+  // send users to Database
   public async sendUserToDB(
     req: express.Request,
     res: express.Response
   ): Promise<void> {
-    const firstName: string = req.body.firstName;
-    const lastName: string = req.body.lastName;
-    // const dateOfBirth: Date = req.body.dateOfBirth;
-    const emailAddress: string = req.body.emailAddress;
-    const password: string = req.body.password;
-    const license: boolean = req.body.license;
-
-    try {
-      const result = await User.create({
-        firstName,
-        lastName,
-        emailAddress,
-        password,
-        license,
-        blocked: false,
-        admin: false
-      });
-      console.log(emailAddress)
-      res.status(200).json(result);
-    } catch (error) {
-      console.error();
-      res.status(400).json(error);
+    enum Role {
+      Admin,
+      Guest,
     }
+    if (!(await this.checkUserMail(req, res))) {
+      const role = (await this.getRoleFromDB()) ? Role.Guest : Role.Admin;
+      const firstName: string = req.body.firstName;
+      const lastName: string = req.body.lastName;
+      // const dateOfBirth: Date = req.body.dateOfBirth;
+      const emailAddress: string = req.body.emailAddress;
+      const password: string = req.body.password;
+      const license: boolean = req.body.license;
+
+      try {
+        const result = await User.create({
+          firstName,
+          lastName,
+          emailAddress,
+          password,
+          license,
+          blocked: false,
+          admin: role,
+        });
+        res.status(200).json(result);
+      } catch (error) {
+        console.error();
+        res.status(400).json(error);
+      } 
+    } else {
+        return
+    } 
+  }
+
+  public async checkUserMail(req: express.Request, res: express.Response) {
+    const emailAddress: string = req.body.emailAddress;
+    const result = await this.userService.checkEmail(emailAddress);
+    return result;
   }
 }

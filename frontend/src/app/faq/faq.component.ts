@@ -24,6 +24,27 @@ export class FaqComponent {
     error: false,
   };
 
+  private readonly emptyNameInput: SnackBarInput = {
+    message: 'Voer uw naam in',
+    buttonText: 'Sluit',
+    duration: 1000,
+    error: true,
+  };
+
+  private readonly emptyEmailInput: SnackBarInput = {
+    message: 'Voer uw email in',
+    buttonText: 'Sluit',
+    duration: 1000,
+    error: true,
+  };
+
+  private readonly emptyTextInput: SnackBarInput = {
+    message: 'Voer bericht in',
+    buttonText: 'Sluit',
+    duration: 1000,
+    error: true,
+  };
+
   // viewchild instead of getElementById
   @ViewChild('nameForm') public nameInp!: ElementRef<HTMLInputElement>;
   @ViewChild('emailForm') public emailInp!: ElementRef<HTMLInputElement>;
@@ -36,7 +57,12 @@ export class FaqComponent {
     this.snackBService.makeSnackbarThatClosesAutomatically(
       this.succesSnackbarInput
     );
-    this.router.navigateByUrl('/veel-gestelde-vragen');
+    // this.router.navigateByUrl('/veel-gestelde-vragen');
+    
+    setTimeout(() => {
+        this.pageReload();
+        this.router.navigateByUrl('/veel-gestelde-vragen');
+    }, 2500);
   }
 
   // input Formcontrol
@@ -77,6 +103,42 @@ export class FaqComponent {
       errorMessage = 'Voer uw bericht in';
     }
     return errorMessage;
+  }
+
+  nameTouched() {
+    if (this.nameInp.nativeElement.value === '') {
+      this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.emptyNameInput
+      );
+      console.log('name');
+      return
+    }
+  }
+
+  emailTouched() {
+    if (this.emailInp.nativeElement.value === '') {
+      this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.emptyEmailInput
+      );
+      console.log('email');
+      return
+    }
+  }
+
+  textBoxTouched() {
+    if (this.textInp.nativeElement.value === '') {
+      this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.emptyTextInput
+      );
+      console.log('email');
+      return
+    }
+  }
+
+  pageReload() {
+    this.nameInp.nativeElement.value = '';
+    this.emailInp.nativeElement.value = '';
+    this.textInp.nativeElement.value = '';
   }
 }
 
