@@ -22,7 +22,6 @@ describe('Test Session', () => {
       'Stef',
       'Korporaal',
       true,
-      new Date('1991-01-01'),
       'test@test.test',
       password,
       false,
