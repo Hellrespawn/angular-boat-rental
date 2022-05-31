@@ -50,6 +50,7 @@ export class LoginController {
       res
         .cookie('session', JSON.stringify(sessionData), {
           expires,
+          secure: true,
         })
         .end();
     } catch (error) {
