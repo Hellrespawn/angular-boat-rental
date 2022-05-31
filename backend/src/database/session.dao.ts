@@ -18,9 +18,18 @@ export class SessionDao {
     });
   }
 
+  public async getAllSessions(): Promise<Session[]> {
+    const models = await SessionModel.findAll();
+    return Promise.all(models.map(Session.fromModel));
+  }
+
   public async getSession(sessionId: string): Promise<Session | null> {
     const model = await SessionModel.findOne({ where: { sessionId } });
     return model ? Session.fromModel(model) : null;
+  }
+
+  public async deleteSession(session: Session): Promise<boolean> {
+    return Boolean(await SessionModel.destroy({ where: { id: session.id } }));
   }
 }
 

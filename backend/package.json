@@ -9,6 +9,7 @@
     "lint": "eslint ./src",
     "check-formatting": "npx prettier ./src --check && npm run lint",
     "fix-formatting": "npx prettier ./src --write && eslint ./src --fix",
+    "clear-expired": "ts-node ./src/scripts/clear-expired.ts",
     "sync": "ts-node ./src/scripts/sync.ts",
     "drop": "ts-node ./src/scripts/drop.ts",
     "seed": "ts-node ./src/scripts/seed.ts",

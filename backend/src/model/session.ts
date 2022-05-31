@@ -1,23 +1,42 @@
 import { randomBytes } from 'crypto';
 import { SessionModel } from '../database/session.dao';
+import { SessionService } from '../services/session.service';
 import { User } from './user';
 
 export class Session {
-  constructor(public sessionId: string, public user: User) {}
+  constructor(
+    public id: number,
+    public sessionId: string,
+    public user: User,
+    public createdAt: Date
+  ) {}
 
   /**
    * Create session from model.
    */
   public static async fromModel(model: SessionModel): Promise<Session> {
     const user = model.user ?? (await model.$get('user'));
-    return new Session(model.sessionId, User.fromModel(user));
+    return new Session(
+      model.id,
+      model.sessionId,
+      User.fromModel(user),
+      model.createdAt
+    );
   }
 
   public static createSessionForUser(user: User): Session {
-    return new Session(this.generateSessionId(), user);
+    return new Session(-1, this.generateSessionId(), user, new Date());
   }
 
   private static generateSessionId(): string {
     return randomBytes(16).toString('base64');
+  }
+
+  public isExpired(): boolean {
+    const msElapsed = new Date().getTime() - this.createdAt.getTime();
+
+    const daysElapsed = msElapsed / 1000 / 60 / 60 / 24;
+
+    return daysElapsed > SessionService.MAX_SESSION_AGE;
   }
 }

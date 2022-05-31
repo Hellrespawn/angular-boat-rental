@@ -1,5 +1,4 @@
 import { JSONSchemaType } from 'ajv';
-import exp from 'constants';
 import { Request, Response } from 'express';
 import { SessionData, SessionService } from '../services/session.service';
 import { ServerError } from '../util/error';

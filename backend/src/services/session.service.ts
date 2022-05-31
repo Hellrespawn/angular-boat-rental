@@ -45,6 +45,27 @@ export class SessionService {
    * @returns
    */
   public async getSession(sessionId: string): Promise<Session | null> {
-    return await this.sessionDao.getSession(sessionId);
+    let session = await this.sessionDao.getSession(sessionId);
+
+    if (session && session.isExpired()) {
+      await this.sessionDao.deleteSession(session);
+      session = null;
+    }
+
+    return session;
+  }
+
+  public async clearExpiredSessions(): Promise<number> {
+    const sessions = await this.sessionDao.getAllSessions();
+    let count = 0;
+
+    for (const session of sessions) {
+      if (session.isExpired()) {
+        this.sessionDao.deleteSession(session);
+        count++;
+      }
+    }
+
+    return count;
   }
 }
