@@ -45,10 +45,11 @@ export class Session {
    * Checks whether createdAt is more than MaxSessionAge days ago
    */
   public isExpired(): boolean {
-    const msElapsed = new Date().getTime() - this.createdAt.getTime();
+    const expired = new Date(this.createdAt);
+    expired.setDate(expired.getDate() + SessionService.MaxSessionAge);
 
-    const daysElapsed = msElapsed / 1000 / 60 / 60 / 24;
+    const now = new Date();
 
-    return daysElapsed > SessionService.MaxSessionAge;
+    return now > expired;
   }
 }
