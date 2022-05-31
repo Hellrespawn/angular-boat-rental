@@ -45,14 +45,14 @@ export class LoginController {
       };
 
       const expires = new Date();
-      expires.setDate(expires.getDate() + SessionService.MAX_SESSION_AGE);
+      expires.setDate(expires.getDate() + SessionService.MaxSessionAge);
 
       res
         .cookie('session', JSON.stringify(sessionData), {
           sameSite: 'lax',
           expires,
         })
-        .json({ session: sessionData });
+        .end();
     } catch (error) {
       ServerError.respond(error, res);
     }

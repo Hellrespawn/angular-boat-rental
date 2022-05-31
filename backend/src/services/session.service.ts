@@ -15,7 +15,7 @@ export class SessionService {
 
   private sessionDao: SessionDao = new SessionDao();
 
-  public static MAX_SESSION_AGE = 14;
+  public static MaxSessionAge = 14;
 
   /**
    * Checks user existence and password and, if applicable , creates a session
@@ -41,6 +41,7 @@ export class SessionService {
 
   /**
    * Attempts to return a session
+   *
    * @param sessionId
    * @returns
    */
@@ -55,6 +56,10 @@ export class SessionService {
     return session;
   }
 
+  /**
+   * Clears expired sessions.
+   * @returns the number of sessions cleared.
+   */
   public async clearExpiredSessions(): Promise<number> {
     const sessions = await this.sessionDao.getAllSessions();
     let count = 0;

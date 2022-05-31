@@ -24,19 +24,31 @@ export class Session {
     );
   }
 
+  /**
+   * Creates new session for user.
+   * @param user
+   * @returns
+   */
   public static createSessionForUser(user: User): Session {
     return new Session(-1, this.generateSessionId(), user, new Date());
   }
 
+  /**
+   * Generates a random sessionId
+   */
   private static generateSessionId(): string {
-    return randomBytes(16).toString('base64');
+    // 32 -> extras secure!
+    return randomBytes(32).toString('base64');
   }
 
+  /**
+   * Checks whether createdAt is more than MaxSessionAge days ago
+   */
   public isExpired(): boolean {
     const msElapsed = new Date().getTime() - this.createdAt.getTime();
 
     const daysElapsed = msElapsed / 1000 / 60 / 60 / 24;
 
-    return daysElapsed > SessionService.MAX_SESSION_AGE;
+    return daysElapsed > SessionService.MaxSessionAge;
   }
 }
