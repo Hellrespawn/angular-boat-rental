@@ -58,7 +58,7 @@ describe('Test Skipper-functionality in backend', () => {
     sinon.restore();
   });
 
-  it('Returns all skippers (an array of only the test skipper) when the endpoint /skippers is called with a get request', async () => {
+  it('Returns all skippers when the endpoint /skippers is called with a get request', async () => {
     const res = await request(app).get('/skippers');
     expect(res.body).to.deep.equal([
       {
