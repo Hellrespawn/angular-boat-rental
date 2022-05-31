@@ -1,4 +1,5 @@
 import { JSONSchemaType } from 'ajv';
+import exp from 'constants';
 import { Request, Response } from 'express';
 import { SessionData, SessionService } from '../services/session.service';
 import { ServerError } from '../util/error';
@@ -44,8 +45,14 @@ export class LoginController {
         firstName: session.user.firstName,
       };
 
+      const expires = new Date();
+      expires.setDate(expires.getDate() + SessionService.MAX_SESSION_AGE);
+
       res
-        .cookie('session', JSON.stringify(sessionData), { sameSite: 'lax' })
+        .cookie('session', JSON.stringify(sessionData), {
+          sameSite: 'lax',
+          expires,
+        })
         .json({ session: sessionData });
     } catch (error) {
       ServerError.respond(error, res);
