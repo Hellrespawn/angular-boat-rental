@@ -50,6 +50,6 @@ export class Session {
 
     const now = new Date();
 
-    return now > expired;
+    return now >= expired;
   }
 }
