@@ -7,7 +7,6 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SessionService } from '../session.service';
 import { MockSessionService } from '../test/session.service.mock';
-
 import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {
@@ -24,6 +23,8 @@ describe('LoginComponent', () => {
 
   const validEmail = 'test0@test.test';
   const validPassword = 'password';
+
+  let spy: jasmine.Spy<jasmine.Func>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -58,6 +59,8 @@ describe('LoginComponent', () => {
 
     passwordInput = fixture.debugElement.query(By.css('#wachtwoord-input'));
     passwordInputEl = passwordInput.nativeElement;
+
+    spy = spyOn(MockSessionService.prototype, 'login').and.callThrough();
   });
 
   it('should create', () => {
@@ -89,6 +92,8 @@ describe('LoginComponent', () => {
 
     expect(component.email.invalid).toBeTrue();
     expect(component.wachtwoord.invalid).toBeTrue();
+
+    expect(spy.calls.count()).toEqual(0);
   });
 
   it('should reject invalid email address.', async () => {
@@ -104,6 +109,8 @@ describe('LoginComponent', () => {
     await fixture.whenStable();
 
     expect(component.email.invalid).toBeTrue();
+
+    expect(spy.calls.count()).toEqual(0);
   });
 
   it('should send a request with valid values', async () => {
@@ -120,5 +127,7 @@ describe('LoginComponent', () => {
 
     fixture.detectChanges();
     await fixture.whenStable();
+
+    expect(spy.calls.count()).toEqual(1);
   });
 });
