@@ -3,15 +3,13 @@ import 'regenerator-runtime';
 import { Sequelize } from 'sequelize-typescript';
 import { createDatabase, dropDatabase, initSequelize } from '../src/database';
 
-export let sequelize: Sequelize;
-
 export async function initDatabase(): Promise<Sequelize> {
   // Writes without newline
   process.stdout.write('Initializing test database... ');
   process.env.DB_NAME = 'TEST_DB';
   await dropDatabase();
   await createDatabase();
-  sequelize = await initSequelize({ logging: false });
+  const sequelize = await initSequelize({ logging: false });
   await sequelize.sync();
   console.log('Done.');
   return sequelize;

@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
     this.wachtwoordErrorMessage();
   }
 
-  public email = new FormControl('', [Validators.required]);
+  public email = new FormControl('', [Validators.required, Validators.email]);
   public wachtwoord = new FormControl('', [Validators.required]);
 
   public login(): void {

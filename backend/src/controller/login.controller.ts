@@ -44,9 +44,15 @@ export class LoginController {
         firstName: session.user.firstName,
       };
 
+      const expires = new Date();
+      expires.setDate(expires.getDate() + SessionService.MaxSessionAge);
+
       res
-        .cookie('session', JSON.stringify(sessionData), { sameSite: 'lax' })
-        .json({ session: sessionData });
+        .cookie('session', JSON.stringify(sessionData), {
+          expires,
+          secure: true,
+        })
+        .end();
     } catch (error) {
       ServerError.respond(error, res);
     }

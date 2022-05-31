@@ -7,7 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { FaqComponent } from './faq/faq.component';
-import { RentalComponent } from './booking/booking.component';
+import { BookingComponent } from './booking/booking.component';
 import { AdminBoatOverviewComponent } from './admin-boat-overview/admin-boat-overview.component';
 import { AdminSkipperOverviewComponent } from './admin-skipper-overview/admin-skipper-overview.component';
 import { CheckComponent } from './booking/check/check.component';
@@ -37,7 +37,7 @@ const routes: Routes = [
   { path: 'registratie-pagina', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
   { path: 'veel-gestelde-vragen', component: FaqComponent },
-  { path: 'verhuur', component: RentalComponent },
+  { path: 'verhuur', component: BookingComponent },
   { path: 'verhuur/controleer/:boatId', component: CheckComponent },
   { path: 'verhuur/schipper/:rentalId', component: SelectSkipperComponent },
   { path: 'verhuur/betalen/:rentalId', component: PaymentComponent },

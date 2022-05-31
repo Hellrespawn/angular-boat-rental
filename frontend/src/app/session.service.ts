@@ -61,10 +61,9 @@ export class SessionService {
    * @param password
    */
   private doLoginRequest(email: string, password: string): Observable<null> {
-    // FIXME make this a boolean?
     return (
       this.httpClient
-        .post<{ sessionId: string }>('/api/login', {
+        .post<null>('/api/login', {
           email,
           password,
         })
@@ -74,8 +73,6 @@ export class SessionService {
             throw 'Er is iets fout gegaan, controleer uw gegevens!';
           })
         )
-        // Destructure token
-        .pipe(map(({ sessionId }) => null))
     );
   }
 

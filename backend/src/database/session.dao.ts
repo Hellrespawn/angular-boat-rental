@@ -11,6 +11,28 @@ import { Session } from '../model/session';
 import { UserModel } from './user.dao';
 
 export class SessionDao {
+  /**
+   * @returns all sessions.
+   */
+  public async getAllSessions(): Promise<Session[]> {
+    const models = await SessionModel.findAll();
+    return Promise.all(models.map(Session.fromModel));
+  }
+
+  /**
+   * Get the session defined by sessionId.
+   * @param sessionId
+   * @returns session or null
+   */
+  public async getSession(sessionId: string): Promise<Session | null> {
+    const model = await SessionModel.findOne({ where: { sessionId } });
+    return model ? Session.fromModel(model) : null;
+  }
+
+  /**
+   * Save session to database.
+   * @param session
+   */
   public async saveSession(session: Session): Promise<void> {
     await SessionModel.create({
       sessionId: session.sessionId,
@@ -18,9 +40,13 @@ export class SessionDao {
     });
   }
 
-  public async getSession(sessionId: string): Promise<Session | null> {
-    const model = await SessionModel.findOne({ where: { sessionId } });
-    return model ? Session.fromModel(model) : null;
+  /**
+   * Deletes session
+   * @param session
+   * @returns
+   */
+  public async deleteSession(session: Session): Promise<boolean> {
+    return Boolean(await SessionModel.destroy({ where: { id: session.id } }));
   }
 }
 

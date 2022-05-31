@@ -8,7 +8,7 @@ import { BookingService } from './booking.service';
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.scss'],
 })
-export class RentalComponent implements OnInit {
+export class BookingComponent implements OnInit {
   public boats: BoatOverviewData[] = [];
 
   constructor(private bookingService: BookingService) {}
