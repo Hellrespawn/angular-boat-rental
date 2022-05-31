@@ -49,7 +49,6 @@ export class LoginController {
 
       res
         .cookie('session', JSON.stringify(sessionData), {
-          sameSite: 'lax',
           expires,
         })
         .end();
