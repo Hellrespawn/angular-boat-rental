@@ -1,10 +1,5 @@
 import { Boat } from '../model/boat';
-import {
-  BoatDao,
-  BoatModel,
-  BoatRequirements,
-  BoatType,
-} from '../database/boat.dao';
+import { BoatDao, BoatRequirements, BoatType } from '../database/boat.dao';
 import { ServerError } from '../util/error';
 
 /**
@@ -40,13 +35,17 @@ export class BoatService {
    */
   private boatInstanceToOverviewData(boat: Boat): BoatOverviewData {
     return {
-      id: boat.id!,
+      id: boat.id,
       name: boat.name,
       imageRoute: boat.imageRoute,
       requirements: boat.getRequirements(),
       boatType: boat.boatType,
       maxOccupants: boat.maxOccupants,
     };
+  }
+
+  public async getById(id: number): Promise<Boat | null> {
+    return this.boatDao.getById(id);
   }
 
   /**
@@ -58,17 +57,25 @@ export class BoatService {
   }
 
   /**
+   * requests all Boats from the database that aren't in maintenance
+   * @returns all boats from the database
+   */
+  public async returnAllBoatsNotInMaintenance(): Promise<Array<Boat>> {
+    const boats = await this.boatDao.getBoats();
+    return boats.filter((boat) => boat.maintenance === false);
+  }
+
+  /**
    * Gets BoatDetailData for boat.
    *
    * @param id the id of the desired boat
    * @returns A type intersection of BoatOverviewData and BoatDetailData
    */
   public async getBoatDetailData(id: number): Promise<BoatDetailData | null> {
-    const boat = await BoatModel.findByPk(id);
+    const boat = await this.getById(id);
 
     if (boat) {
-      const boatModel = Boat.fromModel(boat);
-      const overviewData = this.boatInstanceToOverviewData(boatModel);
+      const overviewData = this.boatInstanceToOverviewData(boat);
 
       const detailData: BoatDetailData = {
         ...overviewData,
@@ -92,9 +99,36 @@ export class BoatService {
    * @returns an array of BoatOverviewData
    */
   public async getBoatsOverviewData(): Promise<BoatOverviewData[]> {
-    const boats = await this.returnAllBoats();
+    const boats = await this.returnAllBoatsNotInMaintenance();
 
     return boats.map(this.boatInstanceToOverviewData);
+  }
+
+  /**
+   * Get BoatOverviewData for all boats available between dateStart and dateEnd.
+   *
+   * @param dateStart start of period to check
+   * @param dateEnd end of period to check
+   * @returns an array of BoatOverviewData of boats available between
+   * those dates.
+   */
+  public async getAvailableBoatsOverviewData(
+    dateStart: Date,
+    dateEnd: Date
+  ): Promise<BoatOverviewData[]> {
+    const boats = await this.returnAllBoatsNotInMaintenance();
+
+    // Can't use async function with filter, get and await availability first.
+    const availability = await Promise.all(
+      boats.map((boat) => boat.isAvailable(dateStart, dateEnd))
+    );
+
+    // Then filter with indices.
+    const filteredBoats = boats.filter((_, index) => {
+      return availability[index];
+    });
+
+    return filteredBoats.map(this.boatInstanceToOverviewData);
   }
 
   /**
@@ -125,6 +159,7 @@ export class BoatService {
   ): Promise<void> {
     return this.boatDao.saveNewBoat(
       new Boat(
+        -1,
         name,
         registrationNumber,
         pricePerDay,
@@ -162,35 +197,6 @@ export class BoatService {
   }
 
   /**
-   * Get BoatOverviewData for all boats available between dateStart and dateEnd.
-   *
-   * @param dateStart start of period to check
-   * @param dateEnd end of period to check
-   * @returns an array of BoatOverviewData of boats available between
-   * those dates.
-   */
-  public async getAvailableBoatsOverviewData(
-    dateStart: Date,
-    dateEnd: Date
-  ): Promise<BoatOverviewData[]> {
-    const boats = await BoatModel.findAll();
-
-    // Can't use async function with filter, get and await availability first.
-    const availability = await Promise.all(
-      boats.map((boat) => boat.isAvailable(dateStart, dateEnd))
-    );
-
-    // Then filter with indices.
-    const filteredBoatModels = boats.filter((_, index) => {
-      return availability[index];
-    });
-    const filteredBoats = filteredBoatModels.map((boatModel) => {
-      return Boat.fromModel(boatModel);
-    });
-    return filteredBoats.map(this.boatInstanceToOverviewData);
-  }
-
-  /**
    * Get all Dates for which boat with id is booked.
    *
    * @param id the id of the desired boat.
@@ -198,7 +204,7 @@ export class BoatService {
    * @returns an array of Dates
    */
   public async getBookedDates(id: number): Promise<Date[]> {
-    const boat = await BoatModel.findByPk(id);
+    const boat = await this.getById(id);
 
     if (!boat) {
       throw new ServerError(`Boat with id ${id} doesn't exist.`);

@@ -3,6 +3,7 @@ import { RentalModel } from '../database/rental.dao';
 
 export class Boat {
   constructor(
+    public id: number,
     public name: string,
     public registrationNumber: number,
     public pricePerDay: number,
@@ -14,12 +15,12 @@ export class Boat {
     public boatType: BoatType,
     public rentals?: RentalModel[],
     public maxSpeedInKmH?: number,
-    public sailAreaInM2?: number,
-    public id?: number
+    public sailAreaInM2?: number
   ) {}
 
   public static fromModel(boatModel: BoatModel): Boat {
     return new Boat(
+      boatModel.id,
       boatModel.name,
       boatModel.registrationNumber,
       boatModel.pricePerDay,
@@ -31,8 +32,16 @@ export class Boat {
       boatModel.boatType,
       boatModel.rentals,
       boatModel.maxSpeedInKmH,
-      boatModel.sailAreaInM2,
-      boatModel.id
+      boatModel.sailAreaInM2
+    );
+  }
+
+  private async getRentals(): Promise<RentalModel[]> {
+    // If the boat instance was eagerly loaded, this.rentals will be defined,
+    // else, it loads it here.
+    return (
+      this.rentals ??
+      (await RentalModel.findAll({ where: { boatId: this.id } }))
     );
   }
 
@@ -59,5 +68,28 @@ export class Boat {
     }
 
     return requirements;
+  }
+
+  /**
+   * Checks all rentals for this boat to see if it's available.
+   *
+   * @param dateStart start of period to check
+   * @param dateEnd end of period to check
+   * @returns whether or not the boat is available
+   */
+  public async isAvailable(dateStart: Date, dateEnd: Date): Promise<boolean> {
+    const rentals = await this.getRentals();
+
+    return rentals.every((r) => !r.areDatesOverlapping(dateStart, dateEnd));
+  }
+
+  /**
+   * Returns an all booked dates.
+   *
+   * @returns array of booked dates
+   */
+  public async getBookedDates(): Promise<Date[]> {
+    const rentals = await this.getRentals();
+    return rentals.flatMap((rental) => rental.getDates());
   }
 }
