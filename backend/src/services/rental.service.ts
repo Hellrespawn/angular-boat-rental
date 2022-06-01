@@ -4,8 +4,11 @@ import { RentalModel } from '../database/rental.dao';
 import { SkipperModel } from '../database/skipper.dao';
 import { ServerError } from '../util/error';
 import { UserModel } from '../database/user.dao';
+import { BoatService } from './boat.service';
 
 export class RentalService {
+  private boatService = new BoatService();
+
   /**
    * Creates a new rental
    *
@@ -22,7 +25,7 @@ export class RentalService {
     dateEnd: Date
   ): Promise<RentalModel> {
     // Check boat exists
-    const boat = await BoatModel.findByPk(boatId);
+    const boat = await this.boatService.getById(boatId);
 
     if (!boat) {
       throw new ServerError(`No boat with id ${boatId}.`);

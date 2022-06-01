@@ -28,7 +28,7 @@ export class Validator<T> {
   }
 
   public getErrors():
-    | ErrorObject<string, Record<string, any>, unknown>[]
+    | ErrorObject<string, Record<string, T>, unknown>[]
     | null
     | undefined {
     return this.validator.errors;
