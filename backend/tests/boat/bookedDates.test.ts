@@ -1,58 +1,76 @@
 import request from 'supertest';
-import { BoatModel } from '../../src/database/boat.dao';
 import { app } from '../../src/server';
 import { expect } from 'chai';
-import { closeDatabase, initDatabase } from '../mocha-setup';
 import { User } from '../../src/model/user';
-import { RentalModel } from '../../src/database/rental.dao';
-import { UserModel } from '../../src/database/user.dao';
-
-async function seedDatabase(): Promise<BoatModel> {
-  const boat = await BoatModel.create({
-    name: 'testboat',
-    registrationNumber: 1234,
-    pricePerDay: 1234,
-    skipperRequired: false,
-    maintenance: false,
-    imageRoute: '',
-    lengthInM: 1234,
-    maxOccupants: 1234,
-    boatType: 'motor',
-    maxSpeedInKmH: 1234,
-    sailAreaInM2: undefined,
-  });
-
-  const user = await UserModel.create({
-    firstName: 'Stef',
-    lastName: 'Korporaal',
-    license: true,
-    dateOfBirth: new Date('1991-09-25'),
-    emailAddress: 'stef@test.nl',
-    password: await User.hashPassword('password'),
-    blocked: false,
-    admin: true,
-  });
-
-  await RentalModel.create({
-    boatId: boat.id,
-    userId: user.id,
-    dateStart: new Date('2022-01-01'),
-    dateEnd: new Date('2022-01-10'),
-    paid: true,
-  });
-
-  return boat;
-}
+import sinon from 'ts-sinon';
+import { Boat } from '../../src/model/boat';
+import { Rental } from '../../src/model/rental';
+import { RentalDao } from '../../src/database/rental.dao';
+import { BoatDao } from '../../src/database/boat.dao';
+import { SinonSpiedInstance } from 'sinon';
 
 describe('Test /boats/:id/bookedDates', () => {
-  let boat: BoatModel;
+  const boat = new Boat(
+    1,
+    'testboat',
+    1234,
+    1234,
+    false,
+    false,
+    '',
+    1234,
+    1234,
+    'motor',
+    1234,
+    undefined
+  );
 
-  before(async () => {
-    await initDatabase();
-    boat = await seedDatabase();
+  const rental = new Rental(
+    1,
+    boat,
+    sinon.createStubInstance(User),
+    new Date('2022-01-01'),
+    new Date('2022-01-10'),
+    false
+  );
+
+  let boatGetByIdStub: SinonSpiedInstance<any>;
+  let boatGetBoatsStub: SinonSpiedInstance<any>;
+  let rentalStub: SinonSpiedInstance<any>;
+
+  function stubBoatDaoGetById(): void {
+    const stub = sinon.stub(BoatDao.prototype, 'getById');
+
+    stub.returns(Promise.resolve(boat));
+
+    boatGetByIdStub = stub;
+  }
+
+  function stubBoatDaoGetBoats(): void {
+    const stub = sinon.stub(BoatDao.prototype, 'getBoats');
+
+    stub.returns(Promise.resolve([boat]));
+
+    boatGetBoatsStub = stub;
+  }
+
+  function stubRentalDao(): void {
+    const stub = sinon.stub(RentalDao.prototype, 'getRentalsByBoatId');
+
+    stub.returns(Promise.resolve([rental]));
+
+    rentalStub = stub;
+  }
+
+  beforeEach(() => {
+    stubBoatDaoGetById();
+    stubBoatDaoGetBoats();
+    stubRentalDao();
   });
 
-  after(closeDatabase);
+  afterEach(() => {
+    sinon.restore();
+  });
 
   describe('GET /boats/:id/bookedDates', () => {
     it('Responds with an array of booked dates', async () => {
