@@ -53,7 +53,7 @@ export class UserService {
     return usercount;
   }
 
-  async createnewUser(
+  public async createnewUser(
     firstName: string,
     lastName: string,
     license: boolean,
@@ -61,9 +61,9 @@ export class UserService {
     password: string,
     blocked: boolean,
     admin: boolean
-  ) {
+  ): Promise<UserModel> {
     const isAdmin = (await this.getUserCountfromDB()) ? false : true;
-    let isNewUser = await User.createWithPlaintextPassword(
+    const isNewUser = await User.createWithPlaintextPassword(
       firstName,
       lastName,
       license,
@@ -82,7 +82,6 @@ export class UserService {
       password: await User.hashPassword(password),
       blocked: false,
       admin: false,
-      
     });
     return result;
   }

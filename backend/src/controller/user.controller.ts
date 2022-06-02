@@ -63,7 +63,6 @@ export class UserController {
     }
   }
 
- 
   public async checkUserMail(req: express.Request): Promise<UserModel | null> {
     const emailAddress: string = req.body.emailAddress;
     const result = await this.userService.checkEmail(emailAddress);
@@ -101,7 +100,7 @@ export class UserController {
         res.status(400).json(error);
       }
     } else {
-      res.status(400).end()
+      res.status(400).end();
     }
   }
 
