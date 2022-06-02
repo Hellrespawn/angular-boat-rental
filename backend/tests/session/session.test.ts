@@ -30,7 +30,7 @@ describe('Test Session', () => {
       true
     );
 
-    const stub = sinon.stub(UserService.prototype, 'getUser');
+    const stub = sinon.stub(UserService.prototype, 'getUserByEmail');
 
     stub.returns(Promise.resolve(null));
     stub.withArgs('test@test.test').returns(Promise.resolve(user));

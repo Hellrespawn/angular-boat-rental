@@ -1,28 +1,24 @@
-import { RentalModel } from '../../src/database/rental.dao';
-import { MODELS } from '../../src/database';
 import { expect } from 'chai';
-import { Sequelize } from 'sequelize-typescript';
+import { Rental } from '../../src/model/rental';
+import sinon from 'ts-sinon';
+import { Boat } from '../../src/model/boat';
+import { User } from '../../src/model/user';
 
 describe('Test rental.model.ts', () => {
-  before(() => {
-    new Sequelize({
-      validateOnly: true,
-      models: MODELS,
-    });
-  });
-
-  let rental: RentalModel;
+  let rental: Rental;
 
   beforeEach(() => {
-    rental = new RentalModel();
-    rental.dateStart = new Date('2022-01-10');
-    rental.dateEnd = new Date('2022-01-15');
+    const dateStart = new Date('2022-01-10');
+    const dateEnd = new Date('2022-01-15');
+    const boat = sinon.createStubInstance(Boat);
+    const user = sinon.createStubInstance(User);
+    rental = new Rental(-1, boat, user, dateStart, dateEnd, false);
   });
 
   describe('Test Rental.days()', () => {
     it('Correctly handles the inclusivity of the rental period', () => {
       const expected = 6;
-      const actual = RentalModel.days(rental.dateStart, rental.dateEnd);
+      const actual = Rental.days(rental.dateStart, rental.dateEnd);
       expect(expected).to.equal(actual);
     });
   });

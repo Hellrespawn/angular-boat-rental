@@ -10,8 +10,17 @@ export class UserService {
    * @param email
    * @returns User if it exists, or null
    */
-  public async getUser(email: string): Promise<User | null> {
-    return this.userDao.getUser(email);
+  public async getUserByEmail(email: string): Promise<User | null> {
+    return this.userDao.getUserByEmail(email);
+  }
+
+  /**
+   * Attempts to get a user identified by id
+   * @param id
+   * @returns User if it exists, or null
+   */
+  public async getUserById(id: number): Promise<User | null> {
+    return this.userDao.getUserById(id);
   }
 
   /**

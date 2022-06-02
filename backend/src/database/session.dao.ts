@@ -15,7 +15,7 @@ export class SessionDao {
    * @returns all sessions.
    */
   public async getAllSessions(): Promise<Session[]> {
-    const models = await SessionModel.findAll();
+    const models = await SessionModel.findAll({ include: [UserModel] });
     return Promise.all(models.map(Session.fromModel));
   }
 
