@@ -152,7 +152,7 @@ export class AddSkipperComponent {
    * sends the new skipper to the backend
    * @param skipper new skipper object
    */
-  public sendNewSkipperToBackend(skipper: Skipper): void {
+  private sendNewSkipperToBackend(skipper: Skipper): void {
     const submitButton: HTMLButtonElement = <HTMLButtonElement>(
       document.getElementById('submitKnop')
     );

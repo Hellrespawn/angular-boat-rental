@@ -4,7 +4,10 @@
 <button routerLink="/add-skipper" mat-raised-button color="primary">
   Voeg een schipper toe
 </button>
-<mat-card *ngFor="let skipper of arrayOfSkippers; index as i">
+<mat-card
+  *ngFor="let skipper of arrayOfSkippers; index as i"
+  class="skipper-item"
+>
   <mat-card-title>{{ skipper.name }}</mat-card-title>
   <mat-card-subtitle
     >Geboorte datum: {{ parseDateStringToDate(skipper.birthDate).getDate() }}-{{
@@ -19,6 +22,7 @@
   >
   <mat-card-actions>
     <button
+      class="delete-btn"
       mat-raised-button
       color="primary"
       (click)="deleteSkipperById(skipper.id, i)"
@@ -26,6 +30,7 @@
       Verwijder
     </button>
     <button
+      class="put-on-leave-btn"
       *ngIf="!skipper.leave"
       mat-raised-button
       color="primary"
@@ -34,6 +39,7 @@
       Zet op verlof
     </button>
     <button
+      class="put-off-leave-btn"
       *ngIf="skipper.leave"
       mat-raised-button
       color="primary"
