@@ -24,6 +24,16 @@ export class BoatDao {
     );
   }
 
+  public async getById(id: number): Promise<Boat | null> {
+    const boatModel = await BoatModel.findOne({ where: { id } });
+
+    if (boatModel) {
+      return Boat.fromModel(boatModel);
+    }
+
+    return null;
+  }
+
   public async saveNewBoat(newBoat: Boat): Promise<void> {
     BoatModel.create({
       name: newBoat.name,
@@ -101,29 +111,4 @@ export class BoatModel extends Model {
 
   @HasMany(() => RentalModel)
   public rentals!: RentalModel[];
-
-  /**
-   * Checks all rentals for this boat to see if it's available.
-   *
-   * @param dateStart start of period to check
-   * @param dateEnd end of period to check
-   * @returns whether or not the boat is available
-   */
-  public async isAvailable(dateStart: Date, dateEnd: Date): Promise<boolean> {
-    // If the boat instance was eagerly loaded, this.rentals will be defined,
-    // else, it loads it here.
-    const rentals = this.rentals ?? (await this.$get('rentals'));
-
-    return rentals.every((r) => !r.areDatesOverlapping(dateStart, dateEnd));
-  }
-
-  /**
-   * Returns an all booked dates.
-   *
-   * @returns array of booked dates
-   */
-  public async getBookedDates(): Promise<Date[]> {
-    const rentals = this.rentals ?? (await this.$get('rentals'));
-    return rentals.flatMap((rental) => rental.getDates());
-  }
 }
