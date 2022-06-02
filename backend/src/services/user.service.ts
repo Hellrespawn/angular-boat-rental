@@ -47,4 +47,43 @@ export class UserService {
     }
     return emailAd;
   }
+
+  public getUserCountfromDB(): Promise<number> {
+    const usercount = UserModel.count();
+    return usercount;
+  }
+
+  async createnewUser(
+    firstName: string,
+    lastName: string,
+    license: boolean,
+    emailAddress: string,
+    password: string,
+    blocked: boolean,
+    admin: boolean
+  ) {
+    const isAdmin = (await this.getUserCountfromDB()) ? false : true;
+    let isNewUser = await User.createWithPlaintextPassword(
+      firstName,
+      lastName,
+      license,
+      emailAddress,
+      password,
+      blocked,
+      admin
+    );
+    const result = await UserModel.create({
+      isAdmin,
+      isNewUser,
+      firstName: firstName,
+      lastName: lastName,
+      license: false,
+      emailAddress: emailAddress,
+      password: await User.hashPassword(password),
+      blocked: false,
+      admin: false,
+      
+    });
+    return result;
+  }
 }

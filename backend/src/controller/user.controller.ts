@@ -63,10 +63,12 @@ export class UserController {
     }
   }
 
-  // get usercount from DB, if count > 1 User role = guest else role = admin
-  public getUserCountfromDB(): Promise<number> {
-    const usercount = UserModel.count();
-    return usercount;
+ 
+  public async checkUserMail(req: express.Request): Promise<UserModel | null> {
+    const emailAddress: string = req.body.emailAddress;
+    const result = await this.userService.checkEmail(emailAddress);
+
+    return result;
   }
 
   // send users to Database
@@ -74,41 +76,33 @@ export class UserController {
     req: express.Request,
     res: express.Response
   ): Promise<void> {
-    if (!(await this.checkUserMail(req, res))) {
-      const isAdmin = (await this.getUserCountfromDB()) ? false : true;
+    if (!(await this.checkUserMail(req))) {
+      //   const isAdmin = (this.getUserCountfromDB()) ? false : true;
       const firstName: string = req.body.firstName;
       const lastName: string = req.body.lastName;
-      // const dateOfBirth: Date = req.body.dateOfBirth;
+      const license: boolean = req.body.license;
       const emailAddress: string = req.body.emailAddress;
       const password: string = req.body.password;
-
+      const blocked: boolean = req.body.blocked;
+      const admin: boolean = req.body.admin;
       try {
-        const result = await UserModel.create({
+        await this.userService.createnewUser(
           firstName,
           lastName,
+          license,
           emailAddress,
           password,
-          license: false,
-          blocked: false,
-          admin: isAdmin,
-        });
-        res.status(200).json(result);
+          blocked,
+          admin
+        );
+        res.status(200).end();
       } catch (error) {
         console.error();
         res.status(400).json(error);
       }
     } else {
-      return;
+      res.status(400).end()
     }
-  }
-
-  public async checkUserMail(
-    req: express.Request,
-    res: express.Response
-  ): Promise<UserModel | null> {
-    const emailAddress: string = req.body.emailAddress;
-    const result = await this.userService.checkEmail(emailAddress);
-    return result;
   }
 
   /**
