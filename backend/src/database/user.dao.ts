@@ -65,7 +65,7 @@ export class UserDao {
     }
   }
 
-  public async createnewUser(
+  public async createNewUser(
     firstName: string,
     lastName: string,
     license: boolean,
@@ -81,7 +81,7 @@ export class UserDao {
       emailAddress: emailAddress,
       password: await User.hashPassword(password),
       blocked: false,
-      admin: false,
+      admin,
     });
     return result;
   }

@@ -82,7 +82,7 @@ export class UserController {
       const emailAddress: string = req.body.emailAddress;
       const password: string = req.body.password;
       try {
-        await this.userService.createnewUser(
+        await this.userService.createNewUser(
           firstName,
           lastName,
           license,

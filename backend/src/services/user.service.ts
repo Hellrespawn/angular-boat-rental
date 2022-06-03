@@ -55,7 +55,7 @@ export class UserService {
     return userCount;
   }
 
-  public async createnewUser(
+  public async createNewUser(
     firstName: string,
     lastName: string,
     license: boolean,
@@ -73,7 +73,7 @@ export class UserService {
       false,
       isAdmin
     );
-    return this.userDao.createnewUser(
+    return this.userDao.createNewUser(
       newUser.firstName,
       newUser.lastName,
       newUser.license,
