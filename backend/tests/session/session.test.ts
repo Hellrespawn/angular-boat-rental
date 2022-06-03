@@ -156,7 +156,7 @@ describe('Test Session', () => {
     });
   });
 
-  it('Always allows access to /login without login.', async () => {
+  it('Allows access to `/login` without authentication.', async () => {
     const res = await request(app)
       .post('/login')
       .send({ email: user.emailAddress, password });
