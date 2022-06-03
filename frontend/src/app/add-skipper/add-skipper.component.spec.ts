@@ -97,38 +97,6 @@ describe('SchipperToevoegComponent', () => {
     expect(component.birthDateControl.value).toBe(testDateString);
   });
 
-  it('should generate an error when the name input field is empty', async () => {
-    nameFieldElement.value = '';
-    nameFieldElement.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(component.nameControl.invalid).toBeTrue();
-  });
-
-  it('should generate an error when the price input field is empty', async () => {
-    priceFieldElement.value = '';
-    priceFieldElement.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(component.priceControl.invalid).toBeTrue();
-  });
-
-  it('should generate an error when the birth date input field is empty', async () => {
-    birthDateFieldElement.value = '';
-    birthDateFieldElement.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(component.birthDateControl.invalid).toBeTrue();
-  });
-
-  it('should generate an error when the price input field receives a negative value (works for 0 as well)', async () => {
-    priceFieldElement.value = '-1';
-    priceFieldElement.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(component.priceControl.invalid).toBeTrue();
-  });
-
   it('should not call the SkipperService when no name is entered', async () => {
     nameFieldElement.value = '';
     priceFieldElement.value = '250';
@@ -136,6 +104,7 @@ describe('SchipperToevoegComponent', () => {
     submitButtonElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
+    expect(component.nameControl.invalid).toBeTrue();
     expect(addSkipperSpy.calls.count()).toEqual(0);
   });
 
@@ -146,6 +115,7 @@ describe('SchipperToevoegComponent', () => {
     submitButtonElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
+    expect(component.priceControl.invalid).toBeTrue();
     expect(addSkipperSpy.calls.count()).toEqual(0);
   });
 
@@ -156,6 +126,18 @@ describe('SchipperToevoegComponent', () => {
     submitButtonElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
+    expect(component.birthDateControl.invalid).toBeTrue();
+    expect(addSkipperSpy.calls.count()).toEqual(0);
+  });
+
+  it('should not call the SkipperService when a price below 0 is entered', async () => {
+    nameFieldElement.value = 'Kees';
+    priceFieldElement.value = '-1';
+    birthDateFieldElement.value = new Date().toISOString();
+    submitButtonElement.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(component.priceControl.invalid).toBeTrue();
     expect(addSkipperSpy.calls.count()).toEqual(0);
   });
 
@@ -166,6 +148,7 @@ describe('SchipperToevoegComponent', () => {
     submitButtonElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
+    expect(component.priceControl.invalid).toBeTrue();
     expect(addSkipperSpy.calls.count()).toEqual(0);
   });
 
