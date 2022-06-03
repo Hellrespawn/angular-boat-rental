@@ -1,3 +1,4 @@
+import { resourceLimits } from 'worker_threads';
 import { UserDao, UserModel } from '../database/user.dao';
 import { User } from '../model/user';
 
@@ -40,6 +41,7 @@ export class UserService {
     return this.userDao.deleteUser(idOfUser);
   }
 
+  // TODO: functie moet nog naar de DAO
   public async checkEmail(email: string): Promise<UserModel | null> {
     const emailAd = await UserModel.findOne({ where: { emailAddress: email } });
     if (emailAd !== null) {
@@ -48,9 +50,9 @@ export class UserService {
     return emailAd;
   }
 
-  public getUserCountfromDB(): Promise<number> {
-    const usercount = UserModel.count();
-    return usercount;
+  public async calculateIfAdmin(): Promise<number> {
+    const userCount = UserModel.count();
+    return userCount;
   }
 
   public async createnewUser(
@@ -59,30 +61,26 @@ export class UserService {
     license: boolean,
     emailAddress: string,
     password: string,
-    blocked: boolean,
-    admin: boolean
+    blocked: boolean
   ): Promise<UserModel> {
-    const isAdmin = (await this.getUserCountfromDB()) ? false : true;
-    const isNewUser = await User.createWithPlaintextPassword(
+    const isAdmin = (await this.calculateIfAdmin()) ? false : true;
+    const newUser = await User.createWithPlaintextPassword(
       firstName,
       lastName,
       license,
       emailAddress,
       password,
-      blocked,
-      admin
+      false,
+      isAdmin
     );
-    const result = await UserModel.create({
-      isAdmin,
-      isNewUser,
-      firstName: firstName,
-      lastName: lastName,
-      license: false,
-      emailAddress: emailAddress,
-      password: await User.hashPassword(password),
-      blocked: false,
-      admin: false,
-    });
-    return result;
+    return this.userDao.createnewUser(
+      newUser.firstName,
+      newUser.lastName,
+      newUser.license,
+      newUser.emailAddress,
+      newUser.password,
+      false,
+      isAdmin
+    );
   }
 }

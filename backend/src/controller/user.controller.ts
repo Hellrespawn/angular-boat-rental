@@ -76,14 +76,11 @@ export class UserController {
     res: express.Response
   ): Promise<void> {
     if (!(await this.checkUserMail(req))) {
-      //   const isAdmin = (this.getUserCountfromDB()) ? false : true;
       const firstName: string = req.body.firstName;
       const lastName: string = req.body.lastName;
       const license: boolean = req.body.license;
       const emailAddress: string = req.body.emailAddress;
       const password: string = req.body.password;
-      const blocked: boolean = req.body.blocked;
-      const admin: boolean = req.body.admin;
       try {
         await this.userService.createnewUser(
           firstName,
@@ -91,13 +88,13 @@ export class UserController {
           license,
           emailAddress,
           password,
-          blocked,
-          admin
+          false
         );
         res.status(200).end();
       } catch (error) {
         console.error();
         res.status(400).json(error);
+        console.log(error);
       }
     } else {
       res.status(400).end();
