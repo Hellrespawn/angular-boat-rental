@@ -59,9 +59,6 @@ describe('AdminSkipperOverviewComponent', () => {
     putOnLeaveBtn = fixture.debugElement.query(
       By.css('.put-on-leave-btn')
     ).nativeElement;
-    // putOffLeaveBtn = fixture.debugElement.query(
-    //   By.css('.put-off-leave-btn')
-    // ).nativeElement;
   });
 
   it('should create', () => {
@@ -77,17 +74,32 @@ describe('AdminSkipperOverviewComponent', () => {
     expect(renderedSkipper).toBeTruthy();
     expect(renderedSkipper.innerHTML).toContain('Kees');
   });
+  it('should delete skipper when clicked on the delete button', async () => {
+    deleteBtn.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(fixture.debugElement.query(By.css('.skipper-item'))).toBeFalsy;
+  });
   it('should put skipper on leave when clicked on the put on leave button', async () => {
     putOnLeaveBtn.click();
     fixture.detectChanges();
     await fixture.whenStable();
     expect(renderedSkipper.innerHTML).toContain('Op verlof!');
   });
-  it('should put skipper off leave when clicked on the put off leave button', async () => {});
-  it('should delete skipper when clicked on the delete button', async () => {
-    deleteBtn.click();
+  it('should put skipper off leave when clicked on the put off leave button', async () => {
+    putOnLeaveBtn.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(renderedSkipper).toBeFalsy;
+
+    putOffLeaveBtn = fixture.debugElement.query(
+      By.css('.put-off-leave-btn')
+    ).nativeElement;
+
+    putOffLeaveBtn.click();
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(renderedSkipper.innerHTML).not.toContain('Op verlof!');
   });
 });

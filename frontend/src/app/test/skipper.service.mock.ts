@@ -23,12 +23,12 @@ export class MockSkipperService extends SkipperService {
     ]);
   }
   public override deleteSkipperById(id: number): Observable<void> {
-    return of();
+    return of(void 0);
   }
   public override updateLeaveStatus(
     id: number,
     updatedValue: boolean
   ): Observable<void> {
-    return of();
+    return of(void 0);
   }
 }
