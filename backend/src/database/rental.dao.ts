@@ -22,6 +22,14 @@ export class RentalDao {
     return models.map(Rental.fromModel);
   }
 
+  public async getRentalsByUserId(userId: number): Promise<Rental[]> {
+    const models = await RentalModel.findAll({
+      where: { userId },
+      include: [BoatModel, SkipperModel, UserModel],
+    });
+    return models.map(Rental.fromModel);
+  }
+
   public async getUpcomingRentalsByUserId(userId: number): Promise<Rental[]> {
     const now = new Date();
 

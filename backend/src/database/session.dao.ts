@@ -48,6 +48,14 @@ export class SessionDao {
   public async deleteSession(session: Session): Promise<boolean> {
     return Boolean(await SessionModel.destroy({ where: { id: session.id } }));
   }
+
+  public async getSessionsByUserId(userId: number): Promise<Session[]> {
+    const models = await SessionModel.findAll({
+      where: { userId },
+      include: [UserModel],
+    });
+    return models.map(Session.fromModel);
+  }
 }
 
 @Table

@@ -48,20 +48,6 @@ export class Rental {
   }
 
   /**
-   * Returns true if date is during the rental period.
-   */
-  private isDateDuringRental(date: Date): boolean {
-    return date >= this.dateStart && date <= this.dateEnd;
-  }
-
-  /**
-   * Returns true if the rental period is between dateStart and dateEnd.
-   */
-  private isRentalBetweenDates(dateStart: Date, dateEnd: Date): boolean {
-    return this.dateStart >= dateStart && this.dateEnd <= dateEnd;
-  }
-
-  /**
    * Checks if dateStart and dateEnd overlaps the rental period.
    */
   public areDatesOverlapping(dateStart: Date, dateEnd: Date): boolean {
@@ -92,6 +78,20 @@ export class Rental {
   }
 
   public isCurrent(): boolean {
-    return !this.isDateDuringRental(new Date());
+    return this.isDateDuringRental(new Date());
+  }
+
+  /**
+   * Returns true if date is during the rental period.
+   */
+  private isDateDuringRental(date: Date): boolean {
+    return date >= this.dateStart && date <= this.dateEnd;
+  }
+
+  /**
+   * Returns true if the rental period is between dateStart and dateEnd.
+   */
+  private isRentalBetweenDates(dateStart: Date, dateEnd: Date): boolean {
+    return this.dateStart >= dateStart && this.dateEnd <= dateEnd;
   }
 }
