@@ -1,50 +1,88 @@
-import request from 'supertest';
-import { SkipperModel } from '../../src/database/skipper.dao';
-import { app } from '../../src/server';
+import { SkipperService } from '../../src/services/skipper.service';
+import { SkipperDao } from '../../src/database/skipper.dao';
+import { SinonSpiedInstance } from 'sinon';
+import sinon from 'ts-sinon';
+import { Skipper } from '../../src/model/skipper';
 import { expect } from 'chai';
-import { initDatabase } from '../mocha-setup';
-import { dropDatabase } from '../../src/database';
+import request from 'supertest';
+import { app } from '../../src/server';
 
-describe('Test Skipper insertion into database', () => {
-  before(async () => {
-    await initDatabase();
-    await SkipperModel.create({
-      name: 'Kees',
-      pricePerDay: 250,
-      birthDate: new Date('05-15-1996'),
-      leave: false,
-    });
+describe('Test Skipper-functionality in backend', () => {
+  let skipperService: SkipperService;
+
+  let testSkipper: Skipper;
+  const testDate: Date = new Date();
+
+  let skipperDaoAddSkipperSpy: SinonSpiedInstance<any>;
+  let skipperDaoUpdateSpy: SinonSpiedInstance<any>;
+  let skipperDaoDeletionSpy: SinonSpiedInstance<any>;
+
+  function createSpyForSkipperDaoAddSkipper(): void {
+    skipperDaoAddSkipperSpy = sinon.stub(
+      SkipperDao.prototype,
+      'saveNewSkipper'
+    );
+  }
+
+  function createSpyForSkipperDaoUpdateSkipper(): void {
+    skipperDaoUpdateSpy = sinon.stub(
+      SkipperDao.prototype,
+      'updateLeaveValueInSkipper'
+    );
+  }
+
+  function createSpyForSkipperDaoDeleteSkipper(): void {
+    skipperDaoDeletionSpy = sinon.stub(SkipperDao.prototype, 'deleteSkipper');
+  }
+
+  async function stubSkipperServiceForReturnAllSkippers(): Promise<void> {
+    testSkipper = new Skipper('Kees', 300, testDate, false, 1);
+
+    const returnAllSkippersStub = sinon.stub(
+      SkipperService.prototype,
+      'returnAllSkippers'
+    );
+
+    returnAllSkippersStub.returns(Promise.resolve([testSkipper]));
+  }
+
+  beforeEach(async () => {
+    stubSkipperServiceForReturnAllSkippers();
+    createSpyForSkipperDaoAddSkipper();
+    createSpyForSkipperDaoDeleteSkipper();
+    createSpyForSkipperDaoUpdateSkipper();
+    skipperService = new SkipperService();
   });
 
-  after(async () => {
-    await dropDatabase();
+  afterEach(() => {
+    sinon.restore();
   });
 
-  describe('Skipper creation test', () => {
-    it('Test if name is correct of created skipper', async () => {
-      const res = await request(app).get('/skippers');
-      expect(res.status).to.equal(200);
-      expect(res.body[0].name).to.equal('Kees');
-    });
+  it('Returns all skippers when the endpoint /skippers is called with a get request', async () => {
+    const res = await request(app).get('/skippers');
+    expect(res.body).to.deep.equal([
+      {
+        name: testSkipper.name,
+        leave: testSkipper.leave,
+        pricePerDay: testSkipper.pricePerDay,
+        id: 1,
+        birthDate: testSkipper.birthDate.toJSON(),
+      },
+    ]);
+  });
 
-    it('Test if pricePerDay is correct of created skipper', async () => {
-      const res = await request(app).get('/skippers');
-      expect(res.status).to.equal(200);
-      expect(res.body[0].pricePerDay).to.equal(250);
-    });
+  it('The saveNewSkipper method of the SkipperDao should be called when correctly requested by the SkipperService', () => {
+    skipperService.addSkipper('Kees', 300, new Date(), false);
+    expect(skipperDaoAddSkipperSpy.callCount).to.equal(1);
+  });
 
-    it('Test if birthDay is correct of created skipper', async () => {
-      const res = await request(app).get('/skippers');
-      expect(res.status).to.equal(200);
-      expect(new Date(res.body[0].birthDate)).to.deep.equal(
-        new Date('05-15-1996')
-      );
-    });
+  it('The updateLeaveValueInSkipper method of the SkipperDao should be called when correctly requested by the SkipperService', () => {
+    skipperService.updateLeaveOfSkipper(1, true);
+    expect(skipperDaoUpdateSpy.callCount).to.equal(1);
+  });
 
-    it('Test if leave boolean is correct of created skipper', async () => {
-      const res = await request(app).get('/skippers');
-      expect(res.status).to.equal(200);
-      expect(res.body[0].leave).to.equal(false);
-    });
+  it('The deleteSkipper method of the SkipperDao should be called when correctly requested by the SkipperService', () => {
+    skipperService.deleteSkipper(1);
+    expect(skipperDaoDeletionSpy.callCount).to.equal(1);
   });
 });

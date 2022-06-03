@@ -15,8 +15,8 @@ export class SkipperService {
    * @param skipperObject object describing the new skipper
    * @returns an observable of either the created skipper or an error object
    */
-  public addSkipper(skipperObject: {}): Observable<Skipper> {
-    return this.httpClient.post<Skipper>(
+  public addSkipper(skipperObject: {}): Observable<void> {
+    return this.httpClient.post<void>(
       `${environment.backendUrl}/skippers`,
       skipperObject
     );
