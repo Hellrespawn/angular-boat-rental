@@ -51,13 +51,13 @@ describe('LoginComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    button = fixture.debugElement.query(By.css('#LogIn-btn'));
+    button = fixture.debugElement.query(By.css('#login'));
     buttonEl = button.nativeElement;
 
-    emailInput = fixture.debugElement.query(By.css('#emailadres-input'));
+    emailInput = fixture.debugElement.query(By.css('#email'));
     emailInputEl = emailInput.nativeElement;
 
-    passwordInput = fixture.debugElement.query(By.css('#wachtwoord-input'));
+    passwordInput = fixture.debugElement.query(By.css('#password'));
     passwordInputEl = passwordInput.nativeElement;
 
     spy = spyOn(MockSessionService.prototype, 'login').and.callThrough();
@@ -81,7 +81,7 @@ describe('LoginComponent', () => {
     await fixture.whenStable();
 
     expect(component.email.value).toBe(email);
-    expect(component.wachtwoord.value).toBe(password);
+    expect(component.password.value).toBe(password);
   });
 
   it('should reject empty input.', async () => {
@@ -91,7 +91,7 @@ describe('LoginComponent', () => {
     await fixture.whenStable();
 
     expect(component.email.invalid).toBeTrue();
-    expect(component.wachtwoord.invalid).toBeTrue();
+    expect(component.password.invalid).toBeTrue();
 
     expect(spy.calls.count()).toEqual(0);
   });
