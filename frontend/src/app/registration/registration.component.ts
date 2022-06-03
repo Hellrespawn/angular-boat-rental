@@ -60,6 +60,13 @@ export class RegistrationComponent {
     duration: 1000,
     error: true,
   };
+
+  private readonly knownEmailInput: SnackBarInput = {
+    message: 'Emailadres bestaal al!',
+    buttonText: 'Sluit',
+    duration: 1000,
+    error: true,
+  };
   public firstName = new FormControl('', [Validators.required]);
   public lastName = new FormControl('', [Validators.required]);
   public email = new FormControl('', [Validators.required, Validators.email]);
@@ -184,6 +191,16 @@ export class RegistrationComponent {
     if (this.emailAddressInp.nativeElement.value === '') {
       this.snackBService.makeSnackbarThatClosesAutomatically(
         this.emptyEmailInput
+      );
+      console.log('email');
+      return;
+    }
+  }
+
+  public knownEmail(): void {
+    if (this.emailAddressInp.nativeElement.value === '') {
+      this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.knownEmailInput
       );
       console.log('email');
       return;

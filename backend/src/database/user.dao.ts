@@ -64,6 +64,27 @@ export class UserDao {
       throw 'userToDelete not found';
     }
   }
+
+  public async createNewUser(
+    firstName: string,
+    lastName: string,
+    license: boolean,
+    emailAddress: string,
+    password: string,
+    blocked: boolean,
+    admin: boolean
+  ): Promise<UserModel> {
+    const result = await UserModel.create({
+      firstName: firstName,
+      lastName: lastName,
+      license: false,
+      emailAddress: emailAddress,
+      password: await User.hashPassword(password),
+      blocked: false,
+      admin,
+    });
+    return result;
+  }
 }
 
 @Table

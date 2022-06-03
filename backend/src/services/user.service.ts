@@ -1,3 +1,4 @@
+import { resourceLimits } from 'worker_threads';
 import { UserDao, UserModel } from '../database/user.dao';
 import { User } from '../model/user';
 
@@ -40,11 +41,46 @@ export class UserService {
     return this.userDao.deleteUser(idOfUser);
   }
 
+  // TODO: functie moet nog naar de DAO
   public async checkEmail(email: string): Promise<UserModel | null> {
     const emailAd = await UserModel.findOne({ where: { emailAddress: email } });
     if (emailAd !== null) {
       console.log('email found');
     }
     return emailAd;
+  }
+
+  public async calculateIfAdmin(): Promise<number> {
+    const userCount = UserModel.count();
+    return userCount;
+  }
+
+  public async createNewUser(
+    firstName: string,
+    lastName: string,
+    license: boolean,
+    emailAddress: string,
+    password: string,
+    blocked: boolean
+  ): Promise<UserModel> {
+    const isAdmin = (await this.calculateIfAdmin()) ? false : true;
+    const newUser = await User.createWithPlaintextPassword(
+      firstName,
+      lastName,
+      license,
+      emailAddress,
+      password,
+      false,
+      isAdmin
+    );
+    return this.userDao.createNewUser(
+      newUser.firstName,
+      newUser.lastName,
+      newUser.license,
+      newUser.emailAddress,
+      newUser.password,
+      false,
+      isAdmin
+    );
   }
 }
