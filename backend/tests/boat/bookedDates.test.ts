@@ -118,14 +118,13 @@ describe('Test /boats/:id/bookedDates', () => {
     });
 
     it('Responds with an error on a malformed date', async () => {
-      const res = await request(app).get(
-        '/boats/overview/available/2022-02-01/2022-02-0'
-      );
-
-      expect(res.status).to.equal(400);
-
-      const { error } = res.body;
-      expect(error).to.contain('Invalid date');
+      await request(app)
+        .get('/boats/overview/available/2022-02-01/2022-02-0')
+        .expect(400)
+        .then((res) => {
+          const { error } = res.body;
+          expect(error).to.contain('Invalid date');
+        });
     });
   });
 });
