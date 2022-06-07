@@ -15,9 +15,9 @@ export class User {
 
     public emailAddress: string,
     public password: string,
-    public blocked: boolean,
+    private blocked: boolean,
     public admin: boolean,
-    public arrayOfFines: FineModel[]
+    private arrayOfFines: FineModel[]
   ) {}
 
   /**

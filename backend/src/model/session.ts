@@ -8,7 +8,7 @@ export class Session {
     public id: number,
     public sessionId: string,
     public user: User,
-    public createdAt: Date
+    private createdAt: Date
   ) {}
 
   /**
