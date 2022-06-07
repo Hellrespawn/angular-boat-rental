@@ -19,6 +19,8 @@ describe('Test Session', () => {
 
   let sessionService: SessionService;
 
+  const expectedError = 'invalid credentials';
+
   async function stubUserService(): Promise<void> {
     user = await User.createWithPlaintextPassword(
       'Stef',
@@ -57,6 +59,9 @@ describe('Test Session', () => {
         await sessionService.login('fake', 'fake');
       } catch (error) {
         expect(saveStub.callCount).to.equal(0);
+        expect((error as Error).message.toLowerCase()).to.include(
+          expectedError
+        );
         return;
       }
 
@@ -68,6 +73,9 @@ describe('Test Session', () => {
         await sessionService.login(user.emailAddress, 'fake');
       } catch (error) {
         expect(saveStub.callCount).to.equal(0);
+        expect((error as Error).message.toLowerCase()).to.include(
+          expectedError
+        );
         return;
       }
 
@@ -78,28 +86,6 @@ describe('Test Session', () => {
       const session = await sessionService.login(user.emailAddress, password);
       expect(saveStub.callCount).to.equal(1);
       expect(session.user).to.deep.equal(user);
-    });
-
-    it('Throws the same error for incorrect email and incorrect password.', async () => {
-      try {
-        await sessionService.login('fake', 'fake');
-      } catch (error1) {
-        expect(saveStub.callCount).to.equal(0);
-
-        try {
-          await sessionService.login(user.emailAddress, 'fake');
-        } catch (error2) {
-          expect(saveStub.callCount).to.equal(0);
-          expect(error1).to.deep.equal(error2);
-          return;
-        }
-
-        assert.fail(
-          'Login with incorrect password is not supposed to succeed.'
-        );
-      }
-
-      assert.fail('Login with non-existent user is not supposed to succeed.');
     });
   });
 
