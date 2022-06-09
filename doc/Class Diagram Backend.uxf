@@ -1,62 +1,216 @@
-<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>Skipper</help_text><element><id>UMLClass</id><coordinates><x>1260</x><y>0</y><w>100</w><h>30</h></coordinates><panel_attributes>Model
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>990</x><y>440</y><w>100</w><h>90</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <help_text>Skipper</help_text>
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1062</x>
+      <y>108</y>
+      <w>90</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
 BoatType
 --
 "motor"
-"sail"</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1030</x><y>520</y><w>80</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+"sail"</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1098</x>
+      <y>180</y>
+      <w>90</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=+boatType
-m2=1</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1300</x><y>20</y><w>30</w><h>610</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;590</additional_attributes></element><element><id>Relation</id><coordinates><x>770</x><y>680</y><w>160</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=1</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>864</x>
+      <y>324</y>
+      <w>144</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=rentals
-m2=*</panel_attributes><additional_attributes>140;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1150</x><y>400</y><w>120</w><h>100</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+m2=*</panel_attributes>
+    <additional_attributes>140.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1206</x>
+      <y>99</y>
+      <w>108</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
 BoatRequirements
 --
 "none"
 "license"
-"skipper"</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1200</x><y>490</y><w>30</w><h>140</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>360</x><y>610</y><w>420</w><h>280</h></coordinates><panel_attributes>Rental
+"skipper"</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1251</x>
+      <y>180</y>
+      <w>27</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>495</x>
+      <y>261</y>
+      <w>378</w>
+      <h>225</h>
+    </coordinates>
+    <panel_attributes>Rental
 --
-+boatId: number
-+userId: number
-+skipperId?: number
++id: number
 +dateStart: Date
 +dateEnd: Date
 +paid: boolean
 --
--days: number
--isDateDuringRental(date: Date): boolean
--isRentalBetweenDates(dateStart: Date, dateEnd: Date): boolean
-+areDatesOverlapping(dateStart: Date, dateEnd: Date): boolean
+_+fromModel(model: RentalModel): Rental_
+_+days: number_
 +priceTotal: number
++areDatesOverlapping(dateStart: Date, dateEnd: Date): boolean
 +getDates(): Date[]
 +isUpcoming(): boolean
-+isCurrent(): boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>770</x><y>640</y><w>160</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
++isCurrent(): boolean
+-isDateDuringRental(date: Date): boolean
+-isRentalBetweenDates(dateStart: Date, dateEnd: Date): boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>864</x>
+      <y>288</y>
+      <w>144</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=boat
-m2=1</panel_attributes><additional_attributes>10;10;140;10</additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>630</y><w>180</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>351</x>
+      <y>279</y>
+      <w>162</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=user
-m2=1</panel_attributes><additional_attributes>160;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>750</x><y>250</y><w>580</w><h>380</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;360;10;10;560;10</additional_attributes></element><element><id>Relation</id><coordinates><x>600</x><y>460</y><w>70</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=1</panel_attributes>
+    <additional_attributes>160.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>711</x>
+      <y>126</y>
+      <w>63</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=skipper
-m2=[0..1]</panel_attributes><additional_attributes>10;150;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>600</y><w>210</w><h>180</h></coordinates><panel_attributes>User
+m2=[0..1]</panel_attributes>
+    <additional_attributes>10.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>171</x>
+      <y>252</y>
+      <w>189</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>User
 --
-firstName: string
-lastName: string
-license: boolean
-dateOfBirth: Date
-emailAddress: string
-password: string
-blocked: boolean
++firstName: string
++lastName: string
++license: boolean
++emailAddress: string
++password: string
++blocked: boolean
++admin: boolean
 --
 +getRequiredDateString(): string
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>520</x><y>360</y><w>160</w><h>110</h></coordinates><panel_attributes>Skipper
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>639</x>
+      <y>36</y>
+      <w>144</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>Skipper
 --
 name: string
 pricePerDay: number
 birthDate: Date
 leave: boolean
---</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>540</x><y>460</y><w>60</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>657</x>
+      <y>126</y>
+      <w>63</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=rentals
-m2=*</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>660</y><w>180</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m1=rentals
-m2=*</panel_attributes><additional_attributes>10;10;160;10</additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>250</y><w>430</w><h>370</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;350;10;10;410;10</additional_attributes></element><element><id>Relation</id><coordinates><x>580</x><y>250</y><w>200</w><h>130</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;110;10;10;180;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>910</x><y>610</y><w>420</w><h>260</h></coordinates><panel_attributes>Boat
+m2=*</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>351</x>
+      <y>306</y>
+      <w>162</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=getRentals()
+m2=*</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>990</x>
+      <y>261</y>
+      <w>378</w>
+      <h>252</h>
+    </coordinates>
+    <panel_attributes>Boat
 --
++id: number
 +naam: string
 +registrationNumber: number
 +pricePerDay: number
@@ -68,12 +222,98 @@ m2=*</panel_attributes><additional_attributes>10;10;160;10</additional_attribute
 +maxSpeedInKmH?: number
 +sailAreaInM2?: number
 --
+_+fromModel(model: BoatModel): Boat_
 +getRequirements(): BoatRequirements
 +isAvailable(dateStart: Date, dateEnd:Date): Promise&lt;Boolean&gt;
-+getBookedDates(): Promise&lt;Date[]&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1380</x><y>610</y><w>200</w><h>100</h></coordinates><panel_attributes>Message
++getBookedDates(): Promise&lt;Date[]&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>189</x>
+      <y>99</y>
+      <w>144</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>Fine
 --
-+ name: string
-+ email: string
-+ text: string
++amount: number
++paid: boolean
++id?: number
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>297</x>
+      <y>180</y>
+      <w>99</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=arrayOfFines	
+m2=*</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>207</x>
+      <y>180</y>
+      <w>54</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=user
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>126</x>
+      <y>486</y>
+      <w>261</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>Session
 --
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1300</x><y>250</y><w>220</w><h>380</h></coordinates><panel_attributes></panel_attributes><additional_attributes>200;360;200;10;10;10</additional_attributes></element></diagram>
++id: number
++sessionId: string
++createdAt: Date
+--
+_+fromModel(model: SessionModel): Session_
+_+createSessionForUser(user: User): Session_
+_+generateSessionId(): string_
++isExpired(): boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>207</x>
+      <y>396</y>
+      <w>54</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=user
+m2=1</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>297</x>
+      <y>396</y>
+      <w>99</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=getSessions()	
+m2=*</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+</diagram>

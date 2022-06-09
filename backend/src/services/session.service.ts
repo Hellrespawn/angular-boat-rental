@@ -25,7 +25,7 @@ export class SessionService {
    * @returns a session
    */
   public async login(email: string, password: string): Promise<Session> {
-    const user = await this.userService.getUser(email);
+    const user = await this.userService.getUserByEmail(email);
 
     if (!user || !(await user.verifyPassword(password))) {
       // Single error, so as to not provide more information than necessary.

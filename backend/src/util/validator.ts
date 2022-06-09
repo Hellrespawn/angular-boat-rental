@@ -27,7 +27,7 @@ export class Validator<T> {
     return this.validator(data);
   }
 
-  public getErrors():
+  public get errors():
     | ErrorObject<string, Record<string, T>, unknown>[]
     | null
     | undefined {
@@ -39,7 +39,7 @@ export class Validator<T> {
       if (this.validate(req.body)) {
         next();
       } else {
-        res.status(400).json(this.getErrors());
+        res.status(400).json(this.errors);
       }
     };
   }

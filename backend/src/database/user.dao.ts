@@ -23,8 +23,18 @@ function getRequiredDateString(): string {
 }
 
 export class UserDao {
-  public async getUser(emailAddress: string): Promise<User | null> {
+  public async getUserByEmail(emailAddress: string): Promise<User | null> {
     const model = await UserModel.findOne({ where: { emailAddress } });
+
+    if (model) {
+      return User.fromModel(model);
+    }
+
+    throw 'User not found!';
+  }
+
+  public async getUserById(id: number): Promise<User | null> {
+    const model = await UserModel.findOne({ where: { id } });
 
     if (model) {
       return User.fromModel(model);

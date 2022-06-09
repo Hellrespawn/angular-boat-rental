@@ -1,5 +1,6 @@
 import { BoatModel, BoatRequirements, BoatType } from 'src/database/boat.dao';
-import { RentalModel } from '../database/rental.dao';
+import { RentalDao } from '../database/rental.dao';
+import { Rental } from './rental';
 
 export class Boat {
   constructor(
@@ -13,7 +14,6 @@ export class Boat {
     public lengthInM: number,
     public maxOccupants: number,
     public boatType: BoatType,
-    public rentals?: RentalModel[],
     public maxSpeedInKmH?: number,
     public sailAreaInM2?: number
   ) {}
@@ -30,19 +30,13 @@ export class Boat {
       boatModel.lengthInM,
       boatModel.maxOccupants,
       boatModel.boatType,
-      boatModel.rentals,
       boatModel.maxSpeedInKmH,
       boatModel.sailAreaInM2
     );
   }
 
-  private async getRentals(): Promise<RentalModel[]> {
-    // If the boat instance was eagerly loaded, this.rentals will be defined,
-    // else, it loads it here.
-    return (
-      this.rentals ??
-      (await RentalModel.findAll({ where: { boatId: this.id } }))
-    );
+  public async getRentals(): Promise<Rental[]> {
+    return await new RentalDao().getRentalsByBoatId(this.id);
   }
 
   /**
@@ -79,7 +73,6 @@ export class Boat {
    */
   public async isAvailable(dateStart: Date, dateEnd: Date): Promise<boolean> {
     const rentals = await this.getRentals();
-
     return rentals.every((r) => !r.areDatesOverlapping(dateStart, dateEnd));
   }
 
@@ -90,6 +83,7 @@ export class Boat {
    */
   public async getBookedDates(): Promise<Date[]> {
     const rentals = await this.getRentals();
+
     return rentals.flatMap((rental) => rental.getDates());
   }
 }
