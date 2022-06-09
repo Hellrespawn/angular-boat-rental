@@ -18,7 +18,6 @@ describe('BootToevoegComponent', () => {
   let registrationField: HTMLInputElement;
   let priceField: HTMLInputElement;
   let maxOccupantsField: HTMLInputElement;
-  let skipperRequiredField: HTMLInputElement;
   let lengthField: HTMLInputElement;
   let sailField: HTMLInputElement;
   let motorField: HTMLInputElement;
@@ -62,9 +61,6 @@ describe('BootToevoegComponent', () => {
     priceField = fixture.debugElement.query(By.css('#price')).nativeElement;
     maxOccupantsField = fixture.debugElement.query(
       By.css('#maxOccupants')
-    ).nativeElement;
-    skipperRequiredField = fixture.debugElement.query(
-      By.css('#skipperRequired')
     ).nativeElement;
     lengthField = fixture.debugElement.query(By.css('#length')).nativeElement;
     sailField = fixture.debugElement.query(By.css('#sail')).nativeElement;
