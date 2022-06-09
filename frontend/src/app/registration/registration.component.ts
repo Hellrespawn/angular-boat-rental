@@ -61,12 +61,7 @@ export class RegistrationComponent {
     error: true,
   };
 
-  private readonly knownEmailInput: SnackBarInput = {
-    message: 'Emailadres bestaal al!',
-    buttonText: 'Sluit',
-    duration: 1000,
-    error: true,
-  };
+  // formcontrol email messages
   public firstName = new FormControl('', [Validators.required]);
   public lastName = new FormControl('', [Validators.required]);
   public email = new FormControl('', [Validators.required, Validators.email]);
@@ -112,6 +107,7 @@ export class RegistrationComponent {
   public emailAddressInp!: ElementRef<HTMLInputElement>;
   @ViewChild('passwordInp') public passwordInp!: ElementRef<HTMLInputElement>;
 
+  // check if password is ok and fields are touched then submit to backend
   public sendDataToBackend(): void {
     if (this.radioButtonNotSet()) {
       const regex = /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$/;
@@ -119,17 +115,20 @@ export class RegistrationComponent {
       this.nameTouched();
       this.lastNameTouched();
       this.emailTouched();
+    // this.userService.checkIfEmailFound()
       if (!regex.test(passwordInp)) {
         this.falseEntryForm();
         return;
       } else {
         this.succesEntryForm();
+        // sends this.getUsers() data to backend through userService with addUsers()
         this.userService.addUsers(this.getUsers()).subscribe();
         this.router.navigateByUrl('/registratie-pagina');
       }
     }
   }
 
+  // get user data
   public getUsers(): object {
     let firstNameInp: string = this.firstNameInp.nativeElement.value;
     let lastNameInp: string = this.lastNameInp.nativeElement.value;
@@ -191,16 +190,6 @@ export class RegistrationComponent {
     if (this.emailAddressInp.nativeElement.value === '') {
       this.snackBService.makeSnackbarThatClosesAutomatically(
         this.emptyEmailInput
-      );
-      console.log('email');
-      return;
-    }
-  }
-
-  public knownEmail(): void {
-    if (this.emailAddressInp.nativeElement.value === '') {
-      this.snackBService.makeSnackbarThatClosesAutomatically(
-        this.knownEmailInput
       );
       console.log('email');
       return;
