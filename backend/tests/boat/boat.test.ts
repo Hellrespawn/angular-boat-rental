@@ -68,7 +68,7 @@ describe('Test Boat-functionality in backend', () => {
     sinon.restore();
   });
 
-  it('Returns all Boats when the endpoint /skippers is called with a get request', async () => {
+  it('Returns all Boats when the endpoint /boats is called with a get request', async () => {
     const res = await request(app).get('/boats');
     expect(res.body).to.deep.equal({
       boats: [
