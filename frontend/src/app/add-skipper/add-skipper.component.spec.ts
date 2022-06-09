@@ -78,6 +78,7 @@ describe('SchipperToevoegComponent', () => {
       fixture.detectChanges();
       await fixture.whenStable();
       expect(component.nameControl.value).toBe('Kees');
+      expect(component.nameControl.valid).toBeTrue();
     });
 
     it('price input field should pass value to form control', async () => {
@@ -87,6 +88,7 @@ describe('SchipperToevoegComponent', () => {
       fixture.detectChanges();
       await fixture.whenStable();
       expect(component.priceControl.value).toBe(testPrice);
+      expect(component.priceControl.valid).toBeTrue();
     });
 
     it('birth date input field should pass value to form control', async () => {
@@ -96,6 +98,7 @@ describe('SchipperToevoegComponent', () => {
       fixture.detectChanges();
       await fixture.whenStable();
       expect(component.birthDateControl.value).toBe(testDateString);
+      expect(component.birthDateControl.valid).toBeTrue();
     });
   });
 
