@@ -22,7 +22,7 @@ describe('Test Session', () => {
   const expectedError = 'invalid credentials';
 
   async function stubUserService(): Promise<void> {
-    user = await User.createWithPlaintextPassword(
+    user = await User.create(
       'Stef',
       'Korporaal',
       true,

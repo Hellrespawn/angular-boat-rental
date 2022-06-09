@@ -8,7 +8,7 @@ import { Session } from './session';
 
 // Private properties kunnen niet gestubt worden.
 export class User {
-  constructor(
+  private constructor(
     public id: number,
     public firstName: string,
     public lastName: string,
@@ -41,12 +41,12 @@ export class User {
   /**
    * Create a user with a plaintext password that gets hashed.
    */
-  public static async createWithPlaintextPassword(
+  public static async create(
     firstName: string,
     lastName: string,
     license: boolean,
     emailAddress: string,
-    password: string,
+    plaintextPassword: string,
     blocked: boolean,
     admin: boolean
   ): Promise<User> {
@@ -56,7 +56,7 @@ export class User {
       lastName,
       license,
       emailAddress,
-      await User.hashPassword(password),
+      await User.hashPassword(plaintextPassword),
       blocked,
       admin,
       []

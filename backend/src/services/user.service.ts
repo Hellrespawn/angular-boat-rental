@@ -73,7 +73,7 @@ export class UserService {
     blocked: boolean
   ): Promise<UserModel> {
     const isAdmin = (await this.calculateIfAdmin()) ? false : true;
-    const newUser = await User.createWithPlaintextPassword(
+    const newUser = await User.create(
       firstName,
       lastName,
       license,
