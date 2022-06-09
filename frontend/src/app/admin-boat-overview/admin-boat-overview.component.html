@@ -2,7 +2,7 @@
 <button routerLink="/add-boat" mat-raised-button color="primary">
   Voeg een boot toe
 </button>
-<mat-card *ngFor="let boat of arrayOfBoats; index as i">
+<mat-card *ngFor="let boat of arrayOfBoats; index as i" class="boat-item">
   <mat-card-title>{{ boat.name }}</mat-card-title>
   <mat-card-subtitle
     >Registratie nummer: {{ boat.registrationNumber }}</mat-card-subtitle
@@ -16,6 +16,7 @@
       mat-raised-button
       color="primary"
       (click)="deleteBoatById(boat.id, i)"
+      class="delete-btn"
     >
       Verwijder
     </button>
@@ -24,6 +25,7 @@
       mat-raised-button
       color="primary"
       (click)="updateMaintenance(boat.id, true, i)"
+      class="on-maintenance-btn"
     >
       Zet op onderhoud
     </button>
@@ -32,6 +34,7 @@
       mat-raised-button
       color="primary"
       (click)="updateMaintenance(boat.id, false, i)"
+      class="off-maintenance-btn"
     >
       Haal van onderhoud af
     </button>
