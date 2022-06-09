@@ -81,7 +81,6 @@ describe('Test Skipper-functionality in backend', () => {
         birthDate: new Date(),
       })
       .expect(200);
-    // skipperService.addSkipper('Kees', 300, new Date(), false);
     expect(skipperDaoAddSkipperSpy.callCount).to.equal(1);
   });
 
