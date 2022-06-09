@@ -1,11 +1,12 @@
 import * as argon2 from 'argon2';
 import { UserModel } from '../database/user.dao';
-import { RentalDao, RentalModel } from '../database/rental.dao';
+import { RentalDao } from '../database/rental.dao';
 import { FineModel } from '../database/fine.dao';
 import { Rental } from './rental';
 import { SessionDao } from '../database/session.dao';
 import { Session } from './session';
 
+// Private properties kunnen niet gestubt worden.
 export class User {
   constructor(
     public id: number,
@@ -15,9 +16,9 @@ export class User {
 
     public emailAddress: string,
     public password: string,
-    private blocked: boolean,
+    public blocked: boolean,
     public admin: boolean,
-    private arrayOfFines: FineModel[]
+    public arrayOfFines: FineModel[]
   ) {}
 
   /**
