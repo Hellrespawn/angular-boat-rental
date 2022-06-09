@@ -72,7 +72,7 @@ describe('Test Skipper-functionality in backend', () => {
   });
 
   it('The saveNewSkipper method of the SkipperDao should be called when correctly requested by the SkipperService', async () => {
-    const res = await request(app)
+    await request(app)
       .post('/skippers')
       .set('Content-type', 'application/json')
       .send({
