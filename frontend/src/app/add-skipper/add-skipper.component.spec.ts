@@ -71,7 +71,7 @@ describe('SchipperToevoegComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Testing FormControls', () => {
+  describe('FormControls', () => {
     it('name input field should pass value to form control', async () => {
       nameFieldElement.value = 'Kees';
       nameFieldElement.dispatchEvent(new Event('input'));

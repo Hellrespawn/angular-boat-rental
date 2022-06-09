@@ -77,7 +77,7 @@ describe('BootToevoegComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Testing FormControls', () => {
+  describe('FormControls', () => {
     it('name input field should pass value to form control', async () => {
       nameField.value = 'De Test Boot';
       nameField.dispatchEvent(new Event('input'));
