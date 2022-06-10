@@ -8,7 +8,7 @@ import { BoatService } from '../boat.service';
 })
 export class MockBoatService extends BoatService {
   public override addBoat(boatObject: {}): Observable<void> {
-    return of(void 0);
+    return of(undefined);
   }
 
   public override getBoats(): Observable<{ boats: Boat[] }> {
@@ -32,13 +32,13 @@ export class MockBoatService extends BoatService {
   }
 
   public override deleteBoatById(id: number): Observable<void> {
-    return of(void 0);
+    return of(undefined);
   }
 
   public override updateMaintenanceStatus(
     id: number,
     updatedValue: boolean
   ): Observable<void> {
-    return of(void 0);
+    return of(undefined);
   }
 }
