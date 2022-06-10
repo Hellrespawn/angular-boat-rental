@@ -71,8 +71,16 @@ describe('Test Skipper-functionality in backend', () => {
     ]);
   });
 
-  it('The saveNewSkipper method of the SkipperDao should be called when correctly requested by the SkipperService', () => {
-    skipperService.addSkipper('Kees', 300, new Date(), false);
+  it('The saveNewSkipper method of the SkipperDao should be called when correctly requested by the SkipperService', async () => {
+    await request(app)
+      .post('/skippers')
+      .set('Content-type', 'application/json')
+      .send({
+        name: 'Kees',
+        pricePerDay: '123',
+        birthDate: new Date(),
+      })
+      .expect(200);
     expect(skipperDaoAddSkipperSpy.callCount).to.equal(1);
   });
 

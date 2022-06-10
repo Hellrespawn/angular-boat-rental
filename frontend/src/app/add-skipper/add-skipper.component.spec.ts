@@ -71,85 +71,92 @@ describe('SchipperToevoegComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('name input field should pass value to form control', async () => {
-    nameFieldElement.value = 'Kees';
-    nameFieldElement.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(component.nameControl.value).toBe('Kees');
+  describe('FormControls', () => {
+    it('name input field should pass value to form control', async () => {
+      nameFieldElement.value = 'Kees';
+      nameFieldElement.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component.nameControl.value).toBe('Kees');
+      expect(component.nameControl.valid).toBeTrue();
+    });
+
+    it('price input field should pass value to form control', async () => {
+      const testPrice: number = 250;
+      priceFieldElement.value = testPrice.toString();
+      priceFieldElement.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component.priceControl.value).toBe(testPrice);
+      expect(component.priceControl.valid).toBeTrue();
+    });
+
+    it('birth date input field should pass value to form control', async () => {
+      const testDateString = new Date().toISOString();
+      birthDateFieldElement.value = testDateString;
+      birthDateFieldElement.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component.birthDateControl.value).toBe(testDateString);
+      expect(component.birthDateControl.valid).toBeTrue();
+    });
   });
 
-  it('price input field should pass value to form control', async () => {
-    const testPrice: number = 250;
-    priceFieldElement.value = testPrice.toString();
-    priceFieldElement.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(component.priceControl.value).toBe(testPrice);
-  });
+  describe('Testing Frontend Validation With Incorrect Input', () => {
+    it('should not call the SkipperService when no name is entered', async () => {
+      nameFieldElement.value = '';
+      priceFieldElement.value = '250';
+      birthDateFieldElement.value = new Date().toISOString();
+      submitButtonElement.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component.nameControl.invalid).toBeTrue();
+      expect(addSkipperSpy.calls.count()).toEqual(0);
+    });
 
-  it('birth date input field should pass value to form control', async () => {
-    const testDateString = new Date().toISOString();
-    birthDateFieldElement.value = testDateString;
-    birthDateFieldElement.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(component.birthDateControl.value).toBe(testDateString);
-  });
+    it('should not call the SkipperService when no price is entered', async () => {
+      nameFieldElement.value = 'Kees';
+      priceFieldElement.value = '';
+      birthDateFieldElement.value = new Date().toISOString();
+      submitButtonElement.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component.priceControl.invalid).toBeTrue();
+      expect(addSkipperSpy.calls.count()).toEqual(0);
+    });
 
-  it('should not call the SkipperService when no name is entered', async () => {
-    nameFieldElement.value = '';
-    priceFieldElement.value = '250';
-    birthDateFieldElement.value = new Date().toISOString();
-    submitButtonElement.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(component.nameControl.invalid).toBeTrue();
-    expect(addSkipperSpy.calls.count()).toEqual(0);
-  });
+    it('should not call the SkipperService when no birth date is entered', async () => {
+      nameFieldElement.value = 'Kees';
+      priceFieldElement.value = '250';
+      birthDateFieldElement.value = '';
+      submitButtonElement.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component.birthDateControl.invalid).toBeTrue();
+      expect(addSkipperSpy.calls.count()).toEqual(0);
+    });
 
-  it('should not call the SkipperService when no price is entered', async () => {
-    nameFieldElement.value = 'Kees';
-    priceFieldElement.value = '';
-    birthDateFieldElement.value = new Date().toISOString();
-    submitButtonElement.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(component.priceControl.invalid).toBeTrue();
-    expect(addSkipperSpy.calls.count()).toEqual(0);
-  });
+    it('should not call the SkipperService when a price below 0 is entered', async () => {
+      nameFieldElement.value = 'Kees';
+      priceFieldElement.value = '-1';
+      birthDateFieldElement.value = new Date().toISOString();
+      submitButtonElement.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component.priceControl.invalid).toBeTrue();
+      expect(addSkipperSpy.calls.count()).toEqual(0);
+    });
 
-  it('should not call the SkipperService when no birth date is entered', async () => {
-    nameFieldElement.value = 'Kees';
-    priceFieldElement.value = '250';
-    birthDateFieldElement.value = '';
-    submitButtonElement.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(component.birthDateControl.invalid).toBeTrue();
-    expect(addSkipperSpy.calls.count()).toEqual(0);
-  });
-
-  it('should not call the SkipperService when a price below 0 is entered', async () => {
-    nameFieldElement.value = 'Kees';
-    priceFieldElement.value = '-1';
-    birthDateFieldElement.value = new Date().toISOString();
-    submitButtonElement.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(component.priceControl.invalid).toBeTrue();
-    expect(addSkipperSpy.calls.count()).toEqual(0);
-  });
-
-  it('should not call the SkipperService when a price of 0 is entered', async () => {
-    nameFieldElement.value = 'Kees';
-    priceFieldElement.value = '0';
-    birthDateFieldElement.value = new Date().toISOString();
-    submitButtonElement.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(component.priceControl.invalid).toBeTrue();
-    expect(addSkipperSpy.calls.count()).toEqual(0);
+    it('should not call the SkipperService when a price of 0 is entered', async () => {
+      nameFieldElement.value = 'Kees';
+      priceFieldElement.value = '0';
+      birthDateFieldElement.value = new Date().toISOString();
+      submitButtonElement.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component.priceControl.invalid).toBeTrue();
+      expect(addSkipperSpy.calls.count()).toEqual(0);
+    });
   });
 
   it('should call the SkipperService when all fields are correctly filled in', async () => {

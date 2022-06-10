@@ -43,8 +43,8 @@ export class BoatService {
    * @param boatObject the object specifying the new boat
    * @returns and Observable of either the newly added boat or an error object
    */
-  public addBoat(boatObject: {}): Observable<Boat> {
-    return this.httpClient.post<Boat>(
+  public addBoat(boatObject: {}): Observable<void> {
+    return this.httpClient.post<void>(
       `${environment.backendUrl}/boats`,
       boatObject
     );

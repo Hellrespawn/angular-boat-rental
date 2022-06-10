@@ -88,7 +88,9 @@
     <mat-radio-button value="zeil" checked="true" #sail id="sail"
       >Zeilboot
     </mat-radio-button>
-    <mat-radio-button value="motor" #motor>Motorboot</mat-radio-button>
+    <mat-radio-button value="motor" id="motor" #motor
+      >Motorboot</mat-radio-button
+    >
   </mat-radio-group>
   <mat-form-field *ngIf="!sail.checked" appearance="fill">
     <mat-label>Max snelheid:</mat-label>

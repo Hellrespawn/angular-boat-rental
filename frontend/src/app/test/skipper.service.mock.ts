@@ -8,8 +8,7 @@ import { SkipperService } from '../skipper.service';
 })
 export class MockSkipperService extends SkipperService {
   public override addSkipper(skipperObject: {}): Observable<void> {
-    console.log('skipper added');
-    return of();
+    return of(undefined);
   }
   public override getSkippers(): Observable<Skipper[]> {
     return of([
@@ -23,12 +22,12 @@ export class MockSkipperService extends SkipperService {
     ]);
   }
   public override deleteSkipperById(id: number): Observable<void> {
-    return of(void 0);
+    return of(undefined);
   }
   public override updateLeaveStatus(
     id: number,
     updatedValue: boolean
   ): Observable<void> {
-    return of(void 0);
+    return of(undefined);
   }
 }
