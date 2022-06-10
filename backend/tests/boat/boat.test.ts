@@ -31,7 +31,7 @@ describe('Test Boat-functionality in backend', () => {
     boatDaoDeletionSpy = sinon.stub(BoatDao.prototype, 'deleteBoat');
   }
 
-  async function stubBoatServiceForgetBoats(): Promise<void> {
+  async function stubBoatServiceForGetBoats(): Promise<void> {
     testBoat = new Boat(
       1,
       'De Test Boot',
@@ -43,7 +43,6 @@ describe('Test Boat-functionality in backend', () => {
       25,
       10,
       'sail',
-      [],
       undefined,
       40
     );
@@ -57,7 +56,7 @@ describe('Test Boat-functionality in backend', () => {
   }
 
   beforeEach(async () => {
-    stubBoatServiceForgetBoats();
+    stubBoatServiceForGetBoats();
     createSpyForBoatDaoAddBoat();
     createSpyForBoatDaoDeletion();
     createSpyForBoatDaoUpdateMaintenance();
@@ -83,7 +82,6 @@ describe('Test Boat-functionality in backend', () => {
           lengthInM: 25,
           maxOccupants: 10,
           boatType: 'sail',
-          rentals: [],
           sailAreaInM2: 40,
         },
       ],
