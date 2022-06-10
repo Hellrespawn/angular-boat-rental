@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { Boat, BoatOverviewData, BoatType } from '../../../boat';
-import { BaseFilterComponent, BookingFilter } from '../filter';
+import { BoatOverviewData, BoatType } from '../../../boat';
+import { FilterComponent, BookingFilter } from '../filter';
 
 @Component({
   selector: 'app-filters-boat-type',
   templateUrl: './boat-type.component.html',
   styleUrls: ['../filter.scss'],
 })
-export class BoatTypeFilterComponent extends BaseFilterComponent<BoatTypeFilterState> {
+export class BoatTypeFilterComponent extends FilterComponent<BoatTypeFilterState> {
   public updateFilter(value: BoatTypeFilterState): void {
     this.bookingService.setTypeFilter(value);
   }

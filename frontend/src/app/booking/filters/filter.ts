@@ -1,9 +1,9 @@
 import { Directive } from '@angular/core';
-import { Boat, BoatOverviewData } from '../../boat';
+import { BoatOverviewData } from '../../boat';
 import { BookingService } from '../booking.service';
 
 @Directive()
-export abstract class BaseFilterComponent<T> {
+export abstract class FilterComponent<T> {
   constructor(public bookingService: BookingService) {}
 
   /**
