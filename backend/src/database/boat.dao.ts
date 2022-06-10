@@ -50,7 +50,7 @@ export class BoatDao {
   }
 
   public async saveNewBoat(newBoat: Boat): Promise<void> {
-    BoatModel.create({
+    await BoatModel.create({
       name: newBoat.name,
       registrationNumber: newBoat.registrationNumber,
       pricePerDay: newBoat.pricePerDay,
@@ -72,7 +72,7 @@ export class BoatDao {
     const boatToUpdate: BoatModel | null = await BoatModel.findByPk(idOfBoat);
     if (boatToUpdate !== null) {
       boatToUpdate.maintenance = updatedValue;
-      boatToUpdate.save();
+      await boatToUpdate.save();
     } else {
       throw 'Boat not found';
     }
@@ -81,7 +81,7 @@ export class BoatDao {
   public async deleteBoat(idOfBoat: number): Promise<void> {
     const boatToDelete: BoatModel | null = await BoatModel.findByPk(idOfBoat);
     if (boatToDelete !== null) {
-      boatToDelete.destroy();
+      await boatToDelete.destroy();
     } else {
       throw 'Boat not found';
     }

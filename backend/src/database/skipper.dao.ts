@@ -10,7 +10,7 @@ export class SkipperDao {
   }
 
   public async saveNewSkipper(newSkipper: Skipper): Promise<void> {
-    SkipperModel.create({
+    await SkipperModel.create({
       name: newSkipper.name,
       pricePerDay: newSkipper.pricePerDay,
       birthDate: newSkipper.birthDate,
@@ -27,7 +27,7 @@ export class SkipperDao {
     );
     if (skipperToUpdate !== null) {
       skipperToUpdate.leave = updatedValue;
-      skipperToUpdate.save();
+      await skipperToUpdate.save();
     } else {
       throw 'Skipper not found';
     }
@@ -38,7 +38,7 @@ export class SkipperDao {
       idOfSkipper
     );
     if (skipperToDelete !== null) {
-      skipperToDelete.destroy();
+      await skipperToDelete.destroy();
     } else {
       throw 'Skipper not found';
     }
