@@ -1,52 +1,37 @@
-<h2><p>Log In</p></h2>
-
-<section class="LogIn-sectie">
-  <form class="form">
+<form [formGroup]="loginForm">
+  <div id="inputs" class="custom-card vertical with-padding">
+    <h2>Log In</h2>
     <mat-form-field class="form-field" appearance="fill">
       <mat-label>Email-adres</mat-label>
       <input
-        type="name"
+        type="email"
         matInput
-        [formControl]="email"
-        placeholder="Emailadress"
-        id="emailadres-input"
+        placeholder="E-mailadres"
+        id="email"
+        formControlName="email"
       />
 
-      <mat-error *ngIf="email.invalid">{{ emailErrorMessage() }} </mat-error>
+      <mat-error *ngIf="email.invalid">{{ getEmailError() }}</mat-error>
     </mat-form-field>
-  </form>
-  <!-- Disable default submit handler. -->
-  <form class="form" (submit)="(false)">
     <mat-form-field class="form-field" appearance="fill">
       <mat-label>Wachtwoord</mat-label>
       <input
         type="password"
         matInput
-        [formControl]="wachtwoord"
         placeholder="Wachtwoord"
-        id="wachtwoord-input"
+        id="password"
+        formControlName="password"
       />
 
-      <mat-error *ngIf="wachtwoord.invalid"
-        >{{ wachtwoordErrorMessage() }}
-      </mat-error>
+      <mat-error *ngIf="password.invalid">{{ getPasswordError() }}</mat-error>
     </mat-form-field>
-    <div id="button-holder">
-      <button
-        mat-raised-button
-        color="primary"
-        id="LogIn-btn"
-        (click)="login()"
-      >
-        Log In!
-      </button>
-      <button
-        routerLink="/registratie-pagina"
-        mat-raised-button
-        color="primary"
-      >
-        Nog geen account? Registreer hier!
-      </button>
-    </div>
-  </form>
-</section>
+  </div>
+  <div id="buttons" class="custom-card with-padding accent">
+    <button mat-raised-button color="primary" id="login" (click)="login()">
+      Log In!
+    </button>
+    <button routerLink="/registratie-pagina" mat-raised-button color="primary">
+      Nog geen account? Registreer hier!
+    </button>
+  </div>
+</form>

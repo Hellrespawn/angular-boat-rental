@@ -23,8 +23,18 @@ function getRequiredDateString(): string {
 }
 
 export class UserDao {
-  public async getUser(emailAddress: string): Promise<User | null> {
+  public async getUserByEmail(emailAddress: string): Promise<User | null> {
     const model = await UserModel.findOne({ where: { emailAddress } });
+
+    if (model) {
+      return User.fromModel(model);
+    }
+
+    throw 'User not found!';
+  }
+
+  public async getUserById(id: number): Promise<User | null> {
+    const model = await UserModel.findOne({ where: { id } });
 
     if (model) {
       return User.fromModel(model);
@@ -63,6 +73,27 @@ export class UserDao {
     } else {
       throw 'userToDelete not found';
     }
+  }
+
+  public async createNewUser(
+    firstName: string,
+    lastName: string,
+    license: boolean,
+    emailAddress: string,
+    password: string,
+    blocked: boolean,
+    admin: boolean
+  ): Promise<UserModel> {
+    const result = await UserModel.create({
+      firstName: firstName,
+      lastName: lastName,
+      license: false,
+      emailAddress: emailAddress,
+      password: await User.hashPassword(password),
+      blocked: false,
+      admin,
+    });
+    return result;
   }
 }
 

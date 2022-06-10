@@ -4,34 +4,27 @@
 :host {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  background-color: mat.get-color-from-palette(
-    theme.$dogstack-project-uml-primary,
-    'lighter'
-  );
-  opacity: 0.8;
-  padding: 15px;
-}
-
-.form {
-  width: 100%;
-}
-
-.form-field {
-  width: 100%;
-}
-
-#logIn-sectie {
-  display: flex;
   align-items: center;
-  justify-content: center;
 }
 
-.logIn-btn {
-  opacity: 1;
+h2 {
+  text-align: center;
 }
 
-#button-holder {
+form {
   display: flex;
-  gap: 1em;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 2em;
+}
+
+#inputs,
+#buttons {
+  width: 100%;
+}
+
+#buttons {
+  display: flex;
+  justify-content: space-between;
 }

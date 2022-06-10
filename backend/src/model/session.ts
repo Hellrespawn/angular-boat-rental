@@ -8,18 +8,17 @@ export class Session {
     public id: number,
     public sessionId: string,
     public user: User,
-    public createdAt: Date
+    private createdAt: Date
   ) {}
 
   /**
    * Create session from model.
    */
-  public static async fromModel(model: SessionModel): Promise<Session> {
-    const user = model.user ?? (await model.$get('user'));
+  public static fromModel(model: SessionModel): Session {
     return new Session(
       model.id,
       model.sessionId,
-      User.fromModel(user),
+      User.fromModel(model.user),
       model.createdAt
     );
   }

@@ -1,8 +1,12 @@
 import * as argon2 from 'argon2';
 import { UserModel } from '../database/user.dao';
-import { RentalModel } from '../database/rental.dao';
+import { RentalDao } from '../database/rental.dao';
 import { FineModel } from '../database/fine.dao';
+import { Rental } from './rental';
+import { SessionDao } from '../database/session.dao';
+import { Session } from './session';
 
+// Private properties kunnen niet gestubt worden.
 export class User {
   constructor(
     public id: number,
@@ -73,10 +77,11 @@ export class User {
     return await argon2.verify(this.password, password);
   }
 
-  /**
-   * Retrieve User rentals.
-   */
-  public async getRentals(): Promise<RentalModel[]> {
-    return await RentalModel.findAll({ where: { userId: this.id } });
+  public async getRentals(): Promise<Rental[]> {
+    return await new RentalDao().getRentalsByUserId(this.id);
+  }
+
+  public async getSessions(): Promise<Session[]> {
+    return await new SessionDao().getSessionsByUserId(this.id);
   }
 }

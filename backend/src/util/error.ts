@@ -6,16 +6,15 @@ export enum ErrorType {
   Server = 500,
 }
 
-export class ServerError {
+export class ServerError extends Error {
   public errorType: ErrorType;
 
-  constructor(public message: string, errorType?: ErrorType) {
+  constructor(message: string, errorType?: ErrorType) {
+    super(message);
     this.errorType = errorType ?? ErrorType.Client;
   }
 
   public static async respond(error: unknown, res: Response): Promise<void> {
-    console.error(error);
-
     if (error instanceof ServerError) {
       res.status(error.errorType).json({ error: error.message });
     } else {

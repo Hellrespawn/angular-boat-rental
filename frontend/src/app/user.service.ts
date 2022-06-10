@@ -57,4 +57,11 @@ export class UserService {
       UserObject
     );
   }
+
+  public checkEmail(UserObject: {}): Observable<Object> {
+    return this.httpClient.post(
+      `${environment.backendUrl}/users/registratie-pagina`,
+      UserObject
+    );
+  }
 }
