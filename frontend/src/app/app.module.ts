@@ -32,8 +32,8 @@ import { LoginComponent } from './login/login.component';
 import { FaqComponent } from './faq/faq.component';
 
 import { BookingComponent } from './booking/booking.component';
-import { LicenseComponent } from './booking/filters/license/license.component';
-import { BoatTypeComponent } from './booking/filters/boat-type/boat-type.component';
+import { LicenseFilterComponent } from './booking/filters/license/license.component';
+import { BoatTypeFilterComponent } from './booking/filters/boat-type/boat-type.component';
 import { BoatCardComponent } from './booking/boat-card/boat-card.component';
 import { MatCardModule } from '@angular/material/card';
 
@@ -84,8 +84,8 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     RegistrationComponent,
     LoginComponent,
     BookingComponent,
-    LicenseComponent,
-    BoatTypeComponent,
+    LicenseFilterComponent,
+    BoatTypeFilterComponent,
     BoatCardComponent,
     AdminBoatOverviewComponent,
     AdminSkipperOverviewComponent,

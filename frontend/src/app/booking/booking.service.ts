@@ -11,31 +11,36 @@ import { BoatOverviewData, BoatType } from '../boat';
 import { BoatService } from '../boat.service';
 import { DateRange, RentalService } from '../rental.service';
 import { SessionService } from '../session.service';
-
-export type BoatTypeFilter = 'all' | BoatType;
-export type LicenseFilter = 'both' | 'required' | 'not-required';
+import {
+  BoatTypeFilter,
+  BoatTypeFilterState,
+} from './filters/boat-type/boat-type.component';
+import { BookingFilter } from './filters/filter';
+import {
+  LicenseFilter,
+  LicenseFilterState,
+} from './filters/license/license.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BookingService {
+  // Boats
   private boats: BehaviorSubject<BoatOverviewData[]> = new BehaviorSubject(
     [] as BoatOverviewData[]
   );
+  private boatSubscription?: Subscription;
 
+  // Filters
   private dateRange: BehaviorSubject<DateRange | null> = new BehaviorSubject(
     null as DateRange | null
   );
 
-  private typeFilter: BehaviorSubject<BoatTypeFilter> = new BehaviorSubject(
-    'all' as BoatTypeFilter
-  );
+  private typeFilter: BehaviorSubject<BoatTypeFilterState> =
+    new BehaviorSubject('all' as BoatTypeFilterState);
 
-  private licenseFilter: BehaviorSubject<LicenseFilter> = new BehaviorSubject(
-    'both' as LicenseFilter
-  );
-
-  private boatSubscription?: Subscription;
+  private licenseFilter: BehaviorSubject<LicenseFilterState> =
+    new BehaviorSubject('both' as LicenseFilterState);
 
   constructor(
     private boatService: BoatService,
@@ -43,7 +48,56 @@ export class BookingService {
     private sessionService: SessionService
   ) {
     this.getCurrentUserLicense();
-    this.getBoatOverviewData();
+  }
+
+  // Getters and setters
+  public getBoats(): Observable<BoatOverviewData[]> {
+    return this.boats.asObservable();
+  }
+
+  public getDateRange(): Observable<DateRange | null> {
+    return this.dateRange.asObservable();
+  }
+
+  public setDateRange(dateRange: DateRange | null): void {
+    this.dateRange.next(dateRange);
+    this.updateBoats();
+  }
+
+  public clearDateRange(): void {
+    this.dateRange.next(null);
+  }
+
+  public getTypeFilter(): Observable<BoatTypeFilterState> {
+    return this.typeFilter.asObservable();
+  }
+
+  public setTypeFilter(filter: BoatTypeFilterState): void {
+    this.typeFilter.next(filter);
+  }
+
+  public clearTypeFilter(): void {
+    this.setTypeFilter('all');
+  }
+
+  public getLicenseFilter(): Observable<LicenseFilterState> {
+    return this.licenseFilter.asObservable();
+  }
+
+  public setLicenseFilter(filter: LicenseFilterState): void {
+    this.licenseFilter.next(filter);
+  }
+
+  public clearLicenseFilter(): void {
+    this.setLicenseFilter('both');
+  }
+
+  /** Resets all current filters. */
+  public reset(): void {
+    this.clearLicenseFilter();
+    this.clearTypeFilter();
+    this.clearDateRange();
+    this.updateBoats();
   }
 
   /**
@@ -60,103 +114,10 @@ export class BookingService {
   }
 
   /**
-   * Returns an observable which tells whether or not a boat passes
-   * the license filter.
-   */
-  private passesLicenseFilter(boat: BoatOverviewData): Observable<boolean> {
-    return this.licenseFilter.pipe(
-      map((licenseFilter) => {
-        switch (licenseFilter) {
-          case 'both':
-            return true;
-          case 'required':
-            return boat.requirements == 'license';
-          case 'not-required':
-            return boat.requirements == 'none';
-        }
-      })
-    );
-  }
-  /**
-   * Returns an observable which tells whether or not a boat passes
-   * the boat type filter.
-   */
-  private passesTypeFilter(boat: BoatOverviewData): Observable<boolean> {
-    return this.typeFilter.pipe(
-      map((typeFilter) => {
-        switch (typeFilter) {
-          case 'all':
-            return true;
-
-          case 'motor':
-            return boat.boatType == 'motor';
-
-          case 'sail':
-            return boat.boatType == 'sail';
-        }
-      })
-    );
-  }
-
-  // Getters and setters
-  public getBoats(): Observable<BoatOverviewData[]> {
-    return this.boats.asObservable();
-  }
-
-  public getDateRange(): Observable<DateRange | null> {
-    return this.dateRange.asObservable();
-  }
-
-  public setDateRange(dateRange: DateRange | null): void {
-    this.dateRange.next(dateRange);
-    this.getBoatOverviewData();
-  }
-
-  public clearDateRange(): void {
-    this.dateRange.next(null);
-  }
-
-  public getTypeFilter(): Observable<BoatTypeFilter> {
-    return this.typeFilter.asObservable();
-  }
-
-  public setTypeFilter(filter: BoatTypeFilter): void {
-    this.typeFilter.next(filter);
-  }
-
-  public clearTypeFilter(): void {
-    this.setTypeFilter('all');
-  }
-
-  public getLicenseFilter(): Observable<LicenseFilter> {
-    return this.licenseFilter.asObservable();
-  }
-
-  public setLicenseFilter(filter: LicenseFilter): void {
-    this.licenseFilter.next(filter);
-  }
-
-  public clearLicenseFilter(): void {
-    this.setLicenseFilter('both');
-  }
-
-  /** Resets all current filters. */
-  public reset(): void {
-    this.clearLicenseFilter();
-    this.clearTypeFilter();
-    this.clearDateRange();
-    this.getBoatOverviewData();
-  }
-
-  public updateBoats(): void {
-    this.getBoatOverviewData();
-  }
-
-  /**
    * Updates the list of valid boats, based on this.dateRange, and broadcasts
    * it to subscribers of this.boats
    */
-  private getBoatOverviewData(): void {
+  public updateBoats(): void {
     this.boatSubscription?.unsubscribe();
 
     this.boatSubscription = this.dateRange.subscribe((dateRange) =>
@@ -168,7 +129,7 @@ export class BookingService {
 
   /**
    * Creates a rental and returns an observable with the id of the created
-   * Rental
+   * Rental. Resets the filter state.
    */
   public createRental(boatId: number): Observable<number> {
     let dateRange = this.dateRange.getValue();
@@ -187,10 +148,16 @@ export class BookingService {
    * filters
    */
   public isEnabled(boat: BoatOverviewData): Observable<boolean> {
-    return combineLatest([
-      this.passesLicenseFilter(boat),
-      this.passesTypeFilter(boat),
-    ]).pipe(map((filters) => filters.every((filter) => filter)));
+    return combineLatest([this.licenseFilter, this.typeFilter]).pipe(
+      map(([license, type]) => {
+        const filters: BookingFilter[] = [
+          new LicenseFilter(license),
+          new BoatTypeFilter(type),
+        ];
+
+        return filters.every((filter) => filter.apply(boat));
+      })
+    );
   }
 
   /**
