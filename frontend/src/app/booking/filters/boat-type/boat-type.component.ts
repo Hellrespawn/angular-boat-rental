@@ -15,10 +15,8 @@ export class BoatTypeFilterComponent extends FilterComponent<BoatTypeFilterState
 
 export type BoatTypeFilterState = 'all' | BoatType;
 
-export class BoatTypeFilter extends BookingFilter {
-  constructor(public state: BoatTypeFilterState) {
-    super();
-  }
+export class BoatTypeFilter implements BookingFilter {
+  constructor(public state: BoatTypeFilterState) {}
 
   public apply(boat: BoatOverviewData): boolean {
     switch (this.state) {

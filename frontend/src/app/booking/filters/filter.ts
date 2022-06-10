@@ -12,6 +12,6 @@ export abstract class FilterComponent<T> {
   public abstract updateFilter(value: T): void;
 }
 
-export abstract class BookingFilter {
-  public abstract apply(boat: BoatOverviewData): boolean;
+export interface BookingFilter {
+  apply(boat: BoatOverviewData): boolean;
 }

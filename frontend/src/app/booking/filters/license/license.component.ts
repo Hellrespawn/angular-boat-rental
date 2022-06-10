@@ -15,10 +15,8 @@ export class LicenseFilterComponent extends FilterComponent<LicenseFilterState> 
 
 export type LicenseFilterState = 'both' | 'required' | 'not-required';
 
-export class LicenseFilter extends BookingFilter {
-  constructor(public state: LicenseFilterState) {
-    super();
-  }
+export class LicenseFilter implements BookingFilter {
+  constructor(public state: LicenseFilterState) {}
 
   public apply(boat: BoatOverviewData): boolean {
     switch (this.state) {
