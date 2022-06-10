@@ -10,6 +10,60 @@ import {
 import { UserModel } from './user.dao';
 import { BoatModel } from './boat.dao';
 import { SkipperModel } from './skipper.dao';
+import { Op } from 'sequelize';
+import { Rental } from '../model/rental';
+
+export class RentalDao {
+  public async getRentalsByBoatId(boatId: number): Promise<Rental[]> {
+    const models = await RentalModel.findAll({
+      where: { boatId },
+      include: [BoatModel, SkipperModel, UserModel],
+    });
+    return models.map(Rental.fromModel);
+  }
+
+  public async getRentalsByUserId(userId: number): Promise<Rental[]> {
+    const models = await RentalModel.findAll({
+      where: { userId },
+      include: [BoatModel, SkipperModel, UserModel],
+    });
+    return models.map(Rental.fromModel);
+  }
+
+  public async getUpcomingRentalsByUserId(userId: number): Promise<Rental[]> {
+    const now = new Date();
+
+    const models = await RentalModel.findAll({
+      include: [BoatModel, SkipperModel, UserModel],
+      where: {
+        userId,
+        [Op.or]: [
+          {
+            dateStart: { [Op.gt]: now },
+          },
+          {
+            dateStart: { [Op.lte]: now },
+            dateEnd: { [Op.gt]: now },
+          },
+        ],
+      },
+      order: [['dateStart', 'ASC']],
+    });
+
+    return models.map(Rental.fromModel);
+  }
+
+  public async saveRental(rental: Rental): Promise<void> {
+    await RentalModel.create({
+      boatId: rental.boat.id,
+      userId: rental.user.id,
+      skipperId: rental.skipper?.id,
+      dateStart: rental.dateStart,
+      dateEnd: rental.dateEnd,
+      paid: rental.paid,
+    });
+  }
+}
 
 @Table
 export class RentalModel extends Model {
@@ -47,78 +101,4 @@ export class RentalModel extends Model {
   @Default(false)
   @Column
   public paid!: boolean;
-
-  /**
-   * Returns the number of days between dateStart and dateEnd (inclusive)
-   */
-  public static days(dateStart: Date, dateEnd: Date): number {
-    const ms = dateEnd.getTime() - dateStart.getTime();
-    return Math.ceil(ms / 1000 / 60 / 60 / 24) + 1;
-  }
-
-  /**
-   * Returns the total price of the rental.
-   */
-  public async priceTotal(): Promise<number> {
-    const boat = this.boat ?? (await this.$get('boat'));
-
-    const skipper: SkipperModel | null =
-      this.skipper ?? (await this.$get('skipper'));
-
-    const days = RentalModel.days(this.dateStart, this.dateEnd);
-    let total = days * boat.pricePerDay;
-    if (skipper) {
-      total += days * skipper.pricePerDay;
-    }
-
-    return total;
-  }
-
-  /**
-   * Returns true if date is during the rental period.
-   */
-  private isDateDuringRental(date: Date): boolean {
-    return date >= this.dateStart && date <= this.dateEnd;
-  }
-
-  /**
-   * Returns true if the rental period is between dateStart and dateEnd.
-   */
-  private isRentalBetweenDates(dateStart: Date, dateEnd: Date): boolean {
-    return this.dateStart >= dateStart && this.dateEnd <= dateEnd;
-  }
-
-  /**
-   * Checks if dateStart and dateEnd overlaps the rental period.
-   */
-  public areDatesOverlapping(dateStart: Date, dateEnd: Date): boolean {
-    return (
-      this.isDateDuringRental(dateStart) ||
-      this.isDateDuringRental(dateEnd) ||
-      this.isRentalBetweenDates(dateStart, dateEnd)
-    );
-  }
-
-  /**
-   * Returns an array with all booked dates.
-   */
-  public getDates(): Date[] {
-    const dates: Date[] = [];
-    for (
-      let date = new Date(this.dateStart);
-      date <= new Date(this.dateEnd);
-      date.setDate(date.getDate() + 1)
-    ) {
-      dates.push(new Date(date));
-    }
-    return dates;
-  }
-
-  public isUpcoming(): boolean {
-    return this.dateStart > new Date();
-  }
-
-  public isCurrent(): boolean {
-    return !this.isDateDuringRental(new Date());
-  }
 }

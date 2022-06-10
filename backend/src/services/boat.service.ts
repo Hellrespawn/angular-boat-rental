@@ -169,7 +169,6 @@ export class BoatService {
         lengthInM,
         maxOccupants,
         boatType,
-        [],
         maxSpeedInKmH ?? null,
         sailAreaInM2 ?? null
       )

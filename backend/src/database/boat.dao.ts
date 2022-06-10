@@ -19,13 +19,28 @@ const BOAT_TYPES = ['sail', 'motor'];
 
 export class BoatDao {
   public async getBoats(): Promise<Boat[]> {
-    return (await BoatModel.findAll()).map((boat: BoatModel) =>
-      Boat.fromModel(boat)
-    );
+    const models = await BoatModel.findAll();
+
+    return models.map((boat: BoatModel) => Boat.fromModel(boat));
   }
 
   public async getById(id: number): Promise<Boat | null> {
-    const boatModel = await BoatModel.findOne({ where: { id } });
+    const boatModel = await BoatModel.findOne({
+      where: { id },
+      include: [RentalModel],
+    });
+
+    if (boatModel) {
+      return Boat.fromModel(boatModel);
+    }
+
+    return null;
+  }
+
+  public async getByRentalId(rentalId: number): Promise<Boat | null> {
+    const boatModel = await BoatModel.findOne({
+      where: { rentalId },
+    });
 
     if (boatModel) {
       return Boat.fromModel(boatModel);

@@ -1,13 +1,16 @@
-import { Op } from 'sequelize';
-import { BoatModel } from '../database/boat.dao';
-import { RentalModel } from '../database/rental.dao';
-import { SkipperModel } from '../database/skipper.dao';
+import { RentalDao } from '../database/rental.dao';
+
 import { ServerError } from '../util/error';
-import { UserModel } from '../database/user.dao';
 import { BoatService } from './boat.service';
+import { UserService } from './user.service';
+import { Rental } from '../model/rental';
 
 export class RentalService {
   private boatService = new BoatService();
+
+  private userService = new UserService();
+
+  private rentalDao = new RentalDao();
 
   /**
    * Creates a new rental
@@ -23,7 +26,7 @@ export class RentalService {
     userId: number,
     dateStart: Date,
     dateEnd: Date
-  ): Promise<RentalModel> {
+  ): Promise<Rental> {
     // Check boat exists
     const boat = await this.boatService.getById(boatId);
 
@@ -32,14 +35,14 @@ export class RentalService {
     }
 
     // Check user exists
-    const user = await UserModel.findByPk(userId);
+    const user = await this.userService.getUserById(userId);
 
     if (!user) {
       throw new ServerError(`No user with id ${userId}.`);
     }
 
     // Check dates are valid
-    if (RentalModel.days(dateStart, dateEnd) < 3) {
+    if (Rental.days(dateStart, dateEnd) < 3) {
       throw new ServerError('Rental period must be at least three days!');
     }
 
@@ -52,38 +55,16 @@ export class RentalService {
       );
     }
 
-    // Create new Rental
-    return RentalModel.create({
-      boatId,
-      userId,
-      dateStart,
-      dateEnd,
-      paid: false,
-    });
+    const rental = new Rental(-1, boat, user, dateStart, dateEnd, false);
+
+    await this.rentalDao.saveRental(rental);
+
+    return rental;
   }
 
-  public async getNextRentalByUserId(
-    userId: number
-  ): Promise<RentalModel | null> {
-    const now = new Date();
+  public async getNextRentalByUserId(userId: number): Promise<Rental | null> {
+    const upcoming = await this.rentalDao.getUpcomingRentalsByUserId(userId);
 
-    const rentals = await RentalModel.findAll({
-      include: [BoatModel, SkipperModel],
-      where: {
-        userId,
-        [Op.or]: [
-          {
-            dateStart: { [Op.gt]: now },
-          },
-          {
-            dateStart: { [Op.lte]: now },
-            dateEnd: { [Op.gt]: now },
-          },
-        ],
-      },
-      order: [['dateStart', 'ASC']],
-    });
-
-    return rentals[0] ?? null;
+    return upcoming[0] ?? null;
   }
 }

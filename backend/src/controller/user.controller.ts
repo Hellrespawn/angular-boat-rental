@@ -112,8 +112,7 @@ export class UserController {
     res: express.Response
   ): Promise<void> {
     // Ensured by middleware in route
-
-    console.log(req.currentUser);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const id: number = req.currentUser!.id;
 
     try {

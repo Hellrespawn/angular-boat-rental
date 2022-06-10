@@ -1,9 +1,6 @@
-import { HttpClient, HttpClientModule, HttpErrorResponse, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
-import { ErrorHandler, Injectable } from '@angular/core';
-import { json } from 'express';
-import { Http2ServerResponse } from 'http2';
-
-import { catchError, map, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { SnackBarInput, SnackBarService } from './snack-bar.service';
 import { User } from './user';
@@ -64,9 +61,10 @@ export class UserService {
     );
   }
 
-//   public checkIfEmailFound(): any { 
-//     if (this.httpClient.request === 300) {
-//       this.snackBService.makeSnackbarThatClosesAutomatically(this.knownEmailInput);
-//     }
-//   }
+  public checkEmail(UserObject: {}): Observable<Object> {
+    return this.httpClient.post(
+      `${environment.backendUrl}/users/registratie-pagina`,
+      UserObject
+    );
+  }
 }

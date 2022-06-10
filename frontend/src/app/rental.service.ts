@@ -12,10 +12,7 @@ export type DateRange = [Date, Date];
   providedIn: 'root',
 })
 export class RentalService {
-  constructor(
-    private httpClient: HttpClient,
-    private sessionService: SessionService
-  ) {}
+  constructor(private httpClient: HttpClient) {}
 
   /**
    * Creates a rental and returns an observable with the id of the created
