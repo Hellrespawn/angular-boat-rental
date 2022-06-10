@@ -26,7 +26,7 @@ describe('Test User-functionality in backend', () => {
       'Hans',
       'den Otter',
       false,
-      'haans@hans.nl',
+      'hans@hans.nl',
       'password',
       false,
       false,

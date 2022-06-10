@@ -5,7 +5,7 @@ export interface User {
   firstName: string;
   lastName: string;
   licence: boolean;
-  dateOfBirth: Date;
+//   dateOfBirth: Date;
   emailAddress: string;
   password: string;
   blocked: boolean;

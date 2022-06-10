@@ -26,7 +26,7 @@ export class MessageController {
     const text: string = req.body.text;
     {
       try {
-        const result = MessageModel.create({ name, email, text });
+        const result = await MessageModel.create({ name, email, text });
         res.status(200).json(result);
       } catch {
         console.error();
