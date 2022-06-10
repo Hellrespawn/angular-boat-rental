@@ -7,7 +7,7 @@ import {
   Unique,
   HasMany,
 } from 'sequelize-typescript';
-import { Boat } from '../model/boat';
+import { Boat, MotorBoat, SailBoat } from '../model/boat';
 import { RentalModel } from './rental.dao';
 
 export type BoatType = 'sail' | 'motor';
@@ -21,7 +21,7 @@ export class BoatDao {
   public async getBoats(): Promise<Boat[]> {
     const models = await BoatModel.findAll();
 
-    return models.map((boat: BoatModel) => Boat.fromModel(boat));
+    return models.map((model: BoatModel) => model.toBoat());
   }
 
   public async getById(id: number): Promise<Boat | null> {
@@ -31,7 +31,7 @@ export class BoatDao {
     });
 
     if (boatModel) {
-      return Boat.fromModel(boatModel);
+      return boatModel.toBoat();
     }
 
     return null;
@@ -43,7 +43,7 @@ export class BoatDao {
     });
 
     if (boatModel) {
-      return Boat.fromModel(boatModel);
+      return boatModel.toBoat();
     }
 
     return null;
@@ -60,8 +60,7 @@ export class BoatDao {
       lengthInM: newBoat.lengthInM,
       maxOccupants: newBoat.maxOccupants,
       boatType: newBoat.boatType,
-      maxSpeedInKmH: newBoat.maxSpeedInKmH ?? null,
-      sailAreaInM2: newBoat.sailAreaInM2 ?? null,
+      ...newBoat.getBoatData(),
     });
   }
 
@@ -126,4 +125,34 @@ export class BoatModel extends Model {
 
   @HasMany(() => RentalModel)
   public rentals!: RentalModel[];
+
+  public toBoat(): Boat {
+    if (this.boatType === 'motor') {
+      return new MotorBoat(
+        this.id,
+        this.name,
+        this.registrationNumber,
+        this.pricePerDay,
+        this.skipperRequired,
+        this.maintenance,
+        this.imageRoute,
+        this.lengthInM,
+        this.maxOccupants,
+        this.maxSpeedInKmH!
+      );
+    } else {
+      return new SailBoat(
+        this.id,
+        this.name,
+        this.registrationNumber,
+        this.pricePerDay,
+        this.skipperRequired,
+        this.maintenance,
+        this.imageRoute,
+        this.lengthInM,
+        this.maxOccupants,
+        this.sailAreaInM2!
+      );
+    }
+  }
 }

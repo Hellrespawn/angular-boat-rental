@@ -25,7 +25,10 @@ export class SessionDao {
    * @returns session or null
    */
   public async getSession(sessionId: string): Promise<Session | null> {
-    const model = await SessionModel.findOne({ where: { sessionId } });
+    const model = await SessionModel.findOne({
+      where: { sessionId },
+      include: [UserModel],
+    });
     return model ? Session.fromModel(model) : null;
   }
 
