@@ -4,14 +4,14 @@ import { app } from '../../src/server';
 import { expect } from 'chai';
 import { User } from '../../src/model/user';
 import sinon from 'ts-sinon';
-import { Boat } from '../../src/model/boat';
+import { Boat, MotorBoat } from '../../src/model/boat';
 import { Rental } from '../../src/model/rental';
 import { RentalDao } from '../../src/database/rental.dao';
 import { BoatDao } from '../../src/database/boat.dao';
 import { SinonSpiedInstance } from 'sinon';
 
 describe('Test /boats/:id/bookedDates', () => {
-  const boat = new Boat(
+  const boat = new MotorBoat(
     1,
     'testboat',
     1234,
@@ -21,9 +21,7 @@ describe('Test /boats/:id/bookedDates', () => {
     '',
     1234,
     1234,
-    'motor',
-    1234,
-    undefined
+    1234
   );
 
   const rental = new Rental(

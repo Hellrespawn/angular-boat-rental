@@ -39,8 +39,9 @@ export class BoatService {
       name: boat.name,
       imageRoute: boat.imageRoute,
       requirements: boat.getRequirements(),
-      boatType: boat.boatType,
       maxOccupants: boat.maxOccupants,
+      boatType: boat.boatType,
+      ...boat.getBoatData(),
     };
   }
 
@@ -82,9 +83,7 @@ export class BoatService {
         registrationNumber: boat.registrationNumber,
         pricePerDay: boat.pricePerDay,
         lengthInM: boat.lengthInM,
-        // These constraints are enforced at object creation.
-        maxSpeedInKmH: boat.maxSpeedInKmH,
-        sailAreaInM2: boat.sailAreaInM2,
+        ...boat.getBoatData(),
       };
 
       return detailData;
@@ -154,23 +153,21 @@ export class BoatService {
     lengthInM: number,
     maxOccupants: number,
     boatType: BoatType,
-    maxSpeedInKmH: number,
-    sailAreaInM2: number
+    maxSpeedInKmH?: number,
+    sailAreaInM2?: number
   ): Promise<void> {
     return this.boatDao.saveNewBoat(
-      new Boat(
-        -1,
+      Boat.createBoat(
         name,
         registrationNumber,
         pricePerDay,
         skipperRequired,
-        false,
         imageRoute,
         lengthInM,
         maxOccupants,
         boatType,
-        maxSpeedInKmH ?? null,
-        sailAreaInM2 ?? null
+        maxSpeedInKmH,
+        sailAreaInM2
       )
     );
   }

@@ -17,7 +17,7 @@ export class Rental {
   public static fromModel(model: RentalModel): Rental {
     return new Rental(
       model.id,
-      Boat.fromModel(model.boat),
+      model.boat.toBoat(),
       User.fromModel(model.user),
       model.dateStart,
       model.dateEnd,

@@ -33,12 +33,4 @@ export class BookingComponent implements OnInit {
   public clearFilters(): void {
     this.bookingService.reset();
   }
-
-  /**
-   * @param boat boat to check
-   * @returns Whether or not a boat is enabled.
-   */
-  public isEnabled(boat: BoatOverviewData): Observable<boolean> {
-    return this.bookingService.isEnabled(boat);
-  }
 }
