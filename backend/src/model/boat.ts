@@ -73,18 +73,6 @@ export abstract class Boat {
     }
   }
 
-  public getUniversalRequirements(): BoatRequirements {
-    let requirements: BoatRequirements = 'none';
-
-    if (this.skipperRequired) {
-      requirements = 'skipper';
-    } else if (this.maxOccupants > 12) {
-      requirements = 'license';
-    }
-
-    return requirements;
-  }
-
   public async getRentals(): Promise<Rental[]> {
     return await new RentalDao().getRentalsByBoatId(this.id);
   }
@@ -110,6 +98,18 @@ export abstract class Boat {
     const rentals = await this.getRentals();
 
     return rentals.flatMap((rental) => rental.getDates());
+  }
+
+  protected getUniversalRequirements(): BoatRequirements {
+    let requirements: BoatRequirements = 'none';
+
+    if (this.skipperRequired) {
+      requirements = 'skipper';
+    } else if (this.maxOccupants > 12) {
+      requirements = 'license';
+    }
+
+    return requirements;
   }
 }
 

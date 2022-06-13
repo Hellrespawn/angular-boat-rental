@@ -10,7 +10,7 @@ describe('Test rental.model.ts', () => {
   beforeEach(() => {
     const dateStart = new Date('2022-01-10');
     const dateEnd = new Date('2022-01-15');
-    const boat = sinon.createStubInstance(Boat);
+    const boat = {} as unknown as Boat;
     const user = {} as unknown as User;
     rental = new Rental(-1, boat, user, dateStart, dateEnd, false);
   });

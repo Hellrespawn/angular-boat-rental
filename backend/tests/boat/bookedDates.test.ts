@@ -4,11 +4,10 @@ import { app } from '../../src/server';
 import { expect } from 'chai';
 import { User } from '../../src/model/user';
 import sinon from 'ts-sinon';
-import { Boat, MotorBoat } from '../../src/model/boat';
+import { MotorBoat } from '../../src/model/boat';
 import { Rental } from '../../src/model/rental';
 import { RentalDao } from '../../src/database/rental.dao';
 import { BoatDao } from '../../src/database/boat.dao';
-import { SinonSpiedInstance } from 'sinon';
 
 describe('Test /boats/:id/bookedDates', () => {
   const boat = new MotorBoat(
@@ -33,37 +32,24 @@ describe('Test /boats/:id/bookedDates', () => {
     false
   );
 
-  let boatGetByIdStub: SinonSpiedInstance<any>;
-  let boatGetBoatsStub: SinonSpiedInstance<any>;
-  let rentalStub: SinonSpiedInstance<any>;
+  function stubBoatDao(): void {
+    const getByIdStub = sinon.stub(BoatDao.prototype, 'getById');
 
-  function stubBoatDaoGetById(): void {
-    const stub = sinon.stub(BoatDao.prototype, 'getById');
+    getByIdStub.returns(Promise.resolve(boat));
 
-    stub.returns(Promise.resolve(boat));
+    const getBoatsStub = sinon.stub(BoatDao.prototype, 'getBoats');
 
-    boatGetByIdStub = stub;
-  }
-
-  function stubBoatDaoGetBoats(): void {
-    const stub = sinon.stub(BoatDao.prototype, 'getBoats');
-
-    stub.returns(Promise.resolve([boat]));
-
-    boatGetBoatsStub = stub;
+    getBoatsStub.returns(Promise.resolve([boat]));
   }
 
   function stubRentalDao(): void {
     const stub = sinon.stub(RentalDao.prototype, 'getRentalsByBoatId');
 
     stub.returns(Promise.resolve([rental]));
-
-    rentalStub = stub;
   }
 
   beforeEach(() => {
-    stubBoatDaoGetById();
-    stubBoatDaoGetBoats();
+    stubBoatDao();
     stubRentalDao();
   });
 
