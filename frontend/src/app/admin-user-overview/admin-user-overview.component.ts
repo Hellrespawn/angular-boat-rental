@@ -6,7 +6,6 @@ import { SnackBarInput, SnackBarService } from '../snack-bar.service';
 import { FineDialogComponent } from './fine-dialog/fine-dialog.component';
 import { Fine } from '../fine';
 import { FineService } from '../fine.service';
-import { formatDate } from '../date';
 
 @addToNavBar({
   name: 'Account-administratie',
@@ -93,7 +92,7 @@ export class AdminUserOverviewComponent implements OnInit {
    * @param userID id of user
    * @param amount fine-amount
    */
-  private async sendNewFineToBackend(
+  public async sendNewFineToBackend(
     userID: number,
     amount: number
   ): Promise<void> {

@@ -1,6 +1,6 @@
 import { SkipperService } from '../../src/services/skipper.service';
 import { SkipperDao } from '../../src/database/skipper.dao';
-import { SinonSpiedInstance } from 'sinon';
+import { SinonSpy } from 'sinon';
 import sinon from 'ts-sinon';
 import { Skipper } from '../../src/model/skipper';
 import { expect } from 'chai';
@@ -13,9 +13,9 @@ describe('Test Skipper-functionality in backend', () => {
   let testSkipper: Skipper;
   const testDate: Date = new Date();
 
-  let skipperDaoAddSkipperSpy: SinonSpiedInstance<any>;
-  let skipperDaoUpdateSpy: SinonSpiedInstance<any>;
-  let skipperDaoDeletionSpy: SinonSpiedInstance<any>;
+  let skipperDaoAddSkipperSpy: SinonSpy<any>;
+  let skipperDaoUpdateSpy: SinonSpy<any>;
+  let skipperDaoDeletionSpy: SinonSpy<any>;
 
   function createSpyForSkipperDaoAddSkipper(): void {
     skipperDaoAddSkipperSpy = sinon.stub(
