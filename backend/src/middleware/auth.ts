@@ -12,7 +12,14 @@ export async function authenticator(
     return next();
   }
 
-  const sessionData: SessionData = JSON.parse(string);
+  let sessionData: SessionData;
+
+  try {
+    sessionData = JSON.parse(string);
+  } catch (error) {
+    console.error(error);
+    return next();
+  }
 
   const session = await new SessionService().getSession(sessionData.sessionId);
 
