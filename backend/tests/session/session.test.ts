@@ -150,24 +150,17 @@ describe('Test Session', () => {
     expect(res.status).to.equal(200);
   });
 
-  it('Correctly sets a cookie', async () => {
+  it('Correctly sets sessionData', async () => {
     const res = await request(app)
       .post('/login')
       .send({ email: user.emailAddress, password });
 
     expect(res.headers).to.have.property('set-cookie');
 
-    const cookieString = res.headers['set-cookie'][0] as string;
+    const sessionData = res.body;
 
-    const [_, value] = cookieString
-      .split(';')
-      .map((s) => s.split('='))
-      .find(([key, _]) => key === 'session')!;
-
-    const sessionData = JSON.parse(decodeURIComponent(value));
-
-    expect(sessionData.firstName === user.firstName);
-    expect(sessionData.license === user.license);
-    expect(sessionData.admin === user.admin);
+    expect(sessionData).to.have.property('firstName', user.firstName);
+    expect(sessionData).to.have.property('license', user.license);
+    expect(sessionData).to.have.property('admin', user.admin);
   });
 });
