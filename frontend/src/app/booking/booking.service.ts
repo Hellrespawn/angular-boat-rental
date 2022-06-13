@@ -7,7 +7,7 @@ import {
   Subscription,
   tap,
 } from 'rxjs';
-import { BoatOverviewData, BoatType } from '../boat';
+import { BoatOverviewData } from '../boat';
 import { BoatService } from '../boat.service';
 import { DateRange, RentalService } from '../rental.service';
 import { SessionService } from '../session.service';
@@ -52,7 +52,13 @@ export class BookingService {
 
   // Getters and setters
   public getBoats(): Observable<BoatOverviewData[]> {
-    return this.boats.asObservable();
+    return combineLatest([
+      this.boats,
+      this.licenseFilter,
+      this.typeFilter,
+    ]).pipe(
+      map(([boats, license, type]) => this.filterBoats(boats, license, type))
+    );
   }
 
   public getDateRange(): Observable<DateRange | null> {
@@ -101,19 +107,6 @@ export class BookingService {
   }
 
   /**
-   * Observes currentUserData and sets the license filter based on it.
-   */
-  private getCurrentUserLicense(): void {
-    this.sessionService.getSessionData().subscribe((sessionData) => {
-      if (sessionData && !sessionData.license) {
-        this.licenseFilter.next('not-required');
-      } else {
-        this.licenseFilter.next('both');
-      }
-    });
-  }
-
-  /**
    * Updates the list of valid boats, based on this.dateRange, and broadcasts
    * it to subscribers of this.boats
    */
@@ -144,23 +137,6 @@ export class BookingService {
   }
 
   /**
-   * Returns an observable which tells whether or not the boat passes the
-   * filters
-   */
-  public isEnabled(boat: BoatOverviewData): Observable<boolean> {
-    return combineLatest([this.licenseFilter, this.typeFilter]).pipe(
-      map(([license, type]) => {
-        const filters: BookingFilter[] = [
-          new LicenseFilter(license),
-          new BoatTypeFilter(type),
-        ];
-
-        return filters.every((filter) => filter.apply(boat));
-      })
-    );
-  }
-
-  /**
    * Gets the amount of days between two dates.
    */
   public getDays(dateStart: Date, dateEnd: Date): number {
@@ -174,5 +150,35 @@ export class BookingService {
    */
   public isRangeValid(dateStart: Date, dateEnd: Date): boolean {
     return this.getDays(dateStart, dateEnd) >= 3;
+  }
+
+  /**
+   * Observes currentUserData and sets the license filter based on it.
+   */
+  private getCurrentUserLicense(): void {
+    this.sessionService.getSessionData().subscribe((sessionData) => {
+      if (sessionData && !sessionData.license) {
+        this.licenseFilter.next('not-required');
+      } else {
+        this.licenseFilter.next('both');
+      }
+    });
+  }
+
+  private filterBoats(
+    boats: BoatOverviewData[],
+    license: LicenseFilterState,
+    type: BoatTypeFilterState
+  ): BoatOverviewData[] {
+    const filters: BookingFilter[] = [
+      new LicenseFilter(license),
+      new BoatTypeFilter(type),
+    ];
+
+    boats.forEach(
+      (boat) => (boat.enabled = filters.every((filter) => filter.apply(boat)))
+    );
+
+    return boats;
   }
 }
