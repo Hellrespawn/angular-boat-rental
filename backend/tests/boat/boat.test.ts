@@ -2,7 +2,7 @@ import { BoatService } from '../../src/services/boat.service';
 import { BoatDao } from '../../src/database/boat.dao';
 import { SinonSpiedInstance } from 'sinon';
 import sinon from 'ts-sinon';
-import { Boat } from '../../src/model/boat';
+import { Boat, SailBoat } from '../../src/model/boat';
 import { expect } from 'chai';
 import request from 'supertest';
 import { app } from '../../src/server';
@@ -32,7 +32,7 @@ describe('Test Boat-functionality in backend', () => {
   }
 
   async function stubBoatServiceForGetBoats(): Promise<void> {
-    testBoat = new Boat(
+    testBoat = new SailBoat(
       1,
       'De Test Boot',
       123,
@@ -42,8 +42,6 @@ describe('Test Boat-functionality in backend', () => {
       '',
       25,
       10,
-      'sail',
-      undefined,
       40
     );
 
