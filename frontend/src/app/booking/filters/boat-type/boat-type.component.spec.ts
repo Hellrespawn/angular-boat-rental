@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BoatTypeComponent } from './boat-type.component';
+import { BoatTypeFilterComponent } from './boat-type.component';
 
 describe('BoatTypeComponent', () => {
-  let component: BoatTypeComponent;
-  let fixture: ComponentFixture<BoatTypeComponent>;
+  let component: BoatTypeFilterComponent;
+  let fixture: ComponentFixture<BoatTypeFilterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BoatTypeComponent],
+      declarations: [BoatTypeFilterComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BoatTypeComponent);
+    fixture = TestBed.createComponent(BoatTypeFilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
