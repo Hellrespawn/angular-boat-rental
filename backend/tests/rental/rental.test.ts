@@ -11,7 +11,7 @@ describe('Test rental.model.ts', () => {
     const dateStart = new Date('2022-01-10');
     const dateEnd = new Date('2022-01-15');
     const boat = sinon.createStubInstance(Boat);
-    const user = sinon.createStubInstance(User);
+    const user = {} as unknown as User;
     rental = new Rental(-1, boat, user, dateStart, dateEnd, false);
   });
 

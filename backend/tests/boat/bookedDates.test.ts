@@ -27,7 +27,7 @@ describe('Test /boats/:id/bookedDates', () => {
   const rental = new Rental(
     1,
     boat,
-    sinon.createStubInstance(User),
+    {} as unknown as User,
     new Date('2022-01-01'),
     new Date('2022-01-10'),
     false

@@ -9,16 +9,16 @@ import { Session } from './session';
 // Private properties kunnen niet gestubt worden.
 export class User {
   private constructor(
-    public id: number,
-    public firstName: string,
-    public lastName: string,
-    public license: boolean,
+    public readonly id: number,
+    public readonly firstName: string,
+    public readonly lastName: string,
+    public readonly license: boolean,
 
-    public emailAddress: string,
-    public password: string,
-    public blocked: boolean,
-    public admin: boolean,
-    public arrayOfFines: FineModel[]
+    public readonly emailAddress: string,
+    public readonly password: string,
+    private blocked: boolean,
+    public readonly admin: boolean,
+    private arrayOfFines: FineModel[]
   ) {}
 
   /**

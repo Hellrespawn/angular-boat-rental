@@ -5,7 +5,7 @@ import { Boat } from '../model/boat';
 
 export class BoatController {
   // YYYY-MM-DD
-  public static dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  private static dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
   constructor(private boatService: BoatService = new BoatService()) {}
 

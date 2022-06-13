@@ -9,15 +9,15 @@ export abstract class Boat {
   public abstract readonly boatType: BoatType;
 
   constructor(
-    public id: number,
-    public name: string,
-    public registrationNumber: number,
-    public pricePerDay: number,
-    public skipperRequired: boolean,
-    public maintenance: boolean,
-    public imageRoute: string,
-    public lengthInM: number,
-    public maxOccupants: number
+    public readonly id: number,
+    public readonly name: string,
+    public readonly registrationNumber: number,
+    public readonly pricePerDay: number,
+    public readonly skipperRequired: boolean,
+    public readonly maintenance: boolean,
+    public readonly imageRoute: string,
+    public readonly lengthInM: number,
+    public readonly maxOccupants: number
   ) {}
 
   public abstract getBoatData(): BoatData;
