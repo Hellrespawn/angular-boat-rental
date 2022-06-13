@@ -1,6 +1,6 @@
 import { FineService } from '../../src/services/fine.service';
 import { FineDao } from '../../src/database/fine.dao';
-import { SinonSpiedInstance } from 'sinon';
+import { SinonSpy } from 'sinon';
 import sinon from 'ts-sinon';
 import { Fine } from '../../src/model/fine';
 import { expect } from 'chai';
@@ -10,7 +10,7 @@ import { app } from '../../src/server';
 describe('Test Fine-functionality in backend', () => {
   let fineService: FineService;
 
-  let fineDaoAddFineSpy: SinonSpiedInstance<any>;
+  let fineDaoAddFineSpy: SinonSpy<any>;
 
   function createSpyForFineDaoAddFine(): void {
     fineDaoAddFineSpy = sinon.stub(FineService.prototype, 'addFine');

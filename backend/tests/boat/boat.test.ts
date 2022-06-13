@@ -1,6 +1,6 @@
 import { BoatService } from '../../src/services/boat.service';
 import { BoatDao } from '../../src/database/boat.dao';
-import { SinonSpiedInstance } from 'sinon';
+import { SinonSpy } from 'sinon';
 import sinon from 'ts-sinon';
 import { Boat, SailBoat } from '../../src/model/boat';
 import { expect } from 'chai';
@@ -12,9 +12,9 @@ describe('Test Boat-functionality in backend', () => {
 
   let testBoat: Boat;
 
-  let boatDaoAddBoatSpy: SinonSpiedInstance<any>;
-  let boatDaoUpdateSpy: SinonSpiedInstance<any>;
-  let boatDaoDeletionSpy: SinonSpiedInstance<any>;
+  let boatDaoAddBoatSpy: SinonSpy<any>;
+  let boatDaoUpdateSpy: SinonSpy<any>;
+  let boatDaoDeletionSpy: SinonSpy<any>;
 
   function createSpyForBoatDaoAddBoat(): void {
     boatDaoAddBoatSpy = sinon.stub(BoatDao.prototype, 'saveNewBoat');

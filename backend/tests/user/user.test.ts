@@ -1,6 +1,6 @@
 import { UserService } from '../../src/services/user.service';
 import { UserDao } from '../../src/database/user.dao';
-import { SinonSpiedInstance } from 'sinon';
+import { SinonSpy } from 'sinon';
 import sinon from 'ts-sinon';
 import { User } from '../../src/model/user';
 import { expect } from 'chai';
@@ -12,8 +12,8 @@ describe('Test User-functionality in backend', () => {
 
   let testUser: User;
 
-  let userDaoUpdateSpy: SinonSpiedInstance<any>;
-  let userDaoDeletionSpy: SinonSpiedInstance<any>;
+  let userDaoUpdateSpy: SinonSpy<any>;
+  let userDaoDeletionSpy: SinonSpy<any>;
 
   function createSpyForUserDaoUpdateUser(): void {
     userDaoUpdateSpy = sinon.stub(
