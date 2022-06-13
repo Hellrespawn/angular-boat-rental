@@ -92,7 +92,7 @@ export class AdminUserOverviewComponent implements OnInit {
    * @param userID id of user
    * @param amount fine-amount
    */
-  private async sendNewFineToBackend(
+  public async sendNewFineToBackend(
     userID: number,
     amount: number
   ): Promise<void> {

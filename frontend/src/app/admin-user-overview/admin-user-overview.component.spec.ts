@@ -1,5 +1,4 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { InjectionToken } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -8,6 +7,7 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FineService } from '../fine.service';
+import { MockFineService } from '../test/fine.service.mock';
 import { MockUserService } from '../test/user.service.mock';
 import { UserService } from '../user.service';
 
@@ -41,7 +41,7 @@ describe('AdminUserOverviewComponent', () => {
           providers: [
             { provide: UserService, useClass: MockUserService },
             { provide: MatDialog },
-            { provide: FineService },
+            { provide: FineService, useClass: MockFineService },
           ],
         },
       })
@@ -71,44 +71,57 @@ describe('AdminUserOverviewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('the "getUsers" method of the service must be called when the page loads', async () => {
-    await fixture.whenStable();
-    expect(getUsersSpy.calls.count()).toEqual(1);
+  describe('Tests of the User and Fine Services', async () => {
+    it('the "getUsers" method of the service must be called when the page loads', async () => {
+      await fixture.whenStable();
+      expect(getUsersSpy.calls.count()).toEqual(1);
+    });
+
+    it('should render the mocked user on the page', async () => {
+      expect(renderedUser).toBeTruthy();
+      expect(renderedUser.innerHTML).toContain('Kees');
+    });
   });
 
-  it('should render the mocked user on the page', async () => {
-    expect(renderedUser).toBeTruthy();
-    expect(renderedUser.innerHTML).toContain('Kees');
+  describe('Functionality of the FineService', async () => {
+    it('Tests adding of new Fine', async () => {
+      component.sendNewFineToBackend(1, 50);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(renderedUser.innerHTML).toContain('50');
+    });
   });
 
-  it('should delete user when clicked on the delete button', async () => {
-    deleteBtn.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(fixture.debugElement.query(By.css('.user-item'))).toBeFalsy;
-  });
+  describe('Functionality of buttons on the page', async () => {
+    it('should delete user when clicked on the delete button', async () => {
+      deleteBtn.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(fixture.debugElement.query(By.css('.user-item'))).toBeFalsy;
+    });
 
-  it('should put user on blocked when clicked on the put on blocked button', async () => {
-    putOnBlockedBtn.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(renderedUser.innerHTML).toContain('Geblokkeerd!');
-  });
+    it('should put user on blocked when clicked on the put on blocked button', async () => {
+      putOnBlockedBtn.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(renderedUser.innerHTML).toContain('Geblokkeerd!');
+    });
 
-  it('should put user off blocked when clicked on the put off blocked button', async () => {
-    putOnBlockedBtn.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
+    it('should put user off blocked when clicked on the put off blocked button', async () => {
+      putOnBlockedBtn.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
 
-    putOffBlockedBtn = fixture.debugElement.query(
-      By.css('.put-off-blocked-btn')
-    ).nativeElement;
+      putOffBlockedBtn = fixture.debugElement.query(
+        By.css('.put-off-blocked-btn')
+      ).nativeElement;
 
-    putOffBlockedBtn.click();
+      putOffBlockedBtn.click();
 
-    fixture.detectChanges();
-    await fixture.whenStable();
+      fixture.detectChanges();
+      await fixture.whenStable();
 
-    expect(renderedUser.innerHTML).not.toContain('Geblokkeerd!');
+      expect(renderedUser.innerHTML).not.toContain('Geblokkeerd!');
+    });
   });
 });
