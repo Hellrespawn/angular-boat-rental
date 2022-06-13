@@ -1,13 +1,30 @@
+import { ServerError } from 'src/util/error';
 import { SkipperModel } from '../database/skipper.dao';
 
 export class Skipper {
+  public pricePerDay: number;
+
+  public birthDate: Date;
+
   constructor(
     public name: string,
-    public pricePerDay: number,
-    public birthDate: Date,
+    pricePerDay: number,
+    birthDate: Date,
     public leave: boolean,
     public id?: number
-  ) {}
+  ) {
+    if (this.isHigherThenZero(pricePerDay)) {
+      this.pricePerDay = pricePerDay;
+    } else {
+      throw new ServerError('invalid price per day');
+    }
+
+    if (this.dateIsInPast(birthDate)) {
+      this.birthDate = birthDate;
+    } else {
+      throw new ServerError('invalid date of birth');
+    }
+  }
 
   public static fromModel(skipperModel: SkipperModel): Skipper {
     return new Skipper(
@@ -17,5 +34,14 @@ export class Skipper {
       skipperModel.leave,
       skipperModel.id
     );
+  }
+
+  public isHigherThenZero(value: number): boolean {
+    return value > 0;
+  }
+
+  public dateIsInPast(inputDate: Date): boolean {
+    const currentDate = new Date();
+    return inputDate < currentDate;
   }
 }
