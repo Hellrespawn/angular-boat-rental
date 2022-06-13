@@ -1,4 +1,3 @@
-import { resourceLimits } from 'worker_threads';
 import { UserDao, UserModel } from '../database/user.dao';
 import { User } from '../model/user';
 
@@ -79,7 +78,7 @@ export class UserService {
       license,
       emailAddress,
       password,
-      false,
+      blocked,
       isAdmin
     );
     return this.userDao.createNewUser(
