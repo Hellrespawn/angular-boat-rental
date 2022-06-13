@@ -1,6 +1,6 @@
 import { Skipper } from '../model/skipper';
 import { SkipperDao } from '../database/skipper.dao';
-import { ServerError } from 'src/util/error';
+import { ServerError } from '../util/error';
 export class SkipperService {
   private skipperDao: SkipperDao = new SkipperDao();
 

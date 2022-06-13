@@ -1,4 +1,4 @@
-import { ServerError } from 'src/util/error';
+import { ServerError } from '../util/error';
 import { SkipperModel } from '../database/skipper.dao';
 
 export class Skipper {

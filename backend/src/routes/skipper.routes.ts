@@ -1,6 +1,12 @@
 import { Request, Response, Router } from 'express';
-import { SkipperController } from '../controller/skipper.controller';
+import { Validator } from '../util/validator';
+import {
+  NEW_SKIPPER_SCHEMA,
+  SkipperController,
+} from '../controller/skipper.controller';
 import { validateIdInUrlParams } from '../middleware/validate';
+
+const newSkipperValidator = new Validator(NEW_SKIPPER_SCHEMA);
 
 export function skipperRoutes(controller: SkipperController): Router {
   const router = Router();
@@ -17,6 +23,7 @@ export function skipperRoutes(controller: SkipperController): Router {
 
   router.post(
     '/skippers',
+    newSkipperValidator.middleware(),
     async (req: Request, res: Response): Promise<void> => {
       controller.addSkipper(req, res);
     }

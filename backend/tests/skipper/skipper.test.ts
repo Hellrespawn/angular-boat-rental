@@ -11,7 +11,7 @@ describe('Test Skipper-functionality in backend', () => {
   let skipperService: SkipperService;
 
   let testSkipper: Skipper;
-  const testDate: Date = new Date();
+  const testDate: Date = new Date('2021');
 
   let skipperDaoAddSkipperSpy: SinonSpy<any>;
   let skipperDaoUpdateSpy: SinonSpy<any>;
@@ -72,13 +72,13 @@ describe('Test Skipper-functionality in backend', () => {
   });
 
   it('The saveNewSkipper method of the SkipperDao should be called when correctly requested by the SkipperService', async () => {
-    await request(app)
+    const res = await request(app)
       .post('/skippers')
       .set('Content-type', 'application/json')
       .send({
         name: 'Kees',
-        pricePerDay: '123',
-        birthDate: new Date(),
+        pricePerDay: 123,
+        birthDate: new Date('2021').toISOString(),
       })
       .expect(200);
     expect(skipperDaoAddSkipperSpy.callCount).to.equal(1);

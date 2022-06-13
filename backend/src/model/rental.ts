@@ -22,7 +22,7 @@ export class Rental {
       model.dateStart,
       model.dateEnd,
       model.paid,
-      model.skipper
+      model.skipper ? Skipper.fromModel(model.skipper) : undefined
     );
   }
 

@@ -1,6 +1,37 @@
 import { SkipperService } from '../services/skipper.service';
 import express from 'express';
 import { Skipper } from '../model/skipper';
+import { JSONSchemaType } from 'ajv';
+
+/**
+ * Interface matching the expected data for a new rental.
+ */
+type NewSkipperData = {
+  name: string;
+  pricePerDay: number;
+  birthDate: string;
+};
+
+/**
+ * JSON Schema describing NewRentalData
+ */
+export const NEW_SKIPPER_SCHEMA: JSONSchemaType<NewSkipperData> = {
+  type: 'object',
+  properties: {
+    pricePerDay: {
+      type: 'number',
+    },
+    birthDate: {
+      type: 'string',
+      format: 'date-time',
+    },
+    name: {
+      type: 'string',
+    },
+  },
+  required: ['name', 'pricePerDay', 'birthDate'],
+  additionalProperties: false,
+};
 
 export class SkipperController {
   constructor(private skipperService: SkipperService = new SkipperService()) {}
@@ -32,7 +63,7 @@ export class SkipperController {
   ): Promise<void> {
     const name: string = req.body.name;
     const pricePerDay: number = req.body.pricePerDay;
-    const birthDate: Date = req.body.birthDate;
+    const birthDate: Date = new Date(req.body.birthDate);
     try {
       const result = await this.skipperService.addSkipper(
         name,
