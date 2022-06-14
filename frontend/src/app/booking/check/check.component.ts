@@ -71,6 +71,10 @@ export class CheckComponent implements OnInit {
     return 'Nu betalen';
   }
 
+  public isLoggedIn(): boolean {
+    return Boolean(this.sessionData);
+  }
+
   /**
    * Returns true if the current order is valid.
    */
@@ -107,6 +111,10 @@ export class CheckComponent implements OnInit {
    * Create rental and navigate to next page.
    */
   public handleButton(): void {
+    if (!this.isLoggedIn()) {
+      this.router.navigate(['/login']);
+    }
+
     this.bookingService.createRental(this.boat!.id).subscribe((rentalId) => {
       if (this.boat.requirements === 'skipper') {
         this.router.navigate(['/verhuur/schipper', rentalId]);
