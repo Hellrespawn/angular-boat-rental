@@ -124,7 +124,7 @@ describe('Test Boat-functionality in backend', () => {
   });
 
   it('The saveNewBoat method of the BoatDao should be called when correctly requested by the BoatService via the endpoint "/boats"', async () => {
-    await request(app)
+    await agent
       .post('/boats')
       .set('Content-type', 'application/json')
       .set('cookie', cookie)
