@@ -4,7 +4,7 @@ import { Skipper } from '../model/skipper';
 import { JSONSchemaType } from 'ajv';
 
 /**
- * Interface matching the expected data for a new rental.
+ * Interface matching the expected data for a new skipper.
  */
 type NewSkipperData = {
   name: string;
@@ -13,7 +13,7 @@ type NewSkipperData = {
 };
 
 /**
- * JSON Schema describing NewRentalData
+ * JSON Schema describing NewSkipperData
  */
 export const NEW_SKIPPER_SCHEMA: JSONSchemaType<NewSkipperData> = {
   type: 'object',

@@ -22,6 +22,7 @@ export class FineService {
     amount: number,
     paid: boolean
   ): Promise<void> {
-    return this.fineDao.addFine(new Fine(userId, amount, paid));
+    const newFine: Fine = new Fine(userId, amount, paid);
+    return this.fineDao.addFine(newFine);
   }
 }

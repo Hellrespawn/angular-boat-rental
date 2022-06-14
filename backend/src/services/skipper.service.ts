@@ -33,9 +33,6 @@ export class SkipperService {
    * @param idOfSkipper id of skipper to be deleted
    */
   public async deleteSkipper(idOfSkipper: number): Promise<void> {
-    if (typeof idOfSkipper !== 'number' || idOfSkipper < 1) {
-      throw new ServerError('invalid id');
-    }
     return this.skipperDao.deleteSkipper(idOfSkipper);
   }
 
