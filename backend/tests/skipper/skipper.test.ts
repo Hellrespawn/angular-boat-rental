@@ -4,8 +4,12 @@ import { SinonSpy } from 'sinon';
 import sinon from 'ts-sinon';
 import { Skipper } from '../../src/model/skipper';
 import { expect } from 'chai';
-import request from 'supertest';
+import request, { SuperAgentTest } from 'supertest';
 import { app } from '../../src/server';
+import { SessionDao } from '../../src/database/session.dao';
+import { Session } from '../../src/model/session';
+import { User } from '../../src/model/user';
+import { SessionService } from '../../src/services/session.service';
 
 describe('Test Skipper-functionality in backend', () => {
   let skipperService: SkipperService;
@@ -16,6 +20,10 @@ describe('Test Skipper-functionality in backend', () => {
   let skipperDaoAddSkipperSpy: SinonSpy<any>;
   let skipperDaoUpdateSpy: SinonSpy<any>;
   let skipperDaoDeletionSpy: SinonSpy<any>;
+
+  let agent: SuperAgentTest;
+  let session: Session;
+  let cookie: string;
 
   function createSpyForSkipperDaoAddSkipper(): void {
     skipperDaoAddSkipperSpy = sinon.stub(
@@ -46,12 +54,41 @@ describe('Test Skipper-functionality in backend', () => {
     returnAllSkippersStub.returns(Promise.resolve([testSkipper]));
   }
 
+  function stubLoginMethodOfSessionService(): void {
+    const loginMethodStub = sinon.stub(SessionService.prototype, 'login');
+    loginMethodStub.returns(Promise.resolve(session));
+  }
+
+  function createStubForSessionDaoGetSession(): void {
+    const getSessionStub = sinon.stub(SessionDao.prototype, 'getSession');
+    getSessionStub.returns(Promise.resolve(session));
+  }
+
   beforeEach(async () => {
+    session = Session.createSessionForUser(
+      await User.create(
+        'Kees',
+        'van Ruler',
+        false,
+        'vanrulerkees@gmail.com',
+        'password',
+        false,
+        true
+      )
+    );
+    stubLoginMethodOfSessionService();
+    createStubForSessionDaoGetSession();
     stubSkipperServiceForReturnAllSkippers();
     createSpyForSkipperDaoAddSkipper();
     createSpyForSkipperDaoDeleteSkipper();
     createSpyForSkipperDaoUpdateSkipper();
     skipperService = new SkipperService();
+    agent = request.agent(app);
+    const res = await agent
+      .post('/login')
+      .set('Content-type', 'application/json')
+      .send({ email: 'vanrulerkees@gmail.com', password: 'password' });
+    cookie = res.headers['set-cookie'];
   });
 
   afterEach(() => {
@@ -59,7 +96,7 @@ describe('Test Skipper-functionality in backend', () => {
   });
 
   it('Returns all skippers when the endpoint /skippers is called with a get request', async () => {
-    const res = await request(app).get('/skippers');
+    const res = await agent.get('/skippers').set('cookie', cookie);
     expect(res.body).to.deep.equal([
       {
         name: testSkipper.name,
@@ -72,9 +109,10 @@ describe('Test Skipper-functionality in backend', () => {
   });
 
   it('The saveNewSkipper method of the SkipperDao should be called when correctly requested by the SkipperService', async () => {
-    const res = await request(app)
+    await agent
       .post('/skippers')
       .set('Content-type', 'application/json')
+      .set('cookie', cookie)
       .send({
         name: 'Kees',
         pricePerDay: 123,

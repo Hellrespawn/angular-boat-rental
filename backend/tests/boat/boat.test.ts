@@ -4,8 +4,12 @@ import { SinonSpy } from 'sinon';
 import sinon from 'ts-sinon';
 import { Boat, SailBoat } from '../../src/model/boat';
 import { expect } from 'chai';
-import request from 'supertest';
+import request, { SuperAgentTest } from 'supertest';
 import { app } from '../../src/server';
+import { SessionDao } from '../../src/database/session.dao';
+import { Session } from '../../src/model/session';
+import { User } from '../../src/model/user';
+import { SessionService } from '../../src/services/session.service';
 
 describe('Test Boat-functionality in backend', () => {
   let boatService: BoatService;
@@ -15,6 +19,10 @@ describe('Test Boat-functionality in backend', () => {
   let boatDaoAddBoatSpy: SinonSpy<any>;
   let boatDaoUpdateSpy: SinonSpy<any>;
   let boatDaoDeletionSpy: SinonSpy<any>;
+
+  let session: Session;
+  let agent: SuperAgentTest;
+  let cookie: string;
 
   function createSpyForBoatDaoAddBoat(): void {
     boatDaoAddBoatSpy = sinon.stub(BoatDao.prototype, 'saveNewBoat');
@@ -53,12 +61,41 @@ describe('Test Boat-functionality in backend', () => {
     returnAllBoatsStub.returns(Promise.resolve([testBoat]));
   }
 
+  function stubLoginMethodOfSessionService(): void {
+    const loginMethodStub = sinon.stub(SessionService.prototype, 'login');
+    loginMethodStub.returns(Promise.resolve(session));
+  }
+
+  function createStubForSessionDaoGetSession(): void {
+    const getSessionStub = sinon.stub(SessionDao.prototype, 'getSession');
+    getSessionStub.returns(Promise.resolve(session));
+  }
+
   beforeEach(async () => {
+    session = Session.createSessionForUser(
+      await User.create(
+        'Kees',
+        'van Ruler',
+        false,
+        'vanrulerkees@gmail.com',
+        'password',
+        false,
+        true
+      )
+    );
+    stubLoginMethodOfSessionService();
+    createStubForSessionDaoGetSession();
     stubBoatServiceForGetBoats();
     createSpyForBoatDaoAddBoat();
     createSpyForBoatDaoDeletion();
     createSpyForBoatDaoUpdateMaintenance();
     boatService = new BoatService();
+    agent = request.agent(app);
+    const res = await agent
+      .post('/login')
+      .set('Content-type', 'application/json')
+      .send({ email: 'vanrulerkees@gmail.com', password: 'password' });
+    cookie = res.headers['set-cookie'];
   });
 
   afterEach(() => {
@@ -66,7 +103,7 @@ describe('Test Boat-functionality in backend', () => {
   });
 
   it('Returns all Boats when the endpoint /boats is called with a get request', async () => {
-    const res = await request(app).get('/boats');
+    const res = await agent.get('/boats').set('cookie', cookie);
     expect(res.body).to.deep.equal({
       boats: [
         {
@@ -90,6 +127,7 @@ describe('Test Boat-functionality in backend', () => {
     await request(app)
       .post('/boats')
       .set('Content-type', 'application/json')
+      .set('cookie', cookie)
       .send({
         name: 'De Test Boot',
         registrationNumber: 123,

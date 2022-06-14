@@ -4,8 +4,11 @@ import { SinonSpy } from 'sinon';
 import sinon from 'ts-sinon';
 import { User } from '../../src/model/user';
 import { expect } from 'chai';
-import request from 'supertest';
+import request, { SuperAgentTest } from 'supertest';
 import { app } from '../../src/server';
+import { Session } from '../../src/model/session';
+import { SessionService } from '../../src/services/session.service';
+import { SessionDao } from '../../src/database/session.dao';
 
 describe('Test User-functionality in backend', () => {
   let userService: UserService;
@@ -14,6 +17,10 @@ describe('Test User-functionality in backend', () => {
 
   let userDaoUpdateSpy: SinonSpy<any>;
   let userDaoDeletionSpy: SinonSpy<any>;
+
+  let agent: SuperAgentTest;
+  let session: Session;
+  let cookie: string;
 
   function createSpyForUserDaoUpdateUser(): void {
     userDaoUpdateSpy = sinon.stub(
@@ -45,11 +52,40 @@ describe('Test User-functionality in backend', () => {
     returnAllUsersStub.returns(Promise.resolve([testUser]));
   }
 
+  function stubLoginMethodOfSessionService(): void {
+    const loginMethodStub = sinon.stub(SessionService.prototype, 'login');
+    loginMethodStub.returns(Promise.resolve(session));
+  }
+
+  function createStubForSessionDaoGetSession(): void {
+    const getSessionStub = sinon.stub(SessionDao.prototype, 'getSession');
+    getSessionStub.returns(Promise.resolve(session));
+  }
+
   beforeEach(async () => {
+    session = Session.createSessionForUser(
+      await User.create(
+        'Kees',
+        'van Ruler',
+        false,
+        'vanrulerkees@gmail.com',
+        'password',
+        false,
+        true
+      )
+    );
+    stubLoginMethodOfSessionService();
+    createStubForSessionDaoGetSession();
     await stubUserServiceForReturnAllUsers();
     createSpyForSkipperDaoDeleteSkipper();
     createSpyForUserDaoUpdateUser();
     userService = new UserService();
+    agent = request.agent(app);
+    const res = await agent
+      .post('/login')
+      .set('Content-type', 'application/json')
+      .send({ email: 'vanrulerkees@gmail.com', password: 'password' });
+    cookie = res.headers['set-cookie'];
   });
 
   afterEach(() => {
@@ -57,7 +93,7 @@ describe('Test User-functionality in backend', () => {
   });
 
   it('Returns all users when the endpoint /users is called with a get request', async () => {
-    const res = await request(app).get('/users').expect(200);
+    const res = await agent.get('/users').set('cookie', cookie).expect(200);
     expect(res.body).to.deep.equal([
       {
         id: testUser.id,
