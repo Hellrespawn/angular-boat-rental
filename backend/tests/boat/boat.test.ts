@@ -102,6 +102,8 @@ describe('Test Boat-functionality in backend', () => {
     sinon.restore();
   });
 
+  //end to end tests:
+
   it('should not grant access to the /boats endpoint when not logged in as an admin', async () => {
     await request(app).get('/boats').expect(401);
   });
@@ -148,6 +150,8 @@ describe('Test Boat-functionality in backend', () => {
       .expect(200);
     expect(boatDaoAddBoatSpy.callCount).to.equal(1);
   });
+
+  //integration tests:
 
   it('The updateMaintenanceValue method of the BoatDao should be called when correctly requested by the BoatService', () => {
     boatService.updateMaintenanceOfBoat(1, true);

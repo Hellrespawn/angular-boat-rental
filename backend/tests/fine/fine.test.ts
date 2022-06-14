@@ -62,6 +62,8 @@ describe('Test Fine-functionality in backend', () => {
     sinon.restore();
   });
 
+  //end to end tests:
+
   it('should not grant access to the /fines endpoint when not logged in as an admin', async () => {
     await request(app).get('/fines').expect(401);
   });

@@ -92,6 +92,8 @@ describe('Test User-functionality in backend', () => {
     sinon.restore();
   });
 
+  //end to end tests:
+
   it('should not grant access to the /users endpoint when not logged in as an admin', async () => {
     await request(app).get('/users').expect(401);
   });
@@ -112,6 +114,8 @@ describe('Test User-functionality in backend', () => {
       },
     ]);
   });
+
+  //integration tests:
 
   it('The updateBlockedValueInUser method of the UserDao should be called when correctly requested by the UserService', () => {
     userService.updateBlockedValueOfUser(1, true);

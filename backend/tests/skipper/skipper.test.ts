@@ -95,6 +95,8 @@ describe('Test Skipper-functionality in backend', () => {
     sinon.restore();
   });
 
+  //end to end tests:
+
   it('should not grant access to the /skippers endpoint when not logged in as an admin', async () => {
     await request(app).get('/skippers').expect(401);
   });
@@ -125,6 +127,8 @@ describe('Test Skipper-functionality in backend', () => {
       .expect(200);
     expect(skipperDaoAddSkipperSpy.callCount).to.equal(1);
   });
+
+  //integration tests:
 
   it('The updateLeaveValueInSkipper method of the SkipperDao should be called when correctly requested by the SkipperService', () => {
     skipperService.updateLeaveOfSkipper(1, true);
