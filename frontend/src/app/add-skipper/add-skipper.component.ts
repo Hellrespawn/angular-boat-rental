@@ -183,13 +183,13 @@ export class AddSkipperComponent {
 
 class Skipper {
   private pricePerDay: number;
-  private birthDate: Date;
+  private birthDate: string;
   constructor(
     private name: string,
     priceString: string,
     birthDateString: string
   ) {
     this.pricePerDay = parseFloat(priceString);
-    this.birthDate = new Date(birthDateString);
+    this.birthDate = new Date(birthDateString).toISOString();
   }
 }

@@ -56,7 +56,7 @@ export class FineController {
     req: express.Request,
     res: express.Response
   ): Promise<void> {
-    const userId: number = req.body.userID;
+    const userId: number = req.body.userId;
     const amount: number = req.body.amount;
     const paid: boolean = req.body.paid;
     try {
