@@ -93,7 +93,5 @@ export class SessionService {
     this.loadSessionData();
 
     this.snackbarService.displaySuccess(`Welkom, je bent ingelogd!`);
-
-    this.router.navigate(['/']);
   }
 }

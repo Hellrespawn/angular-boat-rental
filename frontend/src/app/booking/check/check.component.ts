@@ -61,21 +61,6 @@ export class CheckComponent implements OnInit {
   }
 
   /**
-   * Get correct text for button.
-   */
-  public getButtonText(): string {
-    if (this.boat && this.boat.requirements === 'skipper') {
-      return 'Selecteer schipper';
-    }
-
-    return 'Nu betalen';
-  }
-
-  public isLoggedIn(): boolean {
-    return Boolean(this.sessionData);
-  }
-
-  /**
    * Returns true if the current order is valid.
    */
   public isOrderValid(): boolean {
@@ -112,15 +97,42 @@ export class CheckComponent implements OnInit {
    */
   public handleButton(): void {
     if (!this.isLoggedIn()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login'], {
+        queryParams: { from: `/verhuur/controleer/${this.boat!.id}` },
+      });
+    } else {
+      this.bookingService.createRental(this.boat!.id).subscribe((rentalId) => {
+        if (this.boat.requirements === 'skipper') {
+          this.router.navigate(['/verhuur/schipper', rentalId]);
+        } else {
+          this.router.navigate(['/verhuur/betalen', rentalId]);
+        }
+      });
+    }
+  }
+
+  public isLoggedIn(): boolean {
+    return Boolean(this.sessionData);
+  }
+
+  public isButtonDisabled(): boolean {
+    if (!this.isLoggedIn()) {
+      return false;
+    } else {
+      return !this.isOrderValid();
+    }
+  }
+
+  /**
+   * Get correct text for button.
+   */
+  public getButtonText(): string {
+    if (!this.isLoggedIn()) {
+      return 'Log Nu In!';
+    } else if (this.boat && this.boat.requirements === 'skipper') {
+      return 'Selecteer schipper';
     }
 
-    this.bookingService.createRental(this.boat!.id).subscribe((rentalId) => {
-      if (this.boat.requirements === 'skipper') {
-        this.router.navigate(['/verhuur/schipper', rentalId]);
-      } else {
-        this.router.navigate(['/verhuur/betalen', rentalId]);
-      }
-    });
+    return 'Nu betalen';
   }
 }

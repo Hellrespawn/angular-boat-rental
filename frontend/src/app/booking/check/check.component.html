@@ -53,28 +53,10 @@
       <h3 *ngIf="dateRange">Subtotaal: € {{ getTotalPrice() }}</h3>
 
       <button
-        *ngIf="!isLoggedIn()"
+        mat-raised-button
+        color="primary"
         (click)="handleButton()"
-        mat-raised-button
-        color="primary"
-      >
-        Log Nu In
-      </button>
-
-      <button
-        *ngIf="isLoggedIn() && isOrderValid()"
-        (click)="handleButton()"
-        mat-raised-button
-        color="primary"
-      >
-        {{ getButtonText() }}
-      </button>
-
-      <button
-        *ngIf="isLoggedIn() && !isOrderValid()"
-        mat-raised-button
-        color="primary"
-        disabled
+        [disabled]="isButtonDisabled()"
       >
         {{ getButtonText() }}
       </button>
