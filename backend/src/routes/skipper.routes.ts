@@ -5,6 +5,7 @@ import {
   SkipperController,
 } from '../controller/skipper.controller';
 import { validateIdInUrlParams } from '../middleware/validate';
+import { requireAdminRights } from '../middleware/auth';
 
 const newSkipperValidator = new Validator(NEW_SKIPPER_SCHEMA);
 
@@ -17,13 +18,18 @@ export function skipperRoutes(controller: SkipperController): Router {
   // TODO Get availability for all skippers
   router.get('/skippers/:dateStart/:dateEnd');
 
-  router.get('/skippers', (req: Request, res: Response): void => {
-    controller.getSkippers(req, res);
-  });
+  router.get(
+    '/skippers',
+    requireAdminRights,
+    (req: Request, res: Response): void => {
+      controller.getSkippers(req, res);
+    }
+  );
 
   router.post(
     '/skippers',
     newSkipperValidator.middleware(),
+    requireAdminRights,
     async (req: Request, res: Response): Promise<void> => {
       controller.addSkipper(req, res);
     }
@@ -32,6 +38,7 @@ export function skipperRoutes(controller: SkipperController): Router {
   router.delete(
     '/skippers/:id',
     validateIdInUrlParams(),
+    requireAdminRights,
     async (req: Request, res: Response): Promise<void> => {
       controller.deleteSkipper(req, res);
     }
@@ -39,6 +46,7 @@ export function skipperRoutes(controller: SkipperController): Router {
 
   router.patch(
     '/skippers',
+    requireAdminRights,
     async (req: Request, res: Response): Promise<void> => {
       controller.updateLeaveOfSkipper(req, res);
     }
