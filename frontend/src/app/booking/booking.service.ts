@@ -48,19 +48,10 @@ export class BookingService {
     private sessionService: SessionService
   ) {
     this.getCurrentUserLicense();
+    this.updateBoats();
   }
 
   // Getters and setters
-  public getBoats(): Observable<BoatOverviewData[]> {
-    return combineLatest([
-      this.boats,
-      this.licenseFilter,
-      this.typeFilter,
-    ]).pipe(
-      map(([boats, license, type]) => this.filterBoats(boats, license, type))
-    );
-  }
-
   public getDateRange(): Observable<DateRange | null> {
     return this.dateRange.asObservable();
   }
@@ -119,6 +110,15 @@ export class BookingService {
         .subscribe((boats) => this.boats.next(boats))
     );
   }
+  public getBoats(): Observable<BoatOverviewData[]> {
+    return combineLatest([
+      this.boats,
+      this.licenseFilter,
+      this.typeFilter,
+    ]).pipe(
+      map(([boats, license, type]) => this.filterBoats(boats, license, type))
+    );
+  }
 
   /**
    * Creates a rental and returns an observable with the id of the created
@@ -159,8 +159,6 @@ export class BookingService {
     this.sessionService.getSessionData().subscribe((sessionData) => {
       if (sessionData && !sessionData.license) {
         this.licenseFilter.next('not-required');
-      } else {
-        this.licenseFilter.next('both');
       }
     });
   }

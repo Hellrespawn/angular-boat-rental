@@ -72,33 +72,33 @@ export class RentalModel extends Model {
   @ForeignKey(() => BoatModel)
   @AllowNull(false)
   @Column
-  public boatId!: number;
+  public readonly boatId!: number;
 
   @BelongsTo(() => BoatModel)
-  public boat!: BoatModel;
+  public readonly boat!: BoatModel;
 
   @ForeignKey(() => UserModel)
   @AllowNull(false)
   @Column
-  public userId!: number;
+  public readonly userId!: number;
 
   @BelongsTo(() => UserModel)
-  public user!: UserModel;
+  public readonly user!: UserModel;
 
   @ForeignKey(() => SkipperModel)
   @Column
-  public skipperId?: number;
+  public readonly skipperId?: number;
 
   @BelongsTo(() => SkipperModel)
-  public skipper?: SkipperModel;
+  public readonly skipper?: SkipperModel;
 
   @AllowNull(false)
   @Column
-  public dateStart!: Date;
+  public readonly dateStart!: Date;
 
   @AllowNull(false)
   @Column
-  public dateEnd!: Date;
+  public readonly dateEnd!: Date;
 
   @Default(false)
   @Column

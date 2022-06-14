@@ -97,7 +97,7 @@ export abstract class Boat {
   public async getBookedDates(): Promise<Date[]> {
     const rentals = await this.getRentals();
 
-    return rentals.flatMap((rental) => rental.getDates());
+    return rentals.flatMap((rental) => rental.getBookedDates());
   }
 
   protected getUniversalRequirements(): BoatRequirements {

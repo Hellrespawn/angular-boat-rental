@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import { Rental } from '../../src/model/rental';
-import sinon from 'ts-sinon';
 import { Boat } from '../../src/model/boat';
 import { User } from '../../src/model/user';
 

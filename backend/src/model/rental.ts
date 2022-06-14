@@ -35,19 +35,6 @@ export class Rental {
   }
 
   /**
-   * Returns the total price of the rental.
-   */
-  public async priceTotal(): Promise<number> {
-    const days = Rental.days(this.dateStart, this.dateEnd);
-    let total = days * this.boat.pricePerDay;
-    if (this.skipper) {
-      total += days * this.skipper.pricePerDay;
-    }
-
-    return total;
-  }
-
-  /**
    * Checks if dateStart and dateEnd overlaps the rental period.
    */
   public areDatesOverlapping(dateStart: Date, dateEnd: Date): boolean {
@@ -61,7 +48,7 @@ export class Rental {
   /**
    * Returns an array with all booked dates.
    */
-  public getDates(): Date[] {
+  public getBookedDates(): Date[] {
     const dates: Date[] = [];
     for (
       let date = new Date(this.dateStart);
@@ -71,14 +58,6 @@ export class Rental {
       dates.push(new Date(date));
     }
     return dates;
-  }
-
-  public isUpcoming(): boolean {
-    return this.dateStart > new Date();
-  }
-
-  public isCurrent(): boolean {
-    return this.isDateDuringRental(new Date());
   }
 
   /**
