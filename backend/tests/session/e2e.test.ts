@@ -38,7 +38,7 @@ describe('Test Session & Login end-to-end', () => {
   });
 
   it('Allows access to `/login` with and without authentication.', async () => {
-    const agent = request(app);
+    const agent = request.agent(app);
 
     // Without auth
     const res1 = await agent
