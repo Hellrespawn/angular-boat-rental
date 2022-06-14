@@ -8,17 +8,53 @@ type BoatData = { [key: string]: any };
 export abstract class Boat {
   public abstract readonly boatType: BoatType;
 
+  public readonly registrationNumber: number;
+
+  public readonly pricePerDay: number;
+
+  public readonly lengthInM: number;
+
+  public readonly maxOccupants: number;
+
   constructor(
-    public id: number,
-    public name: string,
-    public registrationNumber: number,
-    public pricePerDay: number,
-    public skipperRequired: boolean,
-    public maintenance: boolean,
-    public imageRoute: string,
-    public lengthInM: number,
-    public maxOccupants: number
-  ) {}
+    public readonly id: number,
+    public readonly name: string,
+    registrationNumber: number,
+    pricePerDay: number,
+    public readonly skipperRequired: boolean,
+    public readonly maintenance: boolean,
+    public readonly imageRoute: string,
+    lengthInM: number,
+    maxOccupants: number
+  ) {
+    if (this.isHigherThenZero(registrationNumber)) {
+      this.registrationNumber = registrationNumber;
+    } else {
+      throw new ServerError('invalid registration number');
+    }
+
+    if (this.isHigherThenZero(pricePerDay)) {
+      this.pricePerDay = pricePerDay;
+    } else {
+      throw new ServerError('invalid price per day');
+    }
+
+    if (this.isHigherThenZero(lengthInM)) {
+      this.lengthInM = lengthInM;
+    } else {
+      throw new ServerError('invalid length');
+    }
+
+    if (this.isHigherThenZero(maxOccupants)) {
+      this.maxOccupants = maxOccupants;
+    } else {
+      throw new ServerError('invalid maximum number of occupants');
+    }
+  }
+
+  public isHigherThenZero(value: number): boolean {
+    return value > 0;
+  }
 
   public abstract getBoatData(): BoatData;
 
@@ -116,6 +152,8 @@ export abstract class Boat {
 export class MotorBoat extends Boat {
   public readonly boatType = 'motor';
 
+  public readonly maxSpeedInKmH: number;
+
   constructor(
     id: number,
     name: string,
@@ -126,7 +164,7 @@ export class MotorBoat extends Boat {
     imageRoute: string,
     lengthInM: number,
     maxOccupants: number,
-    public maxSpeedInKmH: number
+    maxSpeedInKmH: number
   ) {
     super(
       id,
@@ -139,6 +177,11 @@ export class MotorBoat extends Boat {
       lengthInM,
       maxOccupants
     );
+    if (this.isHigherThenZero(maxSpeedInKmH)) {
+      this.maxSpeedInKmH = maxSpeedInKmH;
+    } else {
+      throw new ServerError('invalid maximum speed');
+    }
   }
 
   public getBoatData(): BoatData {
@@ -159,6 +202,8 @@ export class MotorBoat extends Boat {
 export class SailBoat extends Boat {
   public readonly boatType = 'sail';
 
+  public readonly sailAreaInM2: number;
+
   constructor(
     id: number,
     name: string,
@@ -169,7 +214,7 @@ export class SailBoat extends Boat {
     imageRoute: string,
     lengthInM: number,
     maxOccupants: number,
-    public sailAreaInM2: number
+    sailAreaInM2: number
   ) {
     super(
       id,
@@ -182,6 +227,11 @@ export class SailBoat extends Boat {
       lengthInM,
       maxOccupants
     );
+    if (this.isHigherThenZero(sailAreaInM2)) {
+      this.sailAreaInM2 = sailAreaInM2;
+    } else {
+      throw new ServerError('invalid sail area');
+    }
   }
 
   public getBoatData(): BoatData {

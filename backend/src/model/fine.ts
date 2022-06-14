@@ -33,7 +33,7 @@ export class Fine {
     );
   }
 
-  public isHigherThenZero(value: number): boolean {
+  private isHigherThenZero(value: number): boolean {
     return value > 0;
   }
 }

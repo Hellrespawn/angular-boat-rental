@@ -36,11 +36,11 @@ export class Skipper {
     );
   }
 
-  public isHigherThenZero(value: number): boolean {
+  private isHigherThenZero(value: number): boolean {
     return value > 0;
   }
 
-  public dateIsInPast(inputDate: Date): boolean {
+  private dateIsInPast(inputDate: Date): boolean {
     const currentDate = new Date();
     return inputDate < currentDate;
   }
