@@ -62,6 +62,10 @@ describe('Test Fine-functionality in backend', () => {
     sinon.restore();
   });
 
+  it('should not grant access to the /fines endpoint when not logged in as an admin', async () => {
+    await request(app).get('/fines').expect(401);
+  });
+
   it('The addFine method of the FineDao should be called when correctly requested', async () => {
     await request(app)
       .post('/fines')

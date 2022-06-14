@@ -92,6 +92,10 @@ describe('Test User-functionality in backend', () => {
     sinon.restore();
   });
 
+  it('should not grant access to the /users endpoint when not logged in as an admin', async () => {
+    await request(app).get('/users').expect(401);
+  });
+
   it('Returns all users when the endpoint /users is called with a get request', async () => {
     const res = await agent.get('/users').set('cookie', cookie).expect(200);
     expect(res.body).to.deep.equal([

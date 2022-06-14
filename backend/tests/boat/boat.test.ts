@@ -102,6 +102,10 @@ describe('Test Boat-functionality in backend', () => {
     sinon.restore();
   });
 
+  it('should not grant access to the /boats endpoint when not logged in as an admin', async () => {
+    await request(app).get('/boats').expect(401);
+  });
+
   it('Returns all Boats when the endpoint /boats is called with a get request', async () => {
     const res = await agent.get('/boats').set('cookie', cookie);
     expect(res.body).to.deep.equal({

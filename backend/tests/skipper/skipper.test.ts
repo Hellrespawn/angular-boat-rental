@@ -95,6 +95,10 @@ describe('Test Skipper-functionality in backend', () => {
     sinon.restore();
   });
 
+  it('should not grant access to the /skippers endpoint when not logged in as an admin', async () => {
+    await request(app).get('/skippers').expect(401);
+  });
+
   it('Returns all skippers when the endpoint /skippers is called with a get request', async () => {
     const res = await agent.get('/skippers').set('cookie', cookie);
     expect(res.body).to.deep.equal([
