@@ -96,6 +96,42 @@ describe('LoginComponent', () => {
     expect(spy.calls.count()).toEqual(0);
   });
 
+  it('should reject email-only input.', async () => {
+    emailInputEl.value = 'test@test.test';
+    emailInputEl.dispatchEvent(new Event('input'));
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    buttonEl.click();
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.email.valid).toBeTrue();
+    expect(component.password.invalid).toBeTrue();
+
+    expect(spy.calls.count()).toEqual(0);
+  });
+
+  it('should reject password-only input.', async () => {
+    passwordInputEl.value = 'password';
+    passwordInputEl.dispatchEvent(new Event('input'));
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    buttonEl.click();
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.email.invalid).toBeTrue();
+    expect(component.password.valid).toBeTrue();
+
+    expect(spy.calls.count()).toEqual(0);
+  });
+
   it('should reject invalid email address.', async () => {
     emailInputEl.value = 'not an email';
     emailInputEl.dispatchEvent(new Event('input'));
