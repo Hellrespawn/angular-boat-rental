@@ -5,13 +5,13 @@ import { User } from './user';
 
 export class Rental {
   constructor(
-    public id: number,
-    public boat: Boat,
-    public user: User,
-    public dateStart: Date,
-    public dateEnd: Date,
-    public paid: boolean,
-    public skipper?: Skipper
+    public readonly id: number,
+    public readonly boat: Boat,
+    public readonly user: User,
+    public readonly dateStart: Date,
+    public readonly dateEnd: Date,
+    public readonly paid: boolean,
+    public readonly skipper?: Skipper
   ) {}
 
   public static fromModel(model: RentalModel): Rental {

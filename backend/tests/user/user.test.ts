@@ -27,16 +27,14 @@ describe('Test User-functionality in backend', () => {
   }
 
   async function stubUserServiceForReturnAllUsers(): Promise<void> {
-    testUser = new User(
-      1,
+    testUser = await User.create(
       'Kees',
       'van Ruler',
       true,
       'vanrulerkees@gmail.com',
       'password',
       false,
-      false,
-      []
+      false
     );
 
     const returnAllUsersStub = sinon.stub(
@@ -48,7 +46,7 @@ describe('Test User-functionality in backend', () => {
   }
 
   beforeEach(async () => {
-    stubUserServiceForReturnAllUsers();
+    await stubUserServiceForReturnAllUsers();
     createSpyForSkipperDaoDeleteSkipper();
     createSpyForUserDaoUpdateUser();
     userService = new UserService();
@@ -65,11 +63,11 @@ describe('Test User-functionality in backend', () => {
         id: testUser.id,
         firstName: testUser.firstName,
         lastName: testUser.lastName,
-        blocked: testUser.blocked,
+        blocked: false,
         license: testUser.license,
         emailAddress: testUser.emailAddress,
         admin: testUser.admin,
-        arrayOfFines: testUser.arrayOfFines,
+        arrayOfFines: [],
         password: testUser.password,
       },
     ]);

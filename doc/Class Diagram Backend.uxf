@@ -5,8 +5,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1062</x>
-      <y>108</y>
+      <x>882</x>
+      <y>261</y>
       <w>90</w>
       <h>81</h>
     </coordinates>
@@ -20,21 +20,21 @@ BoatType
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1098</x>
-      <y>180</y>
+      <x>918</x>
+      <y>333</y>
       <w>90</w>
-      <h>99</h>
+      <h>108</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=+boatType
 m2=1</panel_attributes>
-    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>864</x>
-      <y>324</y>
+      <x>738</x>
+      <y>486</y>
       <w>144</w>
       <h>36</h>
     </coordinates>
@@ -46,8 +46,8 @@ m2=*</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1206</x>
-      <y>99</y>
+      <x>1098</x>
+      <y>252</y>
       <w>108</w>
       <h>90</h>
     </coordinates>
@@ -62,19 +62,19 @@ BoatRequirements
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1251</x>
-      <y>180</y>
+      <x>1143</x>
+      <y>333</y>
       <w>27</w>
-      <h>99</h>
+      <h>108</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>495</x>
-      <y>261</y>
+      <x>369</x>
+      <y>423</y>
       <w>378</w>
       <h>225</h>
     </coordinates>
@@ -99,8 +99,8 @@ _+days: number_
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>864</x>
-      <y>288</y>
+      <x>738</x>
+      <y>450</y>
       <w>144</w>
       <h>36</h>
     </coordinates>
@@ -112,8 +112,8 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>351</x>
-      <y>279</y>
+      <x>225</x>
+      <y>441</y>
       <w>162</w>
       <h>36</h>
     </coordinates>
@@ -125,8 +125,8 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>711</x>
-      <y>126</y>
+      <x>585</x>
+      <y>288</y>
       <w>63</w>
       <h>153</h>
     </coordinates>
@@ -138,8 +138,8 @@ m2=[0..1]</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>171</x>
-      <y>252</y>
+      <x>45</x>
+      <y>414</y>
       <w>189</w>
       <h>153</h>
     </coordinates>
@@ -160,8 +160,8 @@ m2=[0..1]</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>639</x>
-      <y>36</y>
+      <x>513</x>
+      <y>198</y>
       <w>144</w>
       <h>99</h>
     </coordinates>
@@ -177,8 +177,8 @@ leave: boolean
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>657</x>
-      <y>126</y>
+      <x>531</x>
+      <y>288</y>
       <w>63</w>
       <h>153</h>
     </coordinates>
@@ -190,8 +190,8 @@ m2=*</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>351</x>
-      <y>306</y>
+      <x>225</x>
+      <y>468</y>
       <w>162</w>
       <h>36</h>
     </coordinates>
@@ -203,13 +203,14 @@ m2=*</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>990</x>
-      <y>261</y>
+      <x>864</x>
+      <y>423</y>
       <w>378</w>
-      <h>252</h>
+      <h>279</h>
     </coordinates>
-    <panel_attributes>Boat
+    <panel_attributes>/Boat/
 --
+/+boatType: BoatType/
 +id: number
 +naam: string
 +registrationNumber: number
@@ -219,20 +220,21 @@ m2=*</panel_attributes>
 +imageRoute: string
 +lengthInM: number
 +maxOccupants: number
-+maxSpeedInKmH?: number
-+sailAreaInM2?: number
 --
-_+fromModel(model: BoatModel): Boat_
-+getRequirements(): BoatRequirements
+/+getBoatData(): BoatData/
+/+getRequirements(): BoatRequirements/
+__+createBoat(name: string, registrationNumber: number, pricePerDay: number, skipperRequired: boolean, imageRoute: string, lengthInM: number, maxOccupants: number, boatType: BoatType, maxSpeedInKmH?: number, sailAreaInM2?: number): Boat__
++getRentails(): Promise&lt;Rental[]&gt;
 +isAvailable(dateStart: Date, dateEnd:Date): Promise&lt;Boolean&gt;
-+getBookedDates(): Promise&lt;Date[]&gt;</panel_attributes>
++getBookedDates(): Promise&lt;Date[]&gt;
+#getUniversalRequirements(): BoatRequirements</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>189</x>
-      <y>99</y>
+      <x>63</x>
+      <y>261</y>
       <w>144</w>
       <h>90</h>
     </coordinates>
@@ -247,8 +249,8 @@ _+fromModel(model: BoatModel): Boat_
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>297</x>
-      <y>180</y>
+      <x>171</x>
+      <y>342</y>
       <w>99</w>
       <h>90</h>
     </coordinates>
@@ -260,8 +262,8 @@ m2=*</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>207</x>
-      <y>180</y>
+      <x>81</x>
+      <y>342</y>
       <w>54</w>
       <h>90</h>
     </coordinates>
@@ -273,8 +275,8 @@ m2=1</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>126</x>
-      <y>486</y>
+      <x>0</x>
+      <y>648</y>
       <w>261</w>
       <h>135</h>
     </coordinates>
@@ -293,8 +295,8 @@ _+generateSessionId(): string_
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>207</x>
-      <y>396</y>
+      <x>81</x>
+      <y>558</y>
       <w>54</w>
       <h>108</h>
     </coordinates>
@@ -306,8 +308,8 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>297</x>
-      <y>396</y>
+      <x>171</x>
+      <y>558</y>
       <w>99</w>
       <h>108</h>
     </coordinates>
@@ -315,5 +317,61 @@ m2=1</panel_attributes>
 m1=getSessions()	
 m2=*</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1062</x>
+      <y>792</y>
+      <w>234</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>SailBoat
+--
++boatType: string = "sail"
++SailAreaInM2: number
+--
++getBoatData(): BoatData
++getRequirements(): BoatRequirements</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>792</x>
+      <y>792</y>
+      <w>234</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>MotorBoat
+--
++boatType: string = "motor"
++maxSpeedInKmH: number
+--
++getBoatData(): BoatData
++getRequirements(): BoatRequirements</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1170</x>
+      <y>693</y>
+      <w>27</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>900</x>
+      <y>693</y>
+      <w>27</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
   </element>
 </diagram>

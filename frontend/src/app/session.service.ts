@@ -10,6 +10,7 @@ import { SnackBarService } from './snack-bar.service';
 })
 export class SessionService {
   private static storageKey = 'sessionData';
+
   private sessionData: BehaviorSubject<SessionData | null> =
     new BehaviorSubject(null as SessionData | null);
 

@@ -1,4 +1,3 @@
-import { resourceLimits } from 'worker_threads';
 import { UserDao, UserModel } from '../database/user.dao';
 import { User } from '../model/user';
 
@@ -73,13 +72,13 @@ export class UserService {
     blocked: boolean
   ): Promise<UserModel> {
     const isAdmin = (await this.calculateIfAdmin()) ? false : true;
-    const newUser = await User.createWithPlaintextPassword(
+    const newUser = await User.create(
       firstName,
       lastName,
       license,
       emailAddress,
       password,
-      false,
+      blocked,
       isAdmin
     );
     return this.userDao.createNewUser(
