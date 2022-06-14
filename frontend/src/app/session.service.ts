@@ -16,8 +16,8 @@ export class SessionService {
 
   constructor(
     private httpClient: HttpClient,
-    private snackbarService: SnackBarService,
-    private router: Router
+    private router: Router,
+    private snackbarService: SnackBarService
   ) {
     this.loadSessionData();
   }

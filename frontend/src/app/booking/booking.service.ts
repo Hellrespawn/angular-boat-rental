@@ -139,8 +139,8 @@ export class BookingService {
   /**
    * Gets the amount of days between two dates.
    */
-  public getDays(dateStart: Date, dateEnd: Date): number {
-    let ms = dateEnd!.getTime() - dateStart!.getTime();
+  public getDays(dateRange: DateRange): number {
+    let ms = dateRange.dateEnd.getTime() - dateRange.dateStart.getTime();
     let days = ms / 1000 / 60 / 60 / 24;
     return days + 1;
   }
@@ -148,8 +148,8 @@ export class BookingService {
   /**
    * Checks whether or not the date range is valid.
    */
-  public isRangeValid(dateStart: Date, dateEnd: Date): boolean {
-    return this.getDays(dateStart, dateEnd) >= 3;
+  public isRangeValid(dateRange: DateRange): boolean {
+    return this.getDays(dateRange) >= 3;
   }
 
   /**

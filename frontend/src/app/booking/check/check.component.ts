@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BoatDetailData } from 'src/app/boat';
 import { BoatService } from 'src/app/boat.service';
+import { DateRange } from '../../rental.service';
 import { SessionData } from '../../session';
 import { SessionService } from '../../session.service';
 import { BookingService } from '../booking.service';
@@ -13,7 +14,7 @@ import { BookingService } from '../booking.service';
 })
 export class CheckComponent implements OnInit {
   public sessionData: SessionData | null = null;
-  public dateRange: [Date, Date] | null = null;
+  public dateRange: DateRange | null = null;
   public boat!: BoatDetailData;
 
   constructor(
@@ -75,7 +76,7 @@ export class CheckComponent implements OnInit {
    */
   public isOrderValid(): boolean {
     if (this.dateRange) {
-      return this.bookingService.getDays(...this.dateRange) >= 3;
+      return this.bookingService.getDays(this.dateRange) >= 3;
     }
 
     return false;
@@ -92,9 +93,7 @@ export class CheckComponent implements OnInit {
    * Get number of days in currently selected dates.
    */
   public getDays(): number {
-    const [dateStart, dateEnd] = this.dateRange!;
-
-    return this.bookingService.getDays(dateStart, dateEnd);
+    return this.bookingService.getDays(this.dateRange!);
   }
 
   /**
