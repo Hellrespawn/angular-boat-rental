@@ -54,11 +54,15 @@ export class SessionService {
       this.cache.get(sessionId) ??
       (await this.sessionDao.getSession(sessionId));
 
-    if (session && session.isExpired()) {
-      await this.sessionDao.deleteSession(session);
-      this.cache.delete(sessionId);
+    if (session) {
+      if (session.isExpired()) {
+        await this.sessionDao.deleteSession(session);
+        this.cache.delete(sessionId);
 
-      session = null;
+        session = null;
+      } else {
+        this.cache.set(sessionId, session);
+      }
     }
 
     return session;
