@@ -5,7 +5,7 @@ import { User } from './user';
 
 export class Rental {
   constructor(
-    public readonly id: number,
+    public id: number,
     public readonly boat: Boat,
     public readonly user: User,
     public readonly dateStart: Date,

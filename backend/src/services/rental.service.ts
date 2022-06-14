@@ -57,7 +57,9 @@ export class RentalService {
 
     const rental = new Rental(-1, boat, user, dateStart, dateEnd, false);
 
-    await this.rentalDao.saveRental(rental);
+    const id = await this.rentalDao.saveRental(rental);
+
+    rental.id = id;
 
     return rental;
   }

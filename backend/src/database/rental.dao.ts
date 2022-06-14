@@ -53,8 +53,8 @@ export class RentalDao {
     return models.map(Rental.fromModel);
   }
 
-  public async saveRental(rental: Rental): Promise<void> {
-    await RentalModel.create({
+  public async saveRental(rental: Rental): Promise<number> {
+    const model = await RentalModel.create({
       boatId: rental.boat.id,
       userId: rental.user.id,
       skipperId: rental.skipper?.id,
@@ -62,6 +62,8 @@ export class RentalDao {
       dateEnd: rental.dateEnd,
       paid: rental.paid,
     });
+
+    return model.id;
   }
 }
 
