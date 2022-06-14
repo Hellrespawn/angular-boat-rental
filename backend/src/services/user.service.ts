@@ -1,6 +1,7 @@
 import { resourceLimits } from 'worker_threads';
 import { UserDao, UserModel } from '../database/user.dao';
 import { User } from '../model/user';
+import { ServerError } from '../util/error';
 
 export class UserService {
   private userDao: UserDao = new UserDao();
@@ -39,6 +40,11 @@ export class UserService {
     idOfUser: number,
     updatedValue: boolean
   ): Promise<void> {
+    if (typeof idOfUser !== 'number' || idOfUser < 1) {
+      throw new ServerError('invalid id');
+    } else if (typeof updatedValue !== 'boolean') {
+      throw new ServerError('invalid new value of blocked');
+    }
     return this.userDao.updateBlockedValueOfUser(idOfUser, updatedValue);
   }
 
