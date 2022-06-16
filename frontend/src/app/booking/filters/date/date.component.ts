@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BoatService } from 'src/app/boat.service';
 import { SnackBarService } from 'src/app/snack-bar.service';
+import { DateRange } from '../../../rental.service';
 import { BookingService } from '../../booking.service';
 
 @Component({
@@ -31,7 +32,7 @@ export class DateComponent implements OnInit {
   private getDateRange(): void {
     this.bookingService.getDateRange().subscribe((dateRange) => {
       if (dateRange) {
-        const [dateStart, dateEnd] = dateRange;
+        const { dateStart, dateEnd } = dateRange;
 
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
@@ -87,7 +88,10 @@ export class DateComponent implements OnInit {
    */
   private areDatesValid(): boolean {
     if (this.dateStart && this.dateEnd) {
-      return this.bookingService.isRangeValid(this.dateStart, this.dateEnd);
+      return this.bookingService.isRangeValid({
+        dateStart: this.dateStart,
+        dateEnd: this.dateEnd,
+      });
     }
 
     return false;
@@ -132,7 +136,7 @@ export class DateComponent implements OnInit {
    * Updates the selected dateRange in bookingService.
    */
   private updateDateRange(): void {
-    let dateRange: [Date, Date] | null;
+    let dateRange: DateRange | null;
 
     if (!this.areDatesValid()) {
       this.snackBarService.displayError('Je moet minimaal 3 dagen huren!');
@@ -149,7 +153,7 @@ export class DateComponent implements OnInit {
       this.dateStart = null;
       dateRange = null;
     } else {
-      dateRange = [this.dateStart!, this.dateEnd!];
+      dateRange = { dateStart: this.dateStart!, dateEnd: this.dateEnd! };
     }
     this.bookingService.setDateRange(dateRange);
   }

@@ -48,19 +48,10 @@ export class BookingService {
     private sessionService: SessionService
   ) {
     this.getCurrentUserLicense();
+    this.updateBoats();
   }
 
   // Getters and setters
-  public getBoats(): Observable<BoatOverviewData[]> {
-    return combineLatest([
-      this.boats,
-      this.licenseFilter,
-      this.typeFilter,
-    ]).pipe(
-      map(([boats, license, type]) => this.filterBoats(boats, license, type))
-    );
-  }
-
   public getDateRange(): Observable<DateRange | null> {
     return this.dateRange.asObservable();
   }
@@ -119,6 +110,15 @@ export class BookingService {
         .subscribe((boats) => this.boats.next(boats))
     );
   }
+  public getBoats(): Observable<BoatOverviewData[]> {
+    return combineLatest([
+      this.boats,
+      this.licenseFilter,
+      this.typeFilter,
+    ]).pipe(
+      map(([boats, license, type]) => this.filterBoats(boats, license, type))
+    );
+  }
 
   /**
    * Creates a rental and returns an observable with the id of the created
@@ -139,8 +139,8 @@ export class BookingService {
   /**
    * Gets the amount of days between two dates.
    */
-  public getDays(dateStart: Date, dateEnd: Date): number {
-    let ms = dateEnd!.getTime() - dateStart!.getTime();
+  public getDays(dateRange: DateRange): number {
+    let ms = dateRange.dateEnd.getTime() - dateRange.dateStart.getTime();
     let days = ms / 1000 / 60 / 60 / 24;
     return days + 1;
   }
@@ -148,8 +148,8 @@ export class BookingService {
   /**
    * Checks whether or not the date range is valid.
    */
-  public isRangeValid(dateStart: Date, dateEnd: Date): boolean {
-    return this.getDays(dateStart, dateEnd) >= 3;
+  public isRangeValid(dateRange: DateRange): boolean {
+    return this.getDays(dateRange) >= 3;
   }
 
   /**
@@ -159,8 +159,6 @@ export class BookingService {
     this.sessionService.getSessionData().subscribe((sessionData) => {
       if (sessionData && !sessionData.license) {
         this.licenseFilter.next('not-required');
-      } else {
-        this.licenseFilter.next('both');
       }
     });
   }

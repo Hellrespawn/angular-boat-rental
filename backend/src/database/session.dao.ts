@@ -65,7 +65,7 @@ export class SessionDao {
 export class SessionModel extends Model {
   @AllowNull(false)
   @Column
-  public sessionId!: string;
+  public readonly sessionId!: string;
 
   @AllowNull(false)
   @Column
@@ -73,8 +73,8 @@ export class SessionModel extends Model {
   private userId!: number;
 
   @BelongsTo(() => UserModel)
-  public user!: UserModel;
+  public readonly user!: UserModel;
 
   @CreatedAt
-  public createdAt!: Date;
+  public readonly createdAt!: Date;
 }

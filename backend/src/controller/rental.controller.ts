@@ -48,8 +48,6 @@ export class RentalController {
     const boatId: number = req.body.boatId;
     const dateStart = new Date(req.body.dateStart);
     const dateEnd = new Date(req.body.dateEnd);
-
-    // Validated by middleware
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const userId: number = req.currentUser!.id;
 

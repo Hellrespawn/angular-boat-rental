@@ -138,6 +138,7 @@ export class BoatModel extends Model {
         this.imageRoute,
         this.lengthInM,
         this.maxOccupants,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.maxSpeedInKmH!
       );
     } else {
@@ -151,6 +152,7 @@ export class BoatModel extends Model {
         this.imageRoute,
         this.lengthInM,
         this.maxOccupants,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.sailAreaInM2!
       );
     }

@@ -1,10 +1,9 @@
 import { expect } from 'chai';
 import { Rental } from '../../src/model/rental';
-import sinon from 'ts-sinon';
 import { Boat } from '../../src/model/boat';
 import { User } from '../../src/model/user';
 
-describe('Test rental.model.ts', () => {
+describe('Test Rental', () => {
   let rental: Rental;
 
   beforeEach(() => {
@@ -112,6 +111,21 @@ describe('Test rental.model.ts', () => {
       const actual = rental.areDatesOverlapping(dateStart, dateEnd);
 
       expect(actual).to.equal(expected);
+    });
+  });
+
+  describe('Test Rental.getBookedDates()', () => {
+    it('Gets booked dates', () => {
+      const expected = [
+        new Date('2022-01-10T00:00:00.000Z'),
+        new Date('2022-01-11T00:00:00.000Z'),
+        new Date('2022-01-12T00:00:00.000Z'),
+        new Date('2022-01-13T00:00:00.000Z'),
+        new Date('2022-01-14T00:00:00.000Z'),
+        new Date('2022-01-15T00:00:00.000Z'),
+      ];
+
+      expect(rental.getBookedDates()).to.deep.equal(expected);
     });
   });
 });

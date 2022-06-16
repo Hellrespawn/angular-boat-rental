@@ -9,6 +9,7 @@ import {
 } from './boat';
 import { environment } from 'src/environments/environment';
 import { constructUrl } from './http';
+import { DateRange } from './rental.service';
 
 @Injectable({
   providedIn: 'root',
@@ -114,15 +115,15 @@ export class BoatService {
    * @returns Array of BoatOverviewData
    */
   public getBoatOverviewData(
-    dateRange?: [Date, Date]
+    dateRange?: DateRange
   ): Observable<BoatOverviewData[]> {
     let route = '/boats/overview';
 
     if (dateRange) {
-      let [startDate, endDate] = dateRange;
+      let { dateStart, dateEnd } = dateRange;
 
-      route += `/available/${this.dateToYMD(startDate)}/${this.dateToYMD(
-        endDate
+      route += `/available/${this.dateToYMD(dateStart)}/${this.dateToYMD(
+        dateEnd
       )}`;
     }
 

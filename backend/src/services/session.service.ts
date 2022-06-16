@@ -50,9 +50,16 @@ export class SessionService {
    * @returns
    */
   public async getSession(sessionId: string): Promise<Session | null> {
-    let session: Session | null =
-      this.cache.get(sessionId) ??
-      (await this.sessionDao.getSession(sessionId));
+    let session: Session | null;
+
+    try {
+      session =
+        this.cache.get(sessionId) ??
+        (await this.sessionDao.getSession(sessionId));
+    } catch (error) {
+      console.error(error);
+      throw new ServerError('Unable to connect to database!', ErrorType.Server);
+    }
 
     if (session) {
       if (session.isExpired()) {

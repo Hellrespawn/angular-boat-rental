@@ -16,8 +16,8 @@ export class SessionService {
 
   constructor(
     private httpClient: HttpClient,
-    private snackbarService: SnackBarService,
-    private router: Router
+    private router: Router,
+    private snackbarService: SnackBarService
   ) {
     this.loadSessionData();
   }
@@ -93,7 +93,5 @@ export class SessionService {
     this.loadSessionData();
 
     this.snackbarService.displaySuccess(`Welkom, je bent ingelogd!`);
-
-    this.router.navigate(['/']);
   }
 }

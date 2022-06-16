@@ -21,16 +21,8 @@ export class BookingComponent implements OnInit {
    * Subscribe to bookingService.boats
    */
   private getBoats(): void {
-    this.bookingService.updateBoats();
     this.bookingService.getBoats().subscribe((boats: BoatOverviewData[]) => {
       this.boats = boats;
     });
-  }
-
-  /**
-   * Clear all filters
-   */
-  public clearFilters(): void {
-    this.bookingService.reset();
   }
 }

@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { SinonStub } from 'sinon';
-import sinon from 'ts-sinon';
+import sinon, { SinonStub } from 'sinon';
 import { User } from '../../src/model/user';
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import { SessionService } from '../../src/services/session.service';
 import { SessionDao } from '../../src/database/session.dao';
 import { Session } from '../../src/model/session';
@@ -16,9 +15,9 @@ describe('Test SessionService', () => {
 
   let user: User;
 
-  let deleteStub: SinonStub<any>;
-  let getStub: SinonStub<any>;
-  let saveStub: SinonStub<any>;
+  let getStub: SinonStub<[sessionId: string], Promise<Session | null>>;
+  let deleteStub: SinonStub<[Session], Promise<boolean>>;
+  let saveStub: SinonStub<[Session], Promise<void>>;
 
   let sessionService: SessionService;
 
@@ -38,29 +37,27 @@ describe('Test SessionService', () => {
     it("Throws an error when the user doesn't exist", async () => {
       try {
         await sessionService.login('fake', 'fake');
+        expect.fail('Login with non-existent user is not supposed to succeed.');
       } catch (error) {
         expect(saveStub.callCount).to.equal(0);
         expect((error as Error).message.toLowerCase()).to.include(
           expectedError
         );
-        return;
       }
-
-      assert.fail('Login with non-existent user is not supposed to succeed.');
     });
 
     it('Throws an error if password is incorrect', async () => {
       try {
         await sessionService.login(user.emailAddress, 'fake');
+        expect.fail(
+          'Login with incorrect password is not supposed to succeed.'
+        );
       } catch (error) {
         expect(saveStub.callCount).to.equal(0);
         expect((error as Error).message.toLowerCase()).to.include(
           expectedError
         );
-        return;
       }
-
-      assert.fail('Login with incorrect password is not supposed to succeed.');
     });
 
     it('Creates a session when the user exists', async () => {
@@ -78,7 +75,7 @@ describe('Test SessionService', () => {
         {} as unknown as User,
         new Date()
       );
-      getStub.returns(testSession);
+      getStub.returns(Promise.resolve(testSession));
 
       const session = await sessionService.getSession('abcd');
 
@@ -95,7 +92,7 @@ describe('Test SessionService', () => {
         {} as unknown as User,
         createdAt
       );
-      getStub.returns(testSession);
+      getStub.returns(Promise.resolve(testSession));
 
       const session = await sessionService.getSession('abcd');
 
