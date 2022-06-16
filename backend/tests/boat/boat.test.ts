@@ -182,24 +182,36 @@ describe('Test Boat-functionality in backend', () => {
   it('should throw an error when trying to make a Boat when a negative price is entered', () => {
     expect(() =>
       Boat.createBoat('test', 123, -1, true, '', 25, 10, 'motor', 100)
-    ).to.throw('invalid registration number');
+    ).to.throw('invalid price per day');
   });
 
   it('should throw an error when trying to make a Boat when a price of zero is entered', () => {
     expect(() =>
       Boat.createBoat('test', 123, 0, true, '', 25, 10, 'motor', 100)
-    ).to.throw('invalid registration number');
+    ).to.throw('invalid price per day');
   });
 
   it('should throw an error when trying to make a Boat when a negative length is entered', () => {
     expect(() =>
       Boat.createBoat('test', 123, 250, true, '', -1, 10, 'motor', 100)
-    ).to.throw('invalid registration number');
+    ).to.throw('invalid length');
   });
 
   it('should throw an error when trying to make a Boat when a length of zero is entered', () => {
     expect(() =>
       Boat.createBoat('test', 123, 250, true, '', 0, 10, 'motor', 100)
-    ).to.throw('invalid registration number');
+    ).to.throw('invalid length');
+  });
+
+  it('should throw an error when trying to make a Boat when a negative amount of maximum occupants is entered', () => {
+    expect(() =>
+      Boat.createBoat('test', 123, 250, true, '', 25, -1, 'motor', 100)
+    ).to.throw('invalid maximum number of occupants');
+  });
+
+  it('should throw an error when trying to make a Boat when an amount of zero maximum occupants is entered', () => {
+    expect(() =>
+      Boat.createBoat('test', 123, 250, true, '', 25, 0, 'motor', 100)
+    ).to.throw('invalid maximum number of occupants');
   });
 });
