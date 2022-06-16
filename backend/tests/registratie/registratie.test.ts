@@ -15,6 +15,7 @@ describe('Test User-functionality in backend', () => {
   let userDaoAddUserSpy: SinonSpiedInstance<any>;
   let userDaoUpdateSpy: SinonSpiedInstance<any>;
   let userDaoDeletionSpy: SinonSpiedInstance<any>;
+  let userGetUsersStub: SinonSpiedInstance<any>;
 
   function createSpyForUserDaoAddUser() {
     userDaoAddUserSpy = sinon.stub(UserDao.prototype, 'saveNewUser');
@@ -41,6 +42,13 @@ describe('Test User-functionality in backend', () => {
     returnAllUsersStub.returns(Promise.resolve([testUser]));
   }
 
+  function stubUserDaoGetUsers(): void {
+    const stub = sinon.stub(UserDao.prototype, 'getUsers');
+
+    stub.returns(Promise.resolve([testUser]));
+
+    userGetUsersStub = stub;
+  }
   beforeEach(async () => {
     stubUserServiceForReturnAllUsers();
     createSpyForUserDaoAddUser();

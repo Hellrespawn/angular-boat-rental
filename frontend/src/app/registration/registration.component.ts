@@ -4,7 +4,6 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { UserService } from '../user.service';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
 import { MatRadioModule } from '@angular/material/radio';
-
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -62,10 +61,13 @@ export class RegistrationComponent {
   };
 
   // formcontrol email messages
-  public firstName = new FormControl('', [Validators.required]);
-  public lastName = new FormControl('', [Validators.required]);
-  public email = new FormControl('', [Validators.required, Validators.email]);
-  public password = new FormControl('', [Validators.required]);
+//   public nameControl = new FormControl(null, [Validators.required]);
+  public firstName = new FormControl(null, [Validators.required]);
+  public lastName = new FormControl(null, [Validators.required]);
+  public email = new FormControl(null, [Validators.required, Validators.email]);
+  public password = new FormControl(null, [Validators.required]);
+  public radioCheckBox = new FormControl(false, [Validators.required]);
+
   public firstNameErrorMessage(): string {
     let errorMessage: string = '';
     if (this.firstName.hasError('required')) {
@@ -115,6 +117,7 @@ export class RegistrationComponent {
       this.nameTouched();
       this.lastNameTouched();
       this.emailTouched();
+      this.userService.checkEmail(this.emailAddressInp)
     // this.userService.checkIfEmailFound()
       if (!regex.test(passwordInp)) {
         this.falseEntryForm();
@@ -122,7 +125,7 @@ export class RegistrationComponent {
       } else {
         this.succesEntryForm();
         // sends this.getUsers() data to backend through userService with addUsers()
-        this.userService.addUsers(this.getUsers()).subscribe();
+        this.userService.addUser(this.getUsers()).subscribe();
         this.router.navigateByUrl('/registratie-pagina');
       }
     }

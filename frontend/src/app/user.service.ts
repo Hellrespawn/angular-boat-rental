@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -13,7 +13,7 @@ export class UserService {
     private httpClient: HttpClient,
     private snackBService: SnackBarService
   ) {}
-  
+
   private readonly knownEmailInput: SnackBarInput = {
     message: 'Emailadres bestaal al!',
     buttonText: 'Sluit',
@@ -26,7 +26,7 @@ export class UserService {
    * @returns an Observable of an array of Users
    */
   public getUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${environment.backendUrl}/users`)
+    return this.httpClient.get<User[]>(`${environment.backendUrl}/users`);
   }
   /**
    * sends a request to the backend to delete a specific User by id
@@ -54,14 +54,20 @@ export class UserService {
     });
   }
 
-  public addUsers(UserObject: {}): Observable<Object> {
-    return this.httpClient.post(
+  public addUser(UserObject: {}): Observable<void> {
+    return this.httpClient.post<void>(
       `${environment.backendUrl}/users/registratie-pagina`,
       UserObject
     );
   }
 
   public checkEmail(UserObject: {}): Observable<Object> {
+    if (HttpErrorResponse) {
+      console.log('service werkt');
+      this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.knownEmailInput
+      );
+    } 
     return this.httpClient.post(
       `${environment.backendUrl}/users/registratie-pagina`,
       UserObject

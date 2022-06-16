@@ -8,11 +8,10 @@ import { UserService } from '../user.service';
   providedIn: 'root',
 })
 export class MockUserService extends UserService {
-    public override: any; addUser(UserObject: {}): Observable<void> {
-        console.log('user added');
-        return of();
+    public override addUser(UserObject: {}): Observable<void> {
+        return of(undefined);
       }
-      public override; Users(): Observable<User[]> {
+      public override getUsers(): Observable<User[]> {
         return of([
           {
             id: 0,
@@ -27,7 +26,4 @@ export class MockUserService extends UserService {
           },
         ]);
       }
-    //   public override: any; deleteSkipperById(id: number): Observable<void> {
-    //     return of(void 0);
-    //   }
 }
