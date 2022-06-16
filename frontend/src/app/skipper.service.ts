@@ -16,10 +16,7 @@ export class SkipperService {
    * @returns an observable of either the created skipper or an error object
    */
   public addSkipper(skipperObject: {}): Observable<void> {
-    return this.httpClient.post<void>(
-      `${environment.backendUrl}/skippers`,
-      skipperObject
-    );
+    return this.httpClient.post<void>(`/api/skippers`, skipperObject);
   }
 
   /**
@@ -27,7 +24,7 @@ export class SkipperService {
    * @returns an observable of an array of skippers (can be empty)
    */
   public getSkippers(): Observable<Skipper[]> {
-    return this.httpClient.get<Skipper[]>(`${environment.backendUrl}/skippers`);
+    return this.httpClient.get<Skipper[]>(`/api/skippers`);
   }
   /**
    * sends a request for deletion of a specific skipper to the backend
@@ -35,9 +32,7 @@ export class SkipperService {
    * @returns an Observable of the return object of the deletion
    */
   public deleteSkipperById(id: number): Observable<void> {
-    return this.httpClient.delete<void>(
-      `${environment.backendUrl}/skippers/${id}`
-    );
+    return this.httpClient.delete<void>(`/api/skippers/${id}`);
   }
   /**
    * updates the leave boolean to the updated value of a specific skipper found by id
@@ -49,7 +44,7 @@ export class SkipperService {
     id: number,
     updatedValue: boolean
   ): Observable<void> {
-    return this.httpClient.patch<void>(`${environment.backendUrl}/skippers`, {
+    return this.httpClient.patch<void>(`/api/skippers`, {
       id,
       updatedValue,
     });

@@ -15,7 +15,7 @@ export class UserService {
    * @returns an Observable of an array of Users
    */
   public getUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(`${environment.backendUrl}/users`).pipe(
+    return this.httpClient.get<User[]>(`/api/users`).pipe(
       map((users) => {
         users.map((user) => {
           user.dateOfBirth = new Date(user.dateOfBirth);
@@ -31,9 +31,7 @@ export class UserService {
    * @returns an Observable of the response object
    */
   public deleteUserById(id: number): Observable<void> {
-    return this.httpClient.delete<void>(
-      `${environment.backendUrl}/users/${id}`
-    );
+    return this.httpClient.delete<void>(`/api/users/${id}`);
   }
   /**
    * sends a request to the backend to update the blocked boolean of a specific User by id
@@ -45,23 +43,17 @@ export class UserService {
     id: number,
     updatedValue: boolean
   ): Observable<void> {
-    return this.httpClient.patch<void>(`${environment.backendUrl}/users`, {
+    return this.httpClient.patch<void>(`/api/users`, {
       id,
       updatedValue,
     });
   }
 
   public addUsers(UserObject: {}): Observable<Object> {
-    return this.httpClient.post(
-      `${environment.backendUrl}/users/registratie-pagina`,
-      UserObject
-    );
+    return this.httpClient.post(`/api/users/registratie-pagina`, UserObject);
   }
 
   public checkEmail(UserObject: {}): Observable<Object> {
-    return this.httpClient.post(
-      `${environment.backendUrl}/users/registratie-pagina`,
-      UserObject
-    );
+    return this.httpClient.post(`/api/users/registratie-pagina`, UserObject);
   }
 }
