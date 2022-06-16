@@ -190,6 +190,10 @@ class Skipper {
     birthDateString: string
   ) {
     this.pricePerDay = parseFloat(priceString);
-    this.birthDate = new Date(birthDateString).toISOString();
+    const reversedDateString: string = birthDateString
+      .split('-')
+      .reverse()
+      .join('-');
+    this.birthDate = new Date(reversedDateString).toISOString();
   }
 }
