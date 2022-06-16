@@ -59,7 +59,7 @@ export const NEW_BOAT_SCHEMA: JSONSchemaType<NewBoatData> = {
     'maxOccupants',
     'boatType',
   ],
-  additionalProperties: true,
+  additionalProperties: true, //needs to accept either maxSpeed or sailInSquareMeter
 };
 export class BoatController {
   // YYYY-MM-DD

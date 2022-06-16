@@ -8,46 +8,27 @@ type BoatData = { [key: string]: any };
 export abstract class Boat {
   public abstract readonly boatType: BoatType;
 
-  public readonly registrationNumber: number;
-
-  public readonly pricePerDay: number;
-
-  public readonly lengthInM: number;
-
-  public readonly maxOccupants: number;
-
   constructor(
     public readonly id: number,
     public readonly name: string,
-    registrationNumber: number,
-    pricePerDay: number,
+    public readonly registrationNumber: number,
+    public readonly pricePerDay: number,
     public readonly skipperRequired: boolean,
     public readonly maintenance: boolean,
     public readonly imageRoute: string,
-    lengthInM: number,
-    maxOccupants: number
+    public readonly lengthInM: number,
+    public readonly maxOccupants: number
   ) {
-    if (this.isHigherThenZero(registrationNumber)) {
-      this.registrationNumber = registrationNumber;
-    } else {
+    if (!this.isHigherThenZero(registrationNumber)) {
       throw new ServerError('invalid registration number');
     }
-
-    if (this.isHigherThenZero(pricePerDay)) {
-      this.pricePerDay = pricePerDay;
-    } else {
+    if (!this.isHigherThenZero(pricePerDay)) {
       throw new ServerError('invalid price per day');
     }
-
-    if (this.isHigherThenZero(lengthInM)) {
-      this.lengthInM = lengthInM;
-    } else {
+    if (!this.isHigherThenZero(lengthInM)) {
       throw new ServerError('invalid length');
     }
-
-    if (this.isHigherThenZero(maxOccupants)) {
-      this.maxOccupants = maxOccupants;
-    } else {
+    if (!this.isHigherThenZero(maxOccupants)) {
       throw new ServerError('invalid maximum number of occupants');
     }
   }

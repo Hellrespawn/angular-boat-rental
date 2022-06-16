@@ -77,7 +77,7 @@ export class AdminUserOverviewComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      result ? (result = parseInt(result)) : (result = undefined);
+      result = result ? parseInt(result) : undefined;
       if (result && result > 0) {
         this.sendNewFineToBackend(idOfCustomer, result);
       } else if (result <= 0 || typeof result != 'number') {
