@@ -43,7 +43,9 @@ export function stubBoatDao(
   const boatDaoGetByIdStub = sandbox.stub(BoatDao.prototype, 'getById');
 
   if (defaultValue) {
-    boatDaoGetByIdStub.returns(Promise.resolve(defaultValue));
+    boatDaoGetByIdStub
+      .withArgs(defaultValue.id)
+      .returns(Promise.resolve(defaultValue));
   }
 
   return { boatDaoGetBoatsStub, boatDaoGetByIdStub };
@@ -71,6 +73,10 @@ export function stubRentalDao(
     Promise<Rental[]>
   >;
   rentalDaoSaveRentalStub: SinonStub<[rental: Rental], Promise<number>>;
+  rentalDaoGetUpcomingRentalsByUserIdStub: SinonStub<
+    [id: number],
+    Promise<Rental[]>
+  >;
 } {
   const saveRentalStub = sandbox.stub(RentalDao.prototype, 'saveRental');
   saveRentalStub.returns(Promise.resolve(1));
@@ -84,8 +90,20 @@ export function stubRentalDao(
     getRentalsByBoatIdStub.returns(Promise.resolve(defaultValue));
   }
 
+  const getUpcomingRentalsByUserIdStub = sandbox.stub(
+    RentalDao.prototype,
+    'getUpcomingRentalsByUserId'
+  );
+
+  if (defaultValue) {
+    getUpcomingRentalsByUserIdStub
+      .withArgs(1)
+      .returns(Promise.resolve([TEST_RENTAL]));
+  }
+
   return {
     rentalDaoGetRentalsByBoatIdStub: getRentalsByBoatIdStub,
+    rentalDaoGetUpcomingRentalsByUserIdStub: getUpcomingRentalsByUserIdStub,
     rentalDaoSaveRentalStub: saveRentalStub,
   };
 }

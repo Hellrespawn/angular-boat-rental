@@ -23,7 +23,9 @@ describe('Test RentalService', () => {
   let userDaoGetByIdStub: SinonStub<[id: number], Promise<User | null>>;
 
   beforeEach(async () => {
-    ({ rentalDaoSaveRentalStub: saveRentalStub } = stubRentalDao(SANDBOX, [TEST_RENTAL]));
+    ({ rentalDaoSaveRentalStub: saveRentalStub } = stubRentalDao(SANDBOX, [
+      TEST_RENTAL,
+    ]));
     ({ boatDaoGetByIdStub } = stubBoatDao(SANDBOX, TEST_BOAT));
     ({ userDaoGetByIdStub } = stubUserDao(SANDBOX, {} as unknown as User));
     service = new RentalService();
@@ -99,14 +101,31 @@ describe('Test RentalService', () => {
     it('Rejects unavailable boat', async () => {
       try {
         await service.addRental(
-          2,
+          1,
           1,
           new Date('2022-01-01'),
-          new Date('2022-01-010')
+          new Date('2022-01-10')
         );
         expect.fail('Boat is not available');
       } catch (error) {
         expect((error as Error).message).to.include('Boat is not available');
+        expect(saveRentalStub.callCount).to.equal(0);
+      }
+    });
+
+    it('Rejects too short date', async () => {
+      try {
+        await service.addRental(
+          1,
+          1,
+          new Date('2022-02-01'),
+          new Date('2022-02-02')
+        );
+        expect.fail('Boat is not available');
+      } catch (error) {
+        expect((error as Error).message).to.include(
+          'Rental period must be at least three days!'
+        );
         expect(saveRentalStub.callCount).to.equal(0);
       }
     });
