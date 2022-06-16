@@ -77,6 +77,7 @@ export class AdminUserOverviewComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      result = result ? parseInt(result) : undefined;
       if (result && result > 0) {
         this.sendNewFineToBackend(idOfCustomer, result);
       } else if (result <= 0 || typeof result != 'number') {
@@ -93,13 +94,13 @@ export class AdminUserOverviewComponent implements OnInit {
    * @param amount fine-amount
    */
   public async sendNewFineToBackend(
-    userID: number,
+    userId: number,
     amount: number
   ): Promise<void> {
-    this.fineService.addFine({ userID, amount, paid: false }).subscribe(() => {
+    this.fineService.addFine({ userId, amount, paid: false }).subscribe(() => {
       for (let user of this.arrayOfUsers) {
-        if (user.id === userID)
-          user.arrayOfFines.push({ userID, amount, paid: false });
+        if (user.id === userId)
+          user.arrayOfFines.push({ userId, amount, paid: false });
       }
       this.snackBarService.makeSnackbarThatClosesAutomatically(
         this.succesSnackbarInputFine

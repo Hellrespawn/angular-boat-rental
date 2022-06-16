@@ -1,11 +1,15 @@
 import { Request, Response, Router } from 'express';
-import { BoatController } from '../controller/boat.controller';
+import { BoatController, NEW_BOAT_SCHEMA } from '../controller/boat.controller';
+import { requireAdminRights } from '../middleware/auth';
 import { validateIdInUrlParams } from '../middleware/validate';
+import { Validator } from '../util/validator';
+
+const newBoatValidator = new Validator(NEW_BOAT_SCHEMA);
 
 export function boatRoutes(controller: BoatController): Router {
   const router = Router();
 
-  router.get('/', (req: Request, res: Response): void => {
+  router.get('/', requireAdminRights, (req: Request, res: Response): void => {
     controller.getBoats(req, res);
   });
 
@@ -37,17 +41,31 @@ export function boatRoutes(controller: BoatController): Router {
     }
   );
 
-  router.post('/', async (req: Request, res: Response): Promise<void> => {
-    controller.addBoat(req, res);
-  });
+  router.post(
+    '/',
+    requireAdminRights,
+    newBoatValidator.middleware(),
+    async (req: Request, res: Response): Promise<void> => {
+      controller.addBoat(req, res);
+    }
+  );
 
-  router.delete('/:id', async (req: Request, res: Response): Promise<void> => {
-    controller.deleteBoat(req, res);
-  });
+  router.delete(
+    '/:id',
+    validateIdInUrlParams(),
+    requireAdminRights,
+    async (req: Request, res: Response): Promise<void> => {
+      controller.deleteBoat(req, res);
+    }
+  );
 
-  router.patch('/', async (req: Request, res: Response): Promise<void> => {
-    controller.updateMaintenanceValueOfBoat(req, res);
-  });
+  router.patch(
+    '/',
+    requireAdminRights,
+    async (req: Request, res: Response): Promise<void> => {
+      controller.updateMaintenanceValueOfBoat(req, res);
+    }
+  );
 
   return router;
 }

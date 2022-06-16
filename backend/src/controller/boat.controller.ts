@@ -2,7 +2,65 @@ import { BoatService } from '../services/boat.service';
 import { Request, Response } from 'express';
 import { ServerError } from '../util/error';
 import { Boat } from '../model/boat';
+import { JSONSchemaType } from 'ajv';
 
+/**
+ * Interface matching the expected data for a new boat.
+ */
+type NewBoatData = {
+  name: string;
+  registrationNumber: number;
+  pricePerDay: number;
+  skipperRequired: boolean;
+  imageRoute: string;
+  lengthInM: number;
+  maxOccupants: number;
+  boatType: 'sail' | 'motor';
+};
+
+/**
+ * JSON Schema describing NewBoatData
+ */
+export const NEW_BOAT_SCHEMA: JSONSchemaType<NewBoatData> = {
+  type: 'object',
+  properties: {
+    pricePerDay: {
+      type: 'number',
+    },
+    registrationNumber: {
+      type: 'number',
+    },
+    name: {
+      type: 'string',
+    },
+    skipperRequired: {
+      type: 'boolean',
+    },
+    imageRoute: {
+      type: 'string',
+    },
+    lengthInM: {
+      type: 'number',
+    },
+    maxOccupants: {
+      type: 'number',
+    },
+    boatType: {
+      type: 'string',
+    },
+  },
+  required: [
+    'name',
+    'pricePerDay',
+    'registrationNumber',
+    'skipperRequired',
+    'imageRoute',
+    'lengthInM',
+    'maxOccupants',
+    'boatType',
+  ],
+  additionalProperties: true, //needs to accept either maxSpeed or sailInSquareMeter
+};
 export class BoatController {
   // YYYY-MM-DD
   private static dateRegex = /^\d{4}-\d{2}-\d{2}$/;

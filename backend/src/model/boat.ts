@@ -18,7 +18,24 @@ export abstract class Boat {
     public readonly imageRoute: string,
     public readonly lengthInM: number,
     public readonly maxOccupants: number
-  ) {}
+  ) {
+    if (!this.isHigherThenZero(registrationNumber)) {
+      throw new ServerError('invalid registration number');
+    }
+    if (!this.isHigherThenZero(pricePerDay)) {
+      throw new ServerError('invalid price per day');
+    }
+    if (!this.isHigherThenZero(lengthInM)) {
+      throw new ServerError('invalid length');
+    }
+    if (!this.isHigherThenZero(maxOccupants)) {
+      throw new ServerError('invalid maximum number of occupants');
+    }
+  }
+
+  public isHigherThenZero(value: number): boolean {
+    return value > 0;
+  }
 
   public abstract getBoatData(): BoatData;
 
@@ -116,6 +133,8 @@ export abstract class Boat {
 export class MotorBoat extends Boat {
   public readonly boatType = 'motor';
 
+  public readonly maxSpeedInKmH: number;
+
   constructor(
     id: number,
     name: string,
@@ -126,7 +145,7 @@ export class MotorBoat extends Boat {
     imageRoute: string,
     lengthInM: number,
     maxOccupants: number,
-    public maxSpeedInKmH: number
+    maxSpeedInKmH: number
   ) {
     super(
       id,
@@ -139,6 +158,11 @@ export class MotorBoat extends Boat {
       lengthInM,
       maxOccupants
     );
+    if (this.isHigherThenZero(maxSpeedInKmH)) {
+      this.maxSpeedInKmH = maxSpeedInKmH;
+    } else {
+      throw new ServerError('invalid maximum speed');
+    }
   }
 
   public getBoatData(): BoatData {
@@ -159,6 +183,8 @@ export class MotorBoat extends Boat {
 export class SailBoat extends Boat {
   public readonly boatType = 'sail';
 
+  public readonly sailAreaInM2: number;
+
   constructor(
     id: number,
     name: string,
@@ -169,7 +195,7 @@ export class SailBoat extends Boat {
     imageRoute: string,
     lengthInM: number,
     maxOccupants: number,
-    public sailAreaInM2: number
+    sailAreaInM2: number
   ) {
     super(
       id,
@@ -182,6 +208,11 @@ export class SailBoat extends Boat {
       lengthInM,
       maxOccupants
     );
+    if (this.isHigherThenZero(sailAreaInM2)) {
+      this.sailAreaInM2 = sailAreaInM2;
+    } else {
+      throw new ServerError('invalid sail area');
+    }
   }
 
   public getBoatData(): BoatData {

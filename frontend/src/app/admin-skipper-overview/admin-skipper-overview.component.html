@@ -11,7 +11,7 @@
   <mat-card-title>{{ skipper.name }}</mat-card-title>
   <mat-card-subtitle
     >Geboorte datum: {{ parseDateStringToDate(skipper.birthDate).getDate() }}-{{
-      parseDateStringToDate(skipper.birthDate).getMonth()
+      parseDateStringToDate(skipper.birthDate).getMonth() + 1
     }}-{{
       parseDateStringToDate(skipper.birthDate).getFullYear()
     }}</mat-card-subtitle

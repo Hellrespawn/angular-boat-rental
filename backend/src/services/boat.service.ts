@@ -189,6 +189,11 @@ export class BoatService {
     idOfBoat: number,
     updatedValue: boolean
   ): Promise<void> {
+    if (typeof idOfBoat !== 'number' || idOfBoat < 1) {
+      throw new ServerError('invalid id');
+    } else if (typeof updatedValue !== 'boolean') {
+      throw new ServerError('invalid new value of maintenance');
+    }
     return this.boatDao.updateMaintenanceValueInBoat(idOfBoat, updatedValue);
   }
 
