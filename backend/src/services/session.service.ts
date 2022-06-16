@@ -1,5 +1,6 @@
 import { SessionDao } from '../database/session.dao';
 import { Session } from '../model/session';
+import { Cache } from '../util/cache';
 import { ErrorType, ServerError } from '../util/error';
 import { UserService } from './user.service';
 
@@ -14,6 +15,8 @@ export class SessionService {
   private userService: UserService = new UserService();
 
   private sessionDao: SessionDao = new SessionDao();
+
+  private cache: Cache<Session> = new Cache();
 
   public static MaxSessionAge = 14;
 
@@ -35,6 +38,7 @@ export class SessionService {
     const session = Session.createSessionForUser(user);
 
     await this.sessionDao.saveSession(session);
+    this.cache.set(session.sessionId, session);
 
     return session;
   }
@@ -46,11 +50,26 @@ export class SessionService {
    * @returns
    */
   public async getSession(sessionId: string): Promise<Session | null> {
-    let session = await this.sessionDao.getSession(sessionId);
+    let session: Session | null;
 
-    if (session && session.isExpired()) {
-      await this.sessionDao.deleteSession(session);
-      session = null;
+    try {
+      session =
+        this.cache.get(sessionId) ??
+        (await this.sessionDao.getSession(sessionId));
+    } catch (error) {
+      console.error(error);
+      throw new ServerError('Unable to connect to database!', ErrorType.Server);
+    }
+
+    if (session) {
+      if (session.isExpired()) {
+        await this.sessionDao.deleteSession(session);
+        this.cache.delete(sessionId);
+
+        session = null;
+      } else {
+        this.cache.set(sessionId, session);
+      }
     }
 
     return session;
@@ -67,6 +86,7 @@ export class SessionService {
     for (const session of sessions) {
       if (session.isExpired()) {
         this.sessionDao.deleteSession(session);
+        this.cache.delete(session.sessionId);
         count++;
       }
     }

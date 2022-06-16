@@ -24,6 +24,7 @@ export type BoatOverviewData = {
   requirements: BoatRequirements;
   boatType: BoatType;
   maxOccupants: number;
+  enabled: boolean;
 };
 
 export type BoatDetailData = BoatOverviewData & {

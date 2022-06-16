@@ -1,17 +1,16 @@
 import { expect } from 'chai';
 import { Rental } from '../../src/model/rental';
-import sinon from 'ts-sinon';
 import { Boat } from '../../src/model/boat';
 import { User } from '../../src/model/user';
 
-describe('Test rental.model.ts', () => {
+describe('Test Rental', () => {
   let rental: Rental;
 
   beforeEach(() => {
     const dateStart = new Date('2022-01-10');
     const dateEnd = new Date('2022-01-15');
-    const boat = sinon.createStubInstance(Boat);
-    const user = sinon.createStubInstance(User);
+    const boat = {} as unknown as Boat;
+    const user = {} as unknown as User;
     rental = new Rental(-1, boat, user, dateStart, dateEnd, false);
   });
 
@@ -19,7 +18,7 @@ describe('Test rental.model.ts', () => {
     it('Correctly handles the inclusivity of the rental period', () => {
       const expected = 6;
       const actual = Rental.days(rental.dateStart, rental.dateEnd);
-      expect(expected).to.equal(actual);
+      expect(actual).to.equal(expected);
     });
   });
 
@@ -30,7 +29,7 @@ describe('Test rental.model.ts', () => {
       const expected = true;
       const actual = rental.areDatesOverlapping(dateStart, dateEnd);
 
-      expect(expected).to.equal(actual);
+      expect(actual).to.equal(expected);
     });
 
     it('Returns true for a date ending on the first day of the rental.', () => {
@@ -39,7 +38,7 @@ describe('Test rental.model.ts', () => {
       const expected = true;
       const actual = rental.areDatesOverlapping(dateStart, dateEnd);
 
-      expect(expected).to.equal(actual);
+      expect(actual).to.equal(expected);
     });
 
     it('Returns true for a date starting during the rental.', () => {
@@ -48,7 +47,7 @@ describe('Test rental.model.ts', () => {
       const expected = true;
       const actual = rental.areDatesOverlapping(dateStart, dateEnd);
 
-      expect(expected).to.equal(actual);
+      expect(actual).to.equal(expected);
     });
 
     it('Returns true for a date starting on the last day of the rental.', () => {
@@ -57,7 +56,7 @@ describe('Test rental.model.ts', () => {
       const expected = true;
       const actual = rental.areDatesOverlapping(dateStart, dateEnd);
 
-      expect(expected).to.equal(actual);
+      expect(actual).to.equal(expected);
     });
 
     it('Returns true for a date enclosed by the rental.', () => {
@@ -66,7 +65,7 @@ describe('Test rental.model.ts', () => {
       const expected = true;
       const actual = rental.areDatesOverlapping(dateStart, dateEnd);
 
-      expect(expected).to.equal(actual);
+      expect(actual).to.equal(expected);
     });
 
     it('Returns true for two dates with a rental between them.', () => {
@@ -75,7 +74,7 @@ describe('Test rental.model.ts', () => {
       const expected = true;
       const actual = rental.areDatesOverlapping(dateStart, dateEnd);
 
-      expect(expected).to.equal(actual);
+      expect(actual).to.equal(expected);
     });
 
     it('Returns true for the same dates as the rental.', () => {
@@ -84,7 +83,7 @@ describe('Test rental.model.ts', () => {
       const expected = true;
       const actual = rental.areDatesOverlapping(dateStart, dateEnd);
 
-      expect(expected).to.equal(actual);
+      expect(actual).to.equal(expected);
     });
 
     it('Returns false for a date starting after the last day of a rental.', () => {
@@ -93,7 +92,7 @@ describe('Test rental.model.ts', () => {
       const expected = false;
       const actual = rental.areDatesOverlapping(dateStart, dateEnd);
 
-      expect(expected).to.equal(actual);
+      expect(actual).to.equal(expected);
     });
 
     it('Returns false for a date ending before the first day of a rental.', () => {
@@ -102,7 +101,7 @@ describe('Test rental.model.ts', () => {
       const expected = false;
       const actual = rental.areDatesOverlapping(dateStart, dateEnd);
 
-      expect(expected).to.equal(actual);
+      expect(actual).to.equal(expected);
     });
 
     it('Returns false for unrelated dates.', () => {
@@ -111,7 +110,22 @@ describe('Test rental.model.ts', () => {
       const expected = false;
       const actual = rental.areDatesOverlapping(dateStart, dateEnd);
 
-      expect(expected).to.equal(actual);
+      expect(actual).to.equal(expected);
+    });
+  });
+
+  describe('Test Rental.getBookedDates()', () => {
+    it('Gets booked dates', () => {
+      const expected = [
+        new Date('2022-01-10T00:00:00.000Z'),
+        new Date('2022-01-11T00:00:00.000Z'),
+        new Date('2022-01-12T00:00:00.000Z'),
+        new Date('2022-01-13T00:00:00.000Z'),
+        new Date('2022-01-14T00:00:00.000Z'),
+        new Date('2022-01-15T00:00:00.000Z'),
+      ];
+
+      expect(rental.getBookedDates()).to.deep.equal(expected);
     });
   });
 });

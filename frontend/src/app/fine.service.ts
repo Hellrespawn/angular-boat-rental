@@ -15,7 +15,7 @@ export class FineService {
    * @returns an Observable of an array of Fines
    */
   public getFines(): Observable<Fine[]> {
-    return this.httpClient.get<Fine[]>(`${environment.backendUrl}/fines`);
+    return this.httpClient.get<Fine[]>(`/api/fines`);
   }
 
   /**
@@ -23,10 +23,7 @@ export class FineService {
    * @param fineObject the object specifying the new fine
    * @returns and Observable of either the newly added fine or an error object
    */
-  public addFine(fineObject: {}): Observable<Fine> {
-    return this.httpClient.post<Fine>(
-      `${environment.backendUrl}/fines`,
-      fineObject
-    );
+  public addFine(fineObject: {}): Observable<void> {
+    return this.httpClient.post<void>(`/api/fines`, fineObject);
   }
 }

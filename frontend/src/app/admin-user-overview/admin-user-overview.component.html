@@ -1,7 +1,7 @@
 <p *ngIf="arrayOfUsers.length === 0">
   Er zijn nog geen accounts geregistreerd!
 </p>
-<mat-card *ngFor="let user of arrayOfUsers; index as i">
+<mat-card *ngFor="let user of arrayOfUsers; index as i" class="user-item">
   <mat-card-title>{{ user.firstName + ' ' + user.lastName }}</mat-card-title>
   <mat-card-subtitle>Email adres: {{ user.emailAddress }}</mat-card-subtitle>
   <mat-card-subtitle *ngIf="user.blocked" style="color: red"
@@ -26,6 +26,7 @@
       mat-raised-button
       color="primary"
       (click)="deleteUserById(user.id, i)"
+      class="delete-btn"
     >
       Verwijder
     </button>
@@ -34,6 +35,7 @@
       mat-raised-button
       color="primary"
       (click)="updateBlocked(user.id, true, i)"
+      class="put-on-blocked-btn"
     >
       Blokkeer
     </button>
@@ -42,6 +44,7 @@
       mat-raised-button
       color="primary"
       (click)="updateBlocked(user.id, false, i)"
+      class="put-off-blocked-btn"
     >
       De-blokkeer
     </button>

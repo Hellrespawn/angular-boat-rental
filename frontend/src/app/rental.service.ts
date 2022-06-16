@@ -4,9 +4,7 @@ import { map, Observable, of } from 'rxjs';
 import { constructUrl } from './http';
 import { Rental } from './rental';
 
-import { SessionService } from './session.service';
-
-export type DateRange = [Date, Date];
+export type DateRange = { dateStart: Date; dateEnd: Date };
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +20,7 @@ export class RentalService {
     boatId: number,
     dateRange: DateRange
   ): Observable<number> {
-    const [dateStart, dateEnd] = dateRange;
+    const { dateStart, dateEnd } = dateRange;
 
     let observable = this.httpClient
       .post<{ id: number }>('/api/rentals', {

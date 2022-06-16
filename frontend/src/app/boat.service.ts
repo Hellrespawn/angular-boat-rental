@@ -9,6 +9,7 @@ import {
 } from './boat';
 import { environment } from 'src/environments/environment';
 import { constructUrl } from './http';
+import { DateRange } from './rental.service';
 
 @Injectable({
   providedIn: 'root',
@@ -44,10 +45,7 @@ export class BoatService {
    * @returns and Observable of either the newly added boat or an error object
    */
   public addBoat(boatObject: {}): Observable<void> {
-    return this.httpClient.post<void>(
-      `${environment.backendUrl}/boats`,
-      boatObject
-    );
+    return this.httpClient.post<void>(`/api/boats`, boatObject);
   }
 
   /**
@@ -55,9 +53,7 @@ export class BoatService {
    * @returns an Observable of an array of all Boats in the database
    */
   public getBoats(): Observable<{ boats: Boat[] }> {
-    return this.httpClient.get<{ boats: Boat[] }>(
-      `${environment.backendUrl}/boats`
-    );
+    return this.httpClient.get<{ boats: Boat[] }>(`/api/boats`);
   }
 
   /**
@@ -66,9 +62,7 @@ export class BoatService {
    * @returns an Observable of the response object
    */
   public deleteBoatById(id: number): Observable<void> {
-    return this.httpClient.delete<void>(
-      `${environment.backendUrl}/boats/${id}`
-    );
+    return this.httpClient.delete<void>(`/api/boats/${id}`);
   }
   /**
    * sends a request to the backend to update the maintenance boolean value of a specific boat
@@ -80,7 +74,7 @@ export class BoatService {
     id: number,
     updatedValue: boolean
   ): Observable<void> {
-    return this.httpClient.patch<void>(`${environment.backendUrl}/boats`, {
+    return this.httpClient.patch<void>(`/api/boats`, {
       id,
       updatedValue,
     });
@@ -114,15 +108,15 @@ export class BoatService {
    * @returns Array of BoatOverviewData
    */
   public getBoatOverviewData(
-    dateRange?: [Date, Date]
+    dateRange?: DateRange
   ): Observable<BoatOverviewData[]> {
     let route = '/boats/overview';
 
     if (dateRange) {
-      let [startDate, endDate] = dateRange;
+      let { dateStart, dateEnd } = dateRange;
 
-      route += `/available/${this.dateToYMD(startDate)}/${this.dateToYMD(
-        endDate
+      route += `/available/${this.dateToYMD(dateStart)}/${this.dateToYMD(
+        dateEnd
       )}`;
     }
 

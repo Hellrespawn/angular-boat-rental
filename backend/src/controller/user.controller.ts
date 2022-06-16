@@ -18,8 +18,8 @@ export class UserController {
     try {
       const result: User[] = await this.userService.returnAllUsers();
       res.status(200).json(result);
-    } catch {
-      console.error();
+    } catch (error) {
+      console.error(error);
       res.status(500).json('Something went wrong!');
     }
   }

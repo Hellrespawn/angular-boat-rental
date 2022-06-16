@@ -1,14 +1,18 @@
 import { Request, Response, Router } from 'express';
 import { UserController } from '../controller/user.controller';
-import { requireAuthentication } from '../middleware/auth';
+import { requireAdminRights, requireAuthentication } from '../middleware/auth';
 import { validateIdInUrlParams } from '../middleware/validate';
 
 export function userRoutes(controller: UserController): Router {
   const router = Router();
 
-  router.get('/', async (req: Request, res: Response): Promise<void> => {
-    controller.getUsers(res);
-  });
+  router.get(
+    '/',
+    requireAdminRights,
+    async (req: Request, res: Response): Promise<void> => {
+      controller.getUsers(res);
+    }
+  );
 
   router.post(
     '/registratie-pagina',
@@ -27,14 +31,19 @@ export function userRoutes(controller: UserController): Router {
   router.delete(
     '/:id',
     validateIdInUrlParams(),
+    requireAdminRights,
     async (req: Request, res: Response): Promise<void> => {
       controller.deleteUser(req, res);
     }
   );
 
-  router.patch('/', async (req: Request, res: Response): Promise<void> => {
-    controller.updateBlockedValueOfUser(req, res);
-  });
+  router.patch(
+    '/',
+    requireAdminRights,
+    async (req: Request, res: Response): Promise<void> => {
+      controller.updateBlockedValueOfUser(req, res);
+    }
+  );
 
   return router;
 }

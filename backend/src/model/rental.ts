@@ -6,23 +6,23 @@ import { User } from './user';
 export class Rental {
   constructor(
     public id: number,
-    public boat: Boat,
-    public user: User,
-    public dateStart: Date,
-    public dateEnd: Date,
-    public paid: boolean,
-    public skipper?: Skipper
+    public readonly boat: Boat,
+    public readonly user: User,
+    public readonly dateStart: Date,
+    public readonly dateEnd: Date,
+    public readonly paid: boolean,
+    public readonly skipper?: Skipper
   ) {}
 
   public static fromModel(model: RentalModel): Rental {
     return new Rental(
       model.id,
-      Boat.fromModel(model.boat),
+      model.boat.toBoat(),
       User.fromModel(model.user),
       model.dateStart,
       model.dateEnd,
       model.paid,
-      model.skipper
+      model.skipper ? Skipper.fromModel(model.skipper) : undefined
     );
   }
 
@@ -32,19 +32,6 @@ export class Rental {
   public static days(dateStart: Date, dateEnd: Date): number {
     const ms = dateEnd.getTime() - dateStart.getTime();
     return Math.ceil(ms / 1000 / 60 / 60 / 24) + 1;
-  }
-
-  /**
-   * Returns the total price of the rental.
-   */
-  public async priceTotal(): Promise<number> {
-    const days = Rental.days(this.dateStart, this.dateEnd);
-    let total = days * this.boat.pricePerDay;
-    if (this.skipper) {
-      total += days * this.skipper.pricePerDay;
-    }
-
-    return total;
   }
 
   /**
@@ -61,7 +48,7 @@ export class Rental {
   /**
    * Returns an array with all booked dates.
    */
-  public getDates(): Date[] {
+  public getBookedDates(): Date[] {
     const dates: Date[] = [];
     for (
       let date = new Date(this.dateStart);
@@ -71,14 +58,6 @@ export class Rental {
       dates.push(new Date(date));
     }
     return dates;
-  }
-
-  public isUpcoming(): boolean {
-    return this.dateStart > new Date();
-  }
-
-  public isCurrent(): boolean {
-    return this.isDateDuringRental(new Date());
   }
 
   /**

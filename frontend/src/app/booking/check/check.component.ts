@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BoatDetailData } from 'src/app/boat';
 import { BoatService } from 'src/app/boat.service';
+import { DateRange } from '../../rental.service';
 import { SessionData } from '../../session';
 import { SessionService } from '../../session.service';
 import { BookingService } from '../booking.service';
@@ -13,7 +14,7 @@ import { BookingService } from '../booking.service';
 })
 export class CheckComponent implements OnInit {
   public sessionData: SessionData | null = null;
-  public dateRange: [Date, Date] | null = null;
+  public dateRange: DateRange | null = null;
   public boat!: BoatDetailData;
 
   constructor(
@@ -60,22 +61,11 @@ export class CheckComponent implements OnInit {
   }
 
   /**
-   * Get correct text for button.
-   */
-  public getButtonText(): string {
-    if (this.boat && this.boat.requirements === 'skipper') {
-      return 'Selecteer schipper';
-    }
-
-    return 'Nu betalen';
-  }
-
-  /**
    * Returns true if the current order is valid.
    */
   public isOrderValid(): boolean {
     if (this.dateRange) {
-      return this.bookingService.getDays(...this.dateRange) >= 3;
+      return this.bookingService.getDays(this.dateRange) >= 3;
     }
 
     return false;
@@ -92,9 +82,7 @@ export class CheckComponent implements OnInit {
    * Get number of days in currently selected dates.
    */
   public getDays(): number {
-    const [dateStart, dateEnd] = this.dateRange!;
-
-    return this.bookingService.getDays(dateStart, dateEnd);
+    return this.bookingService.getDays(this.dateRange!);
   }
 
   /**
@@ -108,12 +96,43 @@ export class CheckComponent implements OnInit {
    * Create rental and navigate to next page.
    */
   public handleButton(): void {
-    this.bookingService.createRental(this.boat!.id).subscribe((rentalId) => {
-      if (this.boat.requirements === 'skipper') {
-        this.router.navigate(['/verhuur/schipper', rentalId]);
-      } else {
-        this.router.navigate(['/verhuur/betalen', rentalId]);
-      }
-    });
+    if (!this.isLoggedIn()) {
+      this.router.navigate(['/login'], {
+        queryParams: { from: `/verhuur/controleer/${this.boat!.id}` },
+      });
+    } else {
+      this.bookingService.createRental(this.boat!.id).subscribe((rentalId) => {
+        if (this.boat.requirements === 'skipper') {
+          this.router.navigate(['/verhuur/schipper', rentalId]);
+        } else {
+          this.router.navigate(['/verhuur/betalen', rentalId]);
+        }
+      });
+    }
+  }
+
+  public isLoggedIn(): boolean {
+    return Boolean(this.sessionData);
+  }
+
+  public isButtonDisabled(): boolean {
+    if (!this.isLoggedIn()) {
+      return false;
+    } else {
+      return !this.isOrderValid();
+    }
+  }
+
+  /**
+   * Get correct text for button.
+   */
+  public getButtonText(): string {
+    if (!this.isLoggedIn()) {
+      return 'Log Nu In!';
+    } else if (this.boat && this.boat.requirements === 'skipper') {
+      return 'Selecteer schipper';
+    }
+
+    return 'Nu betalen';
   }
 }

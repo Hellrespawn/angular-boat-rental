@@ -1,20 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
-import { SessionData, SessionService } from '../services/session.service';
+import { SessionService } from '../services/session.service';
 
 export async function authenticator(
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const string: string | undefined = req.cookies.session;
+  const sessionId: string | undefined = req.cookies.session;
 
-  if (!string) {
+  if (!sessionId) {
     return next();
   }
 
-  const sessionData: SessionData = JSON.parse(string);
-
-  const session = await new SessionService().getSession(sessionData.sessionId);
+  const session = await new SessionService().getSession(sessionId);
 
   if (session) {
     req.currentUser = session.user;

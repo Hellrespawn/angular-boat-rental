@@ -1,5 +1,6 @@
 import { Skipper } from '../model/skipper';
 import { SkipperDao } from '../database/skipper.dao';
+import { ServerError } from '../util/error';
 export class SkipperService {
   private skipperDao: SkipperDao = new SkipperDao();
 
@@ -19,6 +20,11 @@ export class SkipperService {
     idOfSkipper: number,
     updatedValue: boolean
   ): Promise<void> {
+    if (typeof idOfSkipper !== 'number' || idOfSkipper < 1) {
+      throw new ServerError('invalid id');
+    } else if (typeof updatedValue !== 'boolean') {
+      throw new ServerError('invalid new value of leave');
+    }
     return this.skipperDao.updateLeaveValueInSkipper(idOfSkipper, updatedValue);
   }
 
@@ -42,11 +48,12 @@ export class SkipperService {
     birthDate: Date,
     leave: boolean
   ): Promise<void> {
-    return this.skipperDao.saveNewSkipper({
+    const newSkipper: Skipper = new Skipper(
       name,
       pricePerDay,
       birthDate,
-      leave,
-    });
+      leave
+    );
+    return this.skipperDao.saveNewSkipper(newSkipper);
   }
 }

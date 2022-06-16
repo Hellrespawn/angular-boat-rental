@@ -1,8 +1,8 @@
-<div *ngIf="!boat || !sessionData" class="custom-card with-padding">
+<div *ngIf="!boat" class="custom-card with-padding">
   <h2>Er is wat fout gegaan! Probeer het nog eens.</h2>
 </div>
 
-<div *ngIf="boat && sessionData">
+<div *ngIf="boat">
   <div id="container">
     <section id="boat" class="custom-card">
       <img src="{{ boat.imageRoute }}" alt="{{ boat.name }}" />
@@ -53,19 +53,10 @@
       <h3 *ngIf="dateRange">Subtotaal: € {{ getTotalPrice() }}</h3>
 
       <button
-        *ngIf="isOrderValid()"
+        mat-raised-button
+        color="primary"
         (click)="handleButton()"
-        mat-raised-button
-        color="primary"
-      >
-        {{ getButtonText() }}
-      </button>
-
-      <button
-        *ngIf="!isOrderValid()"
-        mat-raised-button
-        color="primary"
-        disabled
+        [disabled]="isButtonDisabled()"
       >
         {{ getButtonText() }}
       </button>
