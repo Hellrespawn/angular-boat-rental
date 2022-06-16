@@ -81,4 +81,22 @@ describe('Test Fine-functionality in backend', () => {
       .expect(200);
     expect(fineDaoAddFineSpy.callCount).to.equal(1);
   });
+
+  //unit tests:
+
+  it('should throw an error when trying to make a Fine when a negative userId is entered', () => {
+    expect(() => new Fine(-1, 50, false)).to.throw('invalid userId');
+  });
+
+  it('should throw an error when trying to make a Fine when a userId of zero is entered', () => {
+    expect(() => new Fine(0, 50, false)).to.throw('invalid userId');
+  });
+
+  it('should throw an error when trying to make a Fine when a negative amount is entered', () => {
+    expect(() => new Fine(1, -1, false)).to.throw('invalid amount');
+  });
+
+  it('should throw an error when trying to make a Fine when a amount of zero is entered', () => {
+    expect(() => new Fine(1, 0, false)).to.throw('invalid amount');
+  });
 });

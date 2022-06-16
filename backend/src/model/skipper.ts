@@ -2,16 +2,16 @@ import { ServerError } from '../util/error';
 import { SkipperModel } from '../database/skipper.dao';
 
 export class Skipper {
-  public pricePerDay: number;
+  public readonly pricePerDay: number;
 
-  public birthDate: Date;
+  public readonly birthDate: Date;
 
   constructor(
-    public name: string,
+    public readonly name: string,
     pricePerDay: number,
     birthDate: Date,
-    public leave: boolean,
-    public id?: number
+    public readonly leave: boolean,
+    public readonly id?: number
   ) {
     if (this.isHigherThenZero(pricePerDay)) {
       this.pricePerDay = pricePerDay;

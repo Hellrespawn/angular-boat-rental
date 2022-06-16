@@ -2,20 +2,20 @@ import { ServerError } from '../util/error';
 import { FineModel } from '../database/fine.dao';
 
 export class Fine {
-  public userId: number;
+  public readonly userId: number;
 
-  public amount: number;
+  public readonly amount: number;
 
   constructor(
     userId: number,
     amount: number,
-    public paid: boolean,
-    public id?: number
+    public readonly paid: boolean,
+    public readonly id?: number
   ) {
     if (this.isHigherThenZero(userId)) {
       this.userId = userId;
     } else {
-      throw new ServerError('invalid id');
+      throw new ServerError('invalid userId');
     }
     if (this.isHigherThenZero(amount)) {
       this.amount = amount;

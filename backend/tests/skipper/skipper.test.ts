@@ -139,4 +139,24 @@ describe('Test Skipper-functionality in backend', () => {
     skipperService.deleteSkipper(1);
     expect(skipperDaoDeletionSpy.callCount).to.equal(1);
   });
+
+  //unit tests:
+
+  it('should throw an error when trying to make a Skipper when a negative price per day is entered', () => {
+    expect(() => new Skipper('Kees', -1, new Date('2021'), false)).to.throw(
+      'invalid price per day'
+    );
+  });
+
+  it('should throw an error when trying to make a Skipper when a price per day of zero is entered', () => {
+    expect(() => new Skipper('Kees', 0, new Date('2021'), false)).to.throw(
+      'invalid price per day'
+    );
+  });
+
+  it('should throw an error when trying to make a Skipper when a birth date is entered that is not in the past', () => {
+    expect(() => new Skipper('Kees', 100, new Date('2023'), false)).to.throw(
+      'invalid date of birth'
+    );
+  });
 });
