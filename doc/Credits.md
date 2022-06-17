@@ -1,8 +1,8 @@
 # Credits
 
-Stef Korporaal
-Hans den Otter
-Kees van Ruler
+- Stef Korporaal
+- Hans den Otter
+- Kees van Ruler
 
 _Special appearance by:_ Paul "OOP Paul" Jansen
 
@@ -97,7 +97,7 @@ _Special appearance by:_ Paul "OOP Paul" Jansen
 - `src/app/rental[.service].ts`: Stef
 - `src/app/session[.service].ts`: Stef
 - `src/app/skipper[.service].ts`: Stef
-- `src/app/snack-bar.service.ts`: Kees
+- **`src/app/snack-bar.service.ts`**: Kees
 - `src/app/user[.service].ts`: Hans, Kees
 
 - `src/custom-card.scss`: Stef
