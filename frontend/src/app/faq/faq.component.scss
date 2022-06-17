@@ -139,6 +139,10 @@ input:checked {
   border-radius: 10px;
 }
 
-.question-full-width {
+.question-form-input {
   width: 50%;
+}
+
+#input-form {
+  position: relative;
 }
