@@ -106,7 +106,7 @@ describe('SchipperToevoegComponent', () => {
     it('should not call the SkipperService when no name is entered', async () => {
       nameFieldElement.value = '';
       priceFieldElement.value = '250';
-      birthDateFieldElement.value = new Date().toISOString();
+      birthDateFieldElement.value = '15-02-2021';
       submitButtonElement.click();
       fixture.detectChanges();
       await fixture.whenStable();
@@ -117,7 +117,7 @@ describe('SchipperToevoegComponent', () => {
     it('should not call the SkipperService when no price is entered', async () => {
       nameFieldElement.value = 'Kees';
       priceFieldElement.value = '';
-      birthDateFieldElement.value = new Date().toISOString();
+      birthDateFieldElement.value = '15-02-2021';
       submitButtonElement.click();
       fixture.detectChanges();
       await fixture.whenStable();
@@ -139,7 +139,7 @@ describe('SchipperToevoegComponent', () => {
     it('should not call the SkipperService when a price below 0 is entered', async () => {
       nameFieldElement.value = 'Kees';
       priceFieldElement.value = '-1';
-      birthDateFieldElement.value = new Date().toISOString();
+      birthDateFieldElement.value = '15-02-2021';
       submitButtonElement.click();
       fixture.detectChanges();
       await fixture.whenStable();
@@ -150,7 +150,7 @@ describe('SchipperToevoegComponent', () => {
     it('should not call the SkipperService when a price of 0 is entered', async () => {
       nameFieldElement.value = 'Kees';
       priceFieldElement.value = '0';
-      birthDateFieldElement.value = new Date().toISOString();
+      birthDateFieldElement.value = '15-02-2021';
       submitButtonElement.click();
       fixture.detectChanges();
       await fixture.whenStable();
@@ -164,7 +164,7 @@ describe('SchipperToevoegComponent', () => {
     nameFieldElement.dispatchEvent(new Event('input'));
     priceFieldElement.value = '250';
     priceFieldElement.dispatchEvent(new Event('input'));
-    birthDateFieldElement.value = new Date().toISOString();
+    birthDateFieldElement.value = '15-02-2021';
     birthDateFieldElement.dispatchEvent(new Event('input'));
     fixture.detectChanges();
     await fixture.whenStable();
