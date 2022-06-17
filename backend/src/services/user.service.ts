@@ -87,14 +87,15 @@ export class UserService {
       blocked,
       isAdmin
     );
-    return this.userDao.createNewUser(
-      newUser.firstName,
-      newUser.lastName,
-      newUser.license,
-      newUser.emailAddress,
-      newUser.password,
-      false,
-      isAdmin
-    );
+    // return this.userDao.createNewUser(
+    //   newUser.firstName,
+    //   newUser.lastName,
+    //   newUser.license,
+    //   newUser.emailAddress,
+    //   newUser.password,
+    //   false,
+    //   isAdmin
+    // );
+    return this.userDao.saveNewUser(newUser);
   }
 }

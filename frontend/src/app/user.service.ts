@@ -27,7 +27,6 @@ export class UserService {
    */
   public getUsers(): Observable<User[]> {
     return this.httpClient.get<User[]>(`/api/users`)
-
   }
   /**
    * sends a request to the backend to delete a specific User by id

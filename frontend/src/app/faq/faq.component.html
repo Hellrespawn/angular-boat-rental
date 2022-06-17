@@ -27,14 +27,14 @@
   <!-- input fields section -->
   <h3>Laat een bericht achter</h3>
   <section class="question-form">
-    <mat-form-field class="question-full-width" appearance="fill">
+    <mat-form-field class="question-form-input" appearance="fill">
       <mat-label>Naam</mat-label>
       <input
         matInput
         [formControl]="nameFormControl"
         placeholder="Naam"
         value="Naam"
-        id="name-form"
+        id="input-form"
         #nameForm
       />
 
@@ -44,14 +44,14 @@
     </mat-form-field>
     <br />
 
-    <mat-form-field class="question-full-width" appearance="fill">
+    <mat-form-field class="question-form-input" appearance="fill">
       <mat-label>Email</mat-label>
       <input
         type="email"
         matInput
         [formControl]="emailFormControl"
         placeholder=""
-        id="email-form"
+        id="input-form"
         #emailForm
       />
 
@@ -61,13 +61,13 @@
     </mat-form-field>
     <br />
 
-    <mat-form-field class="question-full-width" appearance="fill">
+    <mat-form-field class="question-form-input" appearance="fill">
       <mat-label>Stel uw vraag!</mat-label>
       <textarea
         matInput
         placeholder=""
         [formControl]="textFormControl"
-        id="textarea-form"
+        id="input-form"
         #textForm
       ></textarea>
       <mat-error *ngIf="textFormControl.invalid">

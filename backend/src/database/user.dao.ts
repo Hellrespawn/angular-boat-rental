@@ -29,8 +29,8 @@ export class UserDao {
     );
   }
 
-  public async saveNewUser(newUser: User): Promise<void> {
-    UserModel.create({
+  public async saveNewUser(newUser: User): Promise<UserModel> {
+   return UserModel.create({
       id: newUser.id,  
       firstName: newUser.firstName,
       lastName: newUser.lastName,

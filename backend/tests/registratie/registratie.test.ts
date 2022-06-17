@@ -3,23 +3,25 @@ import { UserDao } from '../../src/database/user.dao';
 import { SinonSpiedInstance } from 'sinon';
 import sinon from 'ts-sinon';
 import { expect } from 'chai';
-import request from 'supertest';
+import request, { SuperAgentTest } from 'supertest';
 import { app } from '../../src/server';
 import { User } from '../../src/model/user';
 
 describe('Test User-functionality in backend', () => {
   let userService: UserService;
+  let agent: SuperAgentTest;
 
   let testUser: User;
+  let newUser: User;
 
   let userDaoAddUserSpy: SinonSpiedInstance<any>;
-  let userDaoUpdateSpy: SinonSpiedInstance<any>;
-  let userDaoDeletionSpy: SinonSpiedInstance<any>;
   let userGetUsersStub: SinonSpiedInstance<any>;
+  let userAddUsersStub: SinonSpiedInstance<any>;
 
-  function createSpyForUserDaoAddUser() {
-    userDaoAddUserSpy = sinon.stub(UserDao.prototype, 'saveNewUser');
-  }
+  // spy for add users on 'saveNewUser' method
+//   function createSpyForUserDaoAddUser(): void {
+//     userDaoAddUserSpy = sinon.stub(UserDao.prototype, 'saveNewUser');
+//   }
 
   async function stubUserServiceForReturnAllUsers(): Promise<void> {
     testUser = new User(
@@ -42,6 +44,7 @@ describe('Test User-functionality in backend', () => {
     returnAllUsersStub.returns(Promise.resolve([testUser]));
   }
 
+
   function stubUserDaoGetUsers(): void {
     const stub = sinon.stub(UserDao.prototype, 'getUsers');
 
@@ -49,9 +52,18 @@ describe('Test User-functionality in backend', () => {
 
     userGetUsersStub = stub;
   }
+
+  function stubUserDaoAddUsers(): void {
+    const stub = sinon.stub(UserDao.prototype, 'saveNewUser');
+
+    userGetUsersStub = stub;
+  }
   beforeEach(async () => {
     stubUserServiceForReturnAllUsers();
-    createSpyForUserDaoAddUser();
+    // createSpyForUserDaoAddUser();
+    stubUserDaoGetUsers();
+    stubUserDaoAddUsers();
+    
     userService = new UserService();
   });
 
@@ -59,32 +71,25 @@ describe('Test User-functionality in backend', () => {
     sinon.restore();
   });
 
-  it('Returns all users when the endpoint /users is called with a get request', async () => {
-    const res = await request(app).get('/users');
-    expect(res.body).to.deep.equal([
-      {
-        id: 1,  
-        firstName: testUser.firstName,
-        lastName: testUser.lastName,
-        license: testUser.license,
-        emailAddress: testUser.emailAddress,
-        password: testUser.password,
-        blocked: testUser.blocked,
-        admin: testUser.admin,
-        arrayOfFines: testUser.arrayOfFines
-      },
-    ]);
+  it('The createNewUser method of the UserDao should be called when correctly requested by the UserService', async () => {
+    await agent
+    .post('/users')
+    .set('Content-type', 'application/json')
+    .send({
+    firstName: 'Hans',
+    lastName: 'den Otter',
+    license: false,
+    emailAddress: 'hans@hans.nl',
+    password: 'password',
+    blocked: false,
+    fines: false
+    })
+    .expect(200);
+    expect(userDaoAddUserSpy.callCount).to.equal(1);
   });
 
-  it('The createNewUser method of the UserDao should be called when correctly requested by the UserService', () => {
-    userService.createNewUser('Hans', 'den Otter', false, 'hans@hans.nl', 'password', false);
-    expect(userDaoAddUserSpy.callCount).to.equal(0);
-  });
-
-  it('Fill in wrong entry to see if backend doesnt work', () => {
-    userService.createNewUser('Hans', 'Kees', false, 'hans@hans.nl', 'password', false);
-    expect(userDaoAddUserSpy.callCount).to.equal(0);
-  });
-
- 
+  //   it('Fill in wrong entry to see if backend doesnt work', () => {
+  //     userService.createNewUser('Hans', 'Kees', false, 'hans@hans.nl', 'password', false);
+  //     expect(userDaoAddUserSpy.callCount).to.equal(0);
+  //   });
 });
