@@ -59,16 +59,18 @@ export class UserService {
     );
   }
 
-  public checkEmail(UserObject: {}): Observable<Object> {
+  public checkEmail(emailObject: {}): Observable<Object> {
     if (HttpErrorResponse) {
       console.log('service werkt');
       this.snackBService.makeSnackbarThatClosesAutomatically(
         this.knownEmailInput
       );
-    } 
+    }
+    
+    // return this.addUser(UserObject);
     return this.httpClient.post(
       `${environment.backendUrl}/api/users/registratie-pagina`,
-      UserObject
+      emailObject
     );
   }
 }

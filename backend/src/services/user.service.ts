@@ -60,6 +60,7 @@ export class UserService {
     const emailAd = await UserModel.findOne({ where: { emailAddress: email } });
     if (emailAd !== null) {
       console.log('email found');
+      return emailAd
     }
     return emailAd;
   }
@@ -87,15 +88,15 @@ export class UserService {
       blocked,
       isAdmin
     );
-    // return this.userDao.createNewUser(
-    //   newUser.firstName,
-    //   newUser.lastName,
-    //   newUser.license,
-    //   newUser.emailAddress,
-    //   newUser.password,
-    //   false,
-    //   isAdmin
-    // );
-    return this.userDao.saveNewUser(newUser);
+    return this.userDao.createNewUser(
+      newUser.firstName,
+      newUser.lastName,
+      newUser.license,
+      newUser.emailAddress,
+      newUser.password,
+      false,
+      isAdmin
+    );
+    // return this.userDao.saveNewUser(newUser);
   }
 }
