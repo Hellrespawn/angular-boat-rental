@@ -30,9 +30,21 @@ const MOCK_BOAT_DETAIL_DATA = {
   maxSpeedInKmH: 1234,
 };
 
+const INVALID_DATE = {
+  dateStart: new Date('2022-01-01'),
+  dateEnd: new Date('2022-01-02'),
+};
+
+const VALID_DATE = {
+  dateStart: new Date('2022-01-01'),
+  dateEnd: new Date('2022-01-06'),
+};
+
 describe('CheckComponent', () => {
   let component: CheckComponent;
   let fixture: ComponentFixture<CheckComponent>;
+
+  let bookingService: BookingService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -68,7 +80,7 @@ describe('CheckComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    // buttonEl = button.nativeElement;
+    bookingService = fixture.debugElement.injector.get(BookingService);
   });
 
   it('should create', () => {
@@ -100,17 +112,25 @@ describe('CheckComponent', () => {
     it('button should ask to login when not logged in', () => {
       expect(buttonEl.textContent).toContain('Log Nu In');
     });
+
+    it('should never disable the login button', async () => {
+      expect(buttonEl.disabled).toBeFalse();
+
+      bookingService.setDateRange(INVALID_DATE);
+
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(buttonEl.disabled).toBeFalse();
+    });
   });
 
   describe('Initialize MockBookingService with data, MockSessionService with user', () => {
     let button: DebugElement;
     let buttonEl: HTMLButtonElement;
 
-    let bookingService: BookingService;
-
     beforeEach(async () => {
       component.boat = MOCK_BOAT_DETAIL_DATA;
-      bookingService = fixture.debugElement.injector.get(BookingService);
 
       const sessionService = fixture.debugElement.injector.get(SessionService);
 
@@ -132,10 +152,7 @@ describe('CheckComponent', () => {
     });
 
     it('should be disabled when an invalid date is entered', async () => {
-      bookingService.setDateRange({
-        dateStart: new Date('2022-01-01'),
-        dateEnd: new Date('2022-01-02'),
-      });
+      bookingService.setDateRange(INVALID_DATE);
 
       fixture.detectChanges();
       await fixture.whenStable();
@@ -144,10 +161,7 @@ describe('CheckComponent', () => {
     });
 
     it('should be enabled when a date is entered', async () => {
-      bookingService.setDateRange({
-        dateStart: new Date('2022-01-01'),
-        dateEnd: new Date('2022-01-06'),
-      });
+      bookingService.setDateRange(VALID_DATE);
 
       fixture.detectChanges();
       await fixture.whenStable();
