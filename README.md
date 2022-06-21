@@ -11,7 +11,7 @@
 1. Voer `npm run sync` uit om de database te initialiseren.
 1. Voer eventueel `npm run seed` uit om test-data in de database te zetten.
 
-In plaats van los `sync`, en `debug` uit te voeren, is er ook `npm run debug` die deze stappen achter elkaar doet.
+In plaats van los `sync` en `seed` uit te voeren, is er ook `npm run debug` die deze stappen achter elkaar doet.
 
 De testgebruikers hebben `test[0-4]@test.test` als email-address en `password` als wachtwoord.
 
@@ -56,4 +56,4 @@ De testgebruikers hebben `test[0-4]@test.test` als email-address en `password` a
 1. Voer `npm run sync` uit.
 1. Voer eventueel `npm run seed` uit om test-data in de database te zetten.
 
-In plaats van los `drop`, `sync`, en `debug` uit te voeren, is er ook `npm run debug` die deze stappen achter elkaar doet.
+In plaats van los `drop`, `sync`, en `seed` uit te voeren, is er ook `npm run debug` die deze stappen achter elkaar doet.
