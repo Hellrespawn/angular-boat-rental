@@ -47,7 +47,7 @@ test-frontend:
   stage: test
   allow_failure: true
   variables:
-    CHROME_BIN: "/usr/bin/chromium-browser"
+    CHROME_BIN: "/usr/bin/chromium-browser --no-sandbox --disable-gpu"
   script:
     - apk add --no-cache chromium
     - cd frontend
