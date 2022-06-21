@@ -41,21 +41,7 @@ export class RentalService {
       throw new ServerError(`No user with id ${userId}.`);
     }
 
-    // Check dates are valid
-    if (Rental.days(dateStart, dateEnd) < 3) {
-      throw new ServerError('Rental period must be at least three days!');
-    }
-
-    // Check if boat is available (most performance intensive, so last)
-    const isAvailable = await boat.isAvailable(dateStart, dateEnd);
-
-    if (!isAvailable) {
-      throw new ServerError(
-        `Boat is not available from ${dateStart} to ${dateEnd}`
-      );
-    }
-
-    const rental = new Rental(-1, boat, user, dateStart, dateEnd, false);
+    const rental = await Rental.create(boat, user, dateStart, dateEnd);
 
     const id = await this.rentalDao.saveRental(rental);
 

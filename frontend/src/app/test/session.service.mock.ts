@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { SessionData } from '../session';
 import { SessionService } from '../session.service';
 
@@ -7,19 +7,22 @@ import { SessionService } from '../session.service';
   providedIn: 'root',
 })
 export class MockSessionService extends SessionService {
+  private testUser: BehaviorSubject<SessionData | null> = new BehaviorSubject(
+    null as SessionData | null
+  );
   public override getSessionData(): Observable<SessionData | null> {
-    return of({
-      license: true,
-      admin: true,
-      firstName: 'TestUser',
-    });
+    return this.testUser.asObservable();
   }
 
   public override login(email: string, password: string): void {
-    console.log('Login attempt: ', { email, password });
+    this.testUser.next({
+      license: true,
+      admin: email.includes('test0'),
+      firstName: 'password',
+    });
   }
 
   public override logout(): void {
-    throw new Error('MockSessionService.logout() not implemented!');
+    this.testUser.next(null);
   }
 }
