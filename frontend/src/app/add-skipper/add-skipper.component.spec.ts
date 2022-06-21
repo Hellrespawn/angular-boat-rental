@@ -4,7 +4,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AdminSkipperOverviewComponent } from '../admin-skipper-overview/admin-skipper-overview.component';
 import { SkipperService } from '../skipper.service';
 import { MockSkipperService } from '../test/skipper.service.mock';
 
@@ -32,8 +34,14 @@ describe('SchipperToevoegComponent', () => {
       imports: [
         HttpClientTestingModule,
         MatSnackBarModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([
+          {
+            path: 'skipper-overview-admin',
+            component: AdminSkipperOverviewComponent,
+          },
+        ]),
         ReactiveFormsModule,
+        NoopAnimationsModule,
       ],
     })
       .overrideComponent(AddSkipperComponent, {
