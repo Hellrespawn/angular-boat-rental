@@ -25,8 +25,10 @@ import {
   providedIn: 'root',
 })
 export class BookingService {
+  public static readonly MIN_DAYS = 3;
+
   // Boats
-  private boats: BehaviorSubject<BoatOverviewData[]> = new BehaviorSubject(
+  protected boats: BehaviorSubject<BoatOverviewData[]> = new BehaviorSubject(
     [] as BoatOverviewData[]
   );
   private boatSubscription?: Subscription;
@@ -36,10 +38,10 @@ export class BookingService {
     null as DateRange | null
   );
 
-  private typeFilter: BehaviorSubject<BoatTypeFilterState> =
+  protected typeFilter: BehaviorSubject<BoatTypeFilterState> =
     new BehaviorSubject('all' as BoatTypeFilterState);
 
-  private licenseFilter: BehaviorSubject<LicenseFilterState> =
+  protected licenseFilter: BehaviorSubject<LicenseFilterState> =
     new BehaviorSubject('both' as LicenseFilterState);
 
   constructor(
@@ -97,19 +99,6 @@ export class BookingService {
     this.updateBoats();
   }
 
-  /**
-   * Updates the list of valid boats, based on this.dateRange, and broadcasts
-   * it to subscribers of this.boats
-   */
-  public updateBoats(): void {
-    this.boatSubscription?.unsubscribe();
-
-    this.boatSubscription = this.dateRange.subscribe((dateRange) =>
-      this.boatService
-        .getBoatOverviewData(dateRange ?? undefined)
-        .subscribe((boats) => this.boats.next(boats))
-    );
-  }
   public getBoats(): Observable<BoatOverviewData[]> {
     return combineLatest([
       this.boats,
@@ -149,13 +138,27 @@ export class BookingService {
    * Checks whether or not the date range is valid.
    */
   public isRangeValid(dateRange: DateRange): boolean {
-    return this.getDays(dateRange) >= 3;
+    return this.getDays(dateRange) >= BookingService.MIN_DAYS;
+  }
+
+  /**
+   * Updates the list of valid boats, based on this.dateRange, and broadcasts
+   * it to subscribers of this.boats
+   */
+  protected updateBoats(): void {
+    this.boatSubscription?.unsubscribe();
+
+    this.boatSubscription = this.dateRange.subscribe((dateRange) =>
+      this.boatService
+        .getBoatOverviewData(dateRange ?? undefined)
+        .subscribe((boats) => this.boats.next(boats))
+    );
   }
 
   /**
    * Observes currentUserData and sets the license filter based on it.
    */
-  private getCurrentUserLicense(): void {
+  protected getCurrentUserLicense(): void {
     this.sessionService.getSessionData().subscribe((sessionData) => {
       if (sessionData && !sessionData.license) {
         this.licenseFilter.next('not-required');

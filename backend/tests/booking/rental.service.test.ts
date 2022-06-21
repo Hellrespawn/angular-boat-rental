@@ -92,7 +92,7 @@ describe('Test RentalService', () => {
         expect.fail('addRental with too short date should not succeed');
       } catch (error) {
         expect((error as Error).message).to.include(
-          'Rental period must be at least three days'
+          'Rental period must be at least 3 days'
         );
         expect(saveRentalStub.callCount).to.equal(0);
       }
@@ -124,7 +124,7 @@ describe('Test RentalService', () => {
         expect.fail('Boat is not available');
       } catch (error) {
         expect((error as Error).message).to.include(
-          'Rental period must be at least three days!'
+          'Rental period must be at least 3 days!'
         );
         expect(saveRentalStub.callCount).to.equal(0);
       }

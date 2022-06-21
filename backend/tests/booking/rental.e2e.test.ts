@@ -85,7 +85,7 @@ describe('Test Rental & Booking end-to-end', () => {
         .expect(400);
       expect(res.body).to.have.property(
         'error',
-        'Rental period must be at least three days!'
+        'Rental period must be at least 3 days!'
       );
     });
   });

@@ -7,7 +7,6 @@ import {
   BoatOverviewData,
   BoatRequirements,
 } from './boat';
-import { environment } from 'src/environments/environment';
 import { constructUrl } from './http';
 import { DateRange } from './rental.service';
 
