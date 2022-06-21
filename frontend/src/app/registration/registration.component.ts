@@ -112,45 +112,32 @@ export class RegistrationComponent {
 
   // check if password is ok and fields are touched then submit to backend
   public sendDataToBackend(): void {
-    console.log('radio button not set');
     if (this.radioButtonNotSet()) {
-      console.log('radio button set');
-    //   const regex = /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$/;
-    //   let passwordInp: string = this.passwordInp.nativeElement.value;
-    
-     if (this.nameNotTouched() === '') {
-        console.log('firstname NOT touched');
+      const regex = /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$/;
+      let passwordInp: string = this.passwordInp.nativeElement.value;
+
+      if (this.nameNotTouched()) {
+        console.log('firstname not touched');
+        this.snackBService.makeSnackbarThatClosesAutomatically(
+            this.emptyNameInput
+          );
         return;
       }
-     if (this.lastNameNotTouched() === '') {
+      else if (this.lastNameNotTouched()) {
         console.log('lastname not touched');
         return;
       }
-     if (this.emailNotTouched() === '') {
+      else if (this.emailNotTouched()) {
         console.log('email not touched');
         return;
       }
-     if (this.userService.checkEmail(this.email)) {
-        // this.userService.checkEmail(this.emailAddressInp);
-        console.log('checkMail');
-        return
-      }
-      //   this.nameNotTouched();
-      //   this.lastNameNotTouched();
-      //   this.emailNotTouched();
-
-      //   this.userService.checkEmail(this.emailAddressInp)
-      // this.userService.checkIfEmailFound()
-      const regex = /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$/;
-      let passwordInp: string = this.passwordInp.nativeElement.value;
-      if (!regex.test(passwordInp)) {
-        this.falseEntryForm();
+      else if (!regex.test(passwordInp)) {
+        this.falsePasswordEntryForm();
         return;
       } else {
         this.succesEntryForm();
         // sends this.getUsers() data to backend through userService with addUsers()
         this.userService.addUser(this.getUsers()).subscribe();
-        // this.router.navigateByUrl('/registratie-pagina');
         // setTimeout(() => {
         //     this.router.navigateByUrl('/login');
         //   }, 1000);
@@ -158,6 +145,7 @@ export class RegistrationComponent {
       return;
     }
   }
+
 
   // get user data
   public getUsers(): object {
@@ -175,7 +163,7 @@ export class RegistrationComponent {
   }
 
   // password wrong entry triggers false snackbar
-  public falseEntryForm(): void {
+  public falsePasswordEntryForm(): void {
     this.snackBService.makeSnackbarThatClosesAutomatically(
       this.falsePaswordSnackbarInput
     );
@@ -202,22 +190,22 @@ export class RegistrationComponent {
   public nameNotTouched(): '' | undefined {
     const firstName = this.firstNameInp.nativeElement.value;
     if (firstName === '') {
-      this.snackBService.makeSnackbarThatClosesAutomatically(
-        this.emptyNameInput
-      );
-      console.log(firstName);
-      return firstName
+        this.snackBService.makeSnackbarThatClosesAutomatically(
+            this.emptyNameInput
+          );
+      console.log('test 1 snackbar voornaam');
     }
-    return
+    return 
   }
 
   public lastNameNotTouched(): '' | undefined {
     const lastName = this.lastNameInp.nativeElement.value;
     if (lastName === '') {
+      console.log('test 1 snackbar achternaam');
+
       this.snackBService.makeSnackbarThatClosesAutomatically(
         this.emptyLastNameInput
       );
-      console.log(lastName);
       return;
     }
     return;
@@ -225,11 +213,12 @@ export class RegistrationComponent {
   public emailNotTouched(): '' | undefined {
     const email = this.emailAddressInp.nativeElement.value;
 
-    if (email) {
+    if (email === '') {
+      console.log('test 1 snackbar email');
+
       this.snackBService.makeSnackbarThatClosesAutomatically(
         this.emptyEmailInput
       );
-      console.log(email);
       return;
     }
     return;

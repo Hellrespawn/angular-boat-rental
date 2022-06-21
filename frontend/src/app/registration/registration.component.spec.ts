@@ -311,48 +311,48 @@ describe('Add RegistratieComponent', () => {
     // });
   });
 
-  fit('should add user when method is called', async () => {
-    // if (radioCheckBoxField != null) {
-    //   radioCheckBoxField.checked = true;
-    // }
-    fixture.detectChanges();
-    await fixture.whenStable();
+//   it('should add user when method is called', async () => {
+//     // if (radioCheckBoxField != null) {
+//     //   radioCheckBoxField.checked = true;
+//     // }
+//     fixture.detectChanges();
+//     await fixture.whenStable();
 
-    firstNameField = fixture.debugElement.query(
-        By.css('#firstname-input')
-      ).nativeElement;
+//     firstNameField = fixture.debugElement.query(
+//         By.css('#firstname-input')
+//       ).nativeElement;
     
-    lastNameField = fixture.debugElement.query(
-        By.css('#lastName-input')
-      ).nativeElement;
+//     lastNameField = fixture.debugElement.query(
+//         By.css('#lastName-input')
+//       ).nativeElement;
 
-    emailAddressField = fixture.debugElement.query(
-        By.css('#emailadres-input')
-      ).nativeElement;
+//     emailAddressField = fixture.debugElement.query(
+//         By.css('#emailadres-input')
+//       ).nativeElement;
 
-    passwordField = fixture.debugElement.query(
-      By.css('#password-input')
-    ).nativeElement;
+//     passwordField = fixture.debugElement.query(
+//       By.css('#password-input')
+//     ).nativeElement;
 
    
   
-    firstNameField.value = 'Hans';
-    firstNameField.dispatchEvent(new Event('input'));
+//     firstNameField.value = 'Hans';
+//     firstNameField.dispatchEvent(new Event('input'));
 
-    lastNameField.value = 'den Otter';
-    lastNameField.dispatchEvent(new Event('input'));
+//     lastNameField.value = 'den Otter';
+//     lastNameField.dispatchEvent(new Event('input'));
 
-    emailAddressField.value = 'hans@hans.nl';
-    emailAddressField.dispatchEvent(new Event('input'));
+//     emailAddressField.value = 'hans@hans.nl';
+//     emailAddressField.dispatchEvent(new Event('input'));
 
-    passwordField.value = '';
-    passwordField.dispatchEvent(new Event('input'));
+//     passwordField.value = '';
+//     passwordField.dispatchEvent(new Event('input'));
 
-    submitButton.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
+//     submitButton.click();
+//     fixture.detectChanges();
+//     await fixture.whenStable();
 
-    expect(component.firstName.valid).toBeTrue();
-    expect(addUserSpy.calls.count()).toEqual(1);
-  });
+//     expect(component.firstName.valid).toBeTrue();
+//     expect(addUserSpy.calls.count()).toEqual(1);
+//   });
 });
