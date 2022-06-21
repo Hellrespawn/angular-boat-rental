@@ -65,7 +65,7 @@ export class CheckComponent implements OnInit {
    */
   public isOrderValid(): boolean {
     if (this.dateRange) {
-      return this.bookingService.getDays(this.dateRange) >= 3;
+      return this.bookingService.isRangeValid(this.dateRange);
     }
 
     return false;
