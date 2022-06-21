@@ -14,6 +14,24 @@ describe('Test Rental', () => {
     rental = new Rental(-1, boat, user, dateStart, dateEnd, false);
   });
 
+  describe('Test Rental creation', () => {
+    it('Throws an error when dateStart is after dateEnd', async () => {
+      try {
+        await Rental.create(
+          {} as unknown as Boat,
+          {} as unknown as User,
+          new Date('2022-01-10'),
+          new Date('2022-01-01')
+        );
+        expect.fail('Test did not fail as expected!');
+      } catch (error) {
+        expect((error as Error).message).to.include(
+          'Starting date must be before end date!'
+        );
+      }
+    });
+  });
+
   describe('Test Rental.days()', () => {
     it('Correctly handles the inclusivity of the rental period', () => {
       const expected = 6;

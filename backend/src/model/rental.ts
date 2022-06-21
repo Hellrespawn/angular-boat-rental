@@ -1,9 +1,12 @@
 import { RentalModel } from '../database/rental.dao';
+import { ServerError } from '../util/error';
 import { Boat } from './boat';
 import { Skipper } from './skipper';
 import { User } from './user';
 
 export class Rental {
+  public static readonly MIN_DAYS = 3;
+
   constructor(
     public id: number,
     public readonly boat: Boat,
@@ -13,6 +16,34 @@ export class Rental {
     public readonly paid: boolean,
     public readonly skipper?: Skipper
   ) {}
+
+  public static async create(
+    boat: Boat,
+    user: User,
+    dateStart: Date,
+    dateEnd: Date
+  ): Promise<Rental> {
+    if (dateStart > dateEnd) {
+      throw new ServerError('Starting date must be before end date!');
+    }
+
+    if (Rental.days(dateStart, dateEnd) < Rental.MIN_DAYS) {
+      throw new ServerError(
+        `Rental period must be at least ${Rental.MIN_DAYS} days!`
+      );
+    }
+
+    // Check if boat is available (most performance intensive, so last)
+    const isAvailable = await boat.isAvailable(dateStart, dateEnd);
+
+    if (!isAvailable) {
+      throw new ServerError(
+        `Boat is not available from ${dateStart} to ${dateEnd}`
+      );
+    }
+
+    return new Rental(-1, boat, user, dateStart, dateEnd, false);
+  }
 
   public static fromModel(model: RentalModel): Rental {
     return new Rental(
