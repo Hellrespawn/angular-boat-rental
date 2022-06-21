@@ -49,27 +49,27 @@ export class AddBoatComponent {
   public nameControl = new FormControl(null, [Validators.required]);
   public priceControl = new FormControl(null, [
     Validators.required,
-    isSmallerOrEqualToZero,
+    isGreaterThanZero,
   ]);
   public lengthControl = new FormControl(null, [
     Validators.required,
-    isSmallerOrEqualToZero,
+    isGreaterThanZero,
   ]);
   public maxSpeedControl = new FormControl(null, [
     Validators.required,
-    isSmallerOrEqualToZero,
+    isGreaterThanZero,
   ]);
   public registrationNumberControl = new FormControl(null, [
     Validators.required,
-    isSmallerOrEqualToZero,
+    isGreaterThanZero,
   ]);
   public maxOccupantsControl = new FormControl(null, [
     Validators.required,
-    isSmallerOrEqualToZero,
+    isGreaterThanZero,
   ]);
   public sailAreaInM2Control = new FormControl(null, [
     Validators.required,
-    isSmallerOrEqualToZero,
+    isGreaterThanZero,
   ]);
 
   constructor(
@@ -340,7 +340,7 @@ class Boat {
  * @param control the formcontrol of the specific formfield
  * @returns either a kleinerOfGelijkAanNul: true object or null
  */
-export function isSmallerOrEqualToZero(
+export function isGreaterThanZero(
   control: AbstractControl
 ): { [key: string]: boolean } | null {
   let returnValue = null;

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
-import { isSmallerOrEqualToZero as isSmallerOrEqualToZero } from '../add-boat/add-boat.component';
+import { isGreaterThanZero as isGreaterThanZero } from '../add-boat/add-boat.component';
 import { FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
@@ -44,7 +44,7 @@ export class AddSkipperComponent {
   public birthDateControl = new FormControl(null, [Validators.required]);
   public priceControl = new FormControl(null, [
     Validators.required,
-    isSmallerOrEqualToZero,
+    isGreaterThanZero,
   ]);
 
   constructor(
