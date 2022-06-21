@@ -1,5 +1,3 @@
-import { environment } from '../environments/environment';
-
 /**
  * Appends relative route to backend URL. Requires leading '/'.
  *
@@ -7,5 +5,5 @@ import { environment } from '../environments/environment';
  * @returns complete url
  */
 export function constructUrl(url: string): string {
-  return `${environment.backendUrl}${url}`;
+  return `/api${url}`;
 }

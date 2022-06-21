@@ -38,3 +38,15 @@ test-backend:
     - cd backend
     - npm install
     - npm run test
+
+
+test-frontend:
+  image: node:16
+  tags:
+    - hva
+  stage: test
+  allow_failure: true
+  script:
+    - cd frontend
+    - npm install
+    - npm run test
