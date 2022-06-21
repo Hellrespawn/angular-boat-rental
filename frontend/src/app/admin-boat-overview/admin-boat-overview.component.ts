@@ -50,7 +50,7 @@ export class AdminBoatOverviewComponent implements OnInit {
   public async deleteBoatById(id: number, index: number): Promise<void> {
     this.boatService.deleteBoatById(id).subscribe(() => {
       this.arrayOfBoats.splice(index, 1);
-      this.snackBarService.makeSnackbarThatClosesAutomatically(
+      this.snackBarService.showSnackbarThatClosesAutomatically(
         this.succesSnackbarInput
       );
     });

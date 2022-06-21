@@ -85,7 +85,7 @@ describe('AdminUserOverviewComponent', () => {
 
   describe('Functionality of the FineService', async () => {
     it('Tests adding of new Fine', async () => {
-      component.sendNewFineToBackend(1, 50);
+      component.postFineToServer(1, 50);
       fixture.detectChanges();
       await fixture.whenStable();
       expect(renderedUser.innerHTML).toContain('50');

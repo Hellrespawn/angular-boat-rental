@@ -49,27 +49,27 @@ export class AddBoatComponent {
   public nameControl = new FormControl(null, [Validators.required]);
   public priceControl = new FormControl(null, [
     Validators.required,
-    smallerOrEqualToZero,
+    isSmallerOrEqualToZero,
   ]);
   public lengthControl = new FormControl(null, [
     Validators.required,
-    smallerOrEqualToZero,
+    isSmallerOrEqualToZero,
   ]);
   public maxSpeedControl = new FormControl(null, [
     Validators.required,
-    smallerOrEqualToZero,
+    isSmallerOrEqualToZero,
   ]);
   public registrationNumberControl = new FormControl(null, [
     Validators.required,
-    smallerOrEqualToZero,
+    isSmallerOrEqualToZero,
   ]);
   public maxOccupantsControl = new FormControl(null, [
     Validators.required,
-    smallerOrEqualToZero,
+    isSmallerOrEqualToZero,
   ]);
   public sailAreaInM2Control = new FormControl(null, [
     Validators.required,
-    smallerOrEqualToZero,
+    isSmallerOrEqualToZero,
   ]);
 
   constructor(
@@ -155,7 +155,7 @@ export class AddBoatComponent {
    * checks all the formcontrols for validity
    * @returns a boolean about the validity of all form controls
    */
-  private checkControlsValid(): boolean {
+  private formControlsAreValid(): boolean {
     return (
       !this.nameControl.invalid &&
       !this.priceControl.invalid &&
@@ -169,7 +169,7 @@ export class AddBoatComponent {
   /**
    * marks all form controls as touched
    */
-  private markFormControlsAsTouched(): void {
+  private markAllFormControlsAsTouched(): void {
     for (let control of this.makeArrayOfFormControls()) {
       control.markAsTouched();
     }
@@ -188,7 +188,7 @@ export class AddBoatComponent {
    * @param maxSpeed optional maximum speed, only for motor boats
    * @param sailM2 optional sail in square meters, only for sail boats
    */
-  public checkFields(
+  public checkFieldsAndPostBoat(
     name: string,
     registrationNumber: string,
     price: string,
@@ -200,9 +200,9 @@ export class AddBoatComponent {
     maxSpeed?: string,
     sailM2?: string
   ): void {
-    this.markFormControlsAsTouched();
-    if (this.checkControlsValid()) {
-      this.sendNewBoatToBackend(
+    this.markAllFormControlsAsTouched();
+    if (this.formControlsAreValid()) {
+      this.postBoatToServer(
         new Boat(
           name,
           registrationNumber,
@@ -217,7 +217,7 @@ export class AddBoatComponent {
         )
       );
     } else {
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.errorSnackBarInput
       );
     }
@@ -226,7 +226,7 @@ export class AddBoatComponent {
   /**
    * resets all the formcontrols
    */
-  private resetFormControls(): void {
+  private resetAllFormControls(): void {
     for (let control of this.makeArrayOfFormControls()) {
       control.reset();
     }
@@ -240,14 +240,14 @@ export class AddBoatComponent {
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
     const errorArray: Array<any> = error.error.errors;
-    this.resetFormControls();
+    this.resetAllFormControls();
     for (let error of errorArray) {
       if (error.message === 'name must be unique') {
-        this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.snackBService.showSnackbarThatClosesAutomatically(
           this.duplicateNameErrorSnackBarInput
         );
       } else if (error.message === 'registrationNumber must be unique') {
-        this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.snackBService.showSnackbarThatClosesAutomatically(
           this.duplicateRegistrationNumberErrorSnackBarInput
         );
       }
@@ -262,16 +262,16 @@ export class AddBoatComponent {
    * sends new boat object to backend
    * @param boat new boat object
    */
-  private sendNewBoatToBackend(boat: Boat): void {
+  private postBoatToServer(boat: Boat): void {
     const submitButton: HTMLButtonElement = <HTMLButtonElement>(
-      document.getElementById('submitKnop')
+      document.getElementById('submitButton')
     );
     submitButton.disabled = true;
     this.boatService
       .addBoat(boat)
       .pipe(catchError((error) => this.handleError(error)))
       .subscribe(() => {
-        this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.snackBService.showSnackbarThatClosesAutomatically(
           this.succesSnackbarInput
         );
         this.resetInputFields();
@@ -340,7 +340,7 @@ class Boat {
  * @param control the formcontrol of the specific formfield
  * @returns either a kleinerOfGelijkAanNul: true object or null
  */
-export function smallerOrEqualToZero(
+export function isSmallerOrEqualToZero(
   control: AbstractControl
 ): { [key: string]: boolean } | null {
   let returnValue = null;

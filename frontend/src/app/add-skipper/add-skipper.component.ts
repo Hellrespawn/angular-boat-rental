@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
-import { smallerOrEqualToZero as smallerOrEqualToZero } from '../add-boat/add-boat.component';
+import { isSmallerOrEqualToZero as isSmallerOrEqualToZero } from '../add-boat/add-boat.component';
 import { FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
@@ -44,7 +44,7 @@ export class AddSkipperComponent {
   public birthDateControl = new FormControl(null, [Validators.required]);
   public priceControl = new FormControl(null, [
     Validators.required,
-    smallerOrEqualToZero,
+    isSmallerOrEqualToZero,
   ]);
 
   constructor(
@@ -78,7 +78,7 @@ export class AddSkipperComponent {
    * makes array of all form controls
    * @returns returns the array of all formcontrols
    */
-  private makeArrayOfFormControls(): Array<FormControl> {
+  private makeArrayOfAllFormControls(): Array<FormControl> {
     return [this.nameControl, this.priceControl, this.birthDateControl];
   }
 
@@ -86,7 +86,7 @@ export class AddSkipperComponent {
    * checks all formcontrols for errors
    * @returns wheter or not there is an invalid formfield
    */
-  private checkControlsValid(): boolean {
+  private formControlsAreValid(): boolean {
     return (
       !this.nameControl.invalid &&
       !this.priceControl.invalid &&
@@ -105,13 +105,13 @@ export class AddSkipperComponent {
     price: string,
     birthDate: string
   ): void {
-    for (let control of this.makeArrayOfFormControls()) {
+    for (let control of this.makeArrayOfAllFormControls()) {
       control.markAsTouched();
     }
-    if (this.checkControlsValid()) {
-      this.sendNewSkipperToBackend(new Skipper(name, price, birthDate));
+    if (this.formControlsAreValid()) {
+      this.postSkipperToServer(new Skipper(name, price, birthDate));
     } else {
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.incorrectInputSnackBarInput
       );
     }
@@ -120,8 +120,8 @@ export class AddSkipperComponent {
   /**
    * resets all the form controls
    */
-  private resetFormControls(): void {
-    for (let control of this.makeArrayOfFormControls()) {
+  private resetAllFormControls(): void {
+    for (let control of this.makeArrayOfAllFormControls()) {
       control.reset();
     }
   }
@@ -134,10 +134,10 @@ export class AddSkipperComponent {
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
     const errorArray: Array<any> = error.error.errors;
-    this.resetFormControls();
+    this.resetAllFormControls();
     for (let error of errorArray) {
       if (error.message === 'name must be unique') {
-        this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.snackBService.showSnackbarThatClosesAutomatically(
           this.duplicateNameErrorSnackBarInput
         );
       }
@@ -152,19 +152,19 @@ export class AddSkipperComponent {
    * sends the new skipper to the backend
    * @param skipper new skipper object
    */
-  private sendNewSkipperToBackend(skipper: Skipper): void {
+  private postSkipperToServer(skipper: Skipper): void {
     const submitButton: HTMLButtonElement = <HTMLButtonElement>(
-      document.getElementById('submitKnop')
+      document.getElementById('submitButton')
     );
     submitButton.disabled = true;
     this.skipperService
       .addSkipper(skipper)
       .pipe(catchError((error) => this.handleError(error)))
       .subscribe(() => {
-        this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.snackBService.showSnackbarThatClosesAutomatically(
           this.correctInputSnackBarInput
         );
-        this.resetInputFields();
+        this.resetAllInputFields();
         setTimeout(() => {
           this.router.navigateByUrl('/skipper-overview-admin');
         }, 1000);
@@ -174,7 +174,7 @@ export class AddSkipperComponent {
   /**
    * resets the values of all the input fields
    */
-  private resetInputFields(): void {
+  private resetAllInputFields(): void {
     (document.getElementById('name') as HTMLInputElement).value = '';
     (document.getElementById('price') as HTMLInputElement).value = '';
     (document.getElementById('birthdate') as HTMLInputElement).value = '';
