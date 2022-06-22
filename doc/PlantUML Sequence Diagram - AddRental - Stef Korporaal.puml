@@ -19,7 +19,7 @@ BoatDao -> BoatModel : toBoat()
 
 create Boat
 BoatModel -> Boat : <<create>>
-return
+return Boat
 
 return Boat
 
