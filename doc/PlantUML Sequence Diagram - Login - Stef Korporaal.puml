@@ -2,15 +2,6 @@
 autoactivate on
 
 actor Actor
-participant LoginController
-participant SessionService
-participant UserService
-participant UserDao
-participant UserModel
-participant User
-participant Session
-participant SessionDao
-participant SessionModel
 
 Actor ->> LoginController : login(res, req)
 

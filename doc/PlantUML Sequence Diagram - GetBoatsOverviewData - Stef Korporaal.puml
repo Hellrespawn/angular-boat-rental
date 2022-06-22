@@ -2,11 +2,6 @@
 autoactivate on
 
 actor Actor
-participant BoatController
-participant BoatService
-participant BoatDao
-participant BoatModel
-participant Boat
 
 Actor ->> BoatController : getBoatsOverviewData(req, res)
 
@@ -16,11 +11,17 @@ BoatService ->> BoatService : returnAllBoatsNotInMaintenance()
 
 BoatService ->> BoatDao : getBoats()
 
+create BoatModel
 BoatDao ->> BoatModel : <<static>>\nfindAll()
 return BoatModel[]
 
 loop boats.map
-    BoatDao -> BoatDao: model.toBoat()
+    BoatDao -> BoatDao : model.toBoat()
+
+    create Boat
+    BoatDao -> Boat : <<create>>
+    return Boat
+
     return Boat
 end
 

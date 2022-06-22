@@ -1,0 +1,90 @@
+@startuml PlantUML Sequence Diagram - AddRental - Stef Korporaal
+autoactivate on
+
+actor Actor
+
+Actor ->> RentalController : addRental(req, res)
+
+RentalController ->> RentalService : addRental(boatId, userId, dateStart, dateEnd)
+
+RentalService ->> BoatService : getById(boatId)
+
+BoatService ->> BoatDao : getById(id)
+
+create BoatModel
+BoatDao ->> BoatModel : <<static>>\nfindOne()
+return BoatModel
+
+BoatDao -> BoatModel : toBoat()
+
+create Boat
+BoatModel -> Boat : <<create>>
+return
+
+return Boat
+
+return Boat
+
+return Boat
+
+RentalService ->> UserService : getUserById(userId)
+
+UserService ->> UserDao : getUserById(id)
+
+create UserModel
+UserDao ->> UserModel : <<static>>\nfindOne()
+
+return UserModel
+
+UserDao -> UserModel : toUser()
+
+create User
+UserModel -> User : <<create>>
+return User
+
+return User
+
+return User
+
+return User
+
+create Rental
+RentalService ->> Rental : <<static>>\ncreate(boat, user, dateStart, dateEnd)
+
+Rental -> Rental : days(dateStart, dateEnd)
+
+return days
+
+Rental ->> Boat : isAvailable(dateStart, dateEnd)
+
+Boat ->> Rental : getRentals()
+
+return Rental[]
+
+loop rentals.every
+    Boat -> Rental : areDatesOverlapping(dateStart, dateEnd)
+    return boolean
+end
+
+return isAvailable
+
+return Rental
+
+RentalService ->> RentalDao : saveRental(rental)
+
+create RentalModel
+RentalDao ->> RentalModel : create()
+
+return RentalModel
+
+return id
+
+return Rental
+
+return Response
+
+
+
+
+
+@enduml
