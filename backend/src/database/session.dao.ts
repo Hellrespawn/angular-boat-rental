@@ -21,6 +21,7 @@ export class SessionDao {
 
   /**
    * Get the session defined by sessionId.
+   *
    * @param sessionId
    * @returns session or null
    */
@@ -52,6 +53,12 @@ export class SessionDao {
     return Boolean(await SessionModel.destroy({ where: { id: session.id } }));
   }
 
+  /**
+   * Get the session associated with userId.
+   *
+   * @param userId
+   * @returns session or null
+   */
   public async getSessionsByUserId(userId: number): Promise<Session[]> {
     const models = await SessionModel.findAll({
       where: { userId },

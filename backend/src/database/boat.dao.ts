@@ -30,23 +30,20 @@ export class BoatDao {
       include: [RentalModel],
     });
 
-    if (boatModel) {
-      return boatModel.toBoat();
-    }
-
-    return null;
+    return boatModel ? boatModel.toBoat() : null;
   }
 
+  /**
+   * Returns boat associated with rentalId
+   * @param rentalId
+   * @returns Boat or null
+   */
   public async getByRentalId(rentalId: number): Promise<Boat | null> {
     const boatModel = await BoatModel.findOne({
       where: { rentalId },
     });
 
-    if (boatModel) {
-      return boatModel.toBoat();
-    }
-
-    return null;
+    return boatModel ? boatModel.toBoat() : null;
   }
 
   public async saveNewBoat(newBoat: Boat): Promise<void> {
@@ -126,6 +123,10 @@ export class BoatModel extends Model {
   @HasMany(() => RentalModel)
   public rentals!: RentalModel[];
 
+  /**
+   * Covert `BoatModel` to `Boat`
+   * @returns `Boat`
+   */
   public toBoat(): Boat {
     if (this.boatType === 'motor') {
       return new MotorBoat(

@@ -77,10 +77,16 @@ export class User {
     return await argon2.verify(this.password, password);
   }
 
+  /**
+   * Gets rental associated with user.
+   */
   public async getRentals(): Promise<Rental[]> {
     return await new RentalDao().getRentalsByUserId(this.id);
   }
 
+  /**
+   * Gets sessions associated with user.
+   */
   public async getSessions(): Promise<Session[]> {
     return await new SessionDao().getSessionsByUserId(this.id);
   }

@@ -1,12 +1,13 @@
 type Key = string | number;
 
+// Generic cache
 export class Cache<T> {
-  private static readonly MAX_SIZE = 100;
-
   private cache: Map<Key, T> = new Map();
 
-  public get(key: Key): T | null {
-    return this.cache.get(key) ?? null;
+  constructor(private maxSize: number = 100) {}
+
+  public get(key: Key): T | undefined {
+    return this.cache.get(key);
   }
 
   public getAll(): T[] {
@@ -15,7 +16,7 @@ export class Cache<T> {
 
   public set(key: Key, val: T): void {
     this.cache.set(key, val);
-    if (this.cache.size > Cache.MAX_SIZE) {
+    if (this.cache.size > this.maxSize) {
       // Map preserves insertion order, delete first element
       const [first] = this.cache.keys();
       this.delete(first);
@@ -26,7 +27,7 @@ export class Cache<T> {
     return this.cache.delete(key);
   }
 
-  public invalidate(): void {
+  public clear(): void {
     this.cache = new Map();
   }
 }
