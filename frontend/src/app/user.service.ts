@@ -26,7 +26,7 @@ export class UserService {
    * @returns an Observable of an array of Users
    */
   public getUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(`/api/users`)
+    return this.httpClient.get<User[]>(`/api/users`);
   }
   /**
    * sends a request to the backend to delete a specific User by id
@@ -66,7 +66,7 @@ export class UserService {
         this.knownEmailInput
       );
     }
-    
+
     // return this.addUser(UserObject);
     return this.httpClient.post(
       `${environment.backendUrl}/api/users/registratie-pagina`,

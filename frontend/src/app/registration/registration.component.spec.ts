@@ -116,9 +116,9 @@ describe('Add RegistratieComponent', () => {
     // });
 
     it('radio checkbox input field should pass value to form control', async () => {
-    //   if (radioCheckBoxField != null) {
-    //     radioCheckBoxField.checked = true;
-    //   }
+      //   if (radioCheckBoxField != null) {
+      //     radioCheckBoxField.checked = true;
+      //   }
       passwordField.dispatchEvent(new Event('checkbox'));
       fixture.detectChanges();
       await fixture.whenStable();
@@ -246,9 +246,9 @@ describe('Add RegistratieComponent', () => {
     });
 
     it('should not call the addUser method when wrong email is entered', async () => {
-          //   if (radioCheckBoxField != null) {
-          //     radioCheckBoxField.checked = true;
-          //   }
+      //   if (radioCheckBoxField != null) {
+      //     radioCheckBoxField.checked = true;
+      //   }
       fixture.detectChanges();
       await fixture.whenStable();
       emailAddressField = fixture.debugElement.query(
@@ -260,22 +260,20 @@ describe('Add RegistratieComponent', () => {
       lastNameField.value = 'den Otter';
       lastNameField.dispatchEvent(new Event('input'));
 
-    //   let wrongEmail = fixture.debugElement.injector.get(UserService).checkEmail('hanszonderaapenstaartjepuntnl')
-    //   emailAddressField.dispatchEvent(new Event('input'));
+      //   let wrongEmail = fixture.debugElement.injector.get(UserService).checkEmail('hanszonderaapenstaartjepuntnl')
+      //   emailAddressField.dispatchEvent(new Event('input'));
 
+      //   passwordField.value = 'password';
+      //   passwordField.dispatchEvent(new Event('input'));
 
-    
-    //   passwordField.value = 'password';
-    //   passwordField.dispatchEvent(new Event('input'));
+      //   submitButton.click();
+      //   fixture.detectChanges();
+      //   await fixture.whenStable();
 
-    //   submitButton.click();
-    //   fixture.detectChanges();
-    //   await fixture.whenStable();
+      //   expect(component.userService.checkEmail('wrongEmail'));
+      //   expect(addUserSpy.calls.count()).toEqual(1);
 
-    //   expect(component.userService.checkEmail('wrongEmail'));
-    //   expect(addUserSpy.calls.count()).toEqual(1);
-
-        expect(true).toEqual(true)
+      expect(true).toEqual(true);
     });
 
     // it('should not call the addUser method when wrong password input is entered', async () => {
@@ -301,7 +299,7 @@ describe('Add RegistratieComponent', () => {
     //   if (component.radioButtonNotSet() === false) {
 
     //   }
-    
+
     //   submitButton.click();
     //   fixture.detectChanges();
     //   await fixture.whenStable();
@@ -311,48 +309,46 @@ describe('Add RegistratieComponent', () => {
     // });
   });
 
-//   it('should add user when method is called', async () => {
-//     // if (radioCheckBoxField != null) {
-//     //   radioCheckBoxField.checked = true;
-//     // }
-//     fixture.detectChanges();
-//     await fixture.whenStable();
+  //   it('should add user when method is called', async () => {
+  //     // if (radioCheckBoxField != null) {
+  //     //   radioCheckBoxField.checked = true;
+  //     // }
+  //     fixture.detectChanges();
+  //     await fixture.whenStable();
 
-//     firstNameField = fixture.debugElement.query(
-//         By.css('#firstname-input')
-//       ).nativeElement;
-    
-//     lastNameField = fixture.debugElement.query(
-//         By.css('#lastName-input')
-//       ).nativeElement;
+  //     firstNameField = fixture.debugElement.query(
+  //         By.css('#firstname-input')
+  //       ).nativeElement;
 
-//     emailAddressField = fixture.debugElement.query(
-//         By.css('#emailadres-input')
-//       ).nativeElement;
+  //     lastNameField = fixture.debugElement.query(
+  //         By.css('#lastName-input')
+  //       ).nativeElement;
 
-//     passwordField = fixture.debugElement.query(
-//       By.css('#password-input')
-//     ).nativeElement;
+  //     emailAddressField = fixture.debugElement.query(
+  //         By.css('#emailadres-input')
+  //       ).nativeElement;
 
-   
-  
-//     firstNameField.value = 'Hans';
-//     firstNameField.dispatchEvent(new Event('input'));
+  //     passwordField = fixture.debugElement.query(
+  //       By.css('#password-input')
+  //     ).nativeElement;
 
-//     lastNameField.value = 'den Otter';
-//     lastNameField.dispatchEvent(new Event('input'));
+  //     firstNameField.value = 'Hans';
+  //     firstNameField.dispatchEvent(new Event('input'));
 
-//     emailAddressField.value = 'hans@hans.nl';
-//     emailAddressField.dispatchEvent(new Event('input'));
+  //     lastNameField.value = 'den Otter';
+  //     lastNameField.dispatchEvent(new Event('input'));
 
-//     passwordField.value = '';
-//     passwordField.dispatchEvent(new Event('input'));
+  //     emailAddressField.value = 'hans@hans.nl';
+  //     emailAddressField.dispatchEvent(new Event('input'));
 
-//     submitButton.click();
-//     fixture.detectChanges();
-//     await fixture.whenStable();
+  //     passwordField.value = '';
+  //     passwordField.dispatchEvent(new Event('input'));
 
-//     expect(component.firstName.valid).toBeTrue();
-//     expect(addUserSpy.calls.count()).toEqual(1);
-//   });
+  //     submitButton.click();
+  //     fixture.detectChanges();
+  //     await fixture.whenStable();
+
+  //     expect(component.firstName.valid).toBeTrue();
+  //     expect(addUserSpy.calls.count()).toEqual(1);
+  //   });
 });

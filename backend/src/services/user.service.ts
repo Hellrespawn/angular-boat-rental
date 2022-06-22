@@ -57,12 +57,13 @@ export class UserService {
 
   // TODO: functie moet nog naar de DAO
   public async checkEmail(email: string): Promise<UserModel | null> {
-    const emailAd = await UserModel.findOne({ where: { emailAddress: email } });
-    if (emailAd !== null) {
-      console.log('email found');
-      return emailAd
-    }
-    return emailAd;
+    return this.userDao.checkEmail(email);
+    // const emailAd = await UserModel.findOne({ where: { emailAddress: email } });
+    // if (emailAd !== null) {
+    //   console.log('email found');
+    //   return emailAd
+    // }
+    // return emailAd;
   }
 
   public async calculateIfAdmin(): Promise<number> {

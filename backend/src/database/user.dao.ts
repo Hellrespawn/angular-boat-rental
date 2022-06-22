@@ -31,14 +31,14 @@ export class UserDao {
 
   public async saveNewUser(newUser: User): Promise<void> {
     UserModel.create({
-      id: newUser.id,  
+      id: newUser.id,
       firstName: newUser.firstName,
       lastName: newUser.lastName,
-      license: newUser.license,  
+      license: newUser.license,
       emailAddress: newUser.emailAddress,
       password: newUser.password,
       blocked: newUser.blocked,
-      admin: newUser.admin
+      admin: newUser.admin,
     });
   }
 
@@ -92,6 +92,14 @@ export class UserDao {
     } else {
       throw 'userToDelete not found';
     }
+  }
+
+  public async checkEmail(email: string): Promise<UserModel | null> {
+    const knownEmailAddress = await UserModel.findOne({ where: { emailAddress: email } });
+    if (knownEmailAddress !== null) {
+      console.log('email found');
+    }
+    return knownEmailAddress;
   }
 
   public async createNewUser(

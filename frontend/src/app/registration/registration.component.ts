@@ -119,19 +119,16 @@ export class RegistrationComponent {
       if (this.nameNotTouched()) {
         console.log('firstname not touched');
         this.snackBService.makeSnackbarThatClosesAutomatically(
-            this.emptyNameInput
-          );
+          this.emptyNameInput
+        );
         return;
-      }
-      else if (this.lastNameNotTouched()) {
+      } else if (this.lastNameNotTouched()) {
         console.log('lastname not touched');
         return;
-      }
-      else if (this.emailNotTouched()) {
+      } else if (this.emailNotTouched()) {
         console.log('email not touched');
         return;
-      }
-      else if (!regex.test(passwordInp)) {
+      } else if (!regex.test(passwordInp)) {
         this.falsePasswordEntryForm();
         return;
       } else {
@@ -145,7 +142,6 @@ export class RegistrationComponent {
       return;
     }
   }
-
 
   // get user data
   public getUsers(): object {
@@ -190,12 +186,12 @@ export class RegistrationComponent {
   public nameNotTouched(): '' | undefined {
     const firstName = this.firstNameInp.nativeElement.value;
     if (firstName === '') {
-        this.snackBService.makeSnackbarThatClosesAutomatically(
-            this.emptyNameInput
-          );
+      this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.emptyNameInput
+      );
       console.log('test 1 snackbar voornaam');
     }
-    return 
+    return;
   }
 
   public lastNameNotTouched(): '' | undefined {
