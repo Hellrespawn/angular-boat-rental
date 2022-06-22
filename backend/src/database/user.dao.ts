@@ -95,7 +95,9 @@ export class UserDao {
   }
 
   public async checkEmail(email: string): Promise<UserModel | null> {
-    const knownEmailAddress = await UserModel.findOne({ where: { emailAddress: email } });
+    const knownEmailAddress = await UserModel.findOne({
+      where: { emailAddress: email },
+    });
     if (knownEmailAddress !== null) {
       console.log('email found');
     }
