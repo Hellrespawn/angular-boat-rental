@@ -26,6 +26,8 @@ describe('Test User-functionality in backend', () => {
     sinon
       .stub(UserService.prototype, 'calculateIfAdmin')
       .returns(Promise.resolve(0));
+
+    sinon.stub(UserDao.prototype, 'checkEmail');
   }
 
   async function stubUserServiceForReturnAllUsers(): Promise<void> {
