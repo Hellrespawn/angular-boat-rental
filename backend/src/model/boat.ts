@@ -33,14 +33,31 @@ export abstract class Boat {
     }
   }
 
-  public isHigherThenZero(value: number): boolean {
-    return value > 0;
-  }
-
+  /**
+   * Gets specific data associated with subclass
+   */
   public abstract getBoatData(): BoatData;
 
+  /**
+   * Gets boat requirements
+   */
   public abstract getRequirements(): BoatRequirements;
 
+  /**
+   * Creates a new boat based on boatType
+   *
+   * @param name
+   * @param registrationNumber
+   * @param pricePerDay
+   * @param skipperRequired
+   * @param imageRoute
+   * @param lengthInM
+   * @param maxOccupants
+   * @param boatType
+   * @param maxSpeedInKmH
+   * @param sailAreaInM2
+   * @returns subclass of Boat
+   */
   public static createBoat(
     name: string,
     registrationNumber: number,
@@ -90,6 +107,14 @@ export abstract class Boat {
     }
   }
 
+  public isHigherThenZero(value: number): boolean {
+    return value > 0;
+  }
+
+  /**
+   * Gets all rentals associated with boat
+   * @returns array of rentals
+   */
   public async getRentals(): Promise<Rental[]> {
     return await new RentalDao().getRentalsByBoatId(this.id);
   }
@@ -117,6 +142,9 @@ export abstract class Boat {
     return rentals.flatMap((rental) => rental.getBookedDates());
   }
 
+  /**
+   * Checks the requirements common to all boats
+   */
   protected getUniversalRequirements(): BoatRequirements {
     let requirements: BoatRequirements = 'none';
 

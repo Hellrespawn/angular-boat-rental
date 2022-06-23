@@ -1,25 +1,33 @@
 type Key = string | number;
 
+// Generic cache
 export class Cache<T> {
-  private cache: Record<Key, T> = {};
+  private cache: Map<Key, T> = new Map();
 
-  public get(key: Key): T | null {
-    return this.cache[key];
+  constructor(private maxSize: number = 100) {}
+
+  public get(key: Key): T | undefined {
+    return this.cache.get(key);
   }
 
   public getAll(): T[] {
-    return Object.values(this.cache);
+    return [...this.cache.values()];
   }
 
   public set(key: Key, val: T): void {
-    this.cache[key] = val;
+    this.cache.set(key, val);
+    if (this.cache.size > this.maxSize) {
+      // Map preserves insertion order, delete first element
+      const [first] = this.cache.keys();
+      this.delete(first);
+    }
   }
 
   public delete(key: Key): boolean {
-    return delete this.cache[key];
+    return this.cache.delete(key);
   }
 
-  public invalidate(): void {
-    this.cache = {};
+  public clear(): void {
+    this.cache = new Map();
   }
 }

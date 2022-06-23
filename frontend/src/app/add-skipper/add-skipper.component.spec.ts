@@ -62,7 +62,7 @@ describe('SchipperToevoegComponent', () => {
     nameField = fixture.debugElement.query(By.css('#name'));
     priceField = fixture.debugElement.query(By.css('#price'));
     birthDateField = fixture.debugElement.query(By.css('#birthDate'));
-    submitButton = fixture.debugElement.query(By.css('#submitKnop'));
+    submitButton = fixture.debugElement.query(By.css('#submitButton'));
 
     nameFieldElement = nameField.nativeElement;
     priceFieldElement = priceField.nativeElement;

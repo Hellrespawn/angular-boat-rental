@@ -45,12 +45,15 @@ export class BoatService {
     };
   }
 
+  /**
+   * Get Boat by id
+   */
   public async getById(id: number): Promise<Boat | null> {
     return this.boatDao.getById(id);
   }
 
   /**
-   * requests all Boats from the database
+   * requests all Boats from the database via the DAO
    * @returns all boats from the database
    */
   public async returnAllBoats(): Promise<Array<Boat>> {
@@ -131,7 +134,7 @@ export class BoatService {
   }
 
   /**
-   * adds a boat to the database if possible (name and registration have to be unique)
+   * adds a boat to the database if possible (name and registration have to be unique) via the DAO
    * @param name name of new boat
    * @param registrationNumber registration number of new boat
    * @param pricePerDay price per day of boat
@@ -173,7 +176,7 @@ export class BoatService {
   }
 
   /**
-   * deletes a boat by id from the database
+   * deletes a boat by id from the database via the DAO
    * @param idOfBoat id of the boat to identify the specific boat
    */
   public async deleteBoat(idOfBoat: number): Promise<void> {
@@ -181,7 +184,7 @@ export class BoatService {
   }
 
   /**
-   * updates the maintenance boolean in a specific boat found by id
+   * updates the maintenance boolean in a specific boat found by id via the DAO
    * @param idOfBoat id of the boat to be updated
    * @param updatedValue new boolean value to which the maintenance boolean of the boat will be updated
    */

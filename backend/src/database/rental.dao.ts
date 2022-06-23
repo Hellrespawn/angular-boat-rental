@@ -14,6 +14,12 @@ import { Op } from 'sequelize';
 import { Rental } from '../model/rental';
 
 export class RentalDao {
+  /**
+   * Gets all rentals associated with boatId
+   *
+   * @param boatId
+   * @returns array of Rentals
+   */
   public async getRentalsByBoatId(boatId: number): Promise<Rental[]> {
     const models = await RentalModel.findAll({
       where: { boatId },
@@ -22,6 +28,12 @@ export class RentalDao {
     return models.map(Rental.fromModel);
   }
 
+  /**
+   * Gets all rentals associated with userId
+   *
+   * @param userId
+   * @returns array of Rentals
+   */
   public async getRentalsByUserId(userId: number): Promise<Rental[]> {
     const models = await RentalModel.findAll({
       where: { userId },
@@ -30,6 +42,12 @@ export class RentalDao {
     return models.map(Rental.fromModel);
   }
 
+  /**
+   * Gets all upcoming rentals associated with userId
+   *
+   * @param userId
+   * @returns array of Rentals
+   */
   public async getUpcomingRentalsByUserId(userId: number): Promise<Rental[]> {
     const now = new Date();
 
@@ -53,6 +71,11 @@ export class RentalDao {
     return models.map(Rental.fromModel);
   }
 
+  /**
+   * Save rental to database
+   * @param rental
+   * @returns
+   */
   public async saveRental(rental: Rental): Promise<number> {
     const model = await RentalModel.create({
       boatId: rental.boat.id,

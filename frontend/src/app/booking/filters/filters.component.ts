@@ -14,11 +14,17 @@ export class FiltersComponent {
     private bookingService: BookingService
   ) {}
 
-  /** Observable that checks whether or not we're on mobile. */
+  /**
+   * Observable that checks whether or not we're on mobile. '$'-suffix is an
+   * RxJS convention.
+   */
   public isMobile$: Observable<boolean> = this.breakpointObserver
     .observe(['(max-width: 640px)'])
     .pipe(map((state) => state.matches));
 
+  /**
+   * Reset all filters
+   */
   public resetFilters(): void {
     this.bookingService.reset();
   }

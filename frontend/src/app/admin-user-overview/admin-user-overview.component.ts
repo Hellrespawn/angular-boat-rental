@@ -79,9 +79,9 @@ export class AdminUserOverviewComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       result = result ? parseInt(result) : undefined;
       if (result && result > 0) {
-        this.sendNewFineToBackend(idOfCustomer, result);
+        this.postFineToServer(idOfCustomer, result);
       } else if (result <= 0 || typeof result != 'number') {
-        this.snackBarService.makeSnackbarThatClosesAutomatically(
+        this.snackBarService.showSnackbarThatClosesAutomatically(
           this.errorSnackbarInputFine
         );
       }
@@ -93,16 +93,13 @@ export class AdminUserOverviewComponent implements OnInit {
    * @param userID id of user
    * @param amount fine-amount
    */
-  public async sendNewFineToBackend(
-    userId: number,
-    amount: number
-  ): Promise<void> {
+  public async postFineToServer(userId: number, amount: number): Promise<void> {
     this.fineService.addFine({ userId, amount, paid: false }).subscribe(() => {
       for (let user of this.arrayOfUsers) {
         if (user.id === userId)
           user.arrayOfFines.push({ userId, amount, paid: false });
       }
-      this.snackBarService.makeSnackbarThatClosesAutomatically(
+      this.snackBarService.showSnackbarThatClosesAutomatically(
         this.succesSnackbarInputFine
       );
     });
@@ -124,7 +121,7 @@ export class AdminUserOverviewComponent implements OnInit {
   public async deleteUserById(id: number, index: number): Promise<void> {
     this.userService.deleteUserById(id).subscribe(() => {
       this.arrayOfUsers.splice(index, 1);
-      this.snackBarService.makeSnackbarThatClosesAutomatically(
+      this.snackBarService.showSnackbarThatClosesAutomatically(
         this.succesSnackbarInput
       );
     });

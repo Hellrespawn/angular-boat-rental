@@ -47,7 +47,7 @@ export class AdminSkipperOverviewComponent implements OnInit {
   public async deleteSkipperById(id: number, index: number): Promise<void> {
     this.skipperService.deleteSkipperById(id).subscribe(() => {
       this.arrayOfSkippers.splice(index, 1);
-      this.snackBarService.makeSnackbarThatClosesAutomatically(
+      this.snackBarService.showSnackbarThatClosesAutomatically(
         this.succesSnackbarInput
       );
     });

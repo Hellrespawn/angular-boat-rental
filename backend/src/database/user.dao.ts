@@ -62,6 +62,10 @@ export class UserDao {
     throw 'User not found!';
   }
 
+  /**
+   * gets all UserModels from the database and sends them back as Users
+   * @returns an array of instances of User
+   */
   public async getUsers(): Promise<User[]> {
     return (
       await UserModel.findAll({
@@ -72,26 +76,41 @@ export class UserDao {
     });
   }
 
-  public async updateBlockedValueOfUser(
-    idOfUser: number,
-    updatedValue: boolean
-  ): Promise<void> {
-    const userToUpdate: UserModel | null = await UserModel.findByPk(idOfUser);
-    if (userToUpdate !== null) {
-      userToUpdate.blocked = updatedValue;
-      await userToUpdate.save();
+  /**
+   * tries to find a UserModel from database and return it, if not found throws an error
+   * @param idOfUser id of the UserModel
+   * @returns the found UserModel
+   */
+  private async findUserOrThrowError(idOfUser: number): Promise<UserModel> {
+    const user: UserModel | null = await UserModel.findByPk(idOfUser);
+    if (user !== null) {
+      return user;
     } else {
       throw 'User not found';
     }
   }
 
+  /**
+   * updates the blocked value of a UserModel found by id
+   * @param idOfUser id of the UserModel
+   * @param updatedValue new value of blocked
+   */
+  public async updateBlockedValueOfUser(
+    idOfUser: number,
+    updatedValue: boolean
+  ): Promise<void> {
+    const userToUpdate: UserModel = await this.findUserOrThrowError(idOfUser);
+    userToUpdate.blocked = updatedValue;
+    await userToUpdate.save();
+  }
+
+  /**
+   * deletes a UserModel from the database found by id
+   * @param idOfUser if of the UserModel
+   */
   public async deleteUser(idOfUser: number): Promise<void> {
-    const userToDelete: UserModel | null = await UserModel.findByPk(idOfUser);
-    if (userToDelete !== null) {
-      await userToDelete.destroy();
-    } else {
-      throw 'userToDelete not found';
-    }
+    const userToDelete: UserModel = await this.findUserOrThrowError(idOfUser);
+    await userToDelete.destroy();
   }
 
   public async checkEmail(email: string): Promise<UserModel | null> {

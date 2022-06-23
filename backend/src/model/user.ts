@@ -6,7 +6,6 @@ import { Rental } from './rental';
 import { SessionDao } from '../database/session.dao';
 import { Session } from './session';
 
-// Private properties kunnen niet gestubt worden.
 export class User {
   constructor(
     public readonly id: number,
@@ -77,10 +76,16 @@ export class User {
     return await argon2.verify(this.password, password);
   }
 
+  /**
+   * Gets rental associated with user.
+   */
   public async getRentals(): Promise<Rental[]> {
     return await new RentalDao().getRentalsByUserId(this.id);
   }
 
+  /**
+   * Gets sessions associated with user.
+   */
   public async getSessions(): Promise<Session[]> {
     return await new SessionDao().getSessionsByUserId(this.id);
   }

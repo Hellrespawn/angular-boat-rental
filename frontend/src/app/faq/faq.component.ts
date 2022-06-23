@@ -54,7 +54,7 @@ export class FaqComponent {
    addMessages(this.getMessages()) invokes the message service with getMessages() function input */
   public sendMessageToBackend(): void {
     this.messageService.addMessages(this.getMessages()).subscribe();
-    this.snackBService.makeSnackbarThatClosesAutomatically(
+    this.snackBService.showSnackbarThatClosesAutomatically(
       this.succesSnackbarInput
     );
     // this.router.navigateByUrl('/veel-gestelde-vragen');
@@ -107,7 +107,7 @@ export class FaqComponent {
 
   public nameTouched(): void {
     if (this.nameInp.nativeElement.value === '') {
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.emptyNameInput
       );
       console.log('name');
@@ -117,7 +117,7 @@ export class FaqComponent {
 
   public emailTouched(): void {
     if (this.emailInp.nativeElement.value === '') {
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.emptyEmailInput
       );
       console.log('email');
@@ -127,7 +127,7 @@ export class FaqComponent {
 
   public textBoxTouched(): void {
     if (this.textInp.nativeElement.value === '') {
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.emptyTextInput
       );
       console.log('email');

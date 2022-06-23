@@ -117,7 +117,7 @@ export class RegistrationComponent {
 
       if (this.nameNotTouched()) {
         console.log('firstname not touched');
-        this.snackBService.makeSnackbarThatClosesAutomatically(
+        this.snackBService.showSnackbarThatClosesAutomatically(
           this.emptyNameInput
         );
         return;
@@ -159,13 +159,13 @@ export class RegistrationComponent {
 
   // password wrong entry triggers false snackbar
   public falsePasswordEntryForm(): void {
-    this.snackBService.makeSnackbarThatClosesAutomatically(
+    this.snackBService.showSnackbarThatClosesAutomatically(
       this.falsePaswordSnackbarInput
     );
   }
 
   public succesEntryForm(): void {
-    this.snackBService.makeSnackbarThatClosesAutomatically(
+    this.snackBService.showSnackbarThatClosesAutomatically(
       this.succesSnackbarInput
     );
   }
@@ -175,7 +175,7 @@ export class RegistrationComponent {
     const checked = item!.checked;
     // console.log(item);
     if (!checked === true) {
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.wrongRadioButtonInput
       );
     }
@@ -185,7 +185,7 @@ export class RegistrationComponent {
   public nameNotTouched(): '' | undefined {
     const firstName = this.firstNameInp.nativeElement.value;
     if (firstName === '') {
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.emptyNameInput
       );
       console.log('test 1 snackbar voornaam');
@@ -198,7 +198,7 @@ export class RegistrationComponent {
     if (lastName === '') {
       console.log('test 1 snackbar achternaam');
 
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.emptyLastNameInput
       );
       return;
@@ -211,7 +211,7 @@ export class RegistrationComponent {
     if (email === '') {
       console.log('test 1 snackbar email');
 
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.emptyEmailInput
       );
       return;

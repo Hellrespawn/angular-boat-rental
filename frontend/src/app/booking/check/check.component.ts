@@ -31,6 +31,9 @@ export class CheckComponent implements OnInit {
     this.getDates();
   }
 
+  /**
+   * Retrieve session data from SessionService
+   */
   private getSessionData(): void {
     this.sessionService
       .getSessionData()
@@ -111,10 +114,16 @@ export class CheckComponent implements OnInit {
     }
   }
 
+  /**
+   * Returns true if there is a user logged in.
+   */
   public isLoggedIn(): boolean {
     return Boolean(this.sessionData);
   }
 
+  /**
+   * Returns true when the button should be disabled
+   */
   public isButtonDisabled(): boolean {
     if (!this.isLoggedIn()) {
       return false;

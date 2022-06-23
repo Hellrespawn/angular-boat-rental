@@ -18,7 +18,7 @@ export class BookingComponent implements OnInit {
   }
 
   /**
-   * Subscribe to bookingService.boats
+   * Subscribe to boats in BookingService.
    */
   private getBoats(): void {
     this.bookingService.getBoats().subscribe((boats: BoatOverviewData[]) => {

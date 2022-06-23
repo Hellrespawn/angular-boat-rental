@@ -69,7 +69,7 @@ describe('BootToevoegComponent', () => {
     addBoatSpy = spyOn(MockBoatService.prototype, 'addBoat').and.callThrough();
 
     submitButton = fixture.debugElement.query(
-      By.css('#submitKnop')
+      By.css('#submitButton')
     ).nativeElement;
   });
 

@@ -18,6 +18,10 @@ export type BoatRequirements = 'none' | 'license' | 'skipper';
 const BOAT_TYPES = ['sail', 'motor'];
 
 export class BoatDao {
+  /**
+   * gets all BoatModels from the database and returns them as Boat instances
+   * @returns all boatModels
+   */
   public async getBoats(): Promise<Boat[]> {
     const models = await BoatModel.findAll();
 
@@ -30,25 +34,26 @@ export class BoatDao {
       include: [RentalModel],
     });
 
-    if (boatModel) {
-      return boatModel.toBoat();
-    }
-
-    return null;
+    return boatModel ? boatModel.toBoat() : null;
   }
 
+  /**
+   * Returns boat associated with rentalId
+   * @param rentalId
+   * @returns Boat or null
+   */
   public async getByRentalId(rentalId: number): Promise<Boat | null> {
     const boatModel = await BoatModel.findOne({
       where: { rentalId },
     });
 
-    if (boatModel) {
-      return boatModel.toBoat();
-    }
-
-    return null;
+    return boatModel ? boatModel.toBoat() : null;
   }
 
+  /**
+   * takes a Boat and inserts it into the database as a BoatModel
+   * @param newBoat instance of Boat
+   */
   public async saveNewBoat(newBoat: Boat): Promise<void> {
     await BoatModel.create({
       name: newBoat.name,
@@ -64,26 +69,41 @@ export class BoatDao {
     });
   }
 
-  public async updateMaintenanceValueInBoat(
-    idOfBoat: number,
-    updatedValue: boolean
-  ): Promise<void> {
-    const boatToUpdate: BoatModel | null = await BoatModel.findByPk(idOfBoat);
-    if (boatToUpdate !== null) {
-      boatToUpdate.maintenance = updatedValue;
-      await boatToUpdate.save();
+  /**
+   * tries to find a BoatModel from database and return it, if not found throws an error
+   * @param idOfBoat id of the boat
+   * @returns the found boat
+   */
+  private async findBoatOrThrowError(idOfBoat: number): Promise<BoatModel> {
+    const boat: BoatModel | null = await BoatModel.findByPk(idOfBoat);
+    if (boat !== null) {
+      return boat;
     } else {
       throw 'Boat not found';
     }
   }
 
+  /**
+   * updates the maintenance value of a BoatModel found by id
+   * @param idOfBoat id of the BoatModel
+   * @param updatedValue new value of maintenance
+   */
+  public async updateMaintenanceValueInBoat(
+    idOfBoat: number,
+    updatedValue: boolean
+  ): Promise<void> {
+    const boatToUpdate: BoatModel = await this.findBoatOrThrowError(idOfBoat);
+    boatToUpdate.maintenance = updatedValue;
+    await boatToUpdate.save();
+  }
+
+  /**
+   * deletes a BoatModel from the database found by id
+   * @param idOfBoat if of the BoatModel
+   */
   public async deleteBoat(idOfBoat: number): Promise<void> {
-    const boatToDelete: BoatModel | null = await BoatModel.findByPk(idOfBoat);
-    if (boatToDelete !== null) {
-      await boatToDelete.destroy();
-    } else {
-      throw 'Boat not found';
-    }
+    const boatToDelete: BoatModel = await this.findBoatOrThrowError(idOfBoat);
+    await boatToDelete.destroy();
   }
 }
 
@@ -126,6 +146,10 @@ export class BoatModel extends Model {
   @HasMany(() => RentalModel)
   public rentals!: RentalModel[];
 
+  /**
+   * Covert `BoatModel` to `Boat`
+   * @returns `Boat`
+   */
   public toBoat(): Boat {
     if (this.boatType === 'motor') {
       return new MotorBoat(
