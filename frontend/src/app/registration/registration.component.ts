@@ -62,12 +62,11 @@ export class RegistrationComponent {
   };
 
   // formcontrol email messages
-  //   public nameControl = new FormControl(null, [Validators.required]);
   public firstName = new FormControl(null, [Validators.required]);
   public lastName = new FormControl(null, [Validators.required]);
   public email = new FormControl(null, [Validators.required, Validators.email]);
-  public password = new FormControl(null, [Validators.required]);
-  public radioCheckBox = new FormControl(false, [Validators.required]);
+  public password = new FormControl('password', [Validators.required]);
+  public radioCheckBox = new FormControl(null, [Validators.required]);
 
   public firstNameErrorMessage(): string {
     let errorMessage: string = '';

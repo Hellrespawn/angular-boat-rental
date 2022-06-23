@@ -1,6 +1,6 @@
 <h2><p>Maak account aan</p></h2>
 <section class="registration-section">
-  <form class="form">
+  <form class="form" (submit)="(false)">
     <mat-form-field class="form-field" appearance="fill">
       <mat-label>Voornaam</mat-label>
       <input
@@ -84,7 +84,7 @@
         <label>
           <mat-checkbox
             #btn18Years
-            id="btn-18"
+            id="btn-18-input"
             name="accept"
             value="yes"
             aria-checked="true"
