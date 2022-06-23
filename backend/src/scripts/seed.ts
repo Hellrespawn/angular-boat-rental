@@ -85,7 +85,6 @@ async function insertMockUsers(): Promise<void> {
       firstName,
       lastName,
       license: Boolean(randomInt(0, 1)),
-      dateOfBirth: new Date('1991-01-01'),
       emailAddress: `test${i}@test.test`,
       password: await User.hashPassword('password'),
       blocked: false,

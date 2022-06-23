@@ -23,6 +23,19 @@ function getRequiredDateString(): string {
 }
 
 export class UserDao {
+  public async saveNewUser(newUser: User): Promise<void> {
+    UserModel.create({
+      id: newUser.id,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      license: newUser.license,
+      emailAddress: newUser.emailAddress,
+      password: newUser.password,
+      blocked: newUser.blocked,
+      admin: newUser.admin,
+    });
+  }
+
   public async getUserByEmail(emailAddress: string): Promise<User | null> {
     const model = await UserModel.findOne({ where: { emailAddress } });
 
@@ -92,6 +105,16 @@ export class UserDao {
   public async deleteUser(idOfUser: number): Promise<void> {
     const userToDelete: UserModel = await this.findUserOrThrowError(idOfUser);
     await userToDelete.destroy();
+  }
+
+  public async checkEmail(email: string): Promise<UserModel | null> {
+    const knownEmailAddress = await UserModel.findOne({
+      where: { emailAddress: email },
+    });
+    if (knownEmailAddress !== null) {
+      console.log('email found');
+    }
+    return knownEmailAddress;
   }
 
   public async createNewUser(

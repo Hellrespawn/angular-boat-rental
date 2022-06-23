@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { UserService } from '../user.service';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
-import { MatRadioModule } from '@angular/material/radio';
 
 @Component({
   selector: 'app-registration',
@@ -13,7 +12,7 @@ import { MatRadioModule } from '@angular/material/radio';
 // nog een enum toevoegen voor beheerder/klant/gast
 export class RegistrationComponent {
   constructor(
-    private userService: UserService,
+    public userService: UserService,
     private snackBService: SnackBarService,
     private router: Router
   ) {}
@@ -61,16 +60,13 @@ export class RegistrationComponent {
     error: true,
   };
 
-  private readonly knownEmailInput: SnackBarInput = {
-    message: 'Emailadres bestaal al!',
-    buttonText: 'Sluit',
-    duration: 1000,
-    error: true,
-  };
-  public firstName = new FormControl('', [Validators.required]);
-  public lastName = new FormControl('', [Validators.required]);
-  public email = new FormControl('', [Validators.required, Validators.email]);
-  public password = new FormControl('', [Validators.required]);
+  // formcontrol email messages
+  public firstName = new FormControl(null, [Validators.required]);
+  public lastName = new FormControl(null, [Validators.required]);
+  public email = new FormControl(null, [Validators.required, Validators.email]);
+  public password = new FormControl(null, [Validators.required]);
+  public radioCheckBox = new FormControl(null, [Validators.required]);
+
   public firstNameErrorMessage(): string {
     let errorMessage: string = '';
     if (this.firstName.hasError('required')) {
@@ -112,24 +108,40 @@ export class RegistrationComponent {
   public emailAddressInp!: ElementRef<HTMLInputElement>;
   @ViewChild('passwordInp') public passwordInp!: ElementRef<HTMLInputElement>;
 
+  // check if password is ok and fields are touched then submit to backend
   public sendDataToBackend(): void {
     if (this.radioButtonNotSet()) {
       const regex = /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$/;
       let passwordInp: string = this.passwordInp.nativeElement.value;
-      this.nameTouched();
-      this.lastNameTouched();
-      this.emailTouched();
-      if (!regex.test(passwordInp)) {
-        this.falseEntryForm();
+
+      if (this.nameNotTouched()) {
+        console.log('firstname not touched');
+        this.snackBService.showSnackbarThatClosesAutomatically(
+          this.emptyNameInput
+        );
+        return;
+      } else if (this.lastNameNotTouched()) {
+        console.log('lastname not touched');
+        return;
+      } else if (this.emailNotTouched()) {
+        console.log('email not touched');
+        return;
+      } else if (!regex.test(passwordInp)) {
+        this.falsePasswordEntryForm();
         return;
       } else {
         this.succesEntryForm();
-        this.userService.addUsers(this.getUsers()).subscribe();
-        this.router.navigateByUrl('/registratie-pagina');
+        // sends this.getUsers() data to backend through userService with addUsers()
+        this.userService.addUser(this.getUsers()).subscribe();
+        // setTimeout(() => {
+        //     this.router.navigateByUrl('/login');
+        //   }, 1000);
       }
+      return;
     }
   }
 
+  // get user data
   public getUsers(): object {
     let firstNameInp: string = this.firstNameInp.nativeElement.value;
     let lastNameInp: string = this.lastNameInp.nativeElement.value;
@@ -145,7 +157,7 @@ export class RegistrationComponent {
   }
 
   // password wrong entry triggers false snackbar
-  public falseEntryForm(): void {
+  public falsePasswordEntryForm(): void {
     this.snackBService.showSnackbarThatClosesAutomatically(
       this.falsePaswordSnackbarInput
     );
@@ -160,6 +172,7 @@ export class RegistrationComponent {
   public radioButtonNotSet(): boolean {
     const item = document.getElementById('btn-18-input') as HTMLInputElement;
     const checked = item!.checked;
+    // console.log(item);
     if (!checked === true) {
       this.snackBService.showSnackbarThatClosesAutomatically(
         this.wrongRadioButtonInput
@@ -168,42 +181,40 @@ export class RegistrationComponent {
     return checked;
   }
 
-  public nameTouched(): void {
-    if (this.firstNameInp.nativeElement.value === '') {
+  public nameNotTouched(): '' | undefined {
+    const firstName = this.firstNameInp.nativeElement.value;
+    if (firstName === '') {
       this.snackBService.showSnackbarThatClosesAutomatically(
         this.emptyNameInput
       );
-      console.log('name');
-      return;
+      console.log('test 1 snackbar voornaam');
     }
+    return;
   }
 
-  public lastNameTouched(): void {
-    if (this.lastNameInp.nativeElement.value === '') {
+  public lastNameNotTouched(): '' | undefined {
+    const lastName = this.lastNameInp.nativeElement.value;
+    if (lastName === '') {
+      console.log('test 1 snackbar achternaam');
+
       this.snackBService.showSnackbarThatClosesAutomatically(
         this.emptyLastNameInput
       );
-      console.log('lastname');
       return;
     }
+    return;
   }
-  public emailTouched(): void {
-    if (this.emailAddressInp.nativeElement.value === '') {
+  public emailNotTouched(): '' | undefined {
+    const email = this.emailAddressInp.nativeElement.value;
+
+    if (email === '') {
+      console.log('test 1 snackbar email');
+
       this.snackBService.showSnackbarThatClosesAutomatically(
         this.emptyEmailInput
       );
-      console.log('email');
       return;
     }
-  }
-
-  public knownEmail(): void {
-    if (this.emailAddressInp.nativeElement.value === '') {
-      this.snackBService.showSnackbarThatClosesAutomatically(
-        this.knownEmailInput
-      );
-      console.log('email');
-      return;
-    }
+    return;
   }
 }

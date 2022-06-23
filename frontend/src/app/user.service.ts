@@ -1,29 +1,32 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { SnackBarInput, SnackBarService } from './snack-bar.service';
 import { User } from './user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private snackBService: SnackBarService
+  ) {}
+
+  private readonly knownEmailInput: SnackBarInput = {
+    message: 'Emailadres bestaal al!',
+    buttonText: 'Sluit',
+    duration: 1000,
+    error: true,
+  };
 
   /**
    * sends a request to the backend for all skippers in the database
    * @returns an Observable of an array of Users
    */
   public getUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(`/api/users`).pipe(
-      map((users) => {
-        users.map((user) => {
-          user.dateOfBirth = new Date(user.dateOfBirth);
-          return user;
-        });
-        return users;
-      })
-    );
+    return this.httpClient.get<User[]>(`/api/users`);
   }
   /**
    * sends a request to the backend to delete a specific User by id
@@ -49,11 +52,25 @@ export class UserService {
     });
   }
 
-  public addUsers(UserObject: {}): Observable<Object> {
-    return this.httpClient.post(`/api/users/registratie-pagina`, UserObject);
+  public addUser(UserObject: {}): Observable<void> {
+    return this.httpClient.post<void>(
+      `${environment.backendUrl}/users/registratie-pagina`,
+      UserObject
+    );
   }
 
-  public checkEmail(UserObject: {}): Observable<Object> {
-    return this.httpClient.post(`/api/users/registratie-pagina`, UserObject);
+  public checkEmail(emailObject: {}): Observable<Object> {
+    if (HttpErrorResponse) {
+      console.log('service werkt');
+      this.snackBService.showSnackbarThatClosesAutomatically(
+        this.knownEmailInput
+      );
+    }
+
+    // return this.addUser(UserObject);
+    return this.httpClient.post(
+      `${environment.backendUrl}/api/users/registratie-pagina`,
+      emailObject
+    );
   }
 }

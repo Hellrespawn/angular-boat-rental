@@ -3,11 +3,12 @@ import express from 'express';
 import { RentalService } from '../services/rental.service';
 import { ServerError } from '../util/error';
 import { User } from '../model/user';
-import { UserModel } from '../database/user.dao';
+import { UserDao, UserModel } from '../database/user.dao';
 
 export class UserController {
   constructor(
     private userService: UserService = new UserService(),
+    private userDao: UserDao = new UserDao(),
     private rentalService = new RentalService()
   ) {}
 
@@ -64,8 +65,9 @@ export class UserController {
   }
 
   public async checkUserMail(req: express.Request): Promise<UserModel | null> {
-    const emailAddress: string = req.body.emailAddress;
-    const result = await this.userService.checkEmail(emailAddress);
+    const email: string = req.body.emailAddress;
+    const result = await this.userService.checkEmail(email);
+    // const result = await this.userDao.checkEmail(emailAddress);
 
     return result;
   }
