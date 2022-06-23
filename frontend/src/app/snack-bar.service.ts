@@ -11,7 +11,7 @@ export class SnackBarService {
    * summons a snackbar with desirable input that closes after a specified amount of time
    * @param inputObject an object with a message: string, a button text: string, a boolean wheter it is an error snackbar and a duration after which the snackbar closes automatically
    */
-  public makeSnackbarThatClosesAutomatically(inputObject: SnackBarInput): void {
+  public showSnackbarThatClosesAutomatically(inputObject: SnackBarInput): void {
     let snackBarRef: MatSnackBarRef<any>;
     snackBarRef = this.snackBar.open(
       inputObject.message,
@@ -35,7 +35,7 @@ export class SnackBarService {
    * @param message a string that is showed on the snackbar that defines the error
    */
   public displayError(message: string): void {
-    this.makeSnackbarThatClosesAutomatically({
+    this.showSnackbarThatClosesAutomatically({
       buttonText: 'OK',
       duration: 5000,
       error: true,
@@ -48,7 +48,7 @@ export class SnackBarService {
    * @param message a string that is showed on the snackbar.
    */
   public displaySuccess(message: string): void {
-    this.makeSnackbarThatClosesAutomatically({
+    this.showSnackbarThatClosesAutomatically({
       buttonText: 'OK',
       duration: 5000,
       error: false,

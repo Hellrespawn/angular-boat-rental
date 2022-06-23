@@ -146,13 +146,13 @@ export class RegistrationComponent {
 
   // password wrong entry triggers false snackbar
   public falseEntryForm(): void {
-    this.snackBService.makeSnackbarThatClosesAutomatically(
+    this.snackBService.showSnackbarThatClosesAutomatically(
       this.falsePaswordSnackbarInput
     );
   }
 
   public succesEntryForm(): void {
-    this.snackBService.makeSnackbarThatClosesAutomatically(
+    this.snackBService.showSnackbarThatClosesAutomatically(
       this.succesSnackbarInput
     );
   }
@@ -161,7 +161,7 @@ export class RegistrationComponent {
     const item = document.getElementById('btn-18-input') as HTMLInputElement;
     const checked = item!.checked;
     if (!checked === true) {
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.wrongRadioButtonInput
       );
     }
@@ -170,7 +170,7 @@ export class RegistrationComponent {
 
   public nameTouched(): void {
     if (this.firstNameInp.nativeElement.value === '') {
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.emptyNameInput
       );
       console.log('name');
@@ -180,7 +180,7 @@ export class RegistrationComponent {
 
   public lastNameTouched(): void {
     if (this.lastNameInp.nativeElement.value === '') {
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.emptyLastNameInput
       );
       console.log('lastname');
@@ -189,7 +189,7 @@ export class RegistrationComponent {
   }
   public emailTouched(): void {
     if (this.emailAddressInp.nativeElement.value === '') {
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.emptyEmailInput
       );
       console.log('email');
@@ -199,7 +199,7 @@ export class RegistrationComponent {
 
   public knownEmail(): void {
     if (this.emailAddressInp.nativeElement.value === '') {
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.knownEmailInput
       );
       console.log('email');

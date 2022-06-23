@@ -5,14 +5,14 @@ export class SkipperService {
   private skipperDao: SkipperDao = new SkipperDao();
 
   /**
-   * returns all Skippers in the database
+   * returns all Skippers in the database via the DAO
    */
   public async returnAllSkippers(): Promise<Array<Skipper>> {
     return this.skipperDao.getSkippers();
   }
 
   /**
-   * updates the leave boolean of a skipper found by id to new value
+   * updates the leave boolean of a skipper found by id to new value via the DAO
    * @param idOfSkipper id of skipper to be updated
    * @param updatedValue updated value of leave boolean
    */
@@ -29,7 +29,7 @@ export class SkipperService {
   }
 
   /**
-   * delete skipper from database found by id
+   * delete skipper from database found by id via the DAO
    * @param idOfSkipper id of skipper to be deleted
    */
   public async deleteSkipper(idOfSkipper: number): Promise<void> {
@@ -37,7 +37,7 @@ export class SkipperService {
   }
 
   /**
-   * adds a skipper to the database
+   * adds a skipper to the database via the DAO
    * @param name name of new skipper
    * @param pricePerDay price of skipper per day
    * @param birthDate birthdate of new skipper
