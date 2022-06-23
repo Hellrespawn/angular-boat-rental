@@ -3,8 +3,7 @@ import { Router } from '@angular/router';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { UserService } from '../user.service';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
-import { MatRadioModule } from '@angular/material/radio';
-import { first, throwError } from 'rxjs';
+
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',

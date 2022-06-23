@@ -62,7 +62,7 @@ export class UserService {
   public checkEmail(emailObject: {}): Observable<Object> {
     if (HttpErrorResponse) {
       console.log('service werkt');
-      this.snackBService.makeSnackbarThatClosesAutomatically(
+      this.snackBService.showSnackbarThatClosesAutomatically(
         this.knownEmailInput
       );
     }

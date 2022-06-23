@@ -23,12 +23,6 @@ function getRequiredDateString(): string {
 }
 
 export class UserDao {
-  public async getUsersTest(): Promise<User[]> {
-    return (await UserModel.findAll()).map((user: UserModel) =>
-      User.fromModel(user)
-    );
-  }
-
   public async saveNewUser(newUser: User): Promise<void> {
     UserModel.create({
       id: newUser.id,

@@ -55,7 +55,6 @@ export class UserService {
     return this.userDao.deleteUser(idOfUser);
   }
 
-  // TODO: functie moet nog naar de DAO
   public async checkEmail(email: string): Promise<UserModel | null> {
     return this.userDao.checkEmail(email);
     // const emailAd = await UserModel.findOne({ where: { emailAddress: email } });
