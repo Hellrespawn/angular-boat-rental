@@ -22,6 +22,9 @@ export class LoginComponent {
   public email = this.loginForm.get('email')!;
   public password = this.loginForm.get('password')!;
 
+  /**
+   * Handles login attempt.
+   */
   public login(): void {
     if (this.loginForm.valid) {
       this.sessionService.login(
@@ -37,6 +40,9 @@ export class LoginComponent {
     }
   }
 
+  /**
+   * Get proper error message for e-mail input.
+   */
   public getEmailError(): string {
     const errors = this.email.errors;
 
@@ -53,6 +59,9 @@ export class LoginComponent {
     return message;
   }
 
+  /**
+   * Get proper error message for password input.
+   */
   public getPasswordError(): string {
     const errors = this.password.errors;
 

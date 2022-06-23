@@ -26,16 +26,22 @@ export class UserDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getCurrentUserType();
+    this.getSessionData();
     this.getNextRental();
   }
 
-  private getCurrentUserType(): void {
+  /**
+   * Retrieves current session data from SessionService.
+   */
+  private getSessionData(): void {
     this.sessionService
       .getSessionData()
       .subscribe((sessionData) => (this.sessionData = sessionData));
   }
 
+  /**
+   * Gets next rental
+   */
   private getNextRental(): void {
     this.rentalService.getNextRental().subscribe((rental) => {
       if (rental) {
@@ -44,14 +50,23 @@ export class UserDashboardComponent implements OnInit {
     });
   }
 
+  /**
+   * Get user name
+   */
   public getName(): string {
     return this.sessionData!.firstName;
   }
 
+  /**
+   * Gets formatted date for dateStart
+   */
   public formatDateStart(): string {
     return formatDate(this.nextRental!.dateStart);
   }
 
+  /**
+   * Gets formatted date for dateStart
+   */
   public formatDateEnd(): string {
     return formatDate(this.nextRental!.dateEnd);
   }
