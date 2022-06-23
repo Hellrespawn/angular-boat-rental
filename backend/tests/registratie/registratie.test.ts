@@ -132,7 +132,7 @@ describe('Test User-functionality in backend', () => {
     expect(userDaoAddUserSpy.callCount).to.equal(1);
   });
 
-// end to end tests
+  // end to end tests
   it('should not grant access to the /skippers endpoint when not logged in as an admin', async () => {
     await request(app).get('/users').expect(401);
   });
