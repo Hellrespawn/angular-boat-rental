@@ -1,5 +1,4 @@
 import { Table, Column, Model, AllowNull, IsEmail } from 'sequelize-typescript';
-import { Message } from '../model/message';
 export class MessageDao {
   private messageArray: MessageModel[] = [];
 

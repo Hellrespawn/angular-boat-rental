@@ -1,5 +1,3 @@
-// import { Message } from 'src/model/message';
-import { Message } from '../../src/model/message';
 import { MessageDao, MessageModel } from '../database/message.dao';
 
 export class MessageService {
@@ -12,7 +10,11 @@ export class MessageService {
     return this.messageDao.returnAllMessages();
   }
 
-  public async sendMessagesToDao(name: string, email: string, text: string) {
+  public async sendMessagesToDao(
+    name: string,
+    email: string,
+    text: string
+  ): Promise<MessageModel> {
     return this.messageDao.newMessage(name, email, text);
   }
 }

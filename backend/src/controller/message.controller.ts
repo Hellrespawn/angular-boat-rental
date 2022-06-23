@@ -1,23 +1,17 @@
 import { MessageService } from '../services/message.service';
-import { Message } from '../../src/model/message';
-
 import express from 'express';
-import { MessageDao, MessageModel } from '../database/message.dao';
+import { MessageModel } from '../database/message.dao';
 
 export class MessageController {
-  constructor(
-    private messageService: MessageService = new MessageService(),
-    private messageDao: MessageDao = new MessageDao()
-  ) {}
+  constructor(private messageService: MessageService = new MessageService()) {}
 
   //   // get messages from database
   public async getMessages(
     req: express.Request,
     res: express.Response
   ): Promise<void> {
-    // const message: MessageDao[] = await this.messageService.returnAllMessages();
     const message: MessageModel[] =
-      await this.messageService.getMessagesFromDao();
+      await this.messageService.getMessagesThroughService();
     res.json({ message });
   }
 
@@ -31,7 +25,6 @@ export class MessageController {
     const text: string = req.body.text;
     {
       try {
-        // const result = await MessageDao.create({ name, email, text });
         const result = await this.messageService.sendMessagesToDao(
           name,
           email,
