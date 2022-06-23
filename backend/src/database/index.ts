@@ -19,6 +19,12 @@ export const MODELS = [
   SessionModel,
 ];
 
+/**
+ * Initialize Sequelize with environment variables.
+ *
+ * @param options Additional options
+ * @returns Sequelize instance
+ */
 export async function initSequelize(
   options?: SequelizeOptions
 ): Promise<Sequelize> {
@@ -40,6 +46,10 @@ export async function initSequelize(
   return sequelize;
 }
 
+/**
+ * Directly connect to MySQL database
+ * @returns Connection
+ */
 async function createConnection(): Promise<Connection> {
   return mysql.createConnection({
     host: process.env.DB_HOST ?? 'localhost',
@@ -49,22 +59,26 @@ async function createConnection(): Promise<Connection> {
   });
 }
 
-export async function createDatabase(): Promise<Connection> {
+/**
+ * Create database if it doesn't already exist
+ * @returns
+ */
+export async function createDatabase(): Promise<void> {
   const connection = await createConnection();
   await connection.query(
     `CREATE DATABASE IF NOT EXISTS \`${
       process.env.DB_NAME ?? 'dogstack-het-vrolijke-avontuur'
     }\`;`
   );
-  return connection;
+  connection.destroy();
 }
 
-export async function dropDatabase(): Promise<Connection> {
+export async function dropDatabase(): Promise<void> {
   const connection = await createConnection();
   await connection.query(
     `DROP DATABASE IF EXISTS \`${
       process.env.DB_NAME ?? 'dogstack-het-vrolijke-avontuur'
     }\`;`
   );
-  return connection;
+  connection.destroy();
 }

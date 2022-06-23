@@ -49,16 +49,25 @@ export class SessionService {
     this.router.navigate(['/']);
   }
 
+  /**
+   * Reads session data from localStorage.
+   */
   private loadSessionData(): void {
     const dataString = localStorage.getItem(SessionService.storageKey);
 
     this.sessionData.next(dataString ? JSON.parse(dataString) : null);
   }
 
+  /**
+   * Saves session data to localStorage.
+   */
   private saveSessionData(data: SessionData): void {
     localStorage.setItem(SessionService.storageKey, JSON.stringify(data));
   }
 
+  /**
+   * Clears current session data.
+   */
   private clearSessionData(): void {
     this.sessionData.next(null);
     localStorage.removeItem(SessionService.storageKey);

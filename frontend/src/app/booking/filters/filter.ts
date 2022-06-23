@@ -13,5 +13,8 @@ export abstract class FilterComponent<T> {
 }
 
 export interface BookingFilter {
+  /**
+   * Returns true if `boat` passes the filter.
+   */
   apply(boat: BoatOverviewData): boolean;
 }

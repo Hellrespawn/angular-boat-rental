@@ -50,6 +50,7 @@ export class RentalService {
     return rental;
   }
 
+  /** Gets the next rental for user with id userId, if any */
   public async getNextRentalByUserId(userId: number): Promise<Rental | null> {
     const upcoming = await this.rentalDao.getUpcomingRentalsByUserId(userId);
 

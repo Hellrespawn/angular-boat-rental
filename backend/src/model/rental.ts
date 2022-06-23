@@ -17,6 +17,15 @@ export class Rental {
     public readonly skipper?: Skipper
   ) {}
 
+  /**
+   * Create new Rental from boat, user and dates
+   *
+   * @param boat
+   * @param user
+   * @param dateStart
+   * @param dateEnd
+   * @returns rental
+   */
   public static async create(
     boat: Boat,
     user: User,
@@ -45,6 +54,12 @@ export class Rental {
     return new Rental(-1, boat, user, dateStart, dateEnd, false);
   }
 
+  /**
+   * Create new rental from RentalModel
+   *
+   * @param model
+   * @returns rental
+   */
   public static fromModel(model: RentalModel): Rental {
     return new Rental(
       model.id,

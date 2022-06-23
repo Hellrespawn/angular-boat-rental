@@ -99,6 +99,9 @@ export class BookingService {
     this.updateBoats();
   }
 
+  /**
+   * Returns an Observable with all boats that pass the filters.
+   */
   public getBoats(): Observable<BoatOverviewData[]> {
     return combineLatest([
       this.boats,
@@ -166,6 +169,9 @@ export class BookingService {
     });
   }
 
+  /**
+   * Applies all filters to this.boats.
+   */
   private filterBoats(
     boats: BoatOverviewData[],
     license: LicenseFilterState,

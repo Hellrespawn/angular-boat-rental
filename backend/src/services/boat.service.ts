@@ -45,6 +45,9 @@ export class BoatService {
     };
   }
 
+  /**
+   * Get Boat by id
+   */
   public async getById(id: number): Promise<Boat | null> {
     return this.boatDao.getById(id);
   }
