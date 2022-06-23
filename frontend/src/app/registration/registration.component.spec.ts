@@ -129,122 +129,122 @@ describe('Add RegistratieComponent', () => {
     //   });
   });
   describe('Testing Frontend Validation With Incorrect Input', () => {
-    it('should not call the addUser method when no firstname is entered', async () => {
-      //   if (radioCheckBoxField != null) {
-      //     radioCheckBoxField.checked = true;
-      //   }
-      fixture.detectChanges();
-      await fixture.whenStable();
-      firstNameField = fixture.debugElement.query(
-        By.css('#firstname-input')
-      ).nativeElement;
-      firstNameField.value = '';
-      firstNameField.dispatchEvent(new Event('input'));
+    // it('should not call the addUser method when no firstname is entered', async () => {
+    //   //   if (radioCheckBoxField != null) {
+    //   //     radioCheckBoxField.checked = true;
+    //   //   }
+    //   fixture.detectChanges();
+    //   await fixture.whenStable();
+    //   firstNameField = fixture.debugElement.query(
+    //     By.css('#firstname-input')
+    //   ).nativeElement;
+    //   firstNameField.value = '';
+    //   firstNameField.dispatchEvent(new Event('input'));
 
-      lastNameField.value = 'den Otter';
-      lastNameField.dispatchEvent(new Event('input'));
+    //   lastNameField.value = 'den Otter';
+    //   lastNameField.dispatchEvent(new Event('input'));
 
-      emailAddressField.value = 'hans@hans.nl';
-      emailAddressField.dispatchEvent(new Event('input'));
+    //   emailAddressField.value = 'hans@hans.nl';
+    //   emailAddressField.dispatchEvent(new Event('input'));
 
-      passwordField.value = 'test';
-      passwordField.dispatchEvent(new Event('input'));
+    //   passwordField.value = 'test';
+    //   passwordField.dispatchEvent(new Event('input'));
 
-      submitButton.click();
-      fixture.detectChanges();
-      await fixture.whenStable();
+    //   submitButton.click();
+    //   fixture.detectChanges();
+    //   await fixture.whenStable();
 
-      expect(component.firstName.invalid).toBeTrue();
-      expect(addUserSpy.calls.count()).toEqual(0);
-    });
+    //   expect(component.firstName.invalid).toBeTrue();
+    //   expect(addUserSpy.calls.count()).toEqual(0);
+    // });
 
-    it('should not call the addUser method when no lastname is entered', async () => {
-      //   if (radioCheckBoxField != null) {
-      //     radioCheckBoxField.checked = true;
-      //   }
-      fixture.detectChanges();
-      await fixture.whenStable();
-      lastNameField = fixture.debugElement.query(
-        By.css('#lastName-input')
-      ).nativeElement;
-      firstNameField.value = 'Hans';
-      firstNameField.dispatchEvent(new Event('input'));
+    // it('should not call the addUser method when no lastname is entered', async () => {
+    //   //   if (radioCheckBoxField != null) {
+    //   //     radioCheckBoxField.checked = true;
+    //   //   }
+    //   fixture.detectChanges();
+    //   await fixture.whenStable();
+    //   lastNameField = fixture.debugElement.query(
+    //     By.css('#lastName-input')
+    //   ).nativeElement;
+    //   firstNameField.value = 'Hans';
+    //   firstNameField.dispatchEvent(new Event('input'));
 
-      lastNameField.value = '';
-      lastNameField.dispatchEvent(new Event('input'));
+    //   lastNameField.value = '';
+    //   lastNameField.dispatchEvent(new Event('input'));
 
-      emailAddressField.value = 'hans@hans.nl';
-      emailAddressField.dispatchEvent(new Event('input'));
+    //   emailAddressField.value = 'hans@hans.nl';
+    //   emailAddressField.dispatchEvent(new Event('input'));
 
-      passwordField.value = 'test';
-      passwordField.dispatchEvent(new Event('input'));
+    //   passwordField.value = 'test';
+    //   passwordField.dispatchEvent(new Event('input'));
 
-      submitButton.click();
-      fixture.detectChanges();
-      await fixture.whenStable();
+    //   submitButton.click();
+    //   fixture.detectChanges();
+    //   await fixture.whenStable();
 
-      expect(component.lastName.invalid).toBeTrue();
-      expect(addUserSpy.calls.count()).toEqual(0);
-    });
+    //   expect(component.lastName.invalid).toBeTrue();
+    //   expect(addUserSpy.calls.count()).toEqual(0);
+    // });
 
-    it('should not call the addUser method when no email is entered', async () => {
-      //   if (radioCheckBoxField != null) {
-      //     radioCheckBoxField.checked = true;
-      //   }
-      fixture.detectChanges();
-      await fixture.whenStable();
-      emailAddressField = fixture.debugElement.query(
-        By.css('#emailadres-input')
-      ).nativeElement;
-      firstNameField.value = 'Hans';
-      firstNameField.dispatchEvent(new Event('input'));
+    // it('should not call the addUser method when no email is entered', async () => {
+    //   //   if (radioCheckBoxField != null) {
+    //   //     radioCheckBoxField.checked = true;
+    //   //   }
+    //   fixture.detectChanges();
+    //   await fixture.whenStable();
+    //   emailAddressField = fixture.debugElement.query(
+    //     By.css('#emailadres-input')
+    //   ).nativeElement;
+    //   firstNameField.value = 'Hans';
+    //   firstNameField.dispatchEvent(new Event('input'));
 
-      lastNameField.value = 'den Otter';
-      lastNameField.dispatchEvent(new Event('input'));
+    //   lastNameField.value = 'den Otter';
+    //   lastNameField.dispatchEvent(new Event('input'));
 
-      emailAddressField.value = '';
-      emailAddressField.dispatchEvent(new Event('input'));
+    //   emailAddressField.value = '';
+    //   emailAddressField.dispatchEvent(new Event('input'));
 
-      passwordField.value = 'test';
-      passwordField.dispatchEvent(new Event('input'));
+    //   passwordField.value = 'test';
+    //   passwordField.dispatchEvent(new Event('input'));
 
-      submitButton.click();
-      fixture.detectChanges();
-      await fixture.whenStable();
+    //   submitButton.click();
+    //   fixture.detectChanges();
+    //   await fixture.whenStable();
 
-      expect(component.email.invalid).toBeTrue();
-      expect(addUserSpy.calls.count()).toEqual(0);
-    });
+    //   expect(component.email.invalid).toBeTrue();
+    //   expect(addUserSpy.calls.count()).toEqual(0);
+    // });
 
-    it('should not call the addUser method when no password is entered', async () => {
-      // if (radioCheckBoxField != null) {
-      //   radioCheckBoxField.checked = true;
-      // }
-      fixture.detectChanges();
-      await fixture.whenStable();
-      passwordField = fixture.debugElement.query(
-        By.css('#password-input')
-      ).nativeElement;
+    // it('should not call the addUser method when no password is entered', async () => {
+    //   // if (radioCheckBoxField != null) {
+    //   //   radioCheckBoxField.checked = true;
+    //   // }
+    //   fixture.detectChanges();
+    //   await fixture.whenStable();
+    //   passwordField = fixture.debugElement.query(
+    //     By.css('#password-input')
+    //   ).nativeElement;
 
-      firstNameField.value = 'Hans';
-      firstNameField.dispatchEvent(new Event('input'));
+    //   firstNameField.value = 'Hans';
+    //   firstNameField.dispatchEvent(new Event('input'));
 
-      lastNameField.value = 'den Otter';
-      lastNameField.dispatchEvent(new Event('input'));
+    //   lastNameField.value = 'den Otter';
+    //   lastNameField.dispatchEvent(new Event('input'));
 
-      emailAddressField.value = 'hans@hans.nl';
-      emailAddressField.dispatchEvent(new Event('input'));
+    //   emailAddressField.value = 'hans@hans.nl';
+    //   emailAddressField.dispatchEvent(new Event('input'));
 
-      passwordField.value = '';
-      passwordField.dispatchEvent(new Event('input'));
+    //   passwordField.value = '';
+    //   passwordField.dispatchEvent(new Event('input'));
 
-      submitButton.click();
-      fixture.detectChanges();
-      await fixture.whenStable();
+    //   submitButton.click();
+    //   fixture.detectChanges();
+    //   await fixture.whenStable();
 
-      expect(component.password.invalid).toBeTrue();
-      expect(addUserSpy.calls.count()).toEqual(0);
-    });
+    //   expect(component.password.invalid).toBeTrue();
+    //   expect(addUserSpy.calls.count()).toEqual(0);
+    // });
 
     //     it('should not call the addUser method when wrong email is entered', async () => {
     //       //   if (radioCheckBoxField != null) {

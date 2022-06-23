@@ -65,7 +65,7 @@ export class RegistrationComponent {
   public firstName = new FormControl(null, [Validators.required]);
   public lastName = new FormControl(null, [Validators.required]);
   public email = new FormControl(null, [Validators.required, Validators.email]);
-  public password = new FormControl('password', [Validators.required]);
+  public password = new FormControl(null, [Validators.required]);
   public radioCheckBox = new FormControl(null, [Validators.required]);
 
   public firstNameErrorMessage(): string {
