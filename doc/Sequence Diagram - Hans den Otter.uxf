@@ -32,4 +32,5 @@ lt=&lt;-</panel_attributes><additional_attributes>10;20;110;20</additional_attri
 lt=&lt;-
 </panel_attributes><additional_attributes>10;50;70;50;70;10;20;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>499</x><y>474</y><w>20</w><h>60</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>499</x><y>504</y><w>150</w><h>70</h></coordinates><panel_attributes>Promise&lt;string&gt;
 lt=&lt;-
-</panel_attributes><additional_attributes>10;50;40;50;40;10;20;10</additional_attributes></element></diagram>
+</panel_attributes><additional_attributes>10;50;40;50;40;10;20;10</additional_attributes></element><element><id>Relation</id><coordinates><x>329</x><y>734</y><w>380</w><h>30</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;360;10</additional_attributes></element><element><id>Relation</id><coordinates><x>139</x><y>734</y><w>200</w><h>30</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;180;10</additional_attributes></element><element><id>Relation</id><coordinates><x>9</x><y>724</y><w>140</w><h>40</h></coordinates><panel_attributes>status 200
+lt=&lt;-</panel_attributes><additional_attributes>10;20;120;20</additional_attributes></element></diagram>
