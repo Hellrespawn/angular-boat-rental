@@ -6,7 +6,6 @@ import { Rental } from './rental';
 import { SessionDao } from '../database/session.dao';
 import { Session } from './session';
 
-// Private properties kunnen niet gestubt worden.
 export class User {
   private constructor(
     public readonly id: number,
