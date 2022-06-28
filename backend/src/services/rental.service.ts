@@ -6,11 +6,23 @@ import { UserService } from './user.service';
 import { Rental } from '../model/rental';
 
 export class RentalService {
-  private boatService = new BoatService();
+  private static instance: RentalService;
 
-  private userService = new UserService();
+  private constructor(
+    private boatService = BoatService.getInstance(),
+    private userService = UserService.getInstance(),
+    private rentalDao = RentalDao.getInstance()
+  ) {
+    // Intentionally left blank
+  }
 
-  private rentalDao = new RentalDao();
+  public static getInstance(): RentalService {
+    if (!this.instance) {
+      this.instance = new RentalService();
+    }
+
+    return this.instance;
+  }
 
   /**
    * Creates a new rental

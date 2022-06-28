@@ -11,6 +11,20 @@ import { Session } from '../model/session';
 import { UserModel } from './user.dao';
 
 export class SessionDao {
+  private static instance: SessionDao;
+
+  private constructor() {
+    // Intentionally left blank
+  }
+
+  public static getInstance(): SessionDao {
+    if (!this.instance) {
+      this.instance = new SessionDao();
+    }
+
+    return this.instance;
+  }
+
   /**
    * @returns all sessions.
    */

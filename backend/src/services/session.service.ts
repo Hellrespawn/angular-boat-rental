@@ -12,13 +12,26 @@ export type SessionData = {
 };
 
 export class SessionService {
-  private userService: UserService = new UserService();
+  private static instance: SessionService;
 
-  private sessionDao: SessionDao = new SessionDao();
+  public static MaxSessionAge = 14;
 
   private cache: Cache<Session> = new Cache();
 
-  public static MaxSessionAge = 14;
+  private constructor(
+    private userService = UserService.getInstance(),
+    private sessionDao = SessionDao.getInstance()
+  ) {
+    // Intentionally left blank
+  }
+
+  public static getInstance(): SessionService {
+    if (!this.instance) {
+      this.instance = new SessionService();
+    }
+
+    return this.instance;
+  }
 
   /**
    * Checks user existence and password and, if applicable , creates a session

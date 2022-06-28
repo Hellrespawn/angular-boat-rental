@@ -116,7 +116,7 @@ export abstract class Boat {
    * @returns array of rentals
    */
   public async getRentals(): Promise<Rental[]> {
-    return await new RentalDao().getRentalsByBoatId(this.id);
+    return await RentalDao.getInstance().getRentalsByBoatId(this.id);
   }
 
   /**

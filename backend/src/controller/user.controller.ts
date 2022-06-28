@@ -3,14 +3,23 @@ import express from 'express';
 import { RentalService } from '../services/rental.service';
 import { ServerError } from '../util/error';
 import { User } from '../model/user';
-import { UserDao, UserModel } from '../database/user.dao';
+import { UserModel } from '../database/user.dao';
 
 export class UserController {
-  constructor(
-    private userService: UserService = new UserService(),
-    private userDao: UserDao = new UserDao(),
+  private static instance: UserController;
+
+  private constructor(
+    private userService = new UserService(),
     private rentalService = new RentalService()
   ) {}
+
+  public static getInstance(): UserController {
+    if (!this.instance) {
+      this.instance = new UserController();
+    }
+
+    return this.instance;
+  }
 
   /**gets all Users from the database through the service
    * @param res the response sent back to the client

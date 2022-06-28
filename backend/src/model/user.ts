@@ -1,7 +1,6 @@
 import * as argon2 from 'argon2';
 import { UserModel } from '../database/user.dao';
 import { RentalDao } from '../database/rental.dao';
-import { FineModel } from '../database/fine.dao';
 import { Rental } from './rental';
 import { SessionDao } from '../database/session.dao';
 import { Session } from './session';
@@ -16,8 +15,7 @@ export class User {
     public readonly emailAddress: string,
     public readonly password: string,
     public blocked: boolean,
-    public readonly admin: boolean,
-    private arrayOfFines: FineModel[]
+    public readonly admin: boolean
   ) {}
 
   /**
@@ -32,8 +30,7 @@ export class User {
       model.emailAddress,
       model.password,
       model.blocked,
-      model.admin,
-      model.arrayOfFines
+      model.admin
     );
   }
 
@@ -57,8 +54,7 @@ export class User {
       emailAddress,
       await User.hashPassword(plaintextPassword),
       blocked,
-      admin,
-      []
+      admin
     );
   }
 
@@ -80,13 +76,13 @@ export class User {
    * Gets rental associated with user.
    */
   public async getRentals(): Promise<Rental[]> {
-    return await new RentalDao().getRentalsByUserId(this.id);
+    return await RentalDao.getInstance().getRentalsByUserId(this.id);
   }
 
   /**
    * Gets sessions associated with user.
    */
   public async getSessions(): Promise<Session[]> {
-    return await new SessionDao().getSessionsByUserId(this.id);
+    return await SessionDao.getInstance().getSessionsByUserId(this.id);
   }
 }

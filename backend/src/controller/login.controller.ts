@@ -24,7 +24,17 @@ export const LOGIN_SCHEMA: JSONSchemaType<LoginData> = {
 };
 
 export class LoginController {
-  private sessionService: SessionService = new SessionService();
+  private static instance: LoginController;
+
+  private constructor(private sessionService = new SessionService()) {}
+
+  public static getInstance(): LoginController {
+    if (!this.instance) {
+      this.instance = new LoginController();
+    }
+
+    return this.instance;
+  }
 
   /**
    * Handles login requests.

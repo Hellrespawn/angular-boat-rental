@@ -2,7 +2,17 @@ import { Request, Response } from 'express';
 import { ImageService } from '../services/image.service';
 
 export class ImageController {
-  constructor(private imageService: ImageService = new ImageService()) {}
+  private static instance: ImageController;
+
+  private constructor(private imageService = new ImageService()) {}
+
+  public static getInstance(): ImageController {
+    if (!this.instance) {
+      this.instance = new ImageController();
+    }
+
+    return this.instance;
+  }
 
   /**
    * Returns buffer with image from request.

@@ -9,11 +9,24 @@ import {
 } from 'sequelize-typescript';
 import { UserModel } from './user.dao';
 import { BoatModel } from './boat.dao';
-import { SkipperModel } from './skipper.dao';
 import { Op } from 'sequelize';
 import { Rental } from '../model/rental';
 
 export class RentalDao {
+  private static instance: RentalDao;
+
+  private constructor() {
+    // Intentionally left blank
+  }
+
+  public static getInstance(): RentalDao {
+    if (!this.instance) {
+      this.instance = new RentalDao();
+    }
+
+    return this.instance;
+  }
+
   /**
    * Gets all rentals associated with boatId
    *
@@ -23,7 +36,7 @@ export class RentalDao {
   public async getRentalsByBoatId(boatId: number): Promise<Rental[]> {
     const models = await RentalModel.findAll({
       where: { boatId },
-      include: [BoatModel, SkipperModel, UserModel],
+      include: [BoatModel, UserModel],
     });
     return models.map(Rental.fromModel);
   }
@@ -37,7 +50,7 @@ export class RentalDao {
   public async getRentalsByUserId(userId: number): Promise<Rental[]> {
     const models = await RentalModel.findAll({
       where: { userId },
-      include: [BoatModel, SkipperModel, UserModel],
+      include: [BoatModel, UserModel],
     });
     return models.map(Rental.fromModel);
   }
@@ -52,7 +65,7 @@ export class RentalDao {
     const now = new Date();
 
     const models = await RentalModel.findAll({
-      include: [BoatModel, SkipperModel, UserModel],
+      include: [BoatModel, UserModel],
       where: {
         userId,
         [Op.or]: [
@@ -80,7 +93,6 @@ export class RentalDao {
     const model = await RentalModel.create({
       boatId: rental.boat.id,
       userId: rental.user.id,
-      skipperId: rental.skipper?.id,
       dateStart: rental.dateStart,
       dateEnd: rental.dateEnd,
       paid: rental.paid,
@@ -107,13 +119,6 @@ export class RentalModel extends Model {
 
   @BelongsTo(() => UserModel)
   public readonly user!: UserModel;
-
-  @ForeignKey(() => SkipperModel)
-  @Column
-  public readonly skipperId?: number;
-
-  @BelongsTo(() => SkipperModel)
-  public readonly skipper?: SkipperModel;
 
   @AllowNull(false)
   @Column

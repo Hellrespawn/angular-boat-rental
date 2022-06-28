@@ -8,21 +8,22 @@ import {
 } from 'sequelize-typescript';
 import { User } from '../model/user';
 import { RentalModel } from './rental.dao';
-import { FineModel } from './fine.dao';
-
-const REQUIRED_AGE_IN_YEARS = 18;
-
-function getRequiredDateString(): string {
-  const date = new Date();
-  const year = (date.getFullYear() - REQUIRED_AGE_IN_YEARS)
-    .toString()
-    .padStart(4, '0');
-  const month = date.getMonth.toString().padStart(2, '0');
-  const day = date.getDate.toString().padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
 
 export class UserDao {
+  private static instance: UserDao;
+
+  private constructor() {
+    // Intentionally left blank
+  }
+
+  public static getInstance(): UserDao {
+    if (!this.instance) {
+      this.instance = new UserDao();
+    }
+
+    return this.instance;
+  }
+
   public async saveNewUser(newUser: User): Promise<void> {
     UserModel.create({
       id: newUser.id,
@@ -61,11 +62,7 @@ export class UserDao {
    * @returns an array of instances of User
    */
   public async getUsers(): Promise<User[]> {
-    return (
-      await UserModel.findAll({
-        include: [FineModel],
-      })
-    ).map((userModel) => {
+    return (await UserModel.findAll()).map((userModel) => {
       return User.fromModel(userModel);
     });
   }
@@ -161,7 +158,4 @@ export class UserModel extends Model {
 
   @HasMany(() => RentalModel)
   public rentals!: RentalModel[];
-
-  @HasMany(() => FineModel)
-  public arrayOfFines!: FineModel[];
 }

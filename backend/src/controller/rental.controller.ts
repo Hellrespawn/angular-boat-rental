@@ -35,7 +35,17 @@ export const NEW_RENTAL_SCHEMA: JSONSchemaType<NewRentalData> = {
 };
 
 export class RentalController {
-  constructor(private rentalService: RentalService = new RentalService()) {}
+  private static instance: RentalController;
+
+  private constructor(private rentalService = new RentalService()) {}
+
+  public static getInstance(): RentalController {
+    if (!this.instance) {
+      this.instance = new RentalController();
+    }
+
+    return this.instance;
+  }
 
   /**
    * Adds a new rental to the database.

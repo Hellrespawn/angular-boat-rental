@@ -1,7 +1,6 @@
 import { RentalModel } from '../database/rental.dao';
 import { ServerError } from '../util/error';
 import { Boat } from './boat';
-import { Skipper } from './skipper';
 import { User } from './user';
 
 export class Rental {
@@ -13,8 +12,7 @@ export class Rental {
     public readonly user: User,
     public readonly dateStart: Date,
     public readonly dateEnd: Date,
-    public readonly paid: boolean,
-    public readonly skipper?: Skipper
+    public readonly paid: boolean
   ) {}
 
   /**
@@ -67,8 +65,7 @@ export class Rental {
       User.fromModel(model.user),
       model.dateStart,
       model.dateEnd,
-      model.paid,
-      model.skipper ? Skipper.fromModel(model.skipper) : undefined
+      model.paid
     );
   }
 

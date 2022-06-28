@@ -3,7 +3,19 @@ import { User } from '../model/user';
 import { ServerError } from '../util/error';
 
 export class UserService {
-  private userDao: UserDao = new UserDao();
+  private static instance: UserService;
+
+  private constructor(private userDao = UserDao.getInstance()) {
+    // Intentionally left blank
+  }
+
+  public static getInstance(): UserService {
+    if (!this.instance) {
+      this.instance = new UserService();
+    }
+
+    return this.instance;
+  }
 
   /**
    * Attempts to get a user identified by email

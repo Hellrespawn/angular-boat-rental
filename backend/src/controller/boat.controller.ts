@@ -61,11 +61,22 @@ export const NEW_BOAT_SCHEMA: JSONSchemaType<NewBoatData> = {
   ],
   additionalProperties: true, //needs to accept either maxSpeed or sailInSquareMeter
 };
+
 export class BoatController {
+  private static instance: BoatController;
+
   // YYYY-MM-DD
   private static dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-  constructor(private boatService: BoatService = new BoatService()) {}
+  private constructor(private boatService = new BoatService()) {}
+
+  public static getInstance(): BoatController {
+    if (!this.instance) {
+      this.instance = new BoatController();
+    }
+
+    return this.instance;
+  }
 
   /**
    * Check that dateString matches dateRegex and return it as a Date object.

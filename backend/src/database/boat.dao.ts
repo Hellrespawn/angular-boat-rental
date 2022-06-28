@@ -18,6 +18,20 @@ export type BoatRequirements = 'none' | 'license' | 'skipper';
 const BOAT_TYPES = ['sail', 'motor'];
 
 export class BoatDao {
+  private static instance: BoatDao;
+
+  private constructor() {
+    // Intentionally left blank
+  }
+
+  public static getInstance(): BoatDao {
+    if (!this.instance) {
+      this.instance = new BoatDao();
+    }
+
+    return this.instance;
+  }
+
   /**
    * gets all BoatModels from the database and returns them as Boat instances
    * @returns all boatModels

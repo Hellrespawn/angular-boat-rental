@@ -4,6 +4,20 @@ import * as path from 'path';
 const MEDIA_FOLDER = path.join(__dirname, '..', '..', 'media');
 
 export class ImageService {
+  private static instance: ImageService;
+
+  private constructor() {
+    // Intentionally left blank
+  }
+
+  public static getInstance(): ImageService {
+    if (!this.instance) {
+      this.instance = new ImageService();
+    }
+
+    return this.instance;
+  }
+
   /**
    * Delete image from disk.
    * @param name

@@ -25,7 +25,19 @@ export type BoatDetailData = BoatOverviewData & {
 };
 
 export class BoatService {
-  private boatDao: BoatDao = new BoatDao();
+  private static instance: BoatService;
+
+  private constructor(private boatDao = BoatDao.getInstance()) {
+    // Intentionally left blank
+  }
+
+  public static getInstance(): BoatService {
+    if (!this.instance) {
+      this.instance = new BoatService();
+    }
+
+    return this.instance;
+  }
 
   /**
    * Converts a Boat into BoatOverviewData.
