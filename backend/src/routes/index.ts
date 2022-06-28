@@ -10,7 +10,7 @@ export interface Route {
   router: Router;
 }
 
-export const ROUTES = [
+export const ROUTERS = [
   { prefix: '/boats', router: getBoatRouter() },
   { prefix: '/rentals', router: getRentalRouter() },
   { prefix: '/images', router: getImageRouter() },

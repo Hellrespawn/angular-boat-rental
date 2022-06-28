@@ -7,7 +7,7 @@ import express, { Application } from 'express';
 import cookieParser from 'cookie-parser';
 
 import { initSequelize } from './database';
-import { ROUTES } from './routes';
+import { ROUTERS } from './routes';
 import { addCorsHeaders } from './middleware/cors';
 import { authenticator } from './middleware/auth';
 import { getEnvVar } from './util/env';
@@ -29,7 +29,7 @@ app.use(authenticator);
 app.use('/images', express.static(path.join(__dirname, '..', 'media')));
 
 // Routes
-ROUTES.forEach(({ prefix, router }) => app.use(prefix, router));
+ROUTERS.forEach(({ prefix, router }) => app.use(prefix, router));
 
 export let server: Server;
 

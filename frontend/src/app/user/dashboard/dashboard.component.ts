@@ -7,8 +7,8 @@ import { SessionService } from '../../session.service';
 import { DashboardService } from '../dashboard.service';
 
 @addToNavBar({
-  name: 'Klantenpaneel',
-  route: '/gebruiker/dashboard',
+  name: 'User Dashboard',
+  route: '/user/dashboard',
   userTypes: ['user', 'admin'],
 })
 @Component({

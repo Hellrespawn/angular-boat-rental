@@ -19,10 +19,10 @@ export class BoatService {
   ): string {
     switch (item.requirements) {
       case 'none':
-        return 'Zelf varen';
+        return 'No license';
 
       case 'license':
-        return 'Vaarbewijs vereist';
+        return 'License required';
 
       default:
         throw `Invalid boat.requirements: ${item.requirements}`;

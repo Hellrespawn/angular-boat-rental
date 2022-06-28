@@ -23,10 +23,10 @@ export class ServerError extends Error {
    * @param res
    */
   public static respond(error: unknown, res: Response): void {
-    if (error instanceof ServerError) {
-      res.status(error.errorType).json({ error: error.message });
-    } else {
-      res.status(500).json({ error });
-    }
+    const status = error instanceof ServerError ? error.errorType : 500;
+
+    const response = { error: error instanceof Error ? error.message : error };
+
+    res.status(status).json(response);
   }
 }

@@ -21,10 +21,10 @@
         ><mat-icon>directions_boat</mat-icon>{{ requirementsToString() }}</span
       >
       <span class="icon"
-        ><mat-icon>bed</mat-icon>Maximaal {{ boat.maxOccupants }} personen</span
+        ><mat-icon>bed</mat-icon>Max. {{ boat.maxOccupants }} passengers</span
       >
       <span class="icon"
-        ><mat-icon>euro</mat-icon>{{ boat.pricePerDay }} per dag</span
+        ><mat-icon>euro</mat-icon>{{ boat.pricePerDay }} per day</span
       >
     </div>
 
@@ -40,4 +40,3 @@
 <div *ngIf="!boat">
   <mat-spinner></mat-spinner>
 </div>
-<!-- <pre>{{ boat | json }}</pre> -->
