@@ -1,19 +1,12 @@
-import {
-  AllowNull,
-  BelongsTo,
-  Column,
-  ForeignKey,
-  Model,
-  Table,
-  Default,
-} from 'sequelize-typescript';
-import { UserModel } from './user.dao';
-import { BoatModel } from './boat.dao';
 import { Op } from 'sequelize';
+
+import { UserModel } from './user.model';
+import { BoatModel } from './boat.model';
 import { Rental } from '../model/rental';
+import { RentalModel } from './rental.model';
 
 export class RentalDao {
-  private static instance: RentalDao;
+  private static instance?: RentalDao;
 
   private constructor() {
     // Intentionally left blank
@@ -38,7 +31,8 @@ export class RentalDao {
       where: { boatId },
       include: [BoatModel, UserModel],
     });
-    return models.map(Rental.fromModel);
+
+    return models.map((model) => Rental.fromModel(model));
   }
 
   /**
@@ -52,7 +46,7 @@ export class RentalDao {
       where: { userId },
       include: [BoatModel, UserModel],
     });
-    return models.map(Rental.fromModel);
+    return models.map((model) => Rental.fromModel(model));
   }
 
   /**
@@ -81,7 +75,7 @@ export class RentalDao {
       order: [['dateStart', 'ASC']],
     });
 
-    return models.map(Rental.fromModel);
+    return models.map((model) => Rental.fromModel(model));
   }
 
   /**
@@ -98,37 +92,6 @@ export class RentalDao {
       paid: rental.paid,
     });
 
-    return model.id;
+    return model.id as number;
   }
-}
-
-@Table
-export class RentalModel extends Model {
-  @ForeignKey(() => BoatModel)
-  @AllowNull(false)
-  @Column
-  public readonly boatId!: number;
-
-  @BelongsTo(() => BoatModel)
-  public readonly boat!: BoatModel;
-
-  @ForeignKey(() => UserModel)
-  @AllowNull(false)
-  @Column
-  public readonly userId!: number;
-
-  @BelongsTo(() => UserModel)
-  public readonly user!: UserModel;
-
-  @AllowNull(false)
-  @Column
-  public readonly dateStart!: Date;
-
-  @AllowNull(false)
-  @Column
-  public readonly dateEnd!: Date;
-
-  @Default(false)
-  @Column
-  public paid!: boolean;
 }

@@ -8,19 +8,16 @@ import { Validator } from '../util/validator';
 
 const newRentalValidator = new Validator(NEW_RENTAL_SCHEMA);
 
-export function rentalRoutes(controller: RentalController): Router {
+export function getRentalRouter(): Router {
+  const rentalController = RentalController.getInstance();
   const router = Router();
 
   router.post(
     '/',
     requireAuthentication,
     newRentalValidator.middleware(),
-    controller.addRental.bind(controller)
+    rentalController.addRental.bind(rentalController)
   );
-
-  router.get('/upcoming');
-  router.get('/current');
-  router.get('/past');
 
   return router;
 }

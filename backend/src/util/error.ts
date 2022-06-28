@@ -22,7 +22,7 @@ export class ServerError extends Error {
    * @param error
    * @param res
    */
-  public static async respond(error: unknown, res: Response): Promise<void> {
+  public static respond(error: unknown, res: Response): void {
     if (error instanceof ServerError) {
       res.status(error.errorType).json({ error: error.message });
     } else {

@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import { type Request, type Response } from 'express';
 import { ImageService } from '../services/image.service';
 
 export class ImageController {
-  private static instance: ImageController;
+  private static instance?: ImageController;
 
-  private constructor(private imageService = new ImageService()) {}
+  private constructor(private imageService = ImageService.getInstance()) {}
 
   public static getInstance(): ImageController {
     if (!this.instance) {
@@ -15,13 +15,46 @@ export class ImageController {
   }
 
   /**
+   * Saves image to disk and responds with the route.
+   *
+   * @param req
+   * @param res
+   */
+  public async save(req: Request, res: Response): Promise<void> {
+    const buffer = await this.bufferImage(req);
+    const { name } = req.params;
+
+    if (await this.imageService.save(buffer, name)) {
+      res.json({ route: `/images/${name}` });
+    } else {
+      res.status(400).json({ error: 'File exists!' });
+    }
+  }
+
+  /**
+   * Deletes an image from disk and responds with the former route.
+   *
+   * @param req
+   * @param res
+   */
+  public async delete(req: Request, res: Response): Promise<void> {
+    const { name } = req.params;
+
+    if (await this.imageService.delete(name)) {
+      res.json({ deleted: `/images/${name}` });
+    } else {
+      res.status(404).end();
+    }
+  }
+
+  /**
    * Returns buffer with image from request.
    *
    * @param req
    *
    * TODO No security at this point, will take any file of any size.
    */
-  private async bufferImage(req: Request): Promise<Buffer> {
+  private bufferImage(req: Request): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       const chunks: Buffer[] = [];
 
@@ -36,38 +69,5 @@ export class ImageController {
 
       req.on('error', reject);
     });
-  }
-
-  /**
-   * Saves image to disk and responds with the route.
-   *
-   * @param req
-   * @param res
-   */
-  public async saveImage(req: Request, res: Response): Promise<void> {
-    const buffer = await this.bufferImage(req);
-    const name = req.params.name;
-
-    if (await this.imageService.saveImage(buffer, name)) {
-      res.json({ route: `/images/${name}` });
-    } else {
-      res.status(400).json({ error: 'File exists!' });
-    }
-  }
-
-  /**
-   * Deletes an image from disk and responds with the former route.
-   *
-   * @param req
-   * @param res
-   */
-  public async deleteImage(req: Request, res: Response): Promise<void> {
-    const name = req.params.name;
-
-    if (await this.imageService.deleteImage(name)) {
-      res.json({ deleted: `/images/${name}` });
-    } else {
-      res.status(404).end();
-    }
   }
 }

@@ -1,10 +1,10 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import mysql, { Connection } from 'mysql2/promise';
 
-import { BoatModel } from './boat.dao';
-import { RentalModel } from './rental.dao';
-import { SessionModel } from './session.dao';
-import { UserModel } from './user.dao';
+import { BoatModel } from './boat.model';
+import { RentalModel } from './rental.model';
+import { SessionModel } from './session.model';
+import { UserModel } from './user.model';
 import { getEnvVar } from '../util/env';
 
 export const MODELS = [BoatModel, UserModel, RentalModel, SessionModel];
@@ -15,15 +15,13 @@ export const MODELS = [BoatModel, UserModel, RentalModel, SessionModel];
  * @param options Additional options
  * @returns Sequelize instance
  */
-export async function initSequelize(
-  options?: SequelizeOptions
-): Promise<Sequelize> {
+export function initSequelize(options?: SequelizeOptions): Sequelize {
   const { DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = getEnvVar();
 
   const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
     dialect: 'mysql',
     host: DB_HOST,
-    port: +DB_PORT,
+    port: parseInt(DB_PORT),
     omitNull: true,
     ...options,
   });
@@ -37,11 +35,11 @@ export async function initSequelize(
  * Directly connect to MySQL database
  * @returns Connection
  */
-async function createConnection(): Promise<Connection> {
+function createConnection(): Promise<Connection> {
   const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = getEnvVar();
   return mysql.createConnection({
     host: DB_HOST,
-    port: +DB_PORT,
+    port: parseInt(DB_PORT),
     user: DB_USER,
     password: DB_PASSWORD,
   });

@@ -3,8 +3,8 @@ import { createDatabase, initSequelize } from '../database';
 
 async function sync(): Promise<void> {
   try {
-    const sequelize = await initSequelize();
     await createDatabase();
+    const sequelize = initSequelize();
     await sequelize.sync({ force: true });
   } catch (error) {
     console.error(error);
@@ -13,4 +13,4 @@ async function sync(): Promise<void> {
   process.exit();
 }
 
-sync();
+void sync();

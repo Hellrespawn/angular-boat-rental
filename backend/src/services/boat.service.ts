@@ -1,18 +1,19 @@
 import { Boat } from '../model/boat';
-import { BoatDao, BoatRequirements, BoatType } from '../database/boat.dao';
+import { BoatDao } from '../database/boat.dao';
 import { ServerError } from '../util/error';
+import { BoatRequirements, BoatType } from '../database/boat.model';
 
 /**
  * type which is required by the boat rental overview page
  */
-export type BoatOverviewData = {
+export interface BoatOverviewData {
   id: number;
   imageRoute: string;
   name: string;
   requirements: BoatRequirements;
   boatType: BoatType;
   maxOccupants: number;
-};
+}
 /**
  * type which contains additional information about the boat
  */
@@ -25,7 +26,7 @@ export type BoatDetailData = BoatOverviewData & {
 };
 
 export class BoatService {
-  private static instance: BoatService;
+  private static instance?: BoatService;
 
   private constructor(private boatDao = BoatDao.getInstance()) {
     // Intentionally left blank
@@ -40,27 +41,9 @@ export class BoatService {
   }
 
   /**
-   * Converts a Boat into BoatOverviewData.
-   *
-   * @param boat the boat to convert
-   * @returns the converted boat
-   */
-  private boatInstanceToOverviewData(boat: Boat): BoatOverviewData {
-    return {
-      id: boat.id,
-      name: boat.name,
-      imageRoute: boat.imageRoute,
-      requirements: boat.getRequirements(),
-      maxOccupants: boat.maxOccupants,
-      boatType: boat.boatType,
-      ...boat.getBoatData(),
-    };
-  }
-
-  /**
    * Get Boat by id
    */
-  public async getById(id: number): Promise<Boat | null> {
+  public getById(id: number): Promise<Boat | null> {
     return this.boatDao.getById(id);
   }
 
@@ -68,17 +51,8 @@ export class BoatService {
    * requests all Boats from the database via the DAO
    * @returns all boats from the database
    */
-  public async returnAllBoats(): Promise<Array<Boat>> {
-    return this.boatDao.getBoats();
-  }
-
-  /**
-   * requests all Boats from the database that aren't in maintenance
-   * @returns all boats from the database
-   */
-  public async returnAllBoatsNotInMaintenance(): Promise<Array<Boat>> {
-    const boats = await this.boatDao.getBoats();
-    return boats.filter((boat) => boat.maintenance === false);
+  public getAll(): Promise<Boat[]> {
+    return this.boatDao.getAll();
   }
 
   /**
@@ -102,9 +76,9 @@ export class BoatService {
       };
 
       return detailData;
-    } else {
-      return null;
     }
+
+    return null;
   }
 
   /**
@@ -113,9 +87,9 @@ export class BoatService {
    * @returns an array of BoatOverviewData
    */
   public async getBoatsOverviewData(): Promise<BoatOverviewData[]> {
-    const boats = await this.returnAllBoatsNotInMaintenance();
+    const boats = await this.getAll();
 
-    return boats.map(this.boatInstanceToOverviewData);
+    return boats.map((boat) => this.boatInstanceToOverviewData(boat));
   }
 
   /**
@@ -130,7 +104,7 @@ export class BoatService {
     dateStart: Date,
     dateEnd: Date
   ): Promise<BoatOverviewData[]> {
-    const boats = await this.returnAllBoatsNotInMaintenance();
+    const boats = await this.getAll();
 
     // Can't use async function with filter, get and await availability first.
     const availability = await Promise.all(
@@ -142,28 +116,13 @@ export class BoatService {
       return availability[index];
     });
 
-    return filteredBoats.map(this.boatInstanceToOverviewData);
+    return filteredBoats.map((boat) => this.boatInstanceToOverviewData(boat));
   }
 
-  /**
-   * adds a boat to the database if possible (name and registration have to be unique) via the DAO
-   * @param name name of new boat
-   * @param registrationNumber registration number of new boat
-   * @param pricePerDay price per day of boat
-   * @param skipperRequired boolean describing whether or not a skipper is needed
-   * @param imageRoute route to the image of the boat
-   * @param lengthInM length in meters of the boat
-   * @param maxOccupants maximum amount of people that can be on the boat
-   * @param boatType describes the type of boat, either motor of sail
-   * @param maxSpeedInKmH optional, only motor boats can have a max speed
-   * @param sailAreaInM2 optional, only sail boats can have a sail area in square meters
-   * @returns an object of the created boat, or an error message if for example name or registration number are already in use
-   */
-  public async addBoat(
+  public save(
     name: string,
     registrationNumber: number,
     pricePerDay: number,
-    skipperRequired: boolean,
     imageRoute: string,
     lengthInM: number,
     maxOccupants: number,
@@ -171,12 +130,11 @@ export class BoatService {
     maxSpeedInKmH?: number,
     sailAreaInM2?: number
   ): Promise<void> {
-    return this.boatDao.saveNewBoat(
+    return this.boatDao.save(
       Boat.createBoat(
         name,
         registrationNumber,
         pricePerDay,
-        skipperRequired,
         imageRoute,
         lengthInM,
         maxOccupants,
@@ -187,29 +145,8 @@ export class BoatService {
     );
   }
 
-  /**
-   * deletes a boat by id from the database via the DAO
-   * @param idOfBoat id of the boat to identify the specific boat
-   */
-  public async deleteBoat(idOfBoat: number): Promise<void> {
-    return this.boatDao.deleteBoat(idOfBoat);
-  }
-
-  /**
-   * updates the maintenance boolean in a specific boat found by id via the DAO
-   * @param idOfBoat id of the boat to be updated
-   * @param updatedValue new boolean value to which the maintenance boolean of the boat will be updated
-   */
-  public async updateMaintenanceOfBoat(
-    idOfBoat: number,
-    updatedValue: boolean
-  ): Promise<void> {
-    if (typeof idOfBoat !== 'number' || idOfBoat < 1) {
-      throw new ServerError('invalid id');
-    } else if (typeof updatedValue !== 'boolean') {
-      throw new ServerError('invalid new value of maintenance');
-    }
-    return this.boatDao.updateMaintenanceValueInBoat(idOfBoat, updatedValue);
+  public delete(id: number): Promise<void> {
+    return this.boatDao.delete(id);
   }
 
   /**
@@ -227,5 +164,23 @@ export class BoatService {
     }
 
     return boat.getBookedDates();
+  }
+
+  /**
+   * Converts a Boat into BoatOverviewData.
+   *
+   * @param boat the boat to convert
+   * @returns the converted boat
+   */
+  private boatInstanceToOverviewData(boat: Boat): BoatOverviewData {
+    return {
+      id: boat.id,
+      name: boat.name,
+      imageRoute: boat.imageRoute,
+      requirements: boat.getRequirements(),
+      maxOccupants: boat.maxOccupants,
+      boatType: boat.boatType,
+      ...boat.getBoatData(),
+    };
   }
 }

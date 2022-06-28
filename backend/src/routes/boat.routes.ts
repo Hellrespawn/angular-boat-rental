@@ -1,4 +1,5 @@
-import { Request, Response, Router } from 'express';
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import { Router } from 'express';
 import { BoatController, NEW_BOAT_SCHEMA } from '../controller/boat.controller';
 import { requireAdminRights } from '../middleware/auth';
 import { validateIdInUrlParams } from '../middleware/validate';
@@ -6,65 +7,45 @@ import { Validator } from '../util/validator';
 
 const newBoatValidator = new Validator(NEW_BOAT_SCHEMA);
 
-export function boatRoutes(controller: BoatController): Router {
+export function getBoatRouter(): Router {
+  const boatController = BoatController.getInstance();
   const router = Router();
 
-  router.get('/', requireAdminRights, (req: Request, res: Response): void => {
-    controller.getBoats(req, res);
-  });
-
-  router.get('/overview', (req: Request, res: Response): void => {
-    controller.getBoatsOverviewData(req, res);
-  });
+  router.get(
+    '/overview',
+    boatController.getBoatsOverviewData.bind(boatController)
+  );
 
   // Get all available boats between dates.
   router.get(
     '/overview/available/:dateStart/:dateEnd',
-    async (req: Request, res: Response): Promise<void> => {
-      controller.getAvailableBoatsOverviewData(req, res);
-    }
+    boatController.getAvailableBoatsOverviewData.bind(boatController)
   );
 
   router.get(
     '/:id/detail',
     validateIdInUrlParams(),
-    (req: Request, res: Response): void => {
-      controller.getBoatDetailData(req, res);
-    }
+    boatController.getBoatDetailData.bind(boatController)
   );
 
   router.get(
     '/:id/bookedDates',
     validateIdInUrlParams(),
-    async (req: Request, res: Response): Promise<void> => {
-      controller.getBookedDates(req, res);
-    }
+    boatController.getBookedDates.bind(boatController)
   );
 
   router.post(
     '/',
     requireAdminRights,
     newBoatValidator.middleware(),
-    async (req: Request, res: Response): Promise<void> => {
-      controller.addBoat(req, res);
-    }
+    boatController.save.bind(boatController)
   );
 
   router.delete(
     '/:id',
     validateIdInUrlParams(),
     requireAdminRights,
-    async (req: Request, res: Response): Promise<void> => {
-      controller.deleteBoat(req, res);
-    }
-  );
-
-  router.patch(
-    '/',
-    requireAdminRights,
-    async (req: Request, res: Response): Promise<void> => {
-      controller.updateMaintenanceValueOfBoat(req, res);
-    }
+    boatController.delete.bind(boatController)
   );
 
   return router;

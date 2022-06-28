@@ -4,8 +4,9 @@ import { SessionService } from '../services/session.service';
 
 async function checkSession(): Promise<void> {
   try {
-    await initSequelize();
-    const sessionService = new SessionService();
+    initSequelize();
+
+    const sessionService = SessionService.getInstance();
 
     const cleared = await sessionService.clearExpiredSessions();
 
@@ -17,4 +18,4 @@ async function checkSession(): Promise<void> {
   process.exit();
 }
 
-checkSession();
+void checkSession();

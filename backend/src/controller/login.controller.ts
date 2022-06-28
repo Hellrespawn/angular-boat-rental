@@ -1,12 +1,12 @@
-import { JSONSchemaType } from 'ajv';
-import { Request, Response } from 'express';
+import { type JSONSchemaType } from 'ajv';
+import { type Request, type Response } from 'express';
 import { SessionService } from '../services/session.service';
 import { ServerError } from '../util/error';
 
-type LoginData = {
+interface LoginData {
   email: string;
   password: string;
-};
+}
 
 export const LOGIN_SCHEMA: JSONSchemaType<LoginData> = {
   type: 'object',
@@ -24,9 +24,9 @@ export const LOGIN_SCHEMA: JSONSchemaType<LoginData> = {
 };
 
 export class LoginController {
-  private static instance: LoginController;
+  private static instance?: LoginController;
 
-  private constructor(private sessionService = new SessionService()) {}
+  private constructor(private sessionService = SessionService.getInstance()) {}
 
   public static getInstance(): LoginController {
     if (!this.instance) {
@@ -41,13 +41,15 @@ export class LoginController {
    */
   public async login(req: Request, res: Response): Promise<void> {
     // Validated by middleware
-    const email: string = req.body.email;
-    const password: string = req.body.password;
+    const { email, password } = req.body;
 
     try {
-      const session = await this.sessionService.login(email, password);
+      const session = await this.sessionService.login(
+        email as string,
+        password as string
+      );
 
-      const user = session.user;
+      const { user } = session;
 
       const expires = new Date();
       expires.setDate(expires.getDate() + SessionService.MaxSessionAge);

@@ -4,7 +4,7 @@ import * as path from 'path';
 const MEDIA_FOLDER = path.join(__dirname, '..', '..', 'media');
 
 export class ImageService {
-  private static instance: ImageService;
+  private static instance?: ImageService;
 
   private constructor() {
     // Intentionally left blank
@@ -23,10 +23,10 @@ export class ImageService {
    * @param name
    * @returns true if an image was deleted, false otherwise.
    */
-  public async deleteImage(name: string): Promise<boolean> {
+  public async delete(name: string): Promise<boolean> {
     const destination = this.getPath(name);
 
-    if (await this.fileExists(destination)) {
+    if (await this.checkFileExists(destination)) {
       await fsp.unlink(destination);
       try {
         // Remove dir if empty
@@ -46,12 +46,12 @@ export class ImageService {
    * @param name
    * @returns Returns true if file was saved, false if it exists.
    */
-  public async saveImage(buffer: Buffer, name: string): Promise<boolean> {
+  public async save(buffer: Buffer, name: string): Promise<boolean> {
     const destination = this.getPath(name);
 
     await fsp.mkdir(path.dirname(destination), { recursive: true });
 
-    if (await this.fileExists(destination)) {
+    if (await this.checkFileExists(destination)) {
       return false;
     }
 
@@ -70,7 +70,7 @@ export class ImageService {
   /**
    * Checks whether or not a file exists.
    */
-  private async fileExists(file: string): Promise<boolean> {
+  private async checkFileExists(file: string): Promise<boolean> {
     try {
       const stat = await fsp.stat(file);
       if (stat.isFile()) {

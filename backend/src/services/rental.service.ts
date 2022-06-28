@@ -6,7 +6,7 @@ import { UserService } from './user.service';
 import { Rental } from '../model/rental';
 
 export class RentalService {
-  private static instance: RentalService;
+  private static instance?: RentalService;
 
   private constructor(
     private boatService = BoatService.getInstance(),
@@ -47,7 +47,7 @@ export class RentalService {
     }
 
     // Check user exists
-    const user = await this.userService.getUserById(userId);
+    const user = await this.userService.getById(userId);
 
     if (!user) {
       throw new ServerError(`No user with id ${userId}.`);

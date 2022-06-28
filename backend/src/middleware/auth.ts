@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { type NextFunction, type Request, type Response } from 'express';
 import { SessionService } from '../services/session.service';
 
 /**
@@ -18,12 +18,15 @@ export async function authenticator(
   const sessionId: string | undefined = req.cookies.session;
 
   if (!sessionId) {
-    return next();
+    next();
+    return;
   }
 
-  const session = await new SessionService().getSession(sessionId);
+  const session = await SessionService.getInstance().getSession(sessionId);
 
   if (session) {
+    // TODO Check atomic update in authenticator
+    // eslint-disable-next-line require-atomic-updates
     req.currentUser = session.user;
   }
 
@@ -38,11 +41,11 @@ export async function authenticator(
  * @param next
  * @returns Middleware function
  */
-export async function requireAuthentication(
+export function requireAuthentication(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+): void {
   if (!req.currentUser) {
     res.status(401).json({ error: 'Invalid credentials' });
     return;
@@ -59,11 +62,11 @@ export async function requireAuthentication(
  * @param next
  * @returns Middleware function
  */
-export async function requireAdminRights(
+export function requireAdminRights(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+): void {
   if (!req.currentUser || !req.currentUser.admin) {
     res.status(401).json({ error: 'Invalid credentials' });
     return;

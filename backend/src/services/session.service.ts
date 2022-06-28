@@ -4,17 +4,17 @@ import { Cache } from '../util/cache';
 import { ErrorType, ServerError } from '../util/error';
 import { UserService } from './user.service';
 
-export type SessionData = {
+export interface SessionData {
   sessionId: string;
   license: boolean;
   admin: boolean;
   firstName: string;
-};
+}
 
 export class SessionService {
-  private static instance: SessionService;
-
   public static MaxSessionAge = 14;
+
+  private static instance?: SessionService;
 
   private cache: Cache<Session> = new Cache();
 
@@ -41,7 +41,7 @@ export class SessionService {
    * @returns a session
    */
   public async login(email: string, password: string): Promise<Session> {
-    const user = await this.userService.getUserByEmail(email);
+    const user = await this.userService.getByEmail(email);
 
     if (!user || !(await user.verifyPassword(password))) {
       // Single error, so as to not provide more information than necessary.
@@ -50,7 +50,7 @@ export class SessionService {
 
     const session = Session.createSessionForUser(user);
 
-    await this.sessionDao.saveSession(session);
+    await this.sessionDao.save(session);
     this.cache.set(session.sessionId, session);
 
     return session;
@@ -68,7 +68,7 @@ export class SessionService {
     try {
       session =
         this.cache.get(sessionId) ??
-        (await this.sessionDao.getSession(sessionId));
+        (await this.sessionDao.getBySessionId(sessionId));
     } catch (error) {
       console.error(error);
       throw new ServerError('Unable to connect to database!', ErrorType.Server);
@@ -76,7 +76,7 @@ export class SessionService {
 
     if (session) {
       if (session.isExpired()) {
-        await this.sessionDao.deleteSession(session);
+        await this.sessionDao.delete(session);
         this.cache.delete(sessionId);
 
         session = null;
@@ -93,16 +93,20 @@ export class SessionService {
    * @returns the number of sessions cleared.
    */
   public async clearExpiredSessions(): Promise<number> {
-    const sessions = await this.sessionDao.getAllSessions();
+    const sessions = await this.sessionDao.getAll();
     let count = 0;
+
+    const promises: Promise<boolean>[] = [];
 
     for (const session of sessions) {
       if (session.isExpired()) {
-        this.sessionDao.deleteSession(session);
+        promises.push(this.sessionDao.delete(session));
         this.cache.delete(session.sessionId);
         count++;
       }
     }
+
+    await Promise.all(promises);
 
     return count;
   }

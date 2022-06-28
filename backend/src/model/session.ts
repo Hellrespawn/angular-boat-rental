@@ -1,5 +1,5 @@
 import { randomBytes } from 'crypto';
-import { SessionModel } from '../database/session.dao';
+import { SessionModel } from '../database/session.model';
 import { SessionService } from '../services/session.service';
 import { User } from './user';
 
@@ -16,7 +16,7 @@ export class Session {
    */
   public static fromModel(model: SessionModel): Session {
     return new Session(
-      model.id,
+      model.id as number,
       model.sessionId,
       User.fromModel(model.user),
       model.createdAt

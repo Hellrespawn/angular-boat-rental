@@ -1,5 +1,5 @@
 import * as argon2 from 'argon2';
-import { UserModel } from '../database/user.dao';
+import { UserModel } from '../database/user.model';
 import { RentalDao } from '../database/rental.dao';
 import { Rental } from './rental';
 import { SessionDao } from '../database/session.dao';
@@ -23,7 +23,7 @@ export class User {
    */
   public static fromModel(model: UserModel): User {
     return new User(
-      model.id,
+      model.id as number,
       model.firstName,
       model.lastName,
       model.license,
@@ -61,28 +61,28 @@ export class User {
   /**
    * Hash a plaintext password with argon.
    */
-  public static async hashPassword(plaintext: string): Promise<string> {
-    return await argon2.hash(plaintext);
+  public static hashPassword(plaintext: string): Promise<string> {
+    return argon2.hash(plaintext);
   }
 
   /**
    * Verify a plaintext password
    */
-  public async verifyPassword(password: string): Promise<boolean> {
-    return await argon2.verify(this.password, password);
+  public verifyPassword(password: string): Promise<boolean> {
+    return argon2.verify(this.password, password);
   }
 
   /**
    * Gets rental associated with user.
    */
-  public async getRentals(): Promise<Rental[]> {
-    return await RentalDao.getInstance().getRentalsByUserId(this.id);
+  public getRentals(): Promise<Rental[]> {
+    return RentalDao.getInstance().getRentalsByUserId(this.id);
   }
 
   /**
    * Gets sessions associated with user.
    */
-  public async getSessions(): Promise<Session[]> {
-    return await SessionDao.getInstance().getSessionsByUserId(this.id);
+  public getSessions(): Promise<Session[]> {
+    return SessionDao.getInstance().getSessionsByUserId(this.id);
   }
 }

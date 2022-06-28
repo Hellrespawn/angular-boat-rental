@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from 'express';
-import { Middleware } from '.';
+import { type NextFunction, type Request, type Response } from 'express';
+import { type Middleware } from '.';
 
 /**
  * Middleware to check the ID in the url.

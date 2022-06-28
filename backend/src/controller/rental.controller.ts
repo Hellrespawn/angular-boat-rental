@@ -1,16 +1,16 @@
-import { JSONSchemaType } from 'ajv';
-import { Request, Response } from 'express';
+import { type JSONSchemaType } from 'ajv';
+import { type Request, type Response } from 'express';
 import { RentalService } from '../services/rental.service';
 import { ServerError } from '../util/error';
 
 /**
  * Interface matching the expected data for a new rental.
  */
-type NewRentalData = {
+interface NewRentalData {
   boatId: number;
   dateStart: string;
   dateEnd: string;
-};
+}
 
 /**
  * JSON Schema describing NewRentalData
@@ -35,9 +35,9 @@ export const NEW_RENTAL_SCHEMA: JSONSchemaType<NewRentalData> = {
 };
 
 export class RentalController {
-  private static instance: RentalController;
+  private static instance?: RentalController;
 
-  private constructor(private rentalService = new RentalService()) {}
+  private constructor(private rentalService = RentalService.getInstance()) {}
 
   public static getInstance(): RentalController {
     if (!this.instance) {
@@ -55,11 +55,12 @@ export class RentalController {
    */
   public async addRental(req: Request, res: Response): Promise<void> {
     // Validated by middleware in routes.
-    const boatId: number = req.body.boatId;
-    const dateStart = new Date(req.body.dateStart);
-    const dateEnd = new Date(req.body.dateEnd);
+    const boatId = parseInt(req.body.boatId as string);
+    const dateStart = new Date(req.body.dateStart as string);
+    const dateEnd = new Date(req.body.dateEnd as string);
+
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const userId: number = req.currentUser!.id;
+    const { id: userId } = req.currentUser!;
 
     try {
       const rental = await this.rentalService.addRental(

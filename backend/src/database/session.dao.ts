@@ -1,17 +1,9 @@
-import {
-  AllowNull,
-  BelongsTo,
-  Column,
-  CreatedAt,
-  ForeignKey,
-  Model,
-  Table,
-} from 'sequelize-typescript';
 import { Session } from '../model/session';
-import { UserModel } from './user.dao';
+import { SessionModel } from './session.model';
+import { UserModel } from './user.model';
 
 export class SessionDao {
-  private static instance: SessionDao;
+  private static instance?: SessionDao;
 
   private constructor() {
     // Intentionally left blank
@@ -28,9 +20,10 @@ export class SessionDao {
   /**
    * @returns all sessions.
    */
-  public async getAllSessions(): Promise<Session[]> {
+  public async getAll(): Promise<Session[]> {
     const models = await SessionModel.findAll({ include: [UserModel] });
-    return Promise.all(models.map(Session.fromModel));
+
+    return Promise.all(models.map((model) => Session.fromModel(model)));
   }
 
   /**
@@ -39,7 +32,7 @@ export class SessionDao {
    * @param sessionId
    * @returns session or null
    */
-  public async getSession(sessionId: string): Promise<Session | null> {
+  public async getBySessionId(sessionId: string): Promise<Session | null> {
     const model = await SessionModel.findOne({
       where: { sessionId },
       include: [UserModel],
@@ -51,7 +44,7 @@ export class SessionDao {
    * Save session to database.
    * @param session
    */
-  public async saveSession(session: Session): Promise<void> {
+  public async save(session: Session): Promise<void> {
     await SessionModel.create({
       sessionId: session.sessionId,
       userId: session.user.id,
@@ -63,7 +56,7 @@ export class SessionDao {
    * @param session
    * @returns
    */
-  public async deleteSession(session: Session): Promise<boolean> {
+  public async delete(session: Session): Promise<boolean> {
     return Boolean(await SessionModel.destroy({ where: { id: session.id } }));
   }
 
@@ -78,24 +71,6 @@ export class SessionDao {
       where: { userId },
       include: [UserModel],
     });
-    return models.map(Session.fromModel);
+    return models.map((model) => Session.fromModel(model));
   }
-}
-
-@Table
-export class SessionModel extends Model {
-  @AllowNull(false)
-  @Column
-  public readonly sessionId!: string;
-
-  @AllowNull(false)
-  @Column
-  @ForeignKey(() => UserModel)
-  private userId!: number;
-
-  @BelongsTo(() => UserModel)
-  public readonly user!: UserModel;
-
-  @CreatedAt
-  public readonly createdAt!: Date;
 }

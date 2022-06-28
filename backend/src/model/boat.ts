@@ -1,9 +1,9 @@
-import { BoatRequirements, BoatType } from 'src/database/boat.dao';
+import { type BoatRequirements, type BoatType } from 'src/database/boat.model';
 import { RentalDao } from '../database/rental.dao';
 import { ServerError } from '../util/error';
 import { Rental } from './rental';
 
-type BoatData = { [key: string]: boolean | number | string };
+type BoatData = Record<string, boolean | number | string>;
 
 export abstract class Boat {
   public abstract readonly boatType: BoatType;
@@ -13,8 +13,6 @@ export abstract class Boat {
     public readonly name: string,
     public readonly registrationNumber: number,
     public readonly pricePerDay: number,
-    public readonly skipperRequired: boolean,
-    public readonly maintenance: boolean,
     public readonly imageRoute: string,
     public readonly lengthInM: number,
     public readonly maxOccupants: number
@@ -33,36 +31,10 @@ export abstract class Boat {
     }
   }
 
-  /**
-   * Gets specific data associated with subclass
-   */
-  public abstract getBoatData(): BoatData;
-
-  /**
-   * Gets boat requirements
-   */
-  public abstract getRequirements(): BoatRequirements;
-
-  /**
-   * Creates a new boat based on boatType
-   *
-   * @param name
-   * @param registrationNumber
-   * @param pricePerDay
-   * @param skipperRequired
-   * @param imageRoute
-   * @param lengthInM
-   * @param maxOccupants
-   * @param boatType
-   * @param maxSpeedInKmH
-   * @param sailAreaInM2
-   * @returns subclass of Boat
-   */
   public static createBoat(
     name: string,
     registrationNumber: number,
     pricePerDay: number,
-    skipperRequired: boolean,
     imageRoute: string,
     lengthInM: number,
     maxOccupants: number,
@@ -80,31 +52,27 @@ export abstract class Boat {
         name,
         registrationNumber,
         pricePerDay,
-        skipperRequired,
-        false,
         imageRoute,
         lengthInM,
         maxOccupants,
         maxSpeedInKmH
       );
-    } else {
-      if (sailAreaInM2 === undefined) {
-        throw new ServerError('sailAreaInM2 was undefined for SailBoat!');
-      }
-
-      return new SailBoat(
-        -1,
-        name,
-        registrationNumber,
-        pricePerDay,
-        skipperRequired,
-        false,
-        imageRoute,
-        lengthInM,
-        maxOccupants,
-        sailAreaInM2
-      );
     }
+
+    if (sailAreaInM2 === undefined) {
+      throw new ServerError('sailAreaInM2 was undefined for SailBoat!');
+    }
+
+    return new SailBoat(
+      -1,
+      name,
+      registrationNumber,
+      pricePerDay,
+      imageRoute,
+      lengthInM,
+      maxOccupants,
+      sailAreaInM2
+    );
   }
 
   public isHigherThenZero(value: number): boolean {
@@ -115,8 +83,8 @@ export abstract class Boat {
    * Gets all rentals associated with boat
    * @returns array of rentals
    */
-  public async getRentals(): Promise<Rental[]> {
-    return await RentalDao.getInstance().getRentalsByBoatId(this.id);
+  public getRentals(): Promise<Rental[]> {
+    return RentalDao.getInstance().getRentalsByBoatId(this.id);
   }
 
   /**
@@ -148,14 +116,22 @@ export abstract class Boat {
   protected getUniversalRequirements(): BoatRequirements {
     let requirements: BoatRequirements = 'none';
 
-    if (this.skipperRequired) {
-      requirements = 'skipper';
-    } else if (this.maxOccupants > 12) {
+    if (this.maxOccupants > 12) {
       requirements = 'license';
     }
 
     return requirements;
   }
+
+  /**
+   * Gets specific data associated with subclass
+   */
+  public abstract getBoatData(): BoatData;
+
+  /**
+   * Gets boat requirements
+   */
+  public abstract getRequirements(): BoatRequirements;
 }
 
 export class MotorBoat extends Boat {
@@ -168,8 +144,6 @@ export class MotorBoat extends Boat {
     name: string,
     registrationNumber: number,
     pricePerDay: number,
-    skipperRequired: boolean,
-    maintenance: boolean,
     imageRoute: string,
     lengthInM: number,
     maxOccupants: number,
@@ -180,8 +154,6 @@ export class MotorBoat extends Boat {
       name,
       registrationNumber,
       pricePerDay,
-      skipperRequired,
-      maintenance,
       imageRoute,
       lengthInM,
       maxOccupants
@@ -218,8 +190,6 @@ export class SailBoat extends Boat {
     name: string,
     registrationNumber: number,
     pricePerDay: number,
-    skipperRequired: boolean,
-    maintenance: boolean,
     imageRoute: string,
     lengthInM: number,
     maxOccupants: number,
@@ -230,8 +200,6 @@ export class SailBoat extends Boat {
       name,
       registrationNumber,
       pricePerDay,
-      skipperRequired,
-      maintenance,
       imageRoute,
       lengthInM,
       maxOccupants

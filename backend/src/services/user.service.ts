@@ -1,9 +1,9 @@
-import { UserDao, UserModel } from '../database/user.dao';
+import { UserDao } from '../database/user.dao';
+import { UserModel } from '../database/user.model';
 import { User } from '../model/user';
-import { ServerError } from '../util/error';
 
 export class UserService {
-  private static instance: UserService;
+  private static instance?: UserService;
 
   private constructor(private userDao = UserDao.getInstance()) {
     // Intentionally left blank
@@ -17,98 +17,44 @@ export class UserService {
     return this.instance;
   }
 
-  /**
-   * Attempts to get a user identified by email
-   * @param email
-   * @returns User if it exists, or null
-   */
-  public async getUserByEmail(email: string): Promise<User | null> {
-    return this.userDao.getUserByEmail(email);
+  public async getByEmail(email: string): Promise<User | null> {
+    return this.userDao.getByEmail(email);
   }
 
-  /**
-   * Attempts to get a user identified by id
-   * @param id
-   * @returns User if it exists, or null
-   */
-  public async getUserById(id: number): Promise<User | null> {
-    return this.userDao.getUserById(id);
+  public async getById(id: number): Promise<User | null> {
+    return this.userDao.getById(id);
   }
 
-  /**
-   * returns all Users from the database
-   */
-  public async returnAllUsers(): Promise<Array<User>> {
-    return this.userDao.getUsers();
-  }
-
-  /**
-   * updates the blocked boolean of a specific User found by id
-   * @param idOfUser id of user to be updated
-   * @param updatedValue new value of the blocked boolean
-   */
-  public async updateBlockedValueOfUser(
-    idOfUser: number,
-    updatedValue: boolean
-  ): Promise<void> {
-    if (typeof idOfUser !== 'number' || idOfUser < 1) {
-      throw new ServerError('invalid id');
-    } else if (typeof updatedValue !== 'boolean') {
-      throw new ServerError('invalid new value of blocked');
-    }
-    return this.userDao.updateBlockedValueOfUser(idOfUser, updatedValue);
-  }
-
-  /**
-   * delete a User found by id
-   * @param idOfUser the id of the user to be deleted
-   */
-  public async deleteUser(idOfUser: number): Promise<void> {
-    return this.userDao.deleteUser(idOfUser);
-  }
-
-  public async checkEmail(email: string): Promise<UserModel | null> {
-    return this.userDao.checkEmail(email);
-    // const emailAd = await UserModel.findOne({ where: { emailAddress: email } });
-    // if (emailAd !== null) {
-    //   console.log('email found');
-    //   return emailAd
-    // }
-    // return emailAd;
-  }
-
-  public async calculateIfAdmin(): Promise<number> {
-    const userCount = UserModel.count();
-    return userCount;
-  }
-
-  public async createNewUser(
+  public async save(
     firstName: string,
     lastName: string,
     license: boolean,
     emailAddress: string,
-    password: string,
-    blocked: boolean
-  ): Promise<UserModel> {
-    const isAdmin = (await this.calculateIfAdmin()) ? false : true;
-    const newUser = await User.create(
+    password: string
+  ): Promise<void> {
+    const user = await User.create(
       firstName,
       lastName,
       license,
       emailAddress,
       password,
-      blocked,
-      isAdmin
-    );
-    return this.userDao.createNewUser(
-      newUser.firstName,
-      newUser.lastName,
-      newUser.license,
-      newUser.emailAddress,
-      newUser.password,
       false,
-      isAdmin
+      await this.isNewUserAdmin()
     );
-    // return this.userDao.saveNewUser(newUser);
+
+    await this.userDao.save(user);
+  }
+
+  public async checkEmailExists(email: string): Promise<UserModel | null> {
+    return this.userDao.checkEmailExists(email);
+  }
+
+  public async isNewUserAdmin(): Promise<boolean> {
+    const userCount = await this.userDao.count();
+    return !userCount;
+  }
+
+  public async delete(id: number): Promise<void> {
+    return this.userDao.deleteUser(id);
   }
 }

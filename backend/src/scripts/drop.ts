@@ -11,4 +11,4 @@ async function drop(): Promise<void> {
   }
 }
 
-drop();
+void drop();

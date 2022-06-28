@@ -23,15 +23,15 @@ export class Validator<T> {
     this.validator = AJV.compile(schema);
   }
 
-  public validate(data: unknown): data is T {
-    return this.validator(data);
-  }
-
   public get errors():
-    | ErrorObject<string, Record<string, T>, unknown>[]
+    | ErrorObject<string, Record<string, T>>[]
     | null
     | undefined {
     return this.validator.errors;
+  }
+
+  public validate(data: unknown): data is T {
+    return this.validator(data);
   }
 
   public middleware(): Middleware {

@@ -1,16 +1,8 @@
-import {
-  Table,
-  Column,
-  Model,
-  IsEmail,
-  HasMany,
-  AllowNull,
-} from 'sequelize-typescript';
 import { User } from '../model/user';
-import { RentalModel } from './rental.dao';
+import { UserModel } from './user.model';
 
 export class UserDao {
-  private static instance: UserDao;
+  private static instance?: UserDao;
 
   private constructor() {
     // Intentionally left blank
@@ -24,138 +16,27 @@ export class UserDao {
     return this.instance;
   }
 
-  public async saveNewUser(newUser: User): Promise<void> {
-    UserModel.create({
-      id: newUser.id,
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
-      license: newUser.license,
-      emailAddress: newUser.emailAddress,
-      password: newUser.password,
-      blocked: newUser.blocked,
-      admin: newUser.admin,
-    });
+  public async save(user: User): Promise<void> {
+    throw new Error('Not yet implemented: UserDao.save');
   }
 
-  public async getUserByEmail(emailAddress: string): Promise<User | null> {
-    const model = await UserModel.findOne({ where: { emailAddress } });
-
-    if (model) {
-      return User.fromModel(model);
-    }
-
-    throw 'User not found!';
+  public async getById(id: number): Promise<User | null> {
+    throw new Error('Not yet implemented: UserDao.getById');
   }
 
-  public async getUserById(id: number): Promise<User | null> {
-    const model = await UserModel.findOne({ where: { id } });
-
-    if (model) {
-      return User.fromModel(model);
-    }
-
-    throw 'User not found!';
+  public async getByEmail(emailAddress: string): Promise<User | null> {
+    throw new Error('Not yet implemented: UserDao.getByEmail');
   }
 
-  /**
-   * gets all UserModels from the database and sends them back as Users
-   * @returns an array of instances of User
-   */
-  public async getUsers(): Promise<User[]> {
-    return (await UserModel.findAll()).map((userModel) => {
-      return User.fromModel(userModel);
-    });
+  public async deleteUser(id: number): Promise<void> {
+    throw new Error('Not yet implemented: UserDao.delete');
   }
 
-  /**
-   * tries to find a UserModel from database and return it, if not found throws an error
-   * @param idOfUser id of the UserModel
-   * @returns the found UserModel
-   */
-  private async findUserOrThrowError(idOfUser: number): Promise<UserModel> {
-    const user: UserModel | null = await UserModel.findByPk(idOfUser);
-    if (user !== null) {
-      return user;
-    } else {
-      throw 'User not found';
-    }
+  public async checkEmailExists(email: string): Promise<UserModel | null> {
+    throw new Error('Not yet implemented: UserDao.checkEmailExists');
   }
 
-  /**
-   * updates the blocked value of a UserModel found by id
-   * @param idOfUser id of the UserModel
-   * @param updatedValue new value of blocked
-   */
-  public async updateBlockedValueOfUser(
-    idOfUser: number,
-    updatedValue: boolean
-  ): Promise<void> {
-    const userToUpdate: UserModel = await this.findUserOrThrowError(idOfUser);
-    userToUpdate.blocked = updatedValue;
-    await userToUpdate.save();
+  public async count(): Promise<number> {
+    return UserModel.count();
   }
-
-  /**
-   * deletes a UserModel from the database found by id
-   * @param idOfUser if of the UserModel
-   */
-  public async deleteUser(idOfUser: number): Promise<void> {
-    const userToDelete: UserModel = await this.findUserOrThrowError(idOfUser);
-    await userToDelete.destroy();
-  }
-
-  public async checkEmail(email: string): Promise<UserModel | null> {
-    const knownEmailAddress = await UserModel.findOne({
-      where: { emailAddress: email },
-    });
-    if (knownEmailAddress !== null) {
-      console.log('email found');
-    }
-    return knownEmailAddress;
-  }
-
-  public async createNewUser(
-    firstName: string,
-    lastName: string,
-    license: boolean,
-    emailAddress: string,
-    password: string,
-    blocked: boolean,
-    admin: boolean
-  ): Promise<UserModel> {
-    const result = await UserModel.create({
-      firstName: firstName,
-      lastName: lastName,
-      license: false,
-      emailAddress: emailAddress,
-      password: await User.hashPassword(password),
-      blocked: false,
-      admin,
-    });
-    return result;
-  }
-}
-
-@Table
-export class UserModel extends Model {
-  @AllowNull(false) @Column public firstName!: string;
-
-  @AllowNull(false) @Column public lastName!: string;
-
-  @AllowNull(false) @Column public license!: boolean;
-
-  //   @AllowNull(true)
-  //@IsBefore(getRequiredDateString())
-  //   @Column
-  //   public dateOfBirth!: Date;
-  @AllowNull(false) @IsEmail @Column public emailAddress!: string;
-
-  @AllowNull(false) @Column public password!: string;
-
-  @AllowNull(false) @Column public blocked!: boolean;
-
-  @AllowNull(false) @Column public admin!: boolean;
-
-  @HasMany(() => RentalModel)
-  public rentals!: RentalModel[];
 }

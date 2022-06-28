@@ -1,4 +1,4 @@
-import { RentalModel } from '../database/rental.dao';
+import { RentalModel } from '../database/rental.model';
 import { ServerError } from '../util/error';
 import { Boat } from './boat';
 import { User } from './user';
@@ -45,7 +45,7 @@ export class Rental {
 
     if (!isAvailable) {
       throw new ServerError(
-        `Boat is not available from ${dateStart} to ${dateEnd}`
+        `Boat is not available from ${dateStart.toString()} to ${dateEnd.toString()}`
       );
     }
 
@@ -60,7 +60,7 @@ export class Rental {
    */
   public static fromModel(model: RentalModel): Rental {
     return new Rental(
-      model.id,
+      model.id as number,
       model.boat.toBoat(),
       User.fromModel(model.user),
       model.dateStart,
