@@ -8,7 +8,7 @@ export const TEST_USER: NewUserData = {
   lastName: 'Korporaal',
   license: false,
   emailAddress: 'test@test.com',
-  password: 'test',
+  password: 'abcdef1A',
 };
 
 export function stubUserDao(sandbox: SinonSandbox): {

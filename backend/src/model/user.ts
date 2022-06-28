@@ -4,9 +4,14 @@ import { RentalDao } from '../database/rental.dao';
 import { Rental } from './rental';
 import { SessionDao } from '../database/session.dao';
 import { Session } from './session';
+import { ServerError } from '../util/error';
 
 export class User {
-  constructor(
+  public static minUppercaseLetters = 1;
+  public static minNumbers = 1;
+  public static minLength = 6;
+
+  private constructor(
     public readonly id: number,
     public readonly firstName: string,
     public readonly lastName: string,
@@ -46,6 +51,8 @@ export class User {
     blocked: boolean,
     admin: boolean
   ): Promise<User> {
+    this.validatePassword(plaintextPassword);
+
     return new User(
       -1,
       firstName,
@@ -63,6 +70,26 @@ export class User {
    */
   public static hashPassword(plaintext: string): Promise<string> {
     return argon2.hash(plaintext);
+  }
+
+  private static validatePassword(password: string): void {
+    if (password.length < this.minLength) {
+      throw new ServerError(
+        `Password requires at least ${this.minLength} characters`
+      );
+    }
+
+    if ((password.match(/[A-Z]/g) ?? []).length < this.minUppercaseLetters) {
+      throw new ServerError(
+        `Password requires at least ${this.minUppercaseLetters} uppercase.`
+      );
+    }
+
+    if ((password.match(/[0-9]/g) ?? []).length < this.minNumbers) {
+      throw new ServerError(
+        `Password requires at least ${this.minNumbers} numbers.`
+      );
+    }
   }
 
   /**

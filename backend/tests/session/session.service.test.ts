@@ -6,12 +6,12 @@ import { SessionService } from '../../src/services/session.service';
 import { SessionDao } from '../../src/database/session.dao';
 import { Session } from '../../src/model/session';
 import { stubSessionDao, stubUserService } from '.';
+import { TEST_USER } from '../user';
 
 const SANDBOX = sinon.createSandbox();
 
 describe('Test SessionService', () => {
-  const email = 'test@test.test';
-  const password = 'password';
+  const { emailAddress, password } = TEST_USER;
 
   let user: User;
 
@@ -24,7 +24,7 @@ describe('Test SessionService', () => {
   const expectedError = 'invalid credentials';
 
   beforeEach(async () => {
-    user = await stubUserService(SANDBOX, email, password);
+    user = await stubUserService(SANDBOX, emailAddress, password);
     ({ deleteStub, getStub, saveStub } = stubSessionDao(SANDBOX));
     sessionService = SessionService.getInstance();
     sessionService.clearCache();

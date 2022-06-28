@@ -5,6 +5,7 @@ import request from 'supertest';
 import { stubSessionDao, stubUserService } from '.';
 import { User } from '../../src/model/user';
 import { app } from '../../src/server';
+import { TEST_USER } from '../user';
 
 const SANDBOX = sinon.createSandbox();
 
@@ -23,13 +24,12 @@ function getSessionIdFromCookie(cookies: [string]): string {
 }
 
 describe('Test Session & Login end-to-end', () => {
-  const email = 'test@test.test';
-  const password = 'password';
+  const { emailAddress, password } = TEST_USER;
 
   let user: User;
 
   beforeEach(async () => {
-    user = await stubUserService(SANDBOX, email, password);
+    user = await stubUserService(SANDBOX, emailAddress, password);
     stubSessionDao(SANDBOX);
   });
 
