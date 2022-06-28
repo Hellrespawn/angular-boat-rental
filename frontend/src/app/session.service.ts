@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, Observable } from 'rxjs';
+import { NotificationService } from './notification.service';
 import { SessionData } from './session';
-import { SnackBarService } from './snack-bar.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +16,8 @@ export class SessionService {
 
   constructor(
     private httpClient: HttpClient,
-    private router: Router,
-    private snackbarService: SnackBarService
+    private notificationService: NotificationService,
+    private router: Router
   ) {
     this.loadSessionData();
   }
@@ -34,7 +34,7 @@ export class SessionService {
   public login(email: string, password: string): void {
     this.doLoginRequest(email, password).subscribe({
       next: (data) => this.handleSuccessfulLogin(data),
-      error: (error: string) => this.snackbarService.displayError(error),
+      error: (error: string) => this.notificationService.notifyError(error),
     });
   }
 
@@ -44,7 +44,7 @@ export class SessionService {
   public logout(): void {
     this.clearSessionData();
 
-    this.snackbarService.displaySuccess('Tot de volgende keer!');
+    this.notificationService.notifySuccess('Tot de volgende keer!');
 
     this.router.navigate(['/']);
   }
@@ -101,6 +101,6 @@ export class SessionService {
     this.saveSessionData(data);
     this.loadSessionData();
 
-    this.snackbarService.displaySuccess(`Welkom, je bent ingelogd!`);
+    this.notificationService.notifySuccess(`Welkom, je bent ingelogd!`);
   }
 }

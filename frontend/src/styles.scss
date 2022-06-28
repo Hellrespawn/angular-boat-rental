@@ -11,7 +11,7 @@
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes(theme.$dogstack-project-uml-theme);
+@include mat.all-component-themes(theme.$angular-boat-rental-theme);
 
 html {
   height: 100%;
@@ -30,24 +30,4 @@ body {
   width: 100%;
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
-}
-
-.error-snackbar {
-  background-color: mat.get-color-from-palette(
-    theme.$dogstack-project-uml-warn
-  );
-  color: black;
-}
-
-.error-snackbar button {
-  color: black;
-}
-
-.normal-snackbar {
-  background-color: green;
-  color: white;
-}
-
-.normal-snackbar button {
-  color: white;
 }

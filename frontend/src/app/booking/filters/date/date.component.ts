@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BoatService } from 'src/app/boat.service';
-import { SnackBarService } from 'src/app/snack-bar.service';
-import { DateRange } from '../../../rental.service';
+import { DateRange } from '../../../date';
+import { NotificationService } from '../../../notification.service';
 import { BookingService } from '../../booking.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class DateComponent implements OnInit {
   constructor(
     private boatService: BoatService,
     private bookingService: BookingService,
-    private snackBarService: SnackBarService
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -139,13 +139,13 @@ export class DateComponent implements OnInit {
     let dateRange: DateRange | null;
 
     if (!this.areDatesValid()) {
-      this.snackBarService.displayError('Je moet minimaal 3 dagen huren!');
+      this.notificationService.notifyError('Je moet minimaal 3 dagen huren!');
 
       this.dateEnd = null;
       this.dateStart = null;
       dateRange = null;
     } else if (this.isBookedBetweenRange()) {
-      this.snackBarService.displayError(
+      this.notificationService.notifyError(
         'Er zit een boeking tussen je selectie!'
       );
 

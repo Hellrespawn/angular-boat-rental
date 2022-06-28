@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { addToNavBar } from 'src/app/navigation.service';
 import { formatDate } from '../../date';
 import { Rental } from '../../rental';
-import { RentalService } from '../../rental.service';
 import { SessionData } from '../../session';
 import { SessionService } from '../../session.service';
+import { DashboardService } from '../dashboard.service';
 
 @addToNavBar({
   name: 'Klantenpaneel',
@@ -21,7 +21,7 @@ export class UserDashboardComponent implements OnInit {
   public nextRental?: Rental;
 
   constructor(
-    private rentalService: RentalService,
+    private dashboardService: DashboardService,
     private sessionService: SessionService
   ) {}
 
@@ -43,7 +43,7 @@ export class UserDashboardComponent implements OnInit {
    * Gets next rental
    */
   private getNextRental(): void {
-    this.rentalService.getNextRental().subscribe((rental) => {
+    this.dashboardService.getNextRental().subscribe((rental) => {
       if (rental) {
         this.nextRental = rental;
       }

@@ -6,8 +6,8 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$dogstack-project-uml-primary: mat.define-palette(mat.$blue-palette);
-$dogstack-project-uml-accent: mat.define-palette(
+$angular-boat-rental-primary: mat.define-palette(mat.$blue-palette);
+$angular-boat-rental-accent: mat.define-palette(
   mat.$amber-palette,
   A200,
   A100,
@@ -15,16 +15,16 @@ $dogstack-project-uml-accent: mat.define-palette(
 );
 
 // The warn palette is optional (defaults to red).
-$dogstack-project-uml-warn: mat.define-palette(mat.$red-palette);
+$angular-boat-rental-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$dogstack-project-uml-theme: mat.define-light-theme(
+$angular-boat-rental-theme: mat.define-light-theme(
   (
     color: (
-      primary: $dogstack-project-uml-primary,
-      accent: $dogstack-project-uml-accent,
-      warn: $dogstack-project-uml-warn,
+      primary: $angular-boat-rental-primary,
+      accent: $angular-boat-rental-accent,
+      warn: $angular-boat-rental-warn,
     ),
   )
 );

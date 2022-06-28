@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
@@ -9,7 +10,7 @@ import {
 } from 'rxjs';
 import { BoatOverviewData } from '../boat';
 import { BoatService } from '../boat.service';
-import { DateRange, RentalService } from '../rental.service';
+import { DateRange } from '../date';
 import { SessionService } from '../session.service';
 import {
   BoatTypeFilter,
@@ -45,8 +46,8 @@ export class BookingService {
     new BehaviorSubject('both' as LicenseFilterState);
 
   constructor(
+    private httpClient: HttpClient,
     private boatService: BoatService,
-    private rentalService: RentalService,
     private sessionService: SessionService
   ) {
     this.getCurrentUserLicense();
@@ -117,14 +118,21 @@ export class BookingService {
    * Rental. Resets the filter state.
    */
   public createRental(boatId: number): Observable<number> {
-    let dateRange = this.dateRange.getValue();
+    const dateRange = this.dateRange.getValue();
 
     if (!dateRange) {
       throw 'Called createRental() when dateRange is undefined.';
     }
 
-    return this.rentalService
-      .createRental(boatId, dateRange)
+    const { dateStart, dateEnd } = dateRange;
+
+    return this.httpClient
+      .post<{ id: number }>('/api/rentals', {
+        boatId,
+        dateStart: dateStart,
+        dateEnd: dateEnd,
+      })
+      .pipe(map(({ id }) => id))
       .pipe(tap(this.reset.bind(this)));
   }
 

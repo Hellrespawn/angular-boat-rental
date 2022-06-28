@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BoatDetailData } from 'src/app/boat';
 import { BoatService } from 'src/app/boat.service';
-import { DateRange } from '../../rental.service';
+import { DateRange } from '../../date';
 import { SessionData } from '../../session';
 import { SessionService } from '../../session.service';
 import { BookingService } from '../booking.service';
@@ -105,11 +105,7 @@ export class CheckComponent implements OnInit {
       });
     } else {
       this.bookingService.createRental(this.boat!.id).subscribe((rentalId) => {
-        if (this.boat.requirements === 'skipper') {
-          this.router.navigate(['/verhuur/schipper', rentalId]);
-        } else {
-          this.router.navigate(['/verhuur/betalen', rentalId]);
-        }
+        this.router.navigate(['/verhuur/betalen', rentalId]);
       });
     }
   }
@@ -138,8 +134,6 @@ export class CheckComponent implements OnInit {
   public getButtonText(): string {
     if (!this.isLoggedIn()) {
       return 'Log Nu In!';
-    } else if (this.boat && this.boat.requirements === 'skipper') {
-      return 'Selecteer schipper';
     }
 
     return 'Nu betalen';

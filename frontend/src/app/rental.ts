@@ -8,7 +8,4 @@ export interface Rental {
     name: string;
     imageRoute: string;
   };
-  skipper?: {
-    name: string;
-  };
 }

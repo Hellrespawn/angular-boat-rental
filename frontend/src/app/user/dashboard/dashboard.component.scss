@@ -11,8 +11,5 @@ img {
 
 .warning {
   font-weight: bold;
-  color: mat.get-color-from-palette(
-    theme.$dogstack-project-uml-warn,
-    'default'
-  );
+  color: mat.get-color-from-palette(theme.$angular-boat-rental-warn, 'default');
 }

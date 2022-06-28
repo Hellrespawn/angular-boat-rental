@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "dogstack-project-uml": {
+    "angular-boat-rental": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/dogstack-project-uml",
+            "outputPath": "dist/angular-boat-rental",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -71,15 +71,15 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "dogstack-project-uml:build",
+            "browserTarget": "angular-boat-rental:build",
             "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
             "production": {
-              "browserTarget": "dogstack-project-uml:build:production"
+              "browserTarget": "angular-boat-rental:build:production"
             },
             "development": {
-              "browserTarget": "dogstack-project-uml:build:development"
+              "browserTarget": "angular-boat-rental:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -87,7 +87,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "dogstack-project-uml:build"
+            "browserTarget": "angular-boat-rental:build"
           }
         },
         "test": {

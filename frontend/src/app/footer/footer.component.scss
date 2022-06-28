@@ -4,17 +4,17 @@
 footer {
   display: flex;
   background-color: mat.get-color-from-palette(
-    theme.$dogstack-project-uml-primary,
+    theme.$angular-boat-rental-primary,
     'default'
   );
   color: mat.get-color-from-palette(
-    theme.$dogstack-project-uml-primary,
+    theme.$angular-boat-rental-primary,
     'darker-contrast'
   );
 }
 
 h2 {
-  color: mat.get-color-from-palette(theme.$dogstack-project-uml-accent, 'text');
+  color: mat.get-color-from-palette(theme.$angular-boat-rental-accent, 'text');
 }
 
 a {

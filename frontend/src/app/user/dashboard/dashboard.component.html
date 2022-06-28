@@ -4,9 +4,7 @@
     <img [src]="this.nextRental.boat.imageRoute" />
     <div>
       <h2>{{ this.nextRental.boat.name }}</h2>
-      <h3 *ngIf="this.nextRental.skipper">
-        Bestuurd door {{ this.nextRental.skipper.name }}
-      </h3>
+
       <p>van {{ this.formatDateStart() }}</p>
       <p>tot {{ this.formatDateEnd() }}</p>
       <p *ngIf="this.nextRental.paid">Betaald</p>
