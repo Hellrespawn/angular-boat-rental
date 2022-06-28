@@ -1,5 +1,5 @@
 <div *ngIf="!boat" class="custom-card with-padding">
-  <h2>Er is wat fout gegaan! Probeer het nog eens.</h2>
+  <h2>Something went wrong! Please try again.</h2>
 </div>
 
 <div *ngIf="boat">
@@ -24,18 +24,17 @@
             ><mat-icon>speed</mat-icon>{{ boat.maxSpeedInKmH }} km/h</span
           >
           <span class="icon"
-            ><mat-icon>square_foot</mat-icon>{{ boat.lengthInM }} meter</span
+            ><mat-icon>square_foot</mat-icon>{{ boat.lengthInM }} m</span
           >
           <span class="icon"
             ><mat-icon>directions_boat</mat-icon
             >{{ requirementsToString() }}</span
           >
           <span class="icon"
-            ><mat-icon>bed</mat-icon>Maximaal
-            {{ boat.maxOccupants }} personen</span
+            ><mat-icon>bed</mat-icon>Max. {{ boat.maxOccupants }} people</span
           >
           <span class="icon"
-            ><mat-icon>euro</mat-icon>{{ boat.pricePerDay }} per dag</span
+            ><mat-icon>euro</mat-icon>{{ boat.pricePerDay }} per day</span
           >
         </div>
       </section>

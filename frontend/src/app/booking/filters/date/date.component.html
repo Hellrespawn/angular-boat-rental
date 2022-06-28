@@ -1,5 +1,5 @@
 <mat-form-field appearance="fill">
-  <mat-label>Datum</mat-label>
+  <mat-label>Date</mat-label>
   <mat-date-range-input
     #pickerInput
     [rangePicker]="picker"
@@ -8,13 +8,13 @@
   >
     <input
       matStartDate
-      placeholder="Startdatum"
+      placeholder="Start Date"
       [ngModel]="dateStart"
       (ngModelChange)="updateDateStart($event)"
     />
     <input
       matEndDate
-      placeholder="Einddatum"
+      placeholder="End Date"
       [ngModel]="dateEnd"
       (ngModelChange)="updateDateEnd($event)"
     />

@@ -101,11 +101,11 @@ export class CheckComponent implements OnInit {
   public handleButton(): void {
     if (!this.isLoggedIn()) {
       this.router.navigate(['/login'], {
-        queryParams: { from: `/verhuur/controleer/${this.boat!.id}` },
+        queryParams: { from: `/rent/check/${this.boat!.id}` },
       });
     } else {
       this.bookingService.createRental(this.boat!.id).subscribe((rentalId) => {
-        this.router.navigate(['/verhuur/betalen', rentalId]);
+        this.router.navigate(['/rent/payment', rentalId]);
       });
     }
   }
@@ -133,9 +133,9 @@ export class CheckComponent implements OnInit {
    */
   public getButtonText(): string {
     if (!this.isLoggedIn()) {
-      return 'Log Nu In!';
+      return 'Log in now!';
     }
 
-    return 'Nu betalen';
+    return 'Pay now!';
   }
 }

@@ -14,19 +14,19 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
-    path: 'gebruiker',
+    path: 'user',
     component: UserComponent,
     children: [
       { path: 'dashboard', component: UserDashboardComponent },
-      { path: 'boekingen', component: UserRentalsComponent },
-      { path: 'gegevens', component: UserSettingsComponent },
+      { path: 'orders', component: UserRentalsComponent },
+      { path: 'settings', component: UserSettingsComponent },
     ],
   },
   // { path: 'registreer', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'verhuur', component: BookingComponent },
-  { path: 'verhuur/controleer/:boatId', component: CheckComponent },
-  { path: 'verhuur/betalen/:rentalId', component: PaymentComponent },
+  { path: 'rent', component: BookingComponent },
+  { path: 'rent/check/:boatId', component: CheckComponent },
+  { path: 'rent/payment/:rentalId', component: PaymentComponent },
 ];
 
 @NgModule({

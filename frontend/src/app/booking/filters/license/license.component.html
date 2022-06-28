@@ -1,11 +1,11 @@
 <mat-form-field appearance="fill">
-  <mat-label>Vaarbewijs</mat-label>
+  <mat-label>License</mat-label>
   <mat-select
     [ngModel]="bookingService.getLicenseFilter() | async"
     (ngModelChange)="updateFilter($event)"
   >
-    <mat-option value="both"> Beide </mat-option>
-    <mat-option value="required"> Vaarbewijs vereist </mat-option>
-    <mat-option value="not-required"> Vaarbewijs niet vereist </mat-option>
+    <mat-option value="both">Both</mat-option>
+    <mat-option value="required">Required</mat-option>
+    <mat-option value="not-required">Not required</mat-option>
   </mat-select>
 </mat-form-field>

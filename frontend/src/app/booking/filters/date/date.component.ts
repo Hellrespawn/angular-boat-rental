@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { BoatService } from 'src/app/boat.service';
 import { DateRange } from '../../../date';
 import { NotificationService } from '../../../notification.service';
+import { MINIMUM_RENTAL } from '../../../rental';
 import { BookingService } from '../../booking.service';
 
 @Component({
@@ -139,14 +140,16 @@ export class DateComponent implements OnInit {
     let dateRange: DateRange | null;
 
     if (!this.areDatesValid()) {
-      this.notificationService.notifyError('Je moet minimaal 3 dagen huren!');
+      this.notificationService.notifyError(
+        `There is a minimum of ${MINIMUM_RENTAL} days!`
+      );
 
       this.dateEnd = null;
       this.dateStart = null;
       dateRange = null;
     } else if (this.isBookedBetweenRange()) {
       this.notificationService.notifyError(
-        'Er zit een boeking tussen je selectie!'
+        'Your selection encompasses another rental!'
       );
 
       this.dateEnd = null;

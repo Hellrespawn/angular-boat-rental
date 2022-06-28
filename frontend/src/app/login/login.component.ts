@@ -50,13 +50,13 @@ export class LoginComponent {
   public getEmailError(): string {
     const errors = this.email.errors;
 
-    let message = 'Er is iets fout gegaan!';
+    let message = 'Something went wrong!';
 
     if (errors) {
       if ('required' in errors) {
-        message = 'Een e-mailadres is vereist!';
+        message = 'An email address is required!';
       } else if ('email' in errors) {
-        message = 'Vul een geldig e-mailadres in!';
+        message = 'Please enter a valid email address!';
       }
     }
 
@@ -69,11 +69,11 @@ export class LoginComponent {
   public getPasswordError(): string {
     const errors = this.password.errors;
 
-    let message = 'Er is iets fout gegaan!';
+    let message = 'Something went wrong!';
 
     if (errors) {
       if ('required' in errors) {
-        message = 'Een wachtwoord is vereist!';
+        message = 'A password is required!';
       }
     }
 

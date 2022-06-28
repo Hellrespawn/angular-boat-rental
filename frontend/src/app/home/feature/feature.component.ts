@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core';
 export class HomeFeatureComponent {
   @Input() public badgeText = '';
   @Input() public buttonHref = '/';
-  @Input() public buttonText = 'Meer Informatie';
+  @Input() public buttonText = 'More information';
   @Input() public imageSource = '/assets/notfound.jpg';
   @Input() public imageOrder: 'first' | 'last' = 'first';
   constructor() {}

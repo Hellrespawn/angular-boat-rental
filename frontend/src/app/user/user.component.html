@@ -1,21 +1,12 @@
 <div *ngIf="isLoggedIn()" class="container">
   <nav>
-    <a
-      mat-raised-button
-      routerLink="/gebruiker/dashboard"
-      routerLinkActive="active"
+    <a mat-raised-button routerLink="/user/dashboard" routerLinkActive="active"
       >Overzicht</a
     >
-    <a
-      mat-raised-button
-      routerLink="/gebruiker/boekingen"
-      routerLinkActive="active"
+    <a mat-raised-button routerLink="/user/orders" routerLinkActive="active"
       >Mijn boekingen</a
     >
-    <a
-      mat-raised-button
-      routerLink="/gebruiker/gegevens"
-      routerLinkActive="active"
+    <a mat-raised-button routerLink="/user/settings" routerLinkActive="active"
       >Mijn gegevens</a
     >
   </nav>

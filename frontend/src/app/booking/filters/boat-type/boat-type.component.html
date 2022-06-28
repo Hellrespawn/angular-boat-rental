@@ -1,11 +1,11 @@
 <mat-form-field appearance="fill">
-  <mat-label>Type Boot</mat-label>
+  <mat-label>Boat Type</mat-label>
   <mat-select
     [ngModel]="bookingService.getTypeFilter() | async"
     (ngModelChange)="updateFilter($event)"
   >
-    <mat-option value="all">Alle</mat-option>
-    <mat-option value="motor">Motorboot</mat-option>
-    <mat-option value="sail">Zeilboot</mat-option>
+    <mat-option value="all">All</mat-option>
+    <mat-option value="motor">Motorboat</mat-option>
+    <mat-option value="sail">Sailboat</mat-option>
   </mat-select>
 </mat-form-field>

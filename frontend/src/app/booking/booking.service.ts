@@ -11,6 +11,7 @@ import {
 import { BoatOverviewData } from '../boat';
 import { BoatService } from '../boat.service';
 import { DateRange } from '../date';
+import { MINIMUM_RENTAL } from '../rental';
 import { SessionService } from '../session.service';
 import {
   BoatTypeFilter,
@@ -26,8 +27,6 @@ import {
   providedIn: 'root',
 })
 export class BookingService {
-  public static readonly MIN_DAYS = 3;
-
   // Boats
   protected boats: BehaviorSubject<BoatOverviewData[]> = new BehaviorSubject(
     [] as BoatOverviewData[]
@@ -121,7 +120,7 @@ export class BookingService {
     const dateRange = this.dateRange.getValue();
 
     if (!dateRange) {
-      throw 'Called createRental() when dateRange is undefined.';
+      throw new Error('Called createRental() when dateRange is undefined.');
     }
 
     const { dateStart, dateEnd } = dateRange;
@@ -149,7 +148,7 @@ export class BookingService {
    * Checks whether or not the date range is valid.
    */
   public isRangeValid(dateRange: DateRange): boolean {
-    return this.getDays(dateRange) >= BookingService.MIN_DAYS;
+    return this.getDays(dateRange) >= MINIMUM_RENTAL;
   }
 
   /**
