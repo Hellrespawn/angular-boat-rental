@@ -62,7 +62,7 @@ export class SessionService {
    * @param sessionId
    * @returns
    */
-  public async getSession(sessionId: string): Promise<Session | null> {
+  public async getBySessionId(sessionId: string): Promise<Session | null> {
     let session: Session | null;
 
     try {
@@ -109,5 +109,9 @@ export class SessionService {
     await Promise.all(promises);
 
     return count;
+  }
+
+  public clearCache(): void {
+    this.cache.clear();
   }
 }

@@ -23,7 +23,7 @@ describe('Test BoatService', () => {
       TEST_RENTAL,
     ]));
 
-    service = new BoatService();
+    service = BoatService.getInstance();
   });
 
   afterEach(() => {
@@ -50,7 +50,7 @@ describe('Test BoatService', () => {
       expect(dates).to.deep.equal(expected);
     });
 
-    it('Gets empty  booked dates', async () => {
+    it('Gets empty booked dates', async () => {
       rentalDaoGetRentalsByBoatIdStub.returns(Promise.resolve([]));
       const expected: never[] = [];
 

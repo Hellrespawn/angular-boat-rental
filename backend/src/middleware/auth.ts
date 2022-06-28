@@ -22,7 +22,7 @@ export async function authenticator(
     return;
   }
 
-  const session = await SessionService.getInstance().getSession(sessionId);
+  const session = await SessionService.getInstance().getBySessionId(sessionId);
 
   if (session) {
     // TODO Check atomic update in authenticator

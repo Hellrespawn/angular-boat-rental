@@ -17,7 +17,7 @@ import { expect } from 'chai';
 const SANDBOX = sinon.createSandbox();
 
 function stubAuth(sandbox: SinonSandbox): void {
-  const stub = sandbox.stub(SessionService.prototype, 'getSession');
+  const stub = sandbox.stub(SessionService.prototype, 'getBySessionId');
 
   stub.returns(Promise.resolve({ user: { id: 1 } } as unknown as Session));
 }

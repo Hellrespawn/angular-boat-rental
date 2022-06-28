@@ -28,7 +28,7 @@ describe('Test RentalService', () => {
     ]));
     ({ boatDaoGetByIdStub } = stubBoatDao(SANDBOX, TEST_BOAT));
     ({ userDaoGetByIdStub } = stubUserDao(SANDBOX, {} as unknown as User));
-    service = new RentalService();
+    service = RentalService.getInstance();
   });
 
   afterEach(() => {

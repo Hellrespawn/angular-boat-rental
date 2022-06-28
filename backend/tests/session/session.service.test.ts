@@ -26,7 +26,8 @@ describe('Test SessionService', () => {
   beforeEach(async () => {
     user = await stubUserService(SANDBOX, email, password);
     ({ deleteStub, getStub, saveStub } = stubSessionDao(SANDBOX));
-    sessionService = new SessionService();
+    sessionService = SessionService.getInstance();
+    sessionService.clearCache();
   });
 
   afterEach(() => {
@@ -77,7 +78,7 @@ describe('Test SessionService', () => {
       );
       getStub.returns(Promise.resolve(testSession));
 
-      const session = await sessionService.getSession('abcd');
+      const session = await sessionService.getBySessionId('abcd');
 
       expect(session).to.deep.equal(testSession);
       expect(deleteStub.callCount).to.equal(0);
@@ -92,9 +93,10 @@ describe('Test SessionService', () => {
         {} as unknown as User,
         createdAt
       );
+
       getStub.returns(Promise.resolve(testSession));
 
-      const session = await sessionService.getSession('abcd');
+      const session = await sessionService.getBySessionId('abcd');
 
       expect(session).to.equal(null);
       expect(deleteStub.callCount).to.equal(1);
@@ -111,7 +113,7 @@ describe('Test SessionService', () => {
       const validSession = new Session(-1, '', user, new Date());
       const oldSession = new Session(-1, '', user, expiredDate);
 
-      const stub = SANDBOX.stub(SessionDao.prototype, 'getAllSessions');
+      const stub = SANDBOX.stub(SessionDao.prototype, 'getAll');
 
       stub.returns(Promise.resolve([validSession, oldSession]));
 

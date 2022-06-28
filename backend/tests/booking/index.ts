@@ -12,8 +12,6 @@ export const TEST_BOAT = new MotorBoat(
   'testboot',
   1234,
   1234,
-  false,
-  false,
   '',
   1234,
   1234,
@@ -36,7 +34,7 @@ export function stubBoatDao(
   boatDaoGetBoatsStub: SinonStub<[], Promise<Boat[]>>;
   boatDaoGetByIdStub: SinonStub<[id: number], Promise<Boat | null>>;
 } {
-  const boatDaoGetBoatsStub = sandbox.stub(BoatDao.prototype, 'getBoats');
+  const boatDaoGetBoatsStub = sandbox.stub(BoatDao.prototype, 'getAll');
 
   boatDaoGetBoatsStub.returns(Promise.resolve([]));
 
@@ -55,7 +53,7 @@ export function stubUserDao(
   sandbox: SinonSandbox,
   defaultValue?: User
 ): { userDaoGetByIdStub: SinonStub<[id: number], Promise<User | null>> } {
-  const userDaoGetByIdStub = sandbox.stub(UserDao.prototype, 'getUserById');
+  const userDaoGetByIdStub = sandbox.stub(UserDao.prototype, 'getById');
 
   if (defaultValue) {
     userDaoGetByIdStub.returns(Promise.resolve(defaultValue));

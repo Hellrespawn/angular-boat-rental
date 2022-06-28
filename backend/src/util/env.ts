@@ -15,7 +15,9 @@ const ENV_VAR = {
 export function getEnvVar(): EnvVar {
   for (const [key, value] of Object.entries(ENV_VAR)) {
     if (!value) {
-      throw new ServerError(`Unable to read ${key} from process.env.`);
+      throw new ServerError(
+        `Unable to read ${key} from process.env, is your .env-file configured properly?`
+      );
     }
   }
 

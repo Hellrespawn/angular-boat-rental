@@ -2,14 +2,46 @@
 import { RentalService } from '../services/rental.service';
 import { ServerError } from '../util/error';
 import { type Request, type Response } from 'express';
+import { JSONSchemaType } from 'ajv';
+import { UserService } from '../services/user.service';
 
-// TODO Add schema for user here
+export interface NewUserData {
+  firstName: string;
+  lastName: string;
+  license: boolean;
+  emailAddress: string;
+  password: string;
+}
+
+export const NEW_USER_SCHEMA: JSONSchemaType<NewUserData> = {
+  type: 'object',
+  properties: {
+    firstName: {
+      type: 'string',
+    },
+    lastName: {
+      type: 'string',
+    },
+    license: {
+      type: 'boolean',
+    },
+    emailAddress: {
+      type: 'string',
+      format: 'email',
+    },
+    password: {
+      type: 'string',
+    },
+  },
+  required: ['firstName', 'lastName', 'license', 'emailAddress', 'password'],
+  additionalProperties: false,
+};
 
 export class UserController {
   private static instance?: UserController;
 
   private constructor(
-    // private userService = UserService.getInstance(),
+    private userService = UserService.getInstance(),
     private rentalService = RentalService.getInstance()
   ) {}
 
@@ -21,13 +53,29 @@ export class UserController {
     return this.instance;
   }
 
-  public async delete(req: Request, res: Response): Promise<void> {
-    throw new Error('Not yet implemented: UserController.delete');
+  // send users to Database
+  public async register(req: Request, res: Response): Promise<void> {
+    // Validated by middleware
+    const { firstName, lastName, license, emailAddress, password } =
+      req.body as NewUserData;
+
+    try {
+      await this.userService.register(
+        firstName,
+        lastName,
+        license,
+        emailAddress,
+        password
+      );
+
+      res.status(200).end();
+    } catch (error) {
+      ServerError.respond(error, res);
+    }
   }
 
-  // send users to Database
-  public async save(req: Request, res: Response): Promise<void> {
-    throw new Error('Not yet implemented: UserController.save');
+  public async delete(req: Request, res: Response): Promise<void> {
+    throw new Error('Not yet implemented: UserController.delete');
   }
 
   /**

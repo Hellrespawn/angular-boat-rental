@@ -1,6 +1,6 @@
 import { UserDao } from '../database/user.dao';
-import { UserModel } from '../database/user.model';
 import { User } from '../model/user';
+import { ServerError } from '../util/error';
 
 export class UserService {
   private static instance?: UserService;
@@ -17,21 +17,19 @@ export class UserService {
     return this.instance;
   }
 
-  public async getByEmail(email: string): Promise<User | null> {
-    return this.userDao.getByEmail(email);
-  }
-
-  public async getById(id: number): Promise<User | null> {
-    return this.userDao.getById(id);
-  }
-
-  public async save(
+  public async register(
     firstName: string,
     lastName: string,
     license: boolean,
     emailAddress: string,
     password: string
   ): Promise<void> {
+    if (await this.checkEmailExists(emailAddress)) {
+      throw new ServerError(
+        'There is already a user with this e-mail address!'
+      );
+    }
+
     const user = await User.create(
       firstName,
       lastName,
@@ -45,8 +43,16 @@ export class UserService {
     await this.userDao.save(user);
   }
 
-  public async checkEmailExists(email: string): Promise<UserModel | null> {
-    return this.userDao.checkEmailExists(email);
+  public getByEmail(email: string): Promise<User | null> {
+    return this.userDao.getByEmail(email);
+  }
+
+  public getById(id: number): Promise<User | null> {
+    return this.userDao.getById(id);
+  }
+
+  public checkEmailExists(emailAddress: string): Promise<boolean> {
+    return this.userDao.checkEmailExists(emailAddress);
   }
 
   public async isNewUserAdmin(): Promise<boolean> {
@@ -54,7 +60,7 @@ export class UserService {
     return !userCount;
   }
 
-  public async delete(id: number): Promise<void> {
+  public delete(id: number): Promise<void> {
     return this.userDao.deleteUser(id);
   }
 }

@@ -1,15 +1,22 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import { Router } from 'express';
-import { UserController } from '../controller/user.controller';
+import { NEW_USER_SCHEMA, UserController } from '../controller/user.controller';
 import { requireAdminRights, requireAuthentication } from '../middleware/auth';
 import { validateIdInUrlParams } from '../middleware/validate';
+import { Validator } from '../util/validator';
+
+const NEW_USER_VALIDATOR = new Validator(NEW_USER_SCHEMA);
 
 export function getUserRouter(): Router {
   const userController = UserController.getInstance();
   const router = Router();
 
-  router.post('/register', userController.save.bind(userController));
+  router.post(
+    '/register',
+    NEW_USER_VALIDATOR.middleware(),
+    userController.register.bind(userController)
+  );
 
   router.get(
     '/rentals/next',

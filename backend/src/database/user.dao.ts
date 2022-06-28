@@ -25,15 +25,19 @@ export class UserDao {
   }
 
   public async getByEmail(emailAddress: string): Promise<User | null> {
-    throw new Error('Not yet implemented: UserDao.getByEmail');
+    const model = await UserModel.findOne({ where: { emailAddress } });
+
+    return model ? User.fromModel(model) : null;
   }
 
   public async deleteUser(id: number): Promise<void> {
     throw new Error('Not yet implemented: UserDao.delete');
   }
 
-  public async checkEmailExists(email: string): Promise<UserModel | null> {
-    throw new Error('Not yet implemented: UserDao.checkEmailExists');
+  public async checkEmailExists(emailAddress: string): Promise<boolean> {
+    const model = await this.getByEmail(emailAddress);
+
+    return Boolean(model);
   }
 
   public async count(): Promise<number> {

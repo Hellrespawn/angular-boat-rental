@@ -6,7 +6,7 @@ import {
 import { requireAuthentication } from '../middleware/auth';
 import { Validator } from '../util/validator';
 
-const newRentalValidator = new Validator(NEW_RENTAL_SCHEMA);
+const NEW_RENTAL_VALIDATOR = new Validator(NEW_RENTAL_SCHEMA);
 
 export function getRentalRouter(): Router {
   const rentalController = RentalController.getInstance();
@@ -15,7 +15,7 @@ export function getRentalRouter(): Router {
   router.post(
     '/',
     requireAuthentication,
-    newRentalValidator.middleware(),
+    NEW_RENTAL_VALIDATOR.middleware(),
     rentalController.addRental.bind(rentalController)
   );
 

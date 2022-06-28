@@ -10,9 +10,9 @@ export function stubSessionDao(sandbox: SinonSandbox): {
   deleteStub: SinonStub<[Session], Promise<boolean>>;
   saveStub: SinonStub<[Session], Promise<void>>;
 } {
-  const getStub = sandbox.stub(SessionDao.prototype, 'getSession');
-  const deleteStub = sandbox.stub(SessionDao.prototype, 'deleteSession');
-  const saveStub = sandbox.stub(SessionDao.prototype, 'saveSession');
+  const getStub = sandbox.stub(SessionDao.prototype, 'getBySessionId');
+  const deleteStub = sandbox.stub(SessionDao.prototype, 'delete');
+  const saveStub = sandbox.stub(SessionDao.prototype, 'save');
 
   return { getStub, deleteStub, saveStub };
 }
@@ -32,7 +32,7 @@ export async function stubUserService(
     true
   );
 
-  const stub = sandbox.stub(UserService.prototype, 'getUserByEmail');
+  const stub = sandbox.stub(UserService.prototype, 'getByEmail');
 
   stub.returns(Promise.resolve(null));
   stub.withArgs(email).returns(Promise.resolve(user));
