@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormControl, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  UntypedFormControl,
+  Validators,
+} from '@angular/forms';
 import { catchError, Observable, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
@@ -46,28 +50,28 @@ export class AddBoatComponent {
   };
 
   // formcontrols
-  public nameControl = new FormControl(null, [Validators.required]);
-  public priceControl = new FormControl(null, [
+  public nameControl = new UntypedFormControl(null, [Validators.required]);
+  public priceControl = new UntypedFormControl(null, [
     Validators.required,
     isGreaterThanZero,
   ]);
-  public lengthControl = new FormControl(null, [
+  public lengthControl = new UntypedFormControl(null, [
     Validators.required,
     isGreaterThanZero,
   ]);
-  public maxSpeedControl = new FormControl(null, [
+  public maxSpeedControl = new UntypedFormControl(null, [
     Validators.required,
     isGreaterThanZero,
   ]);
-  public registrationNumberControl = new FormControl(null, [
+  public registrationNumberControl = new UntypedFormControl(null, [
     Validators.required,
     isGreaterThanZero,
   ]);
-  public maxOccupantsControl = new FormControl(null, [
+  public maxOccupantsControl = new UntypedFormControl(null, [
     Validators.required,
     isGreaterThanZero,
   ]);
-  public sailAreaInM2Control = new FormControl(null, [
+  public sailAreaInM2Control = new UntypedFormControl(null, [
     Validators.required,
     isGreaterThanZero,
   ]);
@@ -139,7 +143,7 @@ export class AddBoatComponent {
    * makes an array of all the form controls
    * @returns an array of all the formcontrols
    */
-  private makeArrayOfFormControls(): Array<FormControl> {
+  private makeArrayOfFormControls(): Array<UntypedFormControl> {
     return [
       this.nameControl,
       this.priceControl,

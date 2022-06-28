@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { MessageService } from '../message.service';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
 
@@ -66,12 +66,12 @@ export class FaqComponent {
   }
 
   // input Formcontrol
-  public emailFormControl = new FormControl('', [
+  public emailFormControl = new UntypedFormControl('', [
     Validators.required,
     Validators.email,
   ]);
-  public nameFormControl = new FormControl('', [Validators.required]);
-  public textFormControl = new FormControl('', [Validators.required]);
+  public nameFormControl = new UntypedFormControl('', [Validators.required]);
+  public textFormControl = new UntypedFormControl('', [Validators.required]);
 
   public getMessages(): MessageData {
     let nameInp: string = this.nameInp.nativeElement.value;

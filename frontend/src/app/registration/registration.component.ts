@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { UntypedFormControl, Validators, FormGroup } from '@angular/forms';
 import { UserService } from '../user.service';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
 
@@ -61,11 +61,14 @@ export class RegistrationComponent {
   };
 
   // formcontrol email messages
-  public firstName = new FormControl(null, [Validators.required]);
-  public lastName = new FormControl(null, [Validators.required]);
-  public email = new FormControl(null, [Validators.required, Validators.email]);
-  public password = new FormControl(null, [Validators.required]);
-  public radioCheckBox = new FormControl(null, [Validators.required]);
+  public firstName = new UntypedFormControl(null, [Validators.required]);
+  public lastName = new UntypedFormControl(null, [Validators.required]);
+  public email = new UntypedFormControl(null, [
+    Validators.required,
+    Validators.email,
+  ]);
+  public password = new UntypedFormControl(null, [Validators.required]);
+  public radioCheckBox = new UntypedFormControl(null, [Validators.required]);
 
   public firstNameErrorMessage(): string {
     let errorMessage: string = '';

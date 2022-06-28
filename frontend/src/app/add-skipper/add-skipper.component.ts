@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { SnackBarService, SnackBarInput } from '../snack-bar.service';
 import { isGreaterThanZero as isGreaterThanZero } from '../add-boat/add-boat.component';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { SkipperService } from '../skipper.service';
@@ -40,9 +40,9 @@ export class AddSkipperComponent {
   };
 
   // all formcontrols
-  public nameControl = new FormControl(null, [Validators.required]);
-  public birthDateControl = new FormControl(null, [Validators.required]);
-  public priceControl = new FormControl(null, [
+  public nameControl = new UntypedFormControl(null, [Validators.required]);
+  public birthDateControl = new UntypedFormControl(null, [Validators.required]);
+  public priceControl = new UntypedFormControl(null, [
     Validators.required,
     isGreaterThanZero,
   ]);
@@ -78,7 +78,7 @@ export class AddSkipperComponent {
    * makes array of all form controls
    * @returns returns the array of all formcontrols
    */
-  private makeArrayOfAllFormControls(): Array<FormControl> {
+  private makeArrayOfAllFormControls(): Array<UntypedFormControl> {
     return [this.nameControl, this.priceControl, this.birthDateControl];
   }
 
