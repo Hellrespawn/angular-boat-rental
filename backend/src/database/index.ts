@@ -1,23 +1,13 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import mysql, { Connection } from 'mysql2/promise';
 
-import { SkipperModel } from './skipper.dao';
 import { BoatModel } from './boat.dao';
 import { RentalModel } from './rental.dao';
-import { MessageModel } from './message.dao';
-import { FineModel } from './fine.dao';
 import { SessionModel } from './session.dao';
 import { UserModel } from './user.dao';
+import { getEnvVar } from '../util/env';
 
-export const MODELS = [
-  SkipperModel,
-  BoatModel,
-  UserModel,
-  RentalModel,
-  MessageModel,
-  FineModel,
-  SessionModel,
-];
+export const MODELS = [BoatModel, UserModel, RentalModel, SessionModel];
 
 /**
  * Initialize Sequelize with environment variables.
@@ -28,18 +18,15 @@ export const MODELS = [
 export async function initSequelize(
   options?: SequelizeOptions
 ): Promise<Sequelize> {
-  const sequelize = new Sequelize(
-    process.env.DB_NAME ?? 'dogstack-het-vrolijke-avontuur',
-    process.env.DB_USER ?? 'root',
-    process.env.DB_PASSWORD ?? 'password',
-    {
-      dialect: 'mysql',
-      host: process.env.DB_HOST ?? 'localhost',
-      port: parseInt(process.env.DB_PORT ?? '3306'),
-      omitNull: true,
-      ...options,
-    }
-  );
+  const { DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = getEnvVar();
+
+  const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
+    dialect: 'mysql',
+    host: DB_HOST,
+    port: +DB_PORT,
+    omitNull: true,
+    ...options,
+  });
 
   sequelize.addModels(MODELS);
 
@@ -51,11 +38,12 @@ export async function initSequelize(
  * @returns Connection
  */
 async function createConnection(): Promise<Connection> {
+  const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT } = getEnvVar();
   return mysql.createConnection({
-    host: process.env.DB_HOST ?? 'localhost',
-    port: parseInt(process.env.DB_PORT ?? '3306'),
-    user: process.env.DB_USER ?? 'root',
-    password: process.env.DB_PASSWORD ?? 'password',
+    host: DB_HOST,
+    port: +DB_PORT,
+    user: DB_USER,
+    password: DB_PASSWORD,
   });
 }
 
@@ -65,20 +53,18 @@ async function createConnection(): Promise<Connection> {
  */
 export async function createDatabase(): Promise<void> {
   const connection = await createConnection();
-  await connection.query(
-    `CREATE DATABASE IF NOT EXISTS \`${
-      process.env.DB_NAME ?? 'dogstack-het-vrolijke-avontuur'
-    }\`;`
-  );
+
+  const { DB_NAME } = getEnvVar();
+
+  await connection.query(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;`);
   connection.destroy();
 }
 
 export async function dropDatabase(): Promise<void> {
   const connection = await createConnection();
-  await connection.query(
-    `DROP DATABASE IF EXISTS \`${
-      process.env.DB_NAME ?? 'dogstack-het-vrolijke-avontuur'
-    }\`;`
-  );
+
+  const { DB_NAME } = getEnvVar();
+
+  await connection.query(`DROP DATABASE IF EXISTS \`${DB_NAME}\`;`);
   connection.destroy();
 }
