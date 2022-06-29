@@ -1,0 +1,34 @@
+@use '@angular/material' as mat;
+@use '/src/custom-theme.scss' as theme;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  text-align: center;
+}
+
+p {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 2em;
+}
+
+#inputs,
+#buttons {
+  width: 100%;
+}
+
+#buttons {
+  display: flex;
+  justify-content: center;
+}

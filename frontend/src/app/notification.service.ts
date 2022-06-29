@@ -5,10 +5,12 @@ import { Injectable } from '@angular/core';
 })
 export class NotificationService {
   public notifySuccess(message: string): void {
-    throw new Error('NotificationService.notifySuccess not implemented!');
+    console.log('NotificationService.notifySuccess not implemented!');
+    console.log(message);
   }
 
   public notifyError(message: string): void {
-    throw new Error('NotificationService.notifyError not implemented!');
+    console.log('NotificationService.notifyError not implemented!');
+    console.log(message);
   }
 }

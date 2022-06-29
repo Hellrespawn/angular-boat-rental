@@ -9,6 +9,7 @@ import { UserDashboardComponent } from './user/dashboard/dashboard.component';
 import { UserComponent } from './user/user.component';
 import { UserRentalsComponent } from './user/rentals/rentals.component';
 import { UserSettingsComponent } from './user/settings/settings.component';
+import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -22,7 +23,7 @@ const routes: Routes = [
       { path: 'settings', component: UserSettingsComponent },
     ],
   },
-  // { path: 'registreer', component: RegistrationComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'rent', component: BookingComponent },
   { path: 'rent/check/:boatId', component: CheckComponent },

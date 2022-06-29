@@ -1,0 +1,93 @@
+<form [formGroup]="registrationForm">
+  <div id="inputs" class="custom-card vertical with-padding">
+    <h2>Register</h2>
+    <mat-form-field class="form-field" appearance="fill">
+      <mat-label>Email Address</mat-label>
+      <input
+        type="email"
+        matInput
+        placeholder="Email Address"
+        id="emailAddress"
+        formControlName="emailAddress"
+      />
+      <mat-error *ngIf="emailAddress.invalid">{{ getEmailError() }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-field" appearance="fill">
+      <mat-label>Password</mat-label>
+      <input
+        type="password"
+        matInput
+        placeholder="Password"
+        id="password"
+        formControlName="password"
+      />
+      <mat-error *ngIf="password.invalid">{{ getPasswordError() }}</mat-error>
+    </mat-form-field>
+
+    <p>
+      Password must be at least {{ minLength }} characters, with
+      {{ minUppercase }} uppercase letter{{ minUppercase > 1 ? 's' : '' }} and
+      {{ minNumbers }} number{{ minNumbers > 1 ? 's' : '' }}.
+    </p>
+
+    <mat-form-field class="form-field" appearance="fill">
+      <mat-label>Repeat Password</mat-label>
+      <input
+        type="password"
+        matInput
+        placeholder="Repeat Password"
+        id="repeatPassword"
+        formControlName="repeatPassword"
+      />
+      <mat-error *ngIf="repeatPassword.invalid">{{
+        getRepeatPasswordError()
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-field" appearance="fill">
+      <mat-label>First Name</mat-label>
+      <input
+        type="firstName"
+        matInput
+        placeholder="First Name"
+        id="firstName"
+        formControlName="firstName"
+      />
+      <mat-error *ngIf="firstName.invalid">{{
+        getRequiredError(firstName)
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-field" appearance="fill">
+      <mat-label>Last Name</mat-label>
+      <input
+        type="lastName"
+        matInput
+        placeholder="Last Name"
+        id="lastName"
+        formControlName="lastName"
+      />
+      <mat-error *ngIf="lastName.invalid">{{
+        getRequiredError(lastName)
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-slide-toggle formControlName="age" (change)="enableAgeError()"
+      >I declare that I am at least 18 years of age
+    </mat-slide-toggle>
+
+    <mat-error *ngIf="showAgeError">
+      You must be at least 18 to use this site!
+    </mat-error>
+
+    <mat-slide-toggle formControlName="license"
+      >I declare that I have a license
+    </mat-slide-toggle>
+  </div>
+  <div id="buttons" class="custom-card with-padding accent">
+    <button mat-raised-button color="primary" id="login" (click)="register()">
+      Register!
+    </button>
+  </div>
+</form>

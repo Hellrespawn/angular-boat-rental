@@ -23,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { LoginComponent } from './login/login.component';
 
 import { BookingComponent } from './booking/booking.component';
@@ -48,6 +49,7 @@ import { UserRentalsComponent } from './user/rentals/rentals.component';
 import { UserSettingsComponent } from './user/settings/settings.component';
 
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     UserComponent,
     UserRentalsComponent,
     UserSettingsComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -110,6 +113,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MatCardModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    MatSlideToggleModule,
   ],
   bootstrap: [AppComponent],
 })

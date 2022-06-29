@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import {
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SessionService } from '../session.service';
+
+interface LoginForm {
+  email: FormControl<string>;
+  password: FormControl<string>;
+}
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -18,9 +20,15 @@ export class LoginComponent {
     private sessionService: SessionService
   ) {}
 
-  public loginForm = new UntypedFormGroup({
-    email: new UntypedFormControl('', [Validators.required, Validators.email]),
-    password: new UntypedFormControl('', [Validators.required]),
+  public loginForm = new FormGroup<LoginForm>({
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
+    password: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
   });
 
   public email = this.loginForm.get('email')!;
@@ -32,8 +40,8 @@ export class LoginComponent {
   public login(): void {
     if (this.loginForm.valid) {
       this.sessionService.login(
-        this.loginForm.value.email,
-        this.loginForm.value.password
+        this.loginForm.value.email!,
+        this.loginForm.value.password!
       );
 
       const from = this.route.snapshot.queryParamMap.get('from');
