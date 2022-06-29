@@ -66,7 +66,7 @@ export class BoatDao {
     });
   }
 
-  public async delete(id: number): Promise<void> {
+  public delete(id: number): Promise<void> {
     throw new Error('Not yet implemented: BoatDao.delete.');
   }
 }

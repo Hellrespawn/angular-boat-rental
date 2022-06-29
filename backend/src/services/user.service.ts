@@ -60,7 +60,7 @@ export class UserService {
     return !userCount;
   }
 
-  public delete(id: number): Promise<void> {
-    return this.userDao.deleteUser(id);
+  public delete(id: number): Promise<number> {
+    return this.userDao.delete(id);
   }
 }

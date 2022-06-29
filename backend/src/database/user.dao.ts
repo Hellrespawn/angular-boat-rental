@@ -17,11 +17,25 @@ export class UserDao {
   }
 
   public async save(user: User): Promise<void> {
-    throw new Error('Not yet implemented: UserDao.save');
+    await UserModel.create({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      license: user.license,
+      emailAddress: user.emailAddress,
+      password: user.password,
+      blocked: user.blocked,
+      admin: user.admin,
+    });
+  }
+
+  public delete(id: number): Promise<number> {
+    return UserModel.destroy({ where: { id } });
   }
 
   public async getById(id: number): Promise<User | null> {
-    throw new Error('Not yet implemented: UserDao.getById');
+    const model = await UserModel.findOne({ where: { id } });
+
+    return model ? User.fromModel(model) : null;
   }
 
   public async getByEmail(emailAddress: string): Promise<User | null> {
@@ -30,17 +44,13 @@ export class UserDao {
     return model ? User.fromModel(model) : null;
   }
 
-  public async deleteUser(id: number): Promise<void> {
-    throw new Error('Not yet implemented: UserDao.delete');
-  }
-
   public async checkEmailExists(emailAddress: string): Promise<boolean> {
     const model = await this.getByEmail(emailAddress);
 
     return Boolean(model);
   }
 
-  public async count(): Promise<number> {
+  public count(): Promise<number> {
     return UserModel.count();
   }
 }

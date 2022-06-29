@@ -12,9 +12,7 @@ export class RentalService {
     private boatService = BoatService.getInstance(),
     private userService = UserService.getInstance(),
     private rentalDao = RentalDao.getInstance()
-  ) {
-    // Intentionally left blank
-  }
+  ) {}
 
   public static getInstance(): RentalService {
     if (!this.instance) {

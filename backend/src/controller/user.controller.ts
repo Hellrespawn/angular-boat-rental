@@ -75,7 +75,13 @@ export class UserController {
   }
 
   public async delete(req: Request, res: Response): Promise<void> {
-    throw new Error('Not yet implemented: UserController.delete');
+    const id = parseInt(req.params.id);
+
+    try {
+      await this.userService.delete(id);
+    } catch (error) {
+      ServerError.respond(error, res);
+    }
   }
 
   /**
