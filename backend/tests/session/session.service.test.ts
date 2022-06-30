@@ -5,8 +5,8 @@ import { expect } from 'chai';
 import { SessionService } from '../../src/services/session.service';
 import { SessionDao } from '../../src/database/session.dao';
 import { Session } from '../../src/model/session';
-import { stubSessionDao, stubUserService } from '.';
-import { TEST_USER } from '../user';
+import { stubUserService } from '.';
+import { stubSessionDao, TEST_USER } from '..';
 
 const SANDBOX = sinon.createSandbox();
 

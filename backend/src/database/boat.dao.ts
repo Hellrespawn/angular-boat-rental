@@ -75,6 +75,6 @@ export class BoatDao {
   public async checkRegistrationNumberExists(
     registrationNumber: number
   ): Promise<boolean> {
-    return !(await BoatModel.count({ where: { registrationNumber } }));
+    return Boolean(await BoatModel.count({ where: { registrationNumber } }));
   }
 }

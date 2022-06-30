@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { SinonSandbox, SinonStub } from 'sinon';
-import { BoatDao } from '../../src/database/boat.dao';
 import { RentalDao } from '../../src/database/rental.dao';
-import { UserDao } from '../../src/database/user.dao';
-import { Boat, MotorBoat } from '../../src/model/boat';
+import { MotorBoat } from '../../src/model/boat';
 import { Rental } from '../../src/model/rental';
 import { User } from '../../src/model/user';
 
@@ -25,24 +23,6 @@ export const TEST_RENTAL = new Rental(
   new Date('2022-01-10'),
   false
 );
-
-export function stubUserDao(
-  sandbox: SinonSandbox,
-  defaultValue?: User
-): {
-  userDaoGetByIdStub: SinonStub<
-    [registrationNumber: number],
-    Promise<User | null>
-  >;
-} {
-  const userDaoGetByIdStub = sandbox.stub(UserDao.prototype, 'getById');
-
-  if (defaultValue) {
-    userDaoGetByIdStub.returns(Promise.resolve(defaultValue));
-  }
-
-  return { userDaoGetByIdStub };
-}
 
 export function stubRentalDao(
   sandbox: SinonSandbox,

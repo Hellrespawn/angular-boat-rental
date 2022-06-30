@@ -2,10 +2,10 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import request from 'supertest';
-import { stubSessionDao, stubUserService } from '.';
+import { stubUserService } from '.';
+import { stubSessionDao, TEST_USER } from '..';
 import { User } from '../../src/model/user';
 import { app } from '../../src/server';
-import { TEST_USER } from '../user';
 
 const SANDBOX = sinon.createSandbox();
 

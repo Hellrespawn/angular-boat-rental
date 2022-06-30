@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { expect } from 'chai';
 import sinon, { SinonStub } from 'sinon';
-import { stubRentalDao, stubUserDao, TEST_BOAT, TEST_RENTAL } from '.';
-import { stubBoatDao } from '..';
+import { stubRentalDao, TEST_BOAT, TEST_RENTAL } from '.';
+import { stubBoatDao, stubUserDao } from '..';
 import { Boat } from '../../src/model/boat';
 import { Rental } from '../../src/model/rental';
 import { User } from '../../src/model/user';
@@ -28,7 +28,10 @@ describe('Test RentalService', () => {
       TEST_RENTAL,
     ]));
     ({ boatDaoGetByRegStub } = stubBoatDao(SANDBOX, TEST_BOAT));
-    ({ userDaoGetByIdStub } = stubUserDao(SANDBOX, {} as unknown as User));
+    ({ getByIdStub: userDaoGetByIdStub } = stubUserDao(
+      SANDBOX,
+      {} as unknown as User
+    ));
     service = RentalService.getInstance();
   });
 

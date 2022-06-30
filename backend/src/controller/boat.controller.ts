@@ -185,6 +185,8 @@ export class BoatController {
         maxSpeedInKmH,
         sailAreaInM2
       );
+
+      res.status(200).end();
     } catch (error) {
       ServerError.respond(error, res);
     }
@@ -195,6 +197,8 @@ export class BoatController {
 
     try {
       await this.boatService.delete(id);
+
+      res.status(200).end();
     } catch (error) {
       ServerError.respond(error, res);
     }

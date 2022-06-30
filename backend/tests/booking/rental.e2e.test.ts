@@ -1,28 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import request from 'supertest';
-import sinon, { SinonSandbox } from 'sinon';
-import { stubRentalDao, stubUserDao, TEST_BOAT, TEST_RENTAL } from '.';
+import sinon from 'sinon';
+import { stubRentalDao, TEST_BOAT, TEST_RENTAL } from '.';
 import { User } from '../../src/model/user';
-import { SessionService } from '../../src/services/session.service';
-import { Session } from '../../src/model/session';
 import { app } from '../../src/server';
 import { expect } from 'chai';
-import { stubBoatDao } from '..';
+import { stubAuth, stubBoatDao, stubUserDao, TEST_USER } from '..';
 
 const SANDBOX = sinon.createSandbox();
-
-function stubAuth(sandbox: SinonSandbox): void {
-  const stub = sandbox.stub(SessionService.prototype, 'getBySessionId');
-
-  stub.returns(Promise.resolve({ user: { id: 1 } } as unknown as Session));
-}
 
 describe('Test Rental & Booking end-to-end', () => {
   beforeEach(async () => {
     stubRentalDao(SANDBOX, [TEST_RENTAL]);
     stubBoatDao(SANDBOX, TEST_BOAT);
-    stubUserDao(SANDBOX, {} as unknown as User);
-    stubAuth(SANDBOX);
+    stubUserDao(SANDBOX, TEST_USER as User);
+    stubAuth(SANDBOX, TEST_USER as User);
   });
 
   afterEach(() => {
@@ -31,6 +23,7 @@ describe('Test Rental & Booking end-to-end', () => {
 
   describe('GET /users/rentals/next', () => {
     const endpoint = '/users/rentals/next';
+
     it('Responds with an error if there is no authenticated user', async () => {
       const res = await request(app).get(endpoint).expect(401);
       expect(res.body).to.have.property('error', 'Invalid credentials');

@@ -2,7 +2,7 @@
 import { expect } from 'chai';
 import sinon, { SinonStub } from 'sinon';
 import request from 'supertest';
-import { stubUserDao, TEST_USER } from '.';
+import { stubUserDao, TEST_USER } from '..';
 import { type User } from '../../src/model/user';
 import { app } from '../../src/server';
 

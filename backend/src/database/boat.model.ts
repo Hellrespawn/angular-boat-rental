@@ -48,11 +48,13 @@ export class BoatModel extends Model {
    * @returns `Boat`
    */
   public toBoat(): Boat {
+    const imageRoute = `/images/${this.imageRoute}`;
+
     if (this.boatType === 'motor') {
       return new MotorBoat(
         this.registrationNumber,
         this.pricePerDay,
-        this.imageRoute,
+        imageRoute,
         this.lengthInM,
         this.maxOccupants,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -64,7 +66,7 @@ export class BoatModel extends Model {
     return new SailBoat(
       this.registrationNumber,
       this.pricePerDay,
-      this.imageRoute,
+      imageRoute,
       this.lengthInM,
       this.maxOccupants,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

@@ -50,7 +50,7 @@ async function insertMockBoats(): Promise<void> {
       return BoatModel.create({
         name,
         imageRoute,
-        registrationNumber: randomInt(1, 10000),
+        registrationNumber: (i + 1) * 1000,
         pricePerDay: randomInt(200, 500),
         skipperRequired: !(i % 3),
         maintenance: false,
@@ -108,7 +108,7 @@ async function insertMockRental(
   dateEnd.setDate(dateEnd.getDate() + randomInt(4, 8));
 
   await RentalModel.create({
-    boatId: boat.id,
+    boatRegistrationNumber: boat.registrationNumber,
     userId: user.id,
     dateStart,
     dateEnd,

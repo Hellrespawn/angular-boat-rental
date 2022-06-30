@@ -2,7 +2,7 @@
 import sinon, { SinonStub } from 'sinon';
 import { expect } from 'chai';
 import { User } from '../../src/model/user';
-import { stubUserDao, TEST_USER } from '.';
+import { stubUserDao, TEST_USER } from '..';
 import { UserService } from '../../src/services/user.service';
 
 const SANDBOX = sinon.createSandbox();

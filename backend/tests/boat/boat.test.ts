@@ -5,7 +5,7 @@ import { Boat, MotorBoat, SailBoat } from '../../src/model/boat';
 
 const SANDBOX = sinon.createSandbox();
 
-describe.only('Unit test Boat, SailBoat, MotorBoat', () => {
+describe('Unit test Boat, SailBoat, MotorBoat', () => {
   let boatDaoCheckRegStub: SinonStub<
     [registrationNumber: number],
     Promise<boolean>
