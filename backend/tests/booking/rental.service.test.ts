@@ -19,14 +19,20 @@ describe('Test RentalService', () => {
   let service: RentalService;
 
   let saveRentalStub: SinonStub<[rental: Rental], Promise<number>>;
-  let boatDaoGetByIdStub: SinonStub<[id: number], Promise<Boat | null>>;
-  let userDaoGetByIdStub: SinonStub<[id: number], Promise<User | null>>;
+  let boatDaoGetByRegStub: SinonStub<
+    [registrationNumber: number],
+    Promise<Boat | null>
+  >;
+  let userDaoGetByIdStub: SinonStub<
+    [registrationNumber: number],
+    Promise<User | null>
+  >;
 
   beforeEach(async () => {
     ({ rentalDaoSaveRentalStub: saveRentalStub } = stubRentalDao(SANDBOX, [
       TEST_RENTAL,
     ]));
-    ({ boatDaoGetByIdStub } = stubBoatDao(SANDBOX, TEST_BOAT));
+    ({ boatDaoGetByRegStub } = stubBoatDao(SANDBOX, TEST_BOAT));
     ({ userDaoGetByIdStub } = stubUserDao(SANDBOX, {} as unknown as User));
     service = RentalService.getInstance();
   });
@@ -48,7 +54,7 @@ describe('Test RentalService', () => {
     });
 
     it('Rejects an invalid boat', async () => {
-      boatDaoGetByIdStub.returns(Promise.resolve(null));
+      boatDaoGetByRegStub.returns(Promise.resolve(null));
 
       try {
         await service.addRental(

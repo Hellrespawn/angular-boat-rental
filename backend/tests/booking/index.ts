@@ -9,13 +9,12 @@ import { User } from '../../src/model/user';
 
 export const TEST_BOAT = new MotorBoat(
   1,
-  'testboot',
-  1234,
   1234,
   '',
   1234,
   1234,
-  1234
+  1234,
+  'Test Boat'
 );
 
 export const TEST_RENTAL = new Rental(
@@ -32,27 +31,38 @@ export function stubBoatDao(
   defaultValue?: Boat
 ): {
   boatDaoGetBoatsStub: SinonStub<[], Promise<Boat[]>>;
-  boatDaoGetByIdStub: SinonStub<[id: number], Promise<Boat | null>>;
+  boatDaoGetByRegStub: SinonStub<
+    [registrationNumber: number],
+    Promise<Boat | null>
+  >;
 } {
   const boatDaoGetBoatsStub = sandbox.stub(BoatDao.prototype, 'getAll');
 
   boatDaoGetBoatsStub.returns(Promise.resolve([]));
 
-  const boatDaoGetByIdStub = sandbox.stub(BoatDao.prototype, 'getById');
+  const boatDaoGetByRegStub = sandbox.stub(
+    BoatDao.prototype,
+    'getByRegistrationNumber'
+  );
 
   if (defaultValue) {
-    boatDaoGetByIdStub
-      .withArgs(defaultValue.id)
+    boatDaoGetByRegStub
+      .withArgs(defaultValue.registrationNumber)
       .returns(Promise.resolve(defaultValue));
   }
 
-  return { boatDaoGetBoatsStub, boatDaoGetByIdStub };
+  return { boatDaoGetBoatsStub, boatDaoGetByRegStub };
 }
 
 export function stubUserDao(
   sandbox: SinonSandbox,
   defaultValue?: User
-): { userDaoGetByIdStub: SinonStub<[id: number], Promise<User | null>> } {
+): {
+  userDaoGetByIdStub: SinonStub<
+    [registrationNumber: number],
+    Promise<User | null>
+  >;
+} {
   const userDaoGetByIdStub = sandbox.stub(UserDao.prototype, 'getById');
 
   if (defaultValue) {
@@ -66,26 +76,26 @@ export function stubRentalDao(
   sandbox: SinonSandbox,
   defaultValue?: Rental[]
 ): {
-  rentalDaoGetRentalsByBoatIdStub: SinonStub<
-    [boatId: number],
+  rentalDaoGetRentalsByBoatRegStub: SinonStub<
+    [boatregistrationNumber: number],
     Promise<Rental[]>
   >;
   rentalDaoSaveRentalStub: SinonStub<[rental: Rental], Promise<number>>;
   rentalDaoGetUpcomingRentalsByUserIdStub: SinonStub<
-    [id: number],
+    [registrationNumber: number],
     Promise<Rental[]>
   >;
 } {
   const saveRentalStub = sandbox.stub(RentalDao.prototype, 'saveRental');
   saveRentalStub.returns(Promise.resolve(1));
 
-  const getRentalsByBoatIdStub = sandbox.stub(
+  const getRentalsByBoatRegStub = sandbox.stub(
     RentalDao.prototype,
-    'getRentalsByBoatId'
+    'getRentalsByBoatRegistrationNumber'
   );
 
   if (defaultValue) {
-    getRentalsByBoatIdStub.returns(Promise.resolve(defaultValue));
+    getRentalsByBoatRegStub.returns(Promise.resolve(defaultValue));
   }
 
   const getUpcomingRentalsByUserIdStub = sandbox.stub(
@@ -100,7 +110,7 @@ export function stubRentalDao(
   }
 
   return {
-    rentalDaoGetRentalsByBoatIdStub: getRentalsByBoatIdStub,
+    rentalDaoGetRentalsByBoatRegStub: getRentalsByBoatRegStub,
     rentalDaoGetUpcomingRentalsByUserIdStub: getUpcomingRentalsByUserIdStub,
     rentalDaoSaveRentalStub: saveRentalStub,
   };

@@ -27,9 +27,11 @@ export class BoatDao {
     return models.map((model: BoatModel) => model.toBoat());
   }
 
-  public async getById(id: number): Promise<Boat | null> {
+  public async getByRegistrationNumber(
+    registrationNumber: number
+  ): Promise<Boat | null> {
     const boatModel = await BoatModel.findOne({
-      where: { id },
+      where: { registrationNumber },
       include: [RentalModel],
     });
 

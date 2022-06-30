@@ -23,12 +23,14 @@ export class RentalDao {
   /**
    * Gets all rentals associated with boatId
    *
-   * @param boatId
+   * @param boatRegistrationNumber
    * @returns array of Rentals
    */
-  public async getRentalsByBoatId(boatId: number): Promise<Rental[]> {
+  public async getRentalsByBoatRegistrationNumber(
+    boatRegistrationNumber: number
+  ): Promise<Rental[]> {
     const models = await RentalModel.findAll({
-      where: { boatId },
+      where: { boatRegistrationNumber },
       include: [BoatModel, UserModel],
     });
 
@@ -85,7 +87,7 @@ export class RentalDao {
    */
   public async saveRental(rental: Rental): Promise<number> {
     const model = await RentalModel.create({
-      boatId: rental.boat.id,
+      boatRegistrationNumber: rental.boat.registrationNumber,
       userId: rental.user.id,
       dateStart: rental.dateStart,
       dateEnd: rental.dateEnd,

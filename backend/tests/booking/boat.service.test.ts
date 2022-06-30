@@ -19,9 +19,8 @@ describe('Test BoatService', () => {
 
   beforeEach(() => {
     ({ boatDaoGetBoatsStub } = stubBoatDao(SANDBOX, TEST_BOAT));
-    ({ rentalDaoGetRentalsByBoatIdStub } = stubRentalDao(SANDBOX, [
-      TEST_RENTAL,
-    ]));
+    ({ rentalDaoGetRentalsByBoatRegStub: rentalDaoGetRentalsByBoatIdStub } =
+      stubRentalDao(SANDBOX, [TEST_RENTAL]));
 
     service = BoatService.getInstance();
   });
@@ -66,7 +65,7 @@ describe('Test BoatService', () => {
 
       const expected = [
         {
-          id: TEST_BOAT.id,
+          registrationNumber: TEST_BOAT.registrationNumber,
           name: TEST_BOAT.name,
           imageRoute: TEST_BOAT.imageRoute,
           requirements: 'license',
@@ -88,7 +87,7 @@ describe('Test BoatService', () => {
 
       const expected = [
         {
-          id: TEST_BOAT.id,
+          registrationNumber: TEST_BOAT.registrationNumber,
           name: TEST_BOAT.name,
           imageRoute: TEST_BOAT.imageRoute,
           requirements: 'license',
@@ -117,14 +116,13 @@ describe('Test BoatService', () => {
   describe('Test BoatService.getBoatDetailData()', () => {
     it('Correctly transforms Boat to BoatDetailData', async () => {
       const expected = {
-        id: TEST_BOAT.id,
+        registrationNumber: TEST_BOAT.registrationNumber,
         name: TEST_BOAT.name,
         imageRoute: TEST_BOAT.imageRoute,
         requirements: 'license',
         maxOccupants: TEST_BOAT.maxOccupants,
         boatType: 'motor',
         maxSpeedInKmH: TEST_BOAT.maxSpeedInKmH,
-        registrationNumber: TEST_BOAT.registrationNumber,
         pricePerDay: TEST_BOAT.pricePerDay,
         lengthInM: TEST_BOAT.lengthInM,
       };

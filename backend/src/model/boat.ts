@@ -9,36 +9,24 @@ export abstract class Boat {
   public abstract readonly boatType: BoatType;
 
   constructor(
-    public readonly id: number,
-    public readonly name: string,
     public readonly registrationNumber: number,
     public readonly pricePerDay: number,
     public readonly imageRoute: string,
     public readonly lengthInM: number,
-    public readonly maxOccupants: number
+    public readonly maxOccupants: number,
+    public readonly name?: string
   ) {
-    if (!this.isHigherThenZero(registrationNumber)) {
-      throw new ServerError('invalid registration number');
-    }
-    if (!this.isHigherThenZero(pricePerDay)) {
-      throw new ServerError('invalid price per day');
-    }
-    if (!this.isHigherThenZero(lengthInM)) {
-      throw new ServerError('invalid length');
-    }
-    if (!this.isHigherThenZero(maxOccupants)) {
-      throw new ServerError('invalid maximum number of occupants');
-    }
+    // TODO Validate new Boat
   }
 
   public static createBoat(
-    name: string,
     registrationNumber: number,
     pricePerDay: number,
     imageRoute: string,
     lengthInM: number,
     maxOccupants: number,
     boatType: BoatType,
+    name?: string,
     maxSpeedInKmH?: number,
     sailAreaInM2?: number
   ): Boat {
@@ -48,14 +36,13 @@ export abstract class Boat {
       }
 
       return new MotorBoat(
-        -1,
-        name,
         registrationNumber,
         pricePerDay,
         imageRoute,
         lengthInM,
         maxOccupants,
-        maxSpeedInKmH
+        maxSpeedInKmH,
+        name
       );
     }
 
@@ -64,19 +51,14 @@ export abstract class Boat {
     }
 
     return new SailBoat(
-      -1,
-      name,
       registrationNumber,
       pricePerDay,
       imageRoute,
       lengthInM,
       maxOccupants,
-      sailAreaInM2
+      sailAreaInM2,
+      name
     );
-  }
-
-  public isHigherThenZero(value: number): boolean {
-    return value > 0;
   }
 
   /**
@@ -84,7 +66,9 @@ export abstract class Boat {
    * @returns array of rentals
    */
   public getRentals(): Promise<Rental[]> {
-    return RentalDao.getInstance().getRentalsByBoatId(this.id);
+    return RentalDao.getInstance().getRentalsByBoatRegistrationNumber(
+      this.registrationNumber
+    );
   }
 
   /**
@@ -137,32 +121,24 @@ export abstract class Boat {
 export class MotorBoat extends Boat {
   public readonly boatType = 'motor';
 
-  public readonly maxSpeedInKmH: number;
-
   constructor(
-    id: number,
-    name: string,
     registrationNumber: number,
     pricePerDay: number,
     imageRoute: string,
     lengthInM: number,
     maxOccupants: number,
-    maxSpeedInKmH: number
+    public readonly maxSpeedInKmH: number,
+    name?: string
   ) {
     super(
-      id,
-      name,
       registrationNumber,
       pricePerDay,
       imageRoute,
       lengthInM,
-      maxOccupants
+      maxOccupants,
+      name
     );
-    if (this.isHigherThenZero(maxSpeedInKmH)) {
-      this.maxSpeedInKmH = maxSpeedInKmH;
-    } else {
-      throw new ServerError('invalid maximum speed');
-    }
+    // TODO Validate new MotorBoat
   }
 
   public getBoatData(): BoatData {
@@ -182,33 +158,24 @@ export class MotorBoat extends Boat {
 
 export class SailBoat extends Boat {
   public readonly boatType = 'sail';
-
-  public readonly sailAreaInM2: number;
-
   constructor(
-    id: number,
-    name: string,
     registrationNumber: number,
     pricePerDay: number,
     imageRoute: string,
     lengthInM: number,
     maxOccupants: number,
-    sailAreaInM2: number
+    public readonly sailAreaInM2: number,
+    name?: string
   ) {
     super(
-      id,
-      name,
       registrationNumber,
       pricePerDay,
       imageRoute,
       lengthInM,
-      maxOccupants
+      maxOccupants,
+      name
     );
-    if (this.isHigherThenZero(sailAreaInM2)) {
-      this.sailAreaInM2 = sailAreaInM2;
-    } else {
-      throw new ServerError('invalid sail area');
-    }
+    // TODO Validate new SailBoat
   }
 
   public getBoatData(): BoatData {

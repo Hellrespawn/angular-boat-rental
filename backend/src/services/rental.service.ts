@@ -38,7 +38,7 @@ export class RentalService {
     dateEnd: Date
   ): Promise<Rental> {
     // Check boat exists
-    const boat = await this.boatService.getById(boatId);
+    const boat = await this.boatService.getByRegistrationNumber(boatId);
 
     if (!boat) {
       throw new ServerError(`No boat with id ${boatId}.`);

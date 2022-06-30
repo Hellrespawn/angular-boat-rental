@@ -7,18 +7,17 @@ import { BoatRequirements, BoatType } from '../database/boat.model';
  * type which is required by the boat rental overview page
  */
 export interface BoatOverviewData {
-  id: number;
+  registrationNumber: number;
   imageRoute: string;
-  name: string;
   requirements: BoatRequirements;
   boatType: BoatType;
   maxOccupants: number;
+  name?: string;
 }
 /**
  * type which contains additional information about the boat
  */
 export type BoatDetailData = BoatOverviewData & {
-  registrationNumber: number;
   pricePerDay: number;
   lengthInM: number;
   maxSpeedInKmH?: number;
@@ -43,8 +42,10 @@ export class BoatService {
   /**
    * Get Boat by id
    */
-  public getById(id: number): Promise<Boat | null> {
-    return this.boatDao.getById(id);
+  public getByRegistrationNumber(
+    registrationNumber: number
+  ): Promise<Boat | null> {
+    return this.boatDao.getByRegistrationNumber(registrationNumber);
   }
 
   /**
@@ -58,11 +59,13 @@ export class BoatService {
   /**
    * Gets BoatDetailData for boat.
    *
-   * @param id the id of the desired boat
+   * @param registrationNumber the id of the desired boat
    * @returns A type intersection of BoatOverviewData and BoatDetailData
    */
-  public async getBoatDetailData(id: number): Promise<BoatDetailData | null> {
-    const boat = await this.getById(id);
+  public async getBoatDetailData(
+    registrationNumber: number
+  ): Promise<BoatDetailData | null> {
+    const boat = await this.getByRegistrationNumber(registrationNumber);
 
     if (boat) {
       const overviewData = this.boatInstanceToOverviewData(boat);
@@ -120,25 +123,25 @@ export class BoatService {
   }
 
   public save(
-    name: string,
     registrationNumber: number,
     pricePerDay: number,
     imageRoute: string,
     lengthInM: number,
     maxOccupants: number,
     boatType: BoatType,
+    name?: string,
     maxSpeedInKmH?: number,
     sailAreaInM2?: number
   ): Promise<void> {
     return this.boatDao.save(
       Boat.createBoat(
-        name,
         registrationNumber,
         pricePerDay,
         imageRoute,
         lengthInM,
         maxOccupants,
         boatType,
+        name,
         maxSpeedInKmH,
         sailAreaInM2
       )
@@ -157,7 +160,7 @@ export class BoatService {
    * @returns an array of Dates
    */
   public async getBookedDates(id: number): Promise<Date[]> {
-    const boat = await this.getById(id);
+    const boat = await this.getByRegistrationNumber(id);
 
     if (!boat) {
       throw new ServerError(`Boat with id ${id} doesn't exist.`);
@@ -174,12 +177,12 @@ export class BoatService {
    */
   private boatInstanceToOverviewData(boat: Boat): BoatOverviewData {
     return {
-      id: boat.id,
-      name: boat.name,
+      registrationNumber: boat.registrationNumber,
       imageRoute: boat.imageRoute,
       requirements: boat.getRequirements(),
       maxOccupants: boat.maxOccupants,
       boatType: boat.boatType,
+      name: boat.name,
       ...boat.getBoatData(),
     };
   }

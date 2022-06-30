@@ -15,7 +15,7 @@ export class RentalModel extends Model {
   @ForeignKey(() => BoatModel)
   @AllowNull(false)
   @Column
-  public readonly boatId!: number;
+  public readonly boatRegistrationNumber!: number;
 
   @BelongsTo(() => BoatModel)
   public readonly boat!: BoatModel;
