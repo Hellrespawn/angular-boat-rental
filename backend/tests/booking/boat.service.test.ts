@@ -115,7 +115,7 @@ describe('Test BoatService', () => {
   });
 
   describe('Test BoatService.getBoatDetailData()', () => {
-    it('Correctly transforms Boat to BoatOverviewData', async () => {
+    it('Correctly transforms Boat to BoatDetailData', async () => {
       const expected = {
         id: TEST_BOAT.id,
         name: TEST_BOAT.name,

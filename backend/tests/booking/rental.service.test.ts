@@ -112,22 +112,5 @@ describe('Test RentalService', () => {
         expect(saveRentalStub.callCount).to.equal(0);
       }
     });
-
-    it('Rejects too short date', async () => {
-      try {
-        await service.addRental(
-          1,
-          1,
-          new Date('2022-02-01'),
-          new Date('2022-02-02')
-        );
-        expect.fail('Boat is not available');
-      } catch (error) {
-        expect((error as Error).message).to.include(
-          'Rental period must be at least 3 days!'
-        );
-        expect(saveRentalStub.callCount).to.equal(0);
-      }
-    });
   });
 });
