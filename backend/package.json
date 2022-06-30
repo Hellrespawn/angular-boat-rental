@@ -41,6 +41,7 @@
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
     "argon2": "^0.28.5",
+    "auas-common": "file:../common",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",

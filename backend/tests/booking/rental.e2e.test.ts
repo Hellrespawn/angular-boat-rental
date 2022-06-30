@@ -1,18 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import request from 'supertest';
 import sinon, { SinonSandbox } from 'sinon';
-import {
-  stubBoatDao,
-  stubRentalDao,
-  stubUserDao,
-  TEST_BOAT,
-  TEST_RENTAL,
-} from '.';
+import { stubRentalDao, stubUserDao, TEST_BOAT, TEST_RENTAL } from '.';
 import { User } from '../../src/model/user';
 import { SessionService } from '../../src/services/session.service';
 import { Session } from '../../src/model/session';
 import { app } from '../../src/server';
 import { expect } from 'chai';
+import { stubBoatDao } from '..';
 
 const SANDBOX = sinon.createSandbox();
 

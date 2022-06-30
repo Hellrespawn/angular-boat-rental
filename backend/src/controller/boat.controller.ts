@@ -7,14 +7,15 @@ import { type JSONSchemaType } from 'ajv';
  * Interface matching the expected data for a new boat.
  */
 interface NewBoatData {
-  name: string;
   registrationNumber: number;
   pricePerDay: number;
-  skipperRequired: boolean;
   imageRoute: string;
   lengthInM: number;
   maxOccupants: number;
   boatType: 'sail' | 'motor';
+  sailAreaInM2?: number;
+  maxSpeedInKmH?: number;
+  name?: string;
 }
 
 /**
@@ -23,17 +24,11 @@ interface NewBoatData {
 export const NEW_BOAT_SCHEMA: JSONSchemaType<NewBoatData> = {
   type: 'object',
   properties: {
-    pricePerDay: {
-      type: 'number',
-    },
     registrationNumber: {
       type: 'number',
     },
-    name: {
-      type: 'string',
-    },
-    skipperRequired: {
-      type: 'boolean',
+    pricePerDay: {
+      type: 'number',
     },
     imageRoute: {
       type: 'string',
@@ -47,12 +42,22 @@ export const NEW_BOAT_SCHEMA: JSONSchemaType<NewBoatData> = {
     boatType: {
       type: 'string',
     },
+    sailAreaInM2: {
+      type: 'number',
+      nullable: true,
+    },
+    maxSpeedInKmH: {
+      type: 'number',
+      nullable: true,
+    },
+    name: {
+      type: 'string',
+      nullable: true,
+    },
   },
   required: [
-    'name',
     'pricePerDay',
     'registrationNumber',
-    'skipperRequired',
     'imageRoute',
     'lengthInM',
     'maxOccupants',
@@ -156,11 +161,43 @@ export class BoatController {
   }
 
   public async save(req: Request, res: Response): Promise<void> {
-    throw new Error('Not yet implemented: BoatController.save');
+    const {
+      registrationNumber,
+      pricePerDay,
+      imageRoute,
+      lengthInM,
+      maxOccupants,
+      boatType,
+      name,
+      sailAreaInM2,
+      maxSpeedInKmH,
+    } = req.body as NewBoatData; // Validated by middleware
+
+    try {
+      await this.boatService.save(
+        registrationNumber,
+        pricePerDay,
+        imageRoute,
+        lengthInM,
+        maxOccupants,
+        boatType,
+        name,
+        maxSpeedInKmH,
+        sailAreaInM2
+      );
+    } catch (error) {
+      ServerError.respond(error, res);
+    }
   }
 
   public async delete(req: Request, res: Response): Promise<void> {
-    throw new Error('Not yet implemented: BoatController.delete.');
+    const id = parseInt(req.params.id);
+
+    try {
+      await this.boatService.delete(id);
+    } catch (error) {
+      ServerError.respond(error, res);
+    }
   }
 
   /**

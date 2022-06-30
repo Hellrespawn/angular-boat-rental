@@ -68,7 +68,13 @@ export class BoatDao {
     });
   }
 
-  public delete(id: number): Promise<void> {
-    throw new Error('Not yet implemented: BoatDao.delete.');
+  public async delete(registrationNumber: number): Promise<boolean> {
+    return Boolean(await BoatModel.destroy({ where: { registrationNumber } }));
+  }
+
+  public async checkRegistrationNumberExists(
+    registrationNumber: number
+  ): Promise<boolean> {
+    return !(await BoatModel.count({ where: { registrationNumber } }));
   }
 }

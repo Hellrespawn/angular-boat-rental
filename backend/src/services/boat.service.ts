@@ -122,7 +122,7 @@ export class BoatService {
     return filteredBoats.map((boat) => this.boatInstanceToOverviewData(boat));
   }
 
-  public save(
+  public async save(
     registrationNumber: number,
     pricePerDay: number,
     imageRoute: string,
@@ -134,7 +134,7 @@ export class BoatService {
     sailAreaInM2?: number
   ): Promise<void> {
     return this.boatDao.save(
-      Boat.createBoat(
+      await Boat.createBoat(
         registrationNumber,
         pricePerDay,
         imageRoute,
@@ -148,8 +148,12 @@ export class BoatService {
     );
   }
 
-  public delete(id: number): Promise<void> {
-    return this.boatDao.delete(id);
+  public async delete(registrationNumber: number): Promise<void> {
+    if (!(await this.boatDao.delete(registrationNumber))) {
+      throw new ServerError(
+        `Unable to delete boat with registrationNumber ${registrationNumber}`
+      );
+    }
   }
 
   /**

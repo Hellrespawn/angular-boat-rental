@@ -26,34 +26,6 @@ export const TEST_RENTAL = new Rental(
   false
 );
 
-export function stubBoatDao(
-  sandbox: SinonSandbox,
-  defaultValue?: Boat
-): {
-  boatDaoGetBoatsStub: SinonStub<[], Promise<Boat[]>>;
-  boatDaoGetByRegStub: SinonStub<
-    [registrationNumber: number],
-    Promise<Boat | null>
-  >;
-} {
-  const boatDaoGetBoatsStub = sandbox.stub(BoatDao.prototype, 'getAll');
-
-  boatDaoGetBoatsStub.returns(Promise.resolve([]));
-
-  const boatDaoGetByRegStub = sandbox.stub(
-    BoatDao.prototype,
-    'getByRegistrationNumber'
-  );
-
-  if (defaultValue) {
-    boatDaoGetByRegStub
-      .withArgs(defaultValue.registrationNumber)
-      .returns(Promise.resolve(defaultValue));
-  }
-
-  return { boatDaoGetBoatsStub, boatDaoGetByRegStub };
-}
-
 export function stubUserDao(
   sandbox: SinonSandbox,
   defaultValue?: User

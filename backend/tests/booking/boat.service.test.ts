@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { expect } from 'chai';
 import sinon, { SinonStub } from 'sinon';
-import { stubBoatDao, stubRentalDao, TEST_BOAT, TEST_RENTAL } from '.';
+import { stubRentalDao, TEST_BOAT, TEST_RENTAL } from '.';
+import { stubBoatDao } from '..';
 import { Boat } from '../../src/model/boat';
 import { Rental } from '../../src/model/rental';
 import { BoatService } from '../../src/services/boat.service';

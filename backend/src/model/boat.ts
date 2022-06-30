@@ -1,4 +1,5 @@
 import { type BoatRequirements, type BoatType } from 'src/database/boat.model';
+import { BoatDao } from '../database/boat.dao';
 import { RentalDao } from '../database/rental.dao';
 import { ServerError } from '../util/error';
 import { Rental } from './rental';
@@ -8,18 +9,16 @@ type BoatData = Record<string, boolean | number | string>;
 export abstract class Boat {
   public abstract readonly boatType: BoatType;
 
-  constructor(
+  protected constructor(
     public readonly registrationNumber: number,
     public readonly pricePerDay: number,
     public readonly imageRoute: string,
     public readonly lengthInM: number,
     public readonly maxOccupants: number,
     public readonly name?: string
-  ) {
-    // TODO Validate new Boat
-  }
+  ) {}
 
-  public static createBoat(
+  public static async createBoat(
     registrationNumber: number,
     pricePerDay: number,
     imageRoute: string,
@@ -29,7 +28,23 @@ export abstract class Boat {
     name?: string,
     maxSpeedInKmH?: number,
     sailAreaInM2?: number
-  ): Boat {
+  ): Promise<Boat> {
+    await this.validateRegistrationNumber(registrationNumber);
+
+    this.validateBoatData(boatType, maxSpeedInKmH, sailAreaInM2);
+
+    Object.entries({
+      pricePerDay,
+      lengthInM,
+      maxOccupants,
+      maxSpeedInKmH,
+      sailAreaInM2,
+    }).forEach(([key, value]) => {
+      if (value) {
+        this.validateGreaterThanZero(key, value);
+      }
+    });
+
     if (boatType === 'motor') {
       if (maxSpeedInKmH === undefined) {
         throw new ServerError('maxSpeedInKmH was undefined for MotorBoat!');
@@ -59,6 +74,40 @@ export abstract class Boat {
       sailAreaInM2,
       name
     );
+  }
+
+  private static async validateRegistrationNumber(
+    registrationNumber: number
+  ): Promise<void> {
+    if (
+      await BoatDao.getInstance().checkRegistrationNumberExists(
+        registrationNumber
+      )
+    ) {
+      throw new ServerError(
+        `Registration Number ${registrationNumber} is already in use!`
+      );
+    }
+  }
+
+  private static validateBoatData(
+    type: string,
+    maxSpeedInKmH?: number,
+    sailAreaInM2?: number
+  ): void {
+    if (type === 'motor' && typeof maxSpeedInKmH !== 'number') {
+      throw new ServerError('MotorBoat must be accompanied by maxSpeedInKmH');
+    }
+
+    if (type === 'sail' && typeof sailAreaInM2 !== 'number') {
+      throw new ServerError('SailBoat must be accompanied by sailAreaInM2');
+    }
+  }
+
+  private static validateGreaterThanZero(name: string, value: number): void {
+    if (value <= 0) {
+      throw new ServerError(`${name} must be greater than 0, found ${value}`);
+    }
   }
 
   /**
