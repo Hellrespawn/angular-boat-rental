@@ -45,10 +45,12 @@ export class SessionDao {
    * @param session
    */
   public async save(session: Session): Promise<void> {
-    await SessionModel.create({
+    const model = await SessionModel.create({
       sessionId: session.sessionId,
       userId: session.user.id,
     });
+
+    session.id = model.id;
   }
 
   /**

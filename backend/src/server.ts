@@ -29,7 +29,13 @@ app.use(authenticator);
 app.use('/images', express.static(path.join(__dirname, '..', 'media')));
 
 // Routes
-ROUTERS.forEach(({ prefix, router }) => app.use(prefix, router));
+ROUTERS.forEach(({ prefix, router }) => {
+  if (prefix) {
+    app.use(prefix, router);
+  } else {
+    app.use(router);
+  }
+});
 
 export let server: Server;
 

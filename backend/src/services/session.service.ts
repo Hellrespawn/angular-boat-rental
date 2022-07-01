@@ -49,6 +49,16 @@ export class SessionService {
     return session;
   }
 
+  public async logout(session: Session): Promise<void> {
+    const deleted =
+      this.cache.delete(session.sessionId) ||
+      (await this.sessionDao.delete(session));
+
+    if (!deleted) {
+      throw new ServerError(`Session ${session.sessionId} does not exist!`);
+    }
+  }
+
   /**
    * Attempts to return a session
    *

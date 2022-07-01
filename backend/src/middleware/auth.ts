@@ -28,6 +28,7 @@ export async function authenticator(
     // TODO Check atomic update in authenticator
     // eslint-disable-next-line require-atomic-updates
     req.currentUser = session.user;
+    req.currentSession = session;
   }
 
   next();
@@ -46,7 +47,7 @@ export function requireAuthentication(
   res: Response,
   next: NextFunction
 ): void {
-  if (!req.currentUser) {
+  if (!req.currentUser && !req.currentSession) {
     res.status(401).json({ error: 'Invalid credentials' });
     return;
   }

@@ -32,7 +32,6 @@ module.exports = {
         'no-template-curly-in-string': 'warn',
         'no-unreachable-loop': 'warn',
         'no-unused-private-class-members': 'error',
-        'require-atomic-updates': 'warn',
         'no-unsafe-member-access': 'off',
         'no-unsafe-assignment': 'off',
         /* Suggestions */

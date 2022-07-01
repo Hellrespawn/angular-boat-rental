@@ -19,14 +19,14 @@ export const LOGIN_SCHEMA: JSONSchemaType<LoginData> = {
   additionalProperties: false,
 };
 
-export class LoginController {
-  private static instance?: LoginController;
+export class SessionController {
+  private static instance?: SessionController;
 
   private constructor(private sessionService = SessionService.getInstance()) {}
 
-  public static getInstance(): LoginController {
+  public static getInstance(): SessionController {
     if (!this.instance) {
-      this.instance = new LoginController();
+      this.instance = new SessionController();
     }
 
     return this.instance;
@@ -66,6 +66,20 @@ export class LoginController {
       res
         .cookie('session', session.sessionId, sessionCookieOptions)
         .json(sessionData);
+    } catch (error) {
+      ServerError.respond(error, res);
+    }
+  }
+
+  /**
+   * Handles logout requests.
+   */
+  public async logout(req: Request, res: Response): Promise<void> {
+    try {
+      // Validated by middleware
+      await this.sessionService.logout(req.currentSession!);
+
+      res.status(200).end();
     } catch (error) {
       ServerError.respond(error, res);
     }
