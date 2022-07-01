@@ -1,5 +1,8 @@
 import { Router } from 'express';
-import { LOGIN_SCHEMA, SessionController } from '../controller/session.controller';
+import {
+  LOGIN_SCHEMA,
+  SessionController,
+} from '../controller/session.controller';
 import { requireAuthentication } from '../middleware/auth';
 import { Validator } from '../util/validator';
 
