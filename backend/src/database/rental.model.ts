@@ -6,12 +6,16 @@ import {
   Model,
   Table,
   Default,
+  PrimaryKey,
+  AutoIncrement,
 } from 'sequelize-typescript';
 import { BoatModel } from './boat.model';
 import { UserModel } from './user.model';
 
 @Table
 export class RentalModel extends Model {
+  @PrimaryKey @AutoIncrement public readonly orderNumber!: number;
+
   @ForeignKey(() => BoatModel)
   @AllowNull(false)
   @Column

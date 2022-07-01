@@ -1,3 +1,4 @@
+import { type BoatType, BOAT_TYPES } from 'auas-common';
 import {
   Table,
   Column,
@@ -10,13 +11,6 @@ import {
 } from 'sequelize-typescript';
 import { type Boat, MotorBoat, SailBoat } from '../model/boat';
 import { RentalModel } from './rental.model';
-
-// Not familiar with a way to construct this from the above type.
-const BOAT_TYPES = ['sail', 'motor'];
-
-export type BoatType = typeof BOAT_TYPES[number];
-
-export type BoatRequirements = 'none' | 'license';
 
 @Table
 export class BoatModel extends Model {

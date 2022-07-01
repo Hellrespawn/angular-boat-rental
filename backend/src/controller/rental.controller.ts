@@ -1,16 +1,8 @@
 import { type JSONSchemaType } from 'ajv';
+import { RentalConfirmation, type NewRentalData } from 'auas-common';
 import { type Request, type Response } from 'express';
 import { RentalService } from '../services/rental.service';
 import { ServerError } from '../util/error';
-
-/**
- * Interface matching the expected data for a new rental.
- */
-interface NewRentalData {
-  boatId: number;
-  dateStart: string;
-  dateEnd: string;
-}
 
 /**
  * JSON Schema describing NewRentalData
@@ -18,7 +10,7 @@ interface NewRentalData {
 export const NEW_RENTAL_SCHEMA: JSONSchemaType<NewRentalData> = {
   type: 'object',
   properties: {
-    boatId: {
+    boatRegistrationNumber: {
       type: 'number',
     },
     dateStart: {
@@ -30,7 +22,7 @@ export const NEW_RENTAL_SCHEMA: JSONSchemaType<NewRentalData> = {
       format: 'date-time',
     },
   },
-  required: ['boatId', 'dateStart', 'dateEnd'],
+  required: ['boatRegistrationNumber', 'dateStart', 'dateEnd'],
   additionalProperties: false,
 };
 
@@ -55,7 +47,9 @@ export class RentalController {
    */
   public async addRental(req: Request, res: Response): Promise<void> {
     // Validated by middleware in routes.
-    const boatId = parseInt(req.body.boatId as string);
+    const boatRegistrationNumber = parseInt(
+      req.body.boatRegistrationNumber as string
+    );
     const dateStart = new Date(req.body.dateStart as string);
     const dateEnd = new Date(req.body.dateEnd as string);
 
@@ -63,13 +57,16 @@ export class RentalController {
     const { id: userId } = req.currentUser!;
 
     try {
-      const rental = await this.rentalService.addRental(
-        boatId,
+      const orderNumber = await this.rentalService.addRental(
+        boatRegistrationNumber,
         userId,
         dateStart,
         dateEnd
       );
-      res.json({ id: rental.id });
+
+      const confirmation: RentalConfirmation = { orderNumber };
+
+      res.json(confirmation);
     } catch (error) {
       ServerError.respond(error, res);
     }

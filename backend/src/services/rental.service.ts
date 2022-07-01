@@ -25,23 +25,27 @@ export class RentalService {
   /**
    * Creates a new rental
    *
-   * @param boatId
+   * @param boatRegistrationNumber
    * @param userId
    * @param dateStart
    * @param dateEnd
    * @returns new Rental
    */
   public async addRental(
-    boatId: number,
+    boatRegistrationNumber: number,
     userId: number,
     dateStart: Date,
     dateEnd: Date
-  ): Promise<Rental> {
+  ): Promise<number> {
     // Check boat exists
-    const boat = await this.boatService.getByRegistrationNumber(boatId);
+    const boat = await this.boatService.getByRegistrationNumber(
+      boatRegistrationNumber
+    );
 
     if (!boat) {
-      throw new ServerError(`No boat with id ${boatId}.`);
+      throw new ServerError(
+        `No boat with registration number ${boatRegistrationNumber}.`
+      );
     }
 
     // Check user exists
@@ -53,11 +57,7 @@ export class RentalService {
 
     const rental = await Rental.create(boat, user, dateStart, dateEnd);
 
-    const id = await this.rentalDao.saveRental(rental);
-
-    rental.id = id;
-
-    return rental;
+    return this.rentalDao.saveRental(rental);
   }
 
   /** Gets the next rental for user with id userId, if any */

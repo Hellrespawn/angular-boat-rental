@@ -1,4 +1,4 @@
-import { type BoatRequirements, type BoatType } from 'src/database/boat.model';
+import { type BoatRequirements, type BoatType } from 'auas-common';
 import { BoatDao } from '../database/boat.dao';
 import { RentalDao } from '../database/rental.dao';
 import { ServerError } from '../util/error';

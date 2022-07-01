@@ -4,14 +4,7 @@ import { ServerError } from '../util/error';
 import { type Request, type Response } from 'express';
 import { JSONSchemaType } from 'ajv';
 import { UserService } from '../services/user.service';
-
-export interface NewUserData {
-  firstName: string;
-  lastName: string;
-  license: boolean;
-  emailAddress: string;
-  password: string;
-}
+import { type NewUserData } from 'auas-common';
 
 export const NEW_USER_SCHEMA: JSONSchemaType<NewUserData> = {
   type: 'object',
@@ -53,7 +46,6 @@ export class UserController {
     return this.instance;
   }
 
-  // send users to Database
   public async register(req: Request, res: Response): Promise<void> {
     // Validated by middleware
     const { firstName, lastName, license, emailAddress, password } =

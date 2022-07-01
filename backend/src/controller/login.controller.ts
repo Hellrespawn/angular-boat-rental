@@ -1,12 +1,8 @@
 import { type JSONSchemaType } from 'ajv';
-import { type Request, type Response } from 'express';
+import { type CookieOptions, type Request, type Response } from 'express';
 import { SessionService } from '../services/session.service';
 import { ServerError } from '../util/error';
-
-interface LoginData {
-  email: string;
-  password: string;
-}
+import { type LoginData, type SessionData } from 'auas-common';
 
 export const LOGIN_SCHEMA: JSONSchemaType<LoginData> = {
   type: 'object',
@@ -54,18 +50,22 @@ export class LoginController {
       const expires = new Date();
       expires.setDate(expires.getDate() + SessionService.MaxSessionAge);
 
+      const sessionCookieOptions: CookieOptions = {
+        expires,
+        secure: true,
+        httpOnly: true,
+        sameSite: 'strict',
+      };
+
+      const sessionData: SessionData = {
+        license: user.license,
+        admin: user.admin,
+        firstName: user.firstName,
+      };
+
       res
-        .cookie('session', session.sessionId, {
-          expires,
-          secure: true,
-          httpOnly: true,
-          sameSite: 'strict',
-        })
-        .json({
-          license: user.license,
-          admin: user.admin,
-          firstName: user.firstName,
-        });
+        .cookie('session', session.sessionId, sessionCookieOptions)
+        .json(sessionData);
     } catch (error) {
       ServerError.respond(error, res);
     }

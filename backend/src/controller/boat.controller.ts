@@ -2,21 +2,7 @@ import { BoatService } from '../services/boat.service';
 import { type Request, type Response } from 'express';
 import { ServerError } from '../util/error';
 import { type JSONSchemaType } from 'ajv';
-
-/**
- * Interface matching the expected data for a new boat.
- */
-interface NewBoatData {
-  registrationNumber: number;
-  pricePerDay: number;
-  imageRoute: string;
-  lengthInM: number;
-  maxOccupants: number;
-  boatType: 'sail' | 'motor';
-  sailAreaInM2?: number;
-  maxSpeedInKmH?: number;
-  name?: string;
-}
+import { type NewBoatData } from 'auas-common';
 
 /**
  * JSON Schema describing NewBoatData

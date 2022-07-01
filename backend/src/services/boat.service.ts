@@ -1,28 +1,11 @@
 import { Boat } from '../model/boat';
 import { BoatDao } from '../database/boat.dao';
 import { ServerError } from '../util/error';
-import { BoatRequirements, BoatType } from '../database/boat.model';
-
-/**
- * type which is required by the boat rental overview page
- */
-export interface BoatOverviewData {
-  registrationNumber: number;
-  imageRoute: string;
-  requirements: BoatRequirements;
-  boatType: BoatType;
-  maxOccupants: number;
-  name?: string;
-}
-/**
- * type which contains additional information about the boat
- */
-export type BoatDetailData = BoatOverviewData & {
-  pricePerDay: number;
-  lengthInM: number;
-  maxSpeedInKmH?: number;
-  sailAreaInM2?: number;
-};
+import {
+  type BoatDetailData,
+  type BoatOverviewData,
+  type BoatType,
+} from 'auas-common';
 
 export class BoatService {
   private static instance?: BoatService;
@@ -159,15 +142,17 @@ export class BoatService {
   /**
    * Get all Dates for which boat with id is booked.
    *
-   * @param id the id of the desired boat.
+   * @param registrationNumber the id of the desired boat.
    *
    * @returns an array of Dates
    */
-  public async getBookedDates(id: number): Promise<Date[]> {
-    const boat = await this.getByRegistrationNumber(id);
+  public async getBookedDates(registrationNumber: number): Promise<Date[]> {
+    const boat = await this.getByRegistrationNumber(registrationNumber);
 
     if (!boat) {
-      throw new ServerError(`Boat with id ${id} doesn't exist.`);
+      throw new ServerError(
+        `Boat with registration number ${registrationNumber} doesn't exist.`
+      );
     }
 
     return boat.getBookedDates();

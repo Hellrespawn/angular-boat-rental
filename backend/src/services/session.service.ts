@@ -4,13 +4,6 @@ import { Cache } from '../util/cache';
 import { ErrorType, ServerError } from '../util/error';
 import { UserService } from './user.service';
 
-export interface SessionData {
-  sessionId: string;
-  license: boolean;
-  admin: boolean;
-  firstName: string;
-}
-
 export class SessionService {
   public static MaxSessionAge = 14;
 

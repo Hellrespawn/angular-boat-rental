@@ -94,6 +94,6 @@ export class RentalDao {
       paid: rental.paid,
     });
 
-    return model.id as number;
+    return model.orderNumber;
   }
 }
