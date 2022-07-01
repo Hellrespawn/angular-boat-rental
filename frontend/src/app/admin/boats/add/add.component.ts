@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -6,7 +7,8 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { BoatType, BOAT_TYPES } from 'auas-common';
+import { BoatType, BOAT_TYPES, ImageResponse } from 'auas-common';
+import { Observable, of } from 'rxjs';
 import { BoatService } from '../../../boat.service';
 
 interface AddBoatForm {
@@ -18,7 +20,6 @@ interface AddBoatForm {
   sailAreaInM2: FormControl<number>;
   maxSpeedInKmH: FormControl<number>;
   name: FormControl<string>;
-  // image: FormControl<void>;
 }
 
 @Component({
@@ -59,7 +60,7 @@ export class AdminBoatAddComponent implements OnInit {
     nonNullable: true,
   });
 
-  public image: FormControl<void> = new FormControl();
+  @ViewChild('fileInput') public fileInput!: ElementRef<HTMLInputElement>;
 
   public addBoatForm = new FormGroup<AddBoatForm>(
     {
@@ -71,20 +72,40 @@ export class AdminBoatAddComponent implements OnInit {
       sailAreaInM2: this.sailAreaInM2,
       maxSpeedInKmH: this.maxSpeedInKmH,
       name: this.name,
-      // image: this.image,
     },
     { validators: [] }
   );
 
   public boatTypes = BOAT_TYPES;
 
-  constructor(private boatService: BoatService) {}
+  public selectedImage: File | null = null;
+
+  constructor(
+    private boatService: BoatService,
+    private httpClient: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.boatType.valueChanges.subscribe((_) => {
       this.maxSpeedInKmH.reset();
       this.sailAreaInM2.reset();
     });
+  }
+
+  public onFileChange(): void {
+    if (this.fileInput.nativeElement.files?.length) {
+      this.selectedImage = this.fileInput.nativeElement.files[0];
+    }
+    console.log(this.selectedImage);
+  }
+
+  public onSubmit(): void {
+    if (this.addBoatForm.valid) {
+      this.handleImageUpload().subscribe((res) => console.log(res));
+    } else {
+      console.log(this.addBoatForm.errors);
+      this.addBoatForm.markAsTouched();
+    }
   }
 
   public typeToString = this.boatService.typeToString;
@@ -119,19 +140,6 @@ export class AdminBoatAddComponent implements OnInit {
     return message;
   }
 
-  public onFileChange(event: Event): void {
-    console.log(event);
-  }
-
-  public onClick(): void {
-    if (this.addBoatForm.valid) {
-      console.log(this.addBoatForm.value);
-    } else {
-      console.log(this.addBoatForm.errors);
-      this.addBoatForm.markAsTouched();
-    }
-  }
-
   public validateSailAreaInM2(
     control: AbstractControl
   ): ValidationErrors | null {
@@ -156,5 +164,17 @@ export class AdminBoatAddComponent implements OnInit {
     }
 
     return null;
+  }
+
+  private handleImageUpload(): Observable<ImageResponse | null> {
+    if (this.selectedImage) {
+      const name = this.selectedImage.name;
+      return this.httpClient.post<ImageResponse>(
+        `/api/images/${name}`,
+        this.selectedImage
+      );
+    } else {
+      return of(null);
+    }
   }
 }

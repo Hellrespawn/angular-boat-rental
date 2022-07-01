@@ -1,3 +1,4 @@
+import { ImageResponse } from 'auas-common';
 import { type Request, type Response } from 'express';
 import { ImageService } from '../services/image.service';
 
@@ -24,8 +25,11 @@ export class ImageController {
     const buffer = await this.bufferImage(req);
     const { name } = req.params;
 
+    const imageResponse: ImageResponse = { route: `/images/${name}` };
+
     if (await this.imageService.save(buffer, name)) {
-      res.json({ route: `/images/${name}` });
+      console.log(`Saved image to /images/${name}`);
+      res.json(imageResponse);
     } else {
       res.status(400).json({ error: 'File exists!' });
     }
@@ -41,6 +45,7 @@ export class ImageController {
     const { name } = req.params;
 
     if (await this.imageService.delete(name)) {
+      console.log(`deleted /images/${name}`);
       res.json({ deleted: `/images/${name}` });
     } else {
       res.status(404).end();

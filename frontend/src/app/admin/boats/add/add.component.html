@@ -1,7 +1,7 @@
 <form [formGroup]="addBoatForm" class="custom-card with-padding vertical">
   <div id="top">
     <h2>Add Boat</h2>
-    <button mat-raised-button color="primary" (click)="onClick()">
+    <button mat-raised-button color="primary" (click)="onSubmit()">
       Submit Boat
     </button>
   </div>
@@ -36,15 +36,20 @@
         </mat-select>
       </mat-form-field>
 
-      <button type="button" mat-raised-button (click)="fileInput.click()">
-        Choose File
+      <button
+        type="button"
+        mat-raised-button
+        [color]="selectedImage ? 'primary' : ''"
+        (click)="fileInput.click()"
+      >
+        {{ selectedImage?.name ?? 'Choose File' }}
       </button>
       <input
         hidden
-        (change)="onFileChange($event)"
+        (change)="onFileChange()"
         #fileInput
         type="file"
-        accept="image/*"
+        accept="image/jpeg, image/png"
       />
     </div>
 
