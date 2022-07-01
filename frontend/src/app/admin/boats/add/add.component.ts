@@ -1,5 +1,11 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { BoatType, BOAT_TYPES } from 'auas-common';
 import { BoatService } from '../../../boat.service';
 
@@ -20,7 +26,7 @@ interface AddBoatForm {
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.scss'],
 })
-export class AdminBoatAddComponent {
+export class AdminBoatAddComponent implements OnInit {
   public registrationNumber: FormControl<number> = new FormControl(0, {
     nonNullable: true,
     validators: [Validators.required, Validators.min(1)],
@@ -43,33 +49,43 @@ export class AdminBoatAddComponent {
   });
   public sailAreaInM2: FormControl<number> = new FormControl(0, {
     nonNullable: true,
-    validators: [Validators.required, Validators.min(1)],
+    validators: [this.validateSailAreaInM2.bind(this)],
   });
   public maxSpeedInKmH: FormControl<number> = new FormControl(0, {
     nonNullable: true,
-    validators: [Validators.required, Validators.min(1)],
+    validators: [this.validateMaxSpeedInKmH.bind(this)],
   });
   public name: FormControl<string> = new FormControl('', {
     nonNullable: true,
   });
 
-  public image!: FormControl<void>;
+  public image: FormControl<void> = new FormControl();
 
-  public addBoatForm = new FormGroup<AddBoatForm>({
-    registrationNumber: this.registrationNumber,
-    boatType: this.boatType,
-    pricePerDay: this.pricePerDay,
-    lengthInM: this.lengthInM,
-    maxPassengers: this.maxPassengers,
-    sailAreaInM2: this.sailAreaInM2,
-    maxSpeedInKmH: this.maxSpeedInKmH,
-    name: this.name,
-    // image: this.image,
-  });
+  public addBoatForm = new FormGroup<AddBoatForm>(
+    {
+      registrationNumber: this.registrationNumber,
+      boatType: this.boatType,
+      pricePerDay: this.pricePerDay,
+      lengthInM: this.lengthInM,
+      maxPassengers: this.maxPassengers,
+      sailAreaInM2: this.sailAreaInM2,
+      maxSpeedInKmH: this.maxSpeedInKmH,
+      name: this.name,
+      // image: this.image,
+    },
+    { validators: [] }
+  );
 
   public boatTypes = BOAT_TYPES;
 
   constructor(private boatService: BoatService) {}
+
+  ngOnInit(): void {
+    this.boatType.valueChanges.subscribe((_) => {
+      this.maxSpeedInKmH.reset();
+      this.sailAreaInM2.reset();
+    });
+  }
 
   public typeToString = this.boatService.typeToString;
 
@@ -103,6 +119,10 @@ export class AdminBoatAddComponent {
     return message;
   }
 
+  public onFileChange(event: Event): void {
+    console.log(event);
+  }
+
   public onClick(): void {
     if (this.addBoatForm.valid) {
       console.log(this.addBoatForm.value);
@@ -110,5 +130,31 @@ export class AdminBoatAddComponent {
       console.log(this.addBoatForm.errors);
       this.addBoatForm.markAsTouched();
     }
+  }
+
+  public validateSailAreaInM2(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    if (this.boatType.value === 'sail') {
+      return {
+        ...Validators.required(control),
+        ...Validators.min(1)(control),
+      };
+    }
+
+    return null;
+  }
+
+  public validateMaxSpeedInKmH(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    if (this.boatType.value === 'motor') {
+      return {
+        ...Validators.required(control),
+        ...Validators.min(1)(control),
+      };
+    }
+
+    return null;
   }
 }

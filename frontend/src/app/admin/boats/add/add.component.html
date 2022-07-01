@@ -35,6 +35,17 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+
+      <button type="button" mat-raised-button (click)="fileInput.click()">
+        Choose File
+      </button>
+      <input
+        hidden
+        (change)="onFileChange($event)"
+        #fileInput
+        type="file"
+        accept="image/*"
+      />
     </div>
 
     <div id="right">
