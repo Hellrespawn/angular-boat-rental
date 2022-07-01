@@ -1,0 +1,87 @@
+<form [formGroup]="addBoatForm" class="custom-card with-padding vertical">
+  <div id="top">
+    <h2>Add Boat</h2>
+    <button mat-raised-button color="primary" (click)="onClick()">
+      Submit Boat
+    </button>
+  </div>
+
+  <div id="container">
+    <div id="left">
+      <mat-form-field appearance="fill">
+        <mat-label>Registration Number</mat-label>
+        <input
+          [formControl]="registrationNumber"
+          matInput
+          type="number"
+          min="0"
+        />
+        <mat-error *ngIf="registrationNumber.invalid">{{
+          getNumberError(registrationNumber)
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Boat Name</mat-label>
+        <input [formControl]="name" matInput placeholder="Name" />
+        <mat-error *ngIf="name.invalid">{{ getNameError(name) }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Boat Types</mat-label>
+        <mat-select [formControl]="boatType">
+          <mat-option *ngFor="let boatType of boatTypes" [value]="boatType">
+            {{ typeToString(boatType) }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div id="right">
+      <mat-form-field appearance="fill">
+        <mat-label>Price per Day</mat-label>
+        <input [formControl]="pricePerDay" matInput type="number" min="0" />
+
+        <mat-error *ngIf="pricePerDay.invalid">{{
+          getNumberError(pricePerDay)
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Length in Meters</mat-label>
+        <input [formControl]="lengthInM" matInput type="number" min="0" />
+
+        <mat-error *ngIf="lengthInM.invalid">{{
+          getNumberError(lengthInM)
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Maximum Passengers</mat-label>
+        <input [formControl]="maxPassengers" matInput type="number" min="0" />
+
+        <mat-error *ngIf="maxPassengers.invalid">{{
+          getNumberError(maxPassengers)
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="boatType.value === 'sail'" appearance="fill">
+        <mat-label>Sail Area in M<sup>2</sup></mat-label>
+        <input [formControl]="sailAreaInM2" matInput type="number" min="0" />
+
+        <mat-error *ngIf="sailAreaInM2.invalid">{{
+          getNumberError(sailAreaInM2)
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="boatType.value === 'motor'" appearance="fill">
+        <mat-label>Maximum Speed in km/h</mat-label>
+        <input [formControl]="maxSpeedInKmH" matInput type="number" min="0" />
+
+        <mat-error *ngIf="maxSpeedInKmH.invalid">{{
+          getNumberError(maxSpeedInKmH)
+        }}</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+</form>

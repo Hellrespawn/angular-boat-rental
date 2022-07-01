@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NotificationService } from '../notification.service';
 import { SessionService } from '../session.service';
 
 interface LoginForm {
@@ -15,6 +16,7 @@ interface LoginForm {
 })
 export class LoginComponent {
   constructor(
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router,
     private sessionService: SessionService
@@ -40,14 +42,24 @@ export class LoginComponent {
    */
   public login(): void {
     if (this.loginForm.valid) {
-      this.sessionService.login(
-        this.loginForm.value.email!,
-        this.loginForm.value.password!
-      );
+      this.sessionService
+        .login(this.loginForm.value.email!, this.loginForm.value.password!)
+        .subscribe({
+          next: (firstName) => {
+            this.notificationService.notifySuccess(
+              `Welcome back, ${firstName}.`
+            );
 
-      const from = this.route.snapshot.queryParamMap.get('from');
+            const from = this.route.snapshot.queryParamMap.get('from');
 
-      this.router.navigate([from ?? '/']);
+            this.router.navigate([from ?? '/']);
+          },
+          error: () => {
+            this.notificationService.notifyError(
+              'Something went wrong! Please check your credentials.'
+            );
+          },
+        });
     } else {
       this.loginForm.markAsTouched();
     }

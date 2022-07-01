@@ -1,18 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import {
+  type BoatType,
   type BoatDetailData,
   type BoatOverviewData,
   type BoatRequirements,
 } from 'auas-common';
 import { DateRange } from './date';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BoatService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private notificationService: NotificationService
+  ) {}
+
+  public typeToString(boatType: BoatType): string {
+    switch (boatType) {
+      case 'sail':
+        return 'Sailboat';
+      case 'motor':
+        return 'Motorboat';
+      default:
+        throw new Error(`Unknown boat type '${boatType}'`);
+    }
+  }
 
   /**
    * Creates a string to display from BoatRequirements
@@ -100,6 +116,21 @@ export class BoatService {
       .get<{ dates: string[] }>(`/api/boats/${id}/bookedDates`)
       .pipe(
         map(({ dates }) => dates.map((dateString) => new Date(dateString)))
+      );
+  }
+
+  public deleteBoat(registrationNumber: number): Observable<void> {
+    return this.httpClient
+      .delete<void>(`/api/boats/${registrationNumber}`)
+      .pipe(
+        catchError((error: Response) => {
+          if (error.status === 401) {
+            this.notificationService.notifyError(
+              'Please log in as an administrator!'
+            );
+          }
+          throw error;
+        })
       );
   }
 }

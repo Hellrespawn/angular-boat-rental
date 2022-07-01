@@ -1,0 +1,29 @@
+#top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+h2 {
+  margin: 0;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #fffddd;
+}
+
+thead th {
+  padding: 0.6em 0;
+}
+
+thead th {
+  text-align: left;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #ddddff;
+}

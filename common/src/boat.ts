@@ -12,7 +12,7 @@ export type BoatRequirements = 'none' | 'license';
   pricePerDay: number;
   imageRoute: string;
   lengthInM: number;
-  maxOccupants: number;
+  maxPassengers: number;
   boatType: BoatType;
   sailAreaInM2?: number;
   maxSpeedInKmH?: number;
@@ -27,7 +27,7 @@ export type BoatRequirements = 'none' | 'license';
     imageRoute: string;
     requirements: BoatRequirements;
     boatType: BoatType;
-    maxOccupants: number;
+    maxPassengers: number;
     name?: string;
   }
   /**

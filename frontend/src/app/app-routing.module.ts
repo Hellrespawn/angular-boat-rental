@@ -10,24 +10,52 @@ import { UserComponent } from './user/user.component';
 import { UserRentalsComponent } from './user/rentals/rentals.component';
 import { UserSettingsComponent } from './user/settings/settings.component';
 import { RegisterComponent } from './register/register.component';
+import { AdminBoatAddComponent } from './admin/boats/add/add.component';
+import { AdminBoatOverviewComponent } from './admin/boats/overview/overview.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent },
+  { path: 'home', title: 'Home', component: HomeComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
     path: 'user',
     component: UserComponent,
+    title: 'User Dashboard',
     children: [
       { path: 'dashboard', component: UserDashboardComponent },
       { path: 'orders', component: UserRentalsComponent },
       { path: 'settings', component: UserSettingsComponent },
     ],
   },
-  { path: 'register', component: RegisterComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'rent', component: BookingComponent },
-  { path: 'rent/check/:boatId', component: CheckComponent },
-  { path: 'rent/payment/:rentalId', component: PaymentComponent },
+
+  {
+    path: 'admin/boats/add',
+    title: 'Add Boat',
+    component: AdminBoatAddComponent,
+  },
+  {
+    path: 'admin/boats/overview',
+    title: 'Boats',
+    component: AdminBoatOverviewComponent,
+  },
+
+  { path: 'register', title: 'Register', component: RegisterComponent },
+  { path: 'login', title: 'Log In', component: LoginComponent },
+  {
+    path: 'rent',
+    title: 'Rent a Boat',
+    component: BookingComponent,
+    children: [],
+  },
+  {
+    path: 'rent/check/:boatId',
+    title: 'Check your order',
+    component: CheckComponent,
+  },
+  {
+    path: 'rent/payment/:rentalId',
+    title: 'Payment',
+    component: PaymentComponent,
+  },
 ];
 
 @NgModule({

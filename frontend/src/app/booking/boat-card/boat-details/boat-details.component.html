@@ -21,7 +21,7 @@
         ><mat-icon>directions_boat</mat-icon>{{ requirementsToString() }}</span
       >
       <span class="icon"
-        ><mat-icon>bed</mat-icon>Max. {{ boat.maxOccupants }} passengers</span
+        ><mat-icon>bed</mat-icon>Max. {{ boat.maxPassengers }} passengers</span
       >
       <span class="icon"
         ><mat-icon>euro</mat-icon>{{ boat.pricePerDay }} per day</span
@@ -31,7 +31,7 @@
     <button
       mat-raised-button
       color="primary"
-      [routerLink]="['/rent/check', this.boat.registrationNumber]"
+      [routerLink]="['/rent/check', boat.registrationNumber]"
     >
       Rent {{ boat.name }} now!
     </button>

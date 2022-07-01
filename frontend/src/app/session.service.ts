@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginData } from 'auas-common';
-import { BehaviorSubject, catchError, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, finalize, map, Observable } from 'rxjs';
 import { NotificationService } from './notification.service';
 import { SessionData } from './session';
 
@@ -32,23 +32,35 @@ export class SessionService {
    * @param email
    * @param password
    */
-  public login(email: string, password: string): void {
+  public login(email: string, password: string): Observable<string> {
     const loginData: LoginData = { email, password };
 
-    this.doLoginRequest(loginData).subscribe({
-      next: (data) => this.handleSuccessfulLogin(data),
-      error: (error: string) => this.notificationService.notifyError(error),
-    });
+    return this.doLoginRequest(loginData).pipe(
+      map((data) => {
+        this.handleSuccessfulLogin(data);
+        return data.firstName;
+      })
+    );
   }
 
   /**
    * Logs out by deleting the current token.
    */
   public logout(): void {
+    this.doLogoutRequest().subscribe({
+      next: () => {
+        this.notificationService.notifySuccess('See you next time!');
+      },
+      error: (error: Response) => {
+        if (error.status === 401) {
+          this.notificationService.notifySuccess('See you next time!');
+        } else {
+          throw error;
+        }
+      },
+    });
+
     this.clearSessionData();
-
-    this.notificationService.notifySuccess('Tot de volgende keer!');
-
     this.router.navigate(['/']);
   }
 
@@ -76,17 +88,16 @@ export class SessionService {
     localStorage.removeItem(SessionService.storageKey);
   }
 
-  /**
-   * Performs a login request to the backend
-   * @param email
-   * @param password
-   */
   private doLoginRequest(loginData: LoginData): Observable<SessionData> {
     return this.httpClient.post<SessionData>('/api/login', loginData).pipe(
       catchError((_) => {
-        throw 'Er is iets fout gegaan, controleer uw gegevens!';
+        throw 'Something went wrong, check your credentials!';
       })
     );
+  }
+
+  private doLogoutRequest(): Observable<void> {
+    return this.httpClient.delete<void>('/api/logout');
   }
 
   /**

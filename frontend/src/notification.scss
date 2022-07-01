@@ -1,0 +1,9 @@
+@use '@angular/material' as mat;
+@use './custom-theme.scss' as theme;
+
+.notify-error {
+  color: mat.get-color-from-palette(
+    theme.$angular-boat-rental-warn,
+    'text'
+  ) !important;
+}

@@ -43,4 +43,13 @@ export class BoatCardComponent implements OnInit {
   public requirementsToString(): string {
     return this.boatService.requirementsToString(this.boat);
   }
+
+  public getBoatName(): string {
+    return (
+      this.boat.name ??
+      this.boatService.typeToString(this.boat.boatType) +
+        ' ' +
+        this.boat.registrationNumber.toString()
+    );
+  }
 }

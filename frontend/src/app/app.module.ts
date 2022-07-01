@@ -50,8 +50,9 @@ import { UserSettingsComponent } from './user/settings/settings.component';
 
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { RegisterComponent } from './register/register.component';
-import { OverviewComponent } from './admin/boat/overview/overview.component';
-import { AddComponent } from './admin/boat/add/add.component';
+import { AdminBoatOverviewComponent } from './admin/boats/overview/overview.component';
+import { AdminBoatAddComponent } from './admin/boats/add/add.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -81,8 +82,8 @@ import { AddComponent } from './admin/boat/add/add.component';
     UserRentalsComponent,
     UserSettingsComponent,
     RegisterComponent,
-    OverviewComponent,
-    AddComponent,
+    AdminBoatOverviewComponent,
+    AdminBoatAddComponent,
   ],
   imports: [
     BrowserModule,
@@ -118,6 +119,7 @@ import { AddComponent } from './admin/boat/add/add.component';
     MatDialogModule,
     MatProgressSpinnerModule,
     MatSlideToggleModule,
+    MatSnackBarModule,
   ],
   bootstrap: [AppComponent],
 })

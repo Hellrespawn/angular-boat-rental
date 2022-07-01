@@ -23,7 +23,7 @@ export class MockBoatService extends BoatService {
           maintenance: false,
           imageRoute: 'test',
           lengthInM: 20,
-          maxOccupants: 10,
+          maxPassengers: 10,
           boatType: 'motor',
           maxSpeedInKmH: 100,
         },

@@ -4,27 +4,25 @@ import { Observable, of } from 'rxjs';
 export type UserType = 'guest' | 'user' | 'admin';
 
 export type NavItem = {
-  name: string; // Naam om weer te geven.
-  route: string; // Route om naar te navigeren.
-  userTypes: UserType[]; // UserTypes waar dit item zichtbaar voor is.
-  order?: number; // Relatieve volgorde. Hoger is later in de lijst.
+  name: string; // Name
+  route: string; // Route
+  userTypes: UserType[]; // UserTypes who can see this item
+  order?: number; // Relative order.
 };
 
 export const NAVIGATION: NavItem[] = [];
 
 /**
- * Decorator om item aan navbar toe te voegen. Deze moet buiten de
- * `NavigationService` class bestaan, want deze mag niet afhankelijk zijn van
- * een instance van een class.
+ * Add item to NavBar.
  *
  * ```ts
  * @addToNavBar({
- *   name: 'Boot-administratie',
- *   route: '/boat',
+ *   name: 'Administer Boats',
+ *   route: '/boats',
  *   userTypes: ['admin'],
  * })
  * @Component({ ... })
- * export class BootToevoegComponent { ... }
+ * export class AdminBoatOverviewComponent { ... }
  * ```
  */
 export function addToNavBar(navItem: NavItem): (_: any) => void {

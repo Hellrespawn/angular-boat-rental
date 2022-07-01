@@ -180,6 +180,8 @@ export class BookingService {
     this.sessionService.getSessionData().subscribe((sessionData) => {
       if (sessionData && !sessionData.license) {
         this.licenseFilter.next('not-required');
+      } else if (!sessionData) {
+        this.reset();
       }
     });
   }

@@ -1,0 +1,44 @@
+<div *ngIf="!boats || !boats.length" class="custom-card with-padding">
+  <h2>Something went wrong, please try again!</h2>
+</div>
+
+<div *ngIf="boats && boats.length" class="custom-card with-padding vertical">
+  <div id="top">
+    <h2>Boats:</h2>
+    <a mat-button routerLink="/admin/boats/add"><mat-icon>add</mat-icon>Add</a>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Registration #</th>
+        <th>Type</th>
+        <th>Requirements</th>
+        <th>Name</th>
+        <th><!-- Edit --></th>
+        <th><!-- Delete --></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let boat of boats">
+        <td>{{ boat.registrationNumber }}</td>
+        <td>{{ typeToString(boat.boatType) }}</td>
+        <td>{{ requirementsToString(boat) }}</td>
+        <td>{{ boat.name ?? '-' }}</td>
+        <!-- <td>
+          <a
+            mat-button
+            [routerLink]="['/admin/boats/edit', boat.registrationNumber]"
+          >
+            <mat-icon>edit</mat-icon>
+          </a>
+        </td> -->
+        <td>
+          <button mat-button (click)="delete(boat)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

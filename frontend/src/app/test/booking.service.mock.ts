@@ -13,7 +13,7 @@ export const MOCK_BOATS = [
     name: 'boot1',
     requirements: 'none' as BoatRequirements,
     boatType: 'motor' as BoatType,
-    maxOccupants: 10,
+    maxPassengers: 10,
     enabled: true,
   },
   {
@@ -22,7 +22,7 @@ export const MOCK_BOATS = [
     name: 'boot2',
     requirements: 'license' as BoatRequirements,
     boatType: 'sail' as BoatType,
-    maxOccupants: 10,
+    maxPassengers: 10,
     enabled: true,
   },
   {
@@ -31,7 +31,7 @@ export const MOCK_BOATS = [
     name: 'boot3',
     requirements: 'skipper' as BoatRequirements,
     boatType: 'sail' as BoatType,
-    maxOccupants: 10,
+    maxPassengers: 10,
     enabled: true,
   },
 ];

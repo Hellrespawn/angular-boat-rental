@@ -1,7 +1,7 @@
 <form [formGroup]="registrationForm">
   <div id="inputs" class="custom-card vertical with-padding">
     <h2>Register</h2>
-    <mat-form-field class="form-field" appearance="fill">
+    <mat-form-field appearance="fill">
       <mat-label>Email Address</mat-label>
       <input
         type="email"
@@ -13,7 +13,7 @@
       <mat-error *ngIf="emailAddress.invalid">{{ getEmailError() }}</mat-error>
     </mat-form-field>
 
-    <mat-form-field class="form-field" appearance="fill">
+    <mat-form-field appearance="fill">
       <mat-label>Password</mat-label>
       <input
         type="password"
@@ -31,7 +31,7 @@
       {{ minNumbers }} number{{ minNumbers > 1 ? 's' : '' }}.
     </p>
 
-    <mat-form-field class="form-field" appearance="fill">
+    <mat-form-field appearance="fill">
       <mat-label>Repeat Password</mat-label>
       <input
         type="password"
@@ -45,7 +45,7 @@
       }}</mat-error>
     </mat-form-field>
 
-    <mat-form-field class="form-field" appearance="fill">
+    <mat-form-field appearance="fill">
       <mat-label>First Name</mat-label>
       <input
         type="firstName"
@@ -59,7 +59,7 @@
       }}</mat-error>
     </mat-form-field>
 
-    <mat-form-field class="form-field" appearance="fill">
+    <mat-form-field appearance="fill">
       <mat-label>Last Name</mat-label>
       <input
         type="lastName"
