@@ -14,7 +14,7 @@ export abstract class Boat {
     public readonly pricePerDay: number,
     public readonly imageRoute: string,
     public readonly lengthInM: number,
-    public readonly maxOccupants: number,
+    public readonly maxPassengers: number,
     public readonly name?: string
   ) {}
 
@@ -23,7 +23,7 @@ export abstract class Boat {
     pricePerDay: number,
     imageRoute: string,
     lengthInM: number,
-    maxOccupants: number,
+    maxPassengers: number,
     boatType: BoatType,
     name?: string,
     maxSpeedInKmH?: number,
@@ -36,7 +36,7 @@ export abstract class Boat {
     Object.entries({
       pricePerDay,
       lengthInM,
-      maxOccupants,
+      maxPassengers,
       maxSpeedInKmH,
       sailAreaInM2,
     }).forEach(([key, value]) => {
@@ -55,7 +55,7 @@ export abstract class Boat {
         pricePerDay,
         imageRoute,
         lengthInM,
-        maxOccupants,
+        maxPassengers,
         maxSpeedInKmH,
         name
       );
@@ -70,7 +70,7 @@ export abstract class Boat {
       pricePerDay,
       imageRoute,
       lengthInM,
-      maxOccupants,
+      maxPassengers,
       sailAreaInM2,
       name
     );
@@ -149,7 +149,7 @@ export abstract class Boat {
   protected getUniversalRequirements(): BoatRequirements {
     let requirements: BoatRequirements = 'none';
 
-    if (this.maxOccupants > 12) {
+    if (this.maxPassengers > 12) {
       requirements = 'license';
     }
 
@@ -175,7 +175,7 @@ export class MotorBoat extends Boat {
     pricePerDay: number,
     imageRoute: string,
     lengthInM: number,
-    maxOccupants: number,
+    maxPassengers: number,
     public readonly maxSpeedInKmH: number,
     name?: string
   ) {
@@ -184,7 +184,7 @@ export class MotorBoat extends Boat {
       pricePerDay,
       imageRoute,
       lengthInM,
-      maxOccupants,
+      maxPassengers,
       name
     );
     // TODO Validate new MotorBoat
@@ -212,7 +212,7 @@ export class SailBoat extends Boat {
     pricePerDay: number,
     imageRoute: string,
     lengthInM: number,
-    maxOccupants: number,
+    maxPassengers: number,
     public readonly sailAreaInM2: number,
     name?: string
   ) {
@@ -221,7 +221,7 @@ export class SailBoat extends Boat {
       pricePerDay,
       imageRoute,
       lengthInM,
-      maxOccupants,
+      maxPassengers,
       name
     );
     // TODO Validate new SailBoat

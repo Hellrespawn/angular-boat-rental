@@ -150,7 +150,7 @@ describe('Unit test Boat, SailBoat, MotorBoat', () => {
     }
   });
 
-  it('throws an error when maxOccupants <= 0', async () => {
+  it('throws an error when maxPassengers <= 0', async () => {
     try {
       await Boat.createBoat(
         1234,

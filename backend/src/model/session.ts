@@ -5,7 +5,7 @@ import { User } from './user';
 
 export class Session {
   constructor(
-    public readonly id: number,
+    public id: number,
     public readonly sessionId: string,
     public readonly user: User,
     private createdAt: Date

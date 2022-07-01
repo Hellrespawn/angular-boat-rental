@@ -13,8 +13,8 @@ describe('Test Rental & Booking end-to-end', () => {
   beforeEach(async () => {
     stubRentalDao(SANDBOX, [TEST_RENTAL]);
     stubBoatDao(SANDBOX, TEST_BOAT);
-    stubUserDao(SANDBOX, TEST_USER as User);
-    stubAuth(SANDBOX, TEST_USER as User);
+    stubUserDao(SANDBOX, { id: 1, ...TEST_USER } as User);
+    stubAuth(SANDBOX, { id: 1, ...TEST_USER } as User);
   });
 
   afterEach(() => {
@@ -34,6 +34,7 @@ describe('Test Rental & Booking end-to-end', () => {
         .get(endpoint)
         .set('Cookie', 'session=fake')
         .expect(200);
+
       expect(res.body).to.deep.equal({
         rental: JSON.parse(JSON.stringify(TEST_RENTAL)),
       });
@@ -53,12 +54,15 @@ describe('Test Rental & Booking end-to-end', () => {
         .post(endpoint)
         .set('Cookie', 'session=fake')
         .send({
-          boatId: 2,
+          boatRegistrationNumber: 2,
           dateStart: new Date('2022-01-01').toISOString(),
           dateEnd: new Date('2022-01-10').toISOString(),
         })
         .expect(400);
-      expect(res.body).to.have.property('error', 'No boat with id 2.');
+      expect(res.body).to.have.property(
+        'error',
+        'No boat with registration number 2.'
+      );
     });
 
     it('Responds with an error if dates are too short', async () => {
@@ -66,11 +70,14 @@ describe('Test Rental & Booking end-to-end', () => {
         .post(endpoint)
         .set('Cookie', 'session=fake')
         .send({
-          boatId: 1,
+          boatRegistrationNumber: 1,
           dateStart: new Date('2022-02-01').toISOString(),
           dateEnd: new Date('2022-02-02').toISOString(),
         })
         .expect(400);
+
+      console.log(res.body);
+
       expect(res.body).to.have.property(
         'error',
         'Rental period must be at least 3 days!'

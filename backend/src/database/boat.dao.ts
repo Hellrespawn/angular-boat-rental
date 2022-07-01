@@ -62,7 +62,7 @@ export class BoatDao {
       pricePerDay: newBoat.pricePerDay,
       imageRoute: newBoat.imageRoute,
       lengthInM: newBoat.lengthInM,
-      maxOccupants: newBoat.maxOccupants,
+      maxPassengers: newBoat.maxPassengers,
       boatType: newBoat.boatType,
       ...newBoat.getBoatData(),
     });

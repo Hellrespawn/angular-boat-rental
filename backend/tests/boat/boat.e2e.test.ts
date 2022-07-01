@@ -14,7 +14,7 @@ const NEW_BOAT = {
   pricePerDay: 1234,
   imageRoute: '',
   lengthInM: 1234,
-  maxOccupants: 1234,
+  maxPassengers: 1234,
   boatType: 'motor',
   maxSpeedInKmH: 1234,
 };

@@ -22,7 +22,7 @@ export const NEW_BOAT_SCHEMA: JSONSchemaType<NewBoatData> = {
     lengthInM: {
       type: 'number',
     },
-    maxOccupants: {
+    maxPassengers: {
       type: 'number',
     },
     boatType: {
@@ -46,7 +46,7 @@ export const NEW_BOAT_SCHEMA: JSONSchemaType<NewBoatData> = {
     'registrationNumber',
     'imageRoute',
     'lengthInM',
-    'maxOccupants',
+    'maxPassengers',
     'boatType',
   ],
   additionalProperties: true, //needs to accept either maxSpeed or sailInSquareMeter
@@ -152,7 +152,7 @@ export class BoatController {
       pricePerDay,
       imageRoute,
       lengthInM,
-      maxOccupants,
+      maxPassengers,
       boatType,
       name,
       sailAreaInM2,
@@ -165,7 +165,7 @@ export class BoatController {
         pricePerDay,
         imageRoute,
         lengthInM,
-        maxOccupants,
+        maxPassengers,
         boatType,
         name,
         maxSpeedInKmH,

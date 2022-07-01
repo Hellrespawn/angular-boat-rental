@@ -24,7 +24,7 @@ export class BoatModel extends Model {
 
   @AllowNull(false) @Column public lengthInM!: number;
 
-  @AllowNull(false) @Column public maxOccupants!: number;
+  @AllowNull(false) @Column public maxPassengers!: number;
 
   @AllowNull(false) @Column imageRoute!: string;
 
@@ -50,7 +50,7 @@ export class BoatModel extends Model {
         this.pricePerDay,
         imageRoute,
         this.lengthInM,
-        this.maxOccupants,
+        this.maxPassengers,
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.maxSpeedInKmH!,
         this.name
@@ -62,7 +62,7 @@ export class BoatModel extends Model {
       this.pricePerDay,
       imageRoute,
       this.lengthInM,
-      this.maxOccupants,
+      this.maxPassengers,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       this.sailAreaInM2!,
       this.name

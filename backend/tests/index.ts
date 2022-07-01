@@ -1,5 +1,5 @@
 import { SinonSandbox, SinonStub } from 'sinon';
-import { NewUserData } from '../src/controller/user.controller';
+import { NewUserData } from 'auas-common';
 import { BoatDao } from '../src/database/boat.dao';
 import { SessionDao } from '../src/database/session.dao';
 import { UserDao } from '../src/database/user.dao';
@@ -73,7 +73,7 @@ export function stubSessionDao(sandbox: SinonSandbox): {
   return { getStub, deleteStub, saveStub };
 }
 
-export const TEST_USER: NewUserData = {
+export const TEST_USER = {
   firstName: 'Stef',
   lastName: 'Korporaal',
   license: false,

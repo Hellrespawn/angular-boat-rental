@@ -63,7 +63,9 @@ describe('Test RentalService', () => {
         );
         expect.fail('addRental with invalid boatId should not succeed!');
       } catch (error) {
-        expect((error as Error).message).to.include('No boat with id');
+        expect((error as Error).message).to.include(
+          'No boat with registration number'
+        );
         expect(saveRentalStub.callCount).to.equal(0);
       }
     });
