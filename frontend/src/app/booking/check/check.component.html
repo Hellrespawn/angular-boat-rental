@@ -42,7 +42,7 @@
 
     <!-- Boat invoice -->
     <section id="invoice" class="custom-card with-padding accent">
-      <app-filters-date [boatId]="boat.id"></app-filters-date>
+      <app-filters-date [boatId]="boat.registrationNumber"></app-filters-date>
       <h3 *ngIf="!dateRange">Kies een datum!</h3>
 
       <h3>

@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotificationService } from '../notification.service';
+import { type NewUserData } from 'auas-common';
 
 interface RegistrationForm {
   firstName: FormControl<string>;
@@ -145,7 +146,7 @@ export class RegisterComponent {
     if (errors) {
       if ('required' in errors) {
         message = 'This field is required!';
-      } else if ('passwordsDontMatch' in errors) {
+      } else if ('passwordsDoNotMatch' in errors) {
         message = "Passwords don't match";
       }
     }
@@ -168,7 +169,7 @@ export class RegisterComponent {
   }
 
   private doRegistrationRequest(): void {
-    const newUserData = {
+    const newUserData: NewUserData = {
       firstName: this.firstName.value,
       lastName: this.lastName.value,
       emailAddress: this.emailAddress.value,
@@ -219,7 +220,7 @@ export class RegisterComponent {
       const repeatPassword = control.value;
 
       if (password !== repeatPassword) {
-        return { passwordsDontMatch: { value: [password, repeatPassword] } };
+        return { passwordsDoNotMatch: { value: [password, repeatPassword] } };
       }
 
       return null;

@@ -50,6 +50,8 @@ import { UserSettingsComponent } from './user/settings/settings.component';
 
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { RegisterComponent } from './register/register.component';
+import { OverviewComponent } from './admin/boat/overview/overview.component';
+import { AddComponent } from './admin/boat/add/add.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +81,8 @@ import { RegisterComponent } from './register/register.component';
     UserRentalsComponent,
     UserSettingsComponent,
     RegisterComponent,
+    OverviewComponent,
+    AddComponent,
   ],
   imports: [
     BrowserModule,

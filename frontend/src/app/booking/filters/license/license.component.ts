@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BoatOverviewData } from '../../../boat';
+import { type BoatOverviewData } from 'auas-common';
 import { FilterComponent, BookingFilter } from '../filter';
 
 @Component({

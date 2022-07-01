@@ -20,19 +20,20 @@ export class LoginComponent {
     private sessionService: SessionService
   ) {}
 
-  public loginForm = new FormGroup<LoginForm>({
-    email: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required, Validators.email],
-    }),
-    password: new FormControl('', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
+  public email = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.email],
   });
 
-  public email = this.loginForm.get('email')!;
-  public password = this.loginForm.get('password')!;
+  public password = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.required],
+  });
+
+  public loginForm = new FormGroup<LoginForm>({
+    email: this.email,
+    password: this.password,
+  });
 
   /**
    * Handles login attempt.

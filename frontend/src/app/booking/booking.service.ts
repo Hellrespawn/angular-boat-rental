@@ -8,7 +8,7 @@ import {
   Subscription,
   tap,
 } from 'rxjs';
-import { BoatOverviewData } from '../boat';
+import { type BoatOverviewData } from 'auas-common';
 import { BoatService } from '../boat.service';
 import { DateRange } from '../date';
 import { MINIMUM_RENTAL } from '../rental';
@@ -23,13 +23,15 @@ import {
   LicenseFilterState,
 } from './filters/license/license.component';
 
+export type BookingServiceBoat = BoatOverviewData & { enabled: boolean };
+
 @Injectable({
   providedIn: 'root',
 })
 export class BookingService {
   // Boats
-  protected boats: BehaviorSubject<BoatOverviewData[]> = new BehaviorSubject(
-    [] as BoatOverviewData[]
+  protected boats: BehaviorSubject<BookingServiceBoat[]> = new BehaviorSubject(
+    [] as BookingServiceBoat[]
   );
   private boatSubscription?: Subscription;
 
@@ -102,7 +104,7 @@ export class BookingService {
   /**
    * Returns an Observable with all boats that pass the filters.
    */
-  public getBoats(): Observable<BoatOverviewData[]> {
+  public getBoats(): Observable<BookingServiceBoat[]> {
     return combineLatest([
       this.boats,
       this.licenseFilter,
@@ -161,7 +163,13 @@ export class BookingService {
     this.boatSubscription = this.dateRange.subscribe((dateRange) =>
       this.boatService
         .getBoatOverviewData(dateRange ?? undefined)
-        .subscribe((boats) => this.boats.next(boats))
+        .subscribe((boats) =>
+          this.boats.next(
+            boats.map((boat) => {
+              return { ...boat, enabled: false };
+            })
+          )
+        )
     );
   }
 
@@ -180,10 +188,10 @@ export class BookingService {
    * Applies all filters to this.boats.
    */
   private filterBoats(
-    boats: BoatOverviewData[],
+    boats: BookingServiceBoat[],
     license: LicenseFilterState,
     type: BoatTypeFilterState
-  ): BoatOverviewData[] {
+  ): BookingServiceBoat[] {
     const filters: BookingFilter[] = [
       new LicenseFilter(license),
       new BoatTypeFilter(type),

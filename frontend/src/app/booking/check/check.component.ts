@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BoatDetailData } from 'src/app/boat';
+import { type BoatDetailData } from 'auas-common';
 import { BoatService } from 'src/app/boat.service';
 import { DateRange } from '../../date';
 import { SessionData } from '../../session';
@@ -101,12 +101,14 @@ export class CheckComponent implements OnInit {
   public handleButton(): void {
     if (!this.isLoggedIn()) {
       this.router.navigate(['/login'], {
-        queryParams: { from: `/rent/check/${this.boat!.id}` },
+        queryParams: { from: `/rent/check/${this.boat!.registrationNumber}` },
       });
     } else {
-      this.bookingService.createRental(this.boat!.id).subscribe((rentalId) => {
-        this.router.navigate(['/rent/payment', rentalId]);
-      });
+      this.bookingService
+        .createRental(this.boat!.registrationNumber)
+        .subscribe((rentalId) => {
+          this.router.navigate(['/rent/payment', rentalId]);
+        });
     }
   }
 

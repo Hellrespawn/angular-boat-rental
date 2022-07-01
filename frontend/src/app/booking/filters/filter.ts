@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { BoatOverviewData } from '../../boat';
+import { type BoatOverviewData } from 'auas-common';
 import { BookingService } from '../booking.service';
 
 @Directive()

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoginData } from 'auas-common';
 import { BehaviorSubject, catchError, Observable } from 'rxjs';
 import { NotificationService } from './notification.service';
 import { SessionData } from './session';
@@ -32,7 +33,9 @@ export class SessionService {
    * @param password
    */
   public login(email: string, password: string): void {
-    this.doLoginRequest(email, password).subscribe({
+    const loginData: LoginData = { email, password };
+
+    this.doLoginRequest(loginData).subscribe({
       next: (data) => this.handleSuccessfulLogin(data),
       error: (error: string) => this.notificationService.notifyError(error),
     });
@@ -78,20 +81,12 @@ export class SessionService {
    * @param email
    * @param password
    */
-  private doLoginRequest(
-    email: string,
-    password: string
-  ): Observable<SessionData> {
-    return this.httpClient
-      .post<SessionData>('/api/login', {
-        email,
-        password,
+  private doLoginRequest(loginData: LoginData): Observable<SessionData> {
+    return this.httpClient.post<SessionData>('/api/login', loginData).pipe(
+      catchError((_) => {
+        throw 'Er is iets fout gegaan, controleer uw gegevens!';
       })
-      .pipe(
-        catchError((_) => {
-          throw 'Er is iets fout gegaan, controleer uw gegevens!';
-        })
-      );
+    );
   }
 
   /**

@@ -14,7 +14,7 @@ import { UserModel } from './user.model';
 
 @Table
 export class RentalModel extends Model {
-  @PrimaryKey @AutoIncrement public readonly orderNumber!: number;
+  @PrimaryKey @AutoIncrement @Column public readonly orderNumber!: number;
 
   @ForeignKey(() => BoatModel)
   @AllowNull(false)

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BoatDetailData } from 'src/app/boat';
+import { type BoatDetailData } from 'auas-common';
 import { BoatService } from 'src/app/boat.service';
 
 @Component({
@@ -12,7 +12,7 @@ export class BoatDetailsComponent implements OnInit {
   public boat!: BoatDetailData;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { id: number },
+    @Inject(MAT_DIALOG_DATA) public data: { registrationNumber: number },
     private boatService: BoatService
   ) {}
 
@@ -22,7 +22,7 @@ export class BoatDetailsComponent implements OnInit {
 
   private getBoat(): void {
     this.boatService
-      .getBoatDetailData(this.data.id)
+      .getBoatDetailData(this.data.registrationNumber)
       .subscribe((boat) => (this.boat = boat));
   }
 

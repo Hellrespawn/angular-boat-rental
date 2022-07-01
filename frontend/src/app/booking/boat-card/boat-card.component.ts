@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BoatDetailsComponent } from './boat-details/boat-details.component';
 import { Router } from '@angular/router';
 import { BoatService } from 'src/app/boat.service';
-import { BoatOverviewData } from 'src/app/boat';
+import { type BoatOverviewData } from 'auas-common';
 
 @Component({
   selector: 'app-booking-boat-card',
@@ -33,7 +33,7 @@ export class BoatCardComponent implements OnInit {
    */
   public openDialog(): void {
     this.dialogRef = this.dialog.open(BoatDetailsComponent, {
-      data: { id: this.boat.id },
+      data: { registrationNumber: this.boat.registrationNumber },
     });
   }
 

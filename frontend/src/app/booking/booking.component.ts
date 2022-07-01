@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BoatOverviewData } from '../boat';
-import { BookingService } from './booking.service';
+import { BookingServiceBoat, BookingService } from './booking.service';
 
 @Component({
   selector: 'app-booking',
@@ -9,7 +7,7 @@ import { BookingService } from './booking.service';
   styleUrls: ['./booking.component.scss'],
 })
 export class BookingComponent implements OnInit {
-  public boats: BoatOverviewData[] = [];
+  public boats: BookingServiceBoat[] = [];
 
   constructor(private bookingService: BookingService) {}
 
@@ -21,7 +19,7 @@ export class BookingComponent implements OnInit {
    * Subscribe to boats in BookingService.
    */
   private getBoats(): void {
-    this.bookingService.getBoats().subscribe((boats: BoatOverviewData[]) => {
+    this.bookingService.getBoats().subscribe((boats) => {
       this.boats = boats;
     });
   }

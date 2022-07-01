@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BoatOverviewData, BoatType } from '../../../boat';
+import { type BoatOverviewData, type BoatType } from 'auas-common';
 import { FilterComponent, BookingFilter } from '../filter';
 
 @Component({
@@ -28,6 +28,9 @@ export class BoatTypeFilter implements BookingFilter {
 
       case 'sail':
         return boat.boatType === 'sail';
+
+      default:
+        throw new Error(`Invalid boat type '${this.state}'`);
     }
   }
 }

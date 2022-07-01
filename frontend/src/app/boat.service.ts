@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { BoatDetailData, BoatOverviewData, BoatRequirements } from './boat';
+import {
+  type BoatDetailData,
+  type BoatOverviewData,
+  type BoatRequirements,
+} from 'auas-common';
 import { DateRange } from './date';
 
 @Injectable({
