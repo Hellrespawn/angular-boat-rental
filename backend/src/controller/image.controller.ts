@@ -36,6 +36,22 @@ export class ImageController {
   }
 
   /**
+   * Saves image to disk and responds with the route.
+   *
+   * @param req
+   * @param res
+   */
+  public async check(req: Request, res: Response): Promise<void> {
+    const { name } = req.params;
+
+    if (await this.imageService.check(name)) {
+      res.status(400).json({ error: 'File exists!' });
+    } else {
+      res.status(200).end();
+    }
+  }
+
+  /**
    * Deletes an image from disk and responds with the former route.
    *
    * @param req

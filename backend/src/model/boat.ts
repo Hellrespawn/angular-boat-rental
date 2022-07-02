@@ -53,7 +53,7 @@ export abstract class Boat {
       return new MotorBoat(
         registrationNumber,
         pricePerDay,
-        imageRoute,
+        imageRoute || 'motorboat-placeholder.jpg',
         lengthInM,
         maxPassengers,
         maxSpeedInKmH,
@@ -68,7 +68,7 @@ export abstract class Boat {
     return new SailBoat(
       registrationNumber,
       pricePerDay,
-      imageRoute,
+      imageRoute || 'sailboat-placeholder.jpg',
       lengthInM,
       maxPassengers,
       sailAreaInM2,

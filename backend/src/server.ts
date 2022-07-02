@@ -28,6 +28,11 @@ app.use(authenticator);
 // Statically serve images.
 app.use('/images', express.static(path.join(__dirname, '..', 'media')));
 
+app.post('/', (req: express.Request, res: express.Response) => {
+  console.log(req.body);
+  res.end();
+});
+
 // Routes
 ROUTERS.forEach(({ prefix, router }) => {
   if (prefix) {

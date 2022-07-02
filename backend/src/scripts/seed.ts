@@ -4,9 +4,9 @@ import { RentalModel } from '../database/rental.model';
 import { UserModel } from '../database/user.model';
 import { User } from '../model/user';
 
-const MOTORBOAT_PLACEHOLDER_PATH = 'motorboot-placeholder.jpg';
+const MOTORBOAT_PLACEHOLDER_PATH = 'motorboat-placeholder.jpg';
 
-const SAILBOAT_PLACEHOLDER_PATH = 'zeilboot-placeholder.jpg';
+const SAILBOAT_PLACEHOLDER_PATH = 'sailboat-placeholder.jpg';
 
 const BOAT_NAMES = [
   'The Holstein',

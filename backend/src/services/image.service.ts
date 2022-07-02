@@ -60,6 +60,12 @@ export class ImageService {
     return true;
   }
 
+  public check(name: string): Promise<boolean> {
+    const destination = this.getPath(name);
+    console.log(`Checking if ${destination} exists.`);
+    return this.checkFileExists(destination);
+  }
+
   /**
    * Get filepath from file name.
    */

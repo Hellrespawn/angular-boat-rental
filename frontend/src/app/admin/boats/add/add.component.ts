@@ -7,9 +7,12 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { BoatType, BOAT_TYPES, ImageResponse } from 'auas-common';
+import { Router } from '@angular/router';
+import { BoatType, BOAT_TYPES, ImageResponse, NewBoatData } from 'auas-common';
 import { Observable, of } from 'rxjs';
 import { BoatService } from '../../../boat.service';
+import { BookingService } from '../../../booking/booking.service';
+import { NotificationService } from '../../../notification.service';
 
 interface AddBoatForm {
   registrationNumber: FormControl<number>;
@@ -82,7 +85,10 @@ export class AdminBoatAddComponent implements OnInit {
 
   constructor(
     private boatService: BoatService,
-    private httpClient: HttpClient
+    private bookingService: BookingService,
+    private httpClient: HttpClient,
+    private notificationService: NotificationService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -100,11 +106,10 @@ export class AdminBoatAddComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    if (this.addBoatForm.valid) {
-      this.handleImageUpload().subscribe((res) => console.log(res));
+    if (!this.selectedImage) {
+      this.notificationService.notifyError('Please select an image to upload!');
     } else {
-      console.log(this.addBoatForm.errors);
-      this.addBoatForm.markAsTouched();
+      this.upload();
     }
   }
 
@@ -166,15 +171,67 @@ export class AdminBoatAddComponent implements OnInit {
     return null;
   }
 
-  private handleImageUpload(): Observable<ImageResponse | null> {
-    if (this.selectedImage) {
-      const name = this.selectedImage.name;
-      return this.httpClient.post<ImageResponse>(
-        `/api/images/${name}`,
-        this.selectedImage
-      );
+  private upload(): void {
+    if (this.addBoatForm.valid) {
+      this.checkImage().subscribe({
+        next: () => {
+          this.handleBoatUpload().subscribe({
+            next: () => {
+              this.handleImageUpload().subscribe({
+                next: () => {
+                  this.bookingService.updateBoats();
+                  this.router.navigate(['/admin/boats/overview']);
+                },
+                error: this.handleError.bind(this),
+              });
+            },
+            error: this.handleError.bind(this),
+          });
+        },
+        error: this.handleError.bind(this),
+      });
     } else {
-      return of(null);
+      this.addBoatForm.markAsTouched();
     }
+  }
+
+  private handleError(response: { error: { error: string } }): void {
+    const {
+      error: { error },
+    } = response;
+
+    this.notificationService.notifyError(`Unable to upload: ${error}`);
+  }
+
+  private checkImage(): Observable<void> {
+    const name = this.selectedImage!.name;
+    return this.httpClient.get<void>(`/api/images/check/${name}`);
+  }
+
+  private handleImageUpload(): Observable<ImageResponse> {
+    const name = this.selectedImage!.name;
+    return this.httpClient.post<ImageResponse>(
+      `/api/images/${name}`,
+      this.selectedImage
+    );
+  }
+
+  private handleBoatUpload(): Observable<void> {
+    const boatType = this.boatType.value;
+
+    const newBoatData: NewBoatData = {
+      name: this.name.value || undefined,
+      registrationNumber: this.registrationNumber.value,
+      pricePerDay: this.pricePerDay.value,
+      lengthInM: this.lengthInM.value,
+      maxPassengers: this.maxPassengers.value,
+      imageRoute: this.selectedImage ? this.selectedImage.name : '',
+      boatType,
+      maxSpeedInKmH:
+        boatType === 'motor' ? this.maxSpeedInKmH.value : undefined,
+      sailAreaInM2: boatType === 'sail' ? this.sailAreaInM2.value : undefined,
+    };
+
+    return this.httpClient.post<void>('/api/boats', newBoatData);
   }
 }

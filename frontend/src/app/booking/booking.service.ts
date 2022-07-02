@@ -157,7 +157,7 @@ export class BookingService {
    * Updates the list of valid boats, based on this.dateRange, and broadcasts
    * it to subscribers of this.boats
    */
-  protected updateBoats(): void {
+  public updateBoats(): void {
     this.boatSubscription?.unsubscribe();
 
     this.boatSubscription = this.dateRange.subscribe((dateRange) =>
