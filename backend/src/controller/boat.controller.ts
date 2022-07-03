@@ -2,12 +2,9 @@ import { BoatService } from '../services/boat.service';
 import { type Request, type Response } from 'express';
 import { ServerError } from '../util/error';
 import { type JSONSchemaType } from 'ajv';
-import { type NewBoatData } from 'auas-common';
+import { type NewBoatRequest } from 'auas-common';
 
-/**
- * JSON Schema describing NewBoatData
- */
-export const NEW_BOAT_SCHEMA: JSONSchemaType<NewBoatData> = {
+export const NEW_BOAT_SCHEMA: JSONSchemaType<NewBoatRequest> = {
   type: 'object',
   properties: {
     registrationNumber: {
@@ -157,7 +154,7 @@ export class BoatController {
       name,
       sailAreaInM2,
       maxSpeedInKmH,
-    } = req.body as NewBoatData; // Validated by middleware
+    } = req.body as NewBoatRequest; // Validated by middleware
 
     try {
       await this.boatService.save(

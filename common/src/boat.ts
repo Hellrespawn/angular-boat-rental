@@ -7,7 +7,7 @@ export type BoatRequirements = 'none' | 'license';
 /**
  * Interface matching the expected data for a new boat.
  */
-export interface NewBoatData {
+export interface NewBoatRequest {
   registrationNumber: number;
   pricePerDay: number;
   imageRoute: string;
@@ -18,6 +18,8 @@ export interface NewBoatData {
   maxSpeedInKmH?: number;
   name?: string;
 }
+
+export type NewBoatResponse = undefined;
 
 /**
  * type which is required by the boat rental overview page

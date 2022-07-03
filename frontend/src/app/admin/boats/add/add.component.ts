@@ -8,7 +8,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BoatType, BOAT_TYPES, ImageResponse, NewBoatData } from 'auas-common';
+import {
+  BoatType,
+  BOAT_TYPES,
+  ImageResponse,
+  NewBoatRequest,
+  NewBoatResponse,
+} from 'auas-common';
 import { Observable, of } from 'rxjs';
 import { BoatService } from '../../../boat.service';
 import { BookingService } from '../../../booking/booking.service';
@@ -219,7 +225,7 @@ export class AdminBoatAddComponent implements OnInit {
   private handleBoatUpload(): Observable<void> {
     const boatType = this.boatType.value;
 
-    const newBoatData: NewBoatData = {
+    const newBoatData: NewBoatRequest = {
       name: this.name.value || undefined,
       registrationNumber: this.registrationNumber.value,
       pricePerDay: this.pricePerDay.value,
@@ -232,6 +238,6 @@ export class AdminBoatAddComponent implements OnInit {
       sailAreaInM2: boatType === 'sail' ? this.sailAreaInM2.value : undefined,
     };
 
-    return this.httpClient.post<void>('/api/boats', newBoatData);
+    return this.httpClient.post<NewBoatResponse>('/api/boats', newBoatData);
   }
 }
