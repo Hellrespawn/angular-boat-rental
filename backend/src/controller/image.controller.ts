@@ -41,10 +41,10 @@ export class ImageController {
    * @param req
    * @param res
    */
-  public async check(req: Request, res: Response): Promise<void> {
+  public async exists(req: Request, res: Response): Promise<void> {
     const { name } = req.params;
 
-    if (await this.imageService.check(name)) {
+    if (await this.imageService.exists(name)) {
       res.status(400).json({ error: 'File exists!' });
     } else {
       res.status(200).end();

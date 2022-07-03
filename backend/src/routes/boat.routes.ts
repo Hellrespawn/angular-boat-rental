@@ -4,6 +4,9 @@ import { BoatController, NEW_BOAT_SCHEMA } from '../controller/boat.controller';
 import { requireAdminRights } from '../middleware/auth';
 import { validateIdInUrlParams } from '../middleware/validate';
 import { Validator } from '../util/validator';
+import multer from 'multer';
+
+export const UPLOAD = multer();
 
 const newBoatValidator = new Validator(NEW_BOAT_SCHEMA);
 
@@ -37,6 +40,18 @@ export function getBoatRouter(): Router {
   router.post(
     '/',
     requireAdminRights,
+    UPLOAD.single('image'),
+    (req, res, next) => {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        req.body = JSON.parse(req.body.data);
+      } catch (error) {
+        res.status(400).json({ error: 'Malformed JSON string!' });
+        return;
+      }
+
+      next();
+    },
     newBoatValidator.middleware(),
     boatController.save.bind(boatController)
   );

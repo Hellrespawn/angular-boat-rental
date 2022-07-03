@@ -6,11 +6,15 @@ import {
   type BoatOverviewData,
   type BoatType,
 } from 'auas-common';
+import { ImageService } from './image.service';
 
 export class BoatService {
   private static instance?: BoatService;
 
-  private constructor(private boatDao = BoatDao.getInstance()) {
+  private constructor(
+    private boatDao = BoatDao.getInstance(),
+    private imageService = ImageService.getInstance()
+  ) {
     // Intentionally left blank
   }
 
@@ -112,11 +116,16 @@ export class BoatService {
     lengthInM: number,
     maxPassengers: number,
     boatType: BoatType,
+    file: Express.Multer.File,
     name?: string,
     maxSpeedInKmH?: number,
     sailAreaInM2?: number
   ): Promise<void> {
-    return this.boatDao.save(
+    if (await this.imageService.exists(file.originalname)) {
+      throw new ServerError('Image already exists.');
+    }
+
+    await this.boatDao.save(
       await Boat.createBoat(
         registrationNumber,
         pricePerDay,
@@ -129,6 +138,8 @@ export class BoatService {
         sailAreaInM2
       )
     );
+
+    await this.imageService.save(file.buffer, file.originalname);
   }
 
   public async delete(registrationNumber: number): Promise<void> {

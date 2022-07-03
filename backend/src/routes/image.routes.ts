@@ -7,9 +7,9 @@ export function getImageRouter(): Router {
   const imageController = ImageController.getInstance();
   const router = Router();
   router.get(
-    '/check/:name(\\S{0,})',
+    '/exists/:name(\\S{0,})',
     requireAdminRights,
-    imageController.check.bind(imageController)
+    imageController.exists.bind(imageController)
   );
 
   // Theoretically, this would be /:name(.*), but this is broken in express

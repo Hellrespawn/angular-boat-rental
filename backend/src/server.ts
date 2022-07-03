@@ -28,8 +28,7 @@ app.use(authenticator);
 // Statically serve images.
 app.use('/images', express.static(path.join(__dirname, '..', 'media')));
 
-app.post('/', (req: express.Request, res: express.Response) => {
-  console.log(req.body);
+app.post('/', (_, res: express.Response) => {
   res.end();
 });
 

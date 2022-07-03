@@ -144,19 +144,26 @@ export class BoatController {
   }
 
   public async save(req: Request, res: Response): Promise<void> {
-    const {
-      registrationNumber,
-      pricePerDay,
-      imageRoute,
-      lengthInM,
-      maxPassengers,
-      boatType,
-      name,
-      sailAreaInM2,
-      maxSpeedInKmH,
-    } = req.body as NewBoatRequest; // Validated by middleware
+    console.log(req.body);
+    console.log(req.file);
 
     try {
+      if (!req.file) {
+        throw new ServerError('No image file included!');
+      }
+
+      const {
+        registrationNumber,
+        pricePerDay,
+        imageRoute,
+        lengthInM,
+        maxPassengers,
+        boatType,
+        name,
+        sailAreaInM2,
+        maxSpeedInKmH,
+      } = req.body as NewBoatRequest; // Validated by middleware
+
       await this.boatService.save(
         registrationNumber,
         pricePerDay,
@@ -164,6 +171,7 @@ export class BoatController {
         lengthInM,
         maxPassengers,
         boatType,
+        req.file,
         name,
         maxSpeedInKmH,
         sailAreaInM2

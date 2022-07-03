@@ -21,6 +21,10 @@ export interface NewBoatRequest {
 
 export type NewBoatResponse = undefined;
 
+export interface NewBoatError {
+  error: string;
+}
+
 /**
  * type which is required by the boat rental overview page
  */
