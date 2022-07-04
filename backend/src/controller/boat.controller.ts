@@ -144,9 +144,6 @@ export class BoatController {
   }
 
   public async save(req: Request, res: Response): Promise<void> {
-    console.log(req.body);
-    console.log(req.file);
-
     try {
       if (!req.file) {
         throw new ServerError('No image file included!');
