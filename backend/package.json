@@ -8,7 +8,7 @@
     "test": "mocha --exit -r ts-node/register 'tests/**/*.test.ts'",
     "lint": "eslint ./src",
     "format:check": "npx prettier ./src --check && npm run lint",
-    "format:fix": "npx prettier ./src --write && eslint ./src --fix",
+    "format:fix": "npx prettier ./ --write && eslint ./ --fix",
     "clear-expired-sessions": "ts-node ./src/scripts/clear-expired.ts",
     "sync": "ts-node ./src/scripts/sync.ts",
     "drop": "ts-node ./src/scripts/drop.ts",

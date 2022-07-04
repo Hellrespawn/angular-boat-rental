@@ -15,7 +15,10 @@ export function stubUserDao(
   defaultValue?: User
 ): {
   userDaoCountStub: SinonStub<[], Promise<number>>;
-  userDaoGetByEmailStub: SinonStub<[emailAddress: string], Promise<User | null>>;
+  userDaoGetByEmailStub: SinonStub<
+    [emailAddress: string],
+    Promise<User | null>
+  >;
   userDaoGetByIdStub: SinonStub<[id: number], Promise<User | null>>;
   saveStub: SinonStub<[User], Promise<void>>;
 } {
@@ -33,5 +36,10 @@ export function stubUserDao(
 
   const saveStub = sandbox.stub(UserDao.prototype, 'save');
 
-  return { userDaoCountStub, userDaoGetByEmailStub, userDaoGetByIdStub, saveStub };
+  return {
+    userDaoCountStub,
+    userDaoGetByEmailStub,
+    userDaoGetByIdStub,
+    saveStub,
+  };
 }
