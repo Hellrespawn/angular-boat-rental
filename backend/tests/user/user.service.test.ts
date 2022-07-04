@@ -8,8 +8,11 @@ import { stubUserDao, TEST_USER } from '../stubs/user.stub';
 const SANDBOX = sinon.createSandbox();
 
 describe('Test UserService', () => {
-  let countStub: SinonStub<[], Promise<number>>;
-  let getByEmailStub: SinonStub<[emailAddress: string], Promise<User | null>>;
+  let userDaoCountStub: SinonStub<[], Promise<number>>;
+  let userDaoGetByEmailStub: SinonStub<
+    [emailAddress: string],
+    Promise<User | null>
+  >;
   let saveStub: SinonStub<[User], Promise<void>>;
 
   let service: UserService;
@@ -17,7 +20,8 @@ describe('Test UserService', () => {
   beforeEach(async () => {
     service = UserService.getInstance();
 
-    ({ countStub, getByEmailStub, saveStub } = stubUserDao(SANDBOX));
+    ({ userDaoCountStub, userDaoGetByEmailStub, saveStub } =
+      stubUserDao(SANDBOX));
   });
 
   afterEach(() => {
@@ -44,7 +48,7 @@ describe('Test UserService', () => {
       const { firstName, lastName, license, emailAddress, password } =
         TEST_USER;
 
-      getByEmailStub.returns(Promise.resolve({ emailAddress } as User));
+      userDaoGetByEmailStub.returns(Promise.resolve({ emailAddress } as User));
 
       try {
         await service.register(
@@ -85,7 +89,7 @@ describe('Test UserService', () => {
     });
 
     it('Does not give following users admin privileges', async () => {
-      countStub.returns(Promise.resolve(1));
+      userDaoCountStub.returns(Promise.resolve(1));
 
       const { firstName, lastName, license, emailAddress, password } =
         TEST_USER;

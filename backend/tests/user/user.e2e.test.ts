@@ -9,11 +9,13 @@ import { stubUserDao, TEST_USER } from '../stubs/user.stub';
 const SANDBOX = sinon.createSandbox();
 
 describe('Test User end-to-end', () => {
-  let countStub: SinonStub<[], Promise<number>>;
-  let getByEmailStub: SinonStub<[emailAddress: string], Promise<User | null>>;
+  let userDaoGetByEmailStub: SinonStub<
+    [emailAddress: string],
+    Promise<User | null>
+  >;
   let saveStub: SinonStub<[User], Promise<void>>;
   beforeEach(async () => {
-    ({ countStub, getByEmailStub, saveStub } = stubUserDao(SANDBOX));
+    ({ userDaoGetByEmailStub, saveStub } = stubUserDao(SANDBOX));
   });
 
   afterEach(() => {
@@ -28,7 +30,7 @@ describe('Test User end-to-end', () => {
   });
 
   it('Rejects user with same email-address', async () => {
-    getByEmailStub.returns(Promise.resolve(TEST_USER as User));
+    userDaoGetByEmailStub.returns(Promise.resolve(TEST_USER as User));
 
     const res = await request(app).post('/users/register').send(TEST_USER);
 

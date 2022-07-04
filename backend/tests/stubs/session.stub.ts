@@ -3,13 +3,16 @@ import { SessionDao } from '../../src/persistence/session.dao';
 import { type Session } from '../../src/model/session';
 
 export function stubSessionDao(sandbox: SinonSandbox): {
-  getStub: SinonStub<[sessionId: string], Promise<Session | null>>;
-  deleteStub: SinonStub<[Session], Promise<boolean>>;
-  saveStub: SinonStub<[Session], Promise<void>>;
+  sessionDaoGetStub: SinonStub<[sessionId: string], Promise<Session | null>>;
+  sessionDaoDeleteStub: SinonStub<[Session], Promise<boolean>>;
+  sessionDaoSaveStub: SinonStub<[Session], Promise<void>>;
 } {
-  const getStub = sandbox.stub(SessionDao.prototype, 'getBySessionId');
-  const deleteStub = sandbox.stub(SessionDao.prototype, 'delete');
-  const saveStub = sandbox.stub(SessionDao.prototype, 'save');
+  const sessionDaoGetStub = sandbox.stub(
+    SessionDao.prototype,
+    'getBySessionId'
+  );
+  const sessionDaoDeleteStub = sandbox.stub(SessionDao.prototype, 'delete');
+  const sessionDaoSaveStub = sandbox.stub(SessionDao.prototype, 'save');
 
-  return { getStub, deleteStub, saveStub };
+  return { sessionDaoGetStub, sessionDaoDeleteStub, sessionDaoSaveStub };
 }

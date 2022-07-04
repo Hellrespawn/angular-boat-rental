@@ -16,9 +16,12 @@ describe('Test SessionService', () => {
 
   let user: User;
 
-  let getStub: SinonStub<[sessionId: string], Promise<Session | null>>;
-  let deleteStub: SinonStub<[Session], Promise<boolean>>;
-  let saveStub: SinonStub<[Session], Promise<void>>;
+  let sessionDaoGetStub: SinonStub<
+    [sessionId: string],
+    Promise<Session | null>
+  >;
+  let sessionDaoDeleteStub: SinonStub<[Session], Promise<boolean>>;
+  let sessionDaoSaveStub: SinonStub<[Session], Promise<void>>;
 
   let sessionService: SessionService;
 
@@ -26,7 +29,8 @@ describe('Test SessionService', () => {
 
   beforeEach(async () => {
     user = await stubUserService(SANDBOX, emailAddress, password);
-    ({ deleteStub, getStub, saveStub } = stubSessionDao(SANDBOX));
+    ({ sessionDaoDeleteStub, sessionDaoGetStub, sessionDaoSaveStub } =
+      stubSessionDao(SANDBOX));
     sessionService = SessionService.getInstance();
     sessionService.clearCache();
   });
@@ -41,7 +45,7 @@ describe('Test SessionService', () => {
         await sessionService.login('fake', 'fake');
         expect.fail('Login with non-existent user is not supposed to succeed.');
       } catch (error) {
-        expect(saveStub.callCount).to.equal(0);
+        expect(sessionDaoSaveStub.callCount).to.equal(0);
         expect((error as Error).message.toLowerCase()).to.include(
           expectedError
         );
@@ -55,7 +59,7 @@ describe('Test SessionService', () => {
           'Login with incorrect password is not supposed to succeed.'
         );
       } catch (error) {
-        expect(saveStub.callCount).to.equal(0);
+        expect(sessionDaoSaveStub.callCount).to.equal(0);
         expect((error as Error).message.toLowerCase()).to.include(
           expectedError
         );
@@ -64,7 +68,7 @@ describe('Test SessionService', () => {
 
     it('Creates a session when the user exists', async () => {
       const session = await sessionService.login(user.emailAddress, password);
-      expect(saveStub.callCount).to.equal(1);
+      expect(sessionDaoSaveStub.callCount).to.equal(1);
       expect(session.user).to.deep.equal(user);
     });
   });
@@ -77,12 +81,12 @@ describe('Test SessionService', () => {
         {} as unknown as User,
         new Date()
       );
-      getStub.returns(Promise.resolve(testSession));
+      sessionDaoGetStub.returns(Promise.resolve(testSession));
 
       const session = await sessionService.getBySessionId('abcd');
 
       expect(session).to.deep.equal(testSession);
-      expect(deleteStub.callCount).to.equal(0);
+      expect(sessionDaoDeleteStub.callCount).to.equal(0);
     });
 
     it('Deletes the session if expired', async () => {
@@ -95,12 +99,12 @@ describe('Test SessionService', () => {
         createdAt
       );
 
-      getStub.returns(Promise.resolve(testSession));
+      sessionDaoGetStub.returns(Promise.resolve(testSession));
 
       const session = await sessionService.getBySessionId('abcd');
 
       expect(session).to.equal(null);
-      expect(deleteStub.callCount).to.equal(1);
+      expect(sessionDaoDeleteStub.callCount).to.equal(1);
     });
   });
 
@@ -120,7 +124,7 @@ describe('Test SessionService', () => {
 
       await sessionService.clearExpiredSessions();
 
-      expect(deleteStub.callCount).to.equal(1);
+      expect(sessionDaoDeleteStub.callCount).to.equal(1);
     });
   });
 });

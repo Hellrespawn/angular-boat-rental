@@ -14,24 +14,24 @@ export function stubUserDao(
   sandbox: SinonSandbox,
   defaultValue?: User
 ): {
-  countStub: SinonStub<[], Promise<number>>;
-  getByEmailStub: SinonStub<[emailAddress: string], Promise<User | null>>;
-  getByIdStub: SinonStub<[id: number], Promise<User | null>>;
+  userDaoCountStub: SinonStub<[], Promise<number>>;
+  userDaoGetByEmailStub: SinonStub<[emailAddress: string], Promise<User | null>>;
+  userDaoGetByIdStub: SinonStub<[id: number], Promise<User | null>>;
   saveStub: SinonStub<[User], Promise<void>>;
 } {
-  const countStub = sandbox.stub(UserDao.prototype, 'count');
-  countStub.returns(Promise.resolve(0));
+  const userDaoCountStub = sandbox.stub(UserDao.prototype, 'count');
+  userDaoCountStub.returns(Promise.resolve(0));
 
-  const getByEmailStub = sandbox.stub(UserDao.prototype, 'getByEmail');
-  getByEmailStub.returns(Promise.resolve(null));
+  const userDaoGetByEmailStub = sandbox.stub(UserDao.prototype, 'getByEmail');
+  userDaoGetByEmailStub.returns(Promise.resolve(null));
 
-  const getByIdStub = sandbox.stub(UserDao.prototype, 'getById');
+  const userDaoGetByIdStub = sandbox.stub(UserDao.prototype, 'getById');
 
   if (defaultValue) {
-    getByIdStub.returns(Promise.resolve(defaultValue));
+    userDaoGetByIdStub.returns(Promise.resolve(defaultValue));
   }
 
   const saveStub = sandbox.stub(UserDao.prototype, 'save');
 
-  return { countStub, getByEmailStub, getByIdStub, saveStub };
+  return { userDaoCountStub, userDaoGetByEmailStub, userDaoGetByIdStub, saveStub };
 }

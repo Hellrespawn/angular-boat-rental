@@ -28,6 +28,7 @@ describe('Test Boat end-to-end', () => {
 
   beforeEach(async () => {
     ({ boatDaoSaveStub } = stubBoatDao(SANDBOX));
+    ({ boatDaoSaveStub } = stubBoatDao(SANDBOX));
     stubAuth(SANDBOX, { ...TEST_USER, admin: true } as User);
   });
 
@@ -37,7 +38,11 @@ describe('Test Boat end-to-end', () => {
 
   describe('POST /boats/', () => {
     it('Responds with an error if there is no authenticated admin', async () => {
-      const res = await request(app).post(endpoint).send(NEW_BOAT).expect(401);
+      const res = await request(app)
+        .post(endpoint)
+        .field('data', JSON.stringify(NEW_BOAT))
+        .field('image', new Blob())
+        .expect(401);
 
       expect(res.body).to.have.property('error');
       expect(res.body.error).to.contain('Invalid credentials');
