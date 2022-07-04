@@ -3,9 +3,10 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import request from 'supertest';
 import { stubUserService } from '.';
-import { stubSessionDao, TEST_USER } from '..';
-import { User } from '../../src/model/user';
+import { type User } from '../../src/model/user';
 import { app } from '../../src/server';
+import { stubSessionDao } from '../stubs/session.stub';
+import { TEST_USER } from '../stubs/user.stub';
 
 const SANDBOX = sinon.createSandbox();
 

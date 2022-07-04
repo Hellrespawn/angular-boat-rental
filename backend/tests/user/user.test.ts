@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { TEST_USER } from '..';
 import { User } from '../../src/model/user';
+import { TEST_USER } from '../stubs/user.stub';
 
 describe('Test User', () => {
   describe('Password requirements', () => {

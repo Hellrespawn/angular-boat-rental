@@ -3,9 +3,11 @@ import request from 'supertest';
 import sinon from 'sinon';
 import { app } from '../../src/server';
 import { expect } from 'chai';
-import { stubAuth, stubBoatDao, stubUserDao, TEST_USER } from '..';
-import { User } from '../../src/model/user';
-import { Boat } from '../../src/model/boat';
+import { type User } from '../../src/model/user';
+import { type Boat } from '../../src/model/boat';
+import { stubBoatDao } from '../stubs/boat.stub';
+import { stubAuth } from '../stubs/auth.stub';
+import { TEST_USER } from '../stubs/user.stub';
 
 const SANDBOX = sinon.createSandbox();
 

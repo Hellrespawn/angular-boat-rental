@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { SinonSandbox, SinonStub } from 'sinon';
+import { type SinonSandbox, type SinonStub } from 'sinon';
 import { RentalDao } from '../../src/database/rental.dao';
 import { MotorBoat } from '../../src/model/boat';
 import { Rental } from '../../src/model/rental';
-import { User } from '../../src/model/user';
+import { type User } from '../../src/model/user';
 
 export const TEST_BOAT = new MotorBoat(
   1,

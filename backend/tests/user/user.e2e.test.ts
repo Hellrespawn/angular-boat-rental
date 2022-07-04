@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { expect } from 'chai';
-import sinon, { SinonStub } from 'sinon';
+import sinon, { type SinonStub } from 'sinon';
 import request from 'supertest';
-import { stubUserDao, TEST_USER } from '..';
 import { type User } from '../../src/model/user';
 import { app } from '../../src/server';
+import { stubUserDao, TEST_USER } from '../stubs/user.stub';
 
 const SANDBOX = sinon.createSandbox();
 

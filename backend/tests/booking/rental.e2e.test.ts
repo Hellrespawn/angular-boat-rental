@@ -2,10 +2,12 @@
 import request from 'supertest';
 import sinon from 'sinon';
 import { stubRentalDao, TEST_BOAT, TEST_RENTAL } from '.';
-import { User } from '../../src/model/user';
+import { type User } from '../../src/model/user';
 import { app } from '../../src/server';
 import { expect } from 'chai';
-import { stubAuth, stubBoatDao, stubUserDao, TEST_USER } from '..';
+import { stubBoatDao } from '../stubs/boat.stub';
+import { stubUserDao, TEST_USER } from '../stubs/user.stub';
+import { stubAuth } from '../stubs/auth.stub';
 
 const SANDBOX = sinon.createSandbox();
 

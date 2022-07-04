@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { expect } from 'chai';
-import sinon, { SinonStub } from 'sinon';
+import sinon, { type SinonStub } from 'sinon';
 import { stubRentalDao, TEST_BOAT, TEST_RENTAL } from '.';
-import { stubBoatDao, stubUserDao } from '..';
-import { Boat } from '../../src/model/boat';
-import { Rental } from '../../src/model/rental';
-import { User } from '../../src/model/user';
+import { type Boat } from '../../src/model/boat';
+import { type Rental } from '../../src/model/rental';
+import { type User } from '../../src/model/user';
 import { RentalService } from '../../src/services/rental.service';
+import { stubBoatDao } from '../stubs/boat.stub';
+import { stubUserDao } from '../stubs/user.stub';
 
 const SANDBOX = sinon.createSandbox();
 

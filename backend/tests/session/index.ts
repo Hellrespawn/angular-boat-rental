@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { SinonSandbox } from 'sinon';
+import { type SinonSandbox } from 'sinon';
 import { User } from '../../src/model/user';
 import { UserService } from '../../src/services/user.service';
 

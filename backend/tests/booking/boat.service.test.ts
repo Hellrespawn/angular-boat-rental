@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { expect } from 'chai';
-import sinon, { SinonStub } from 'sinon';
+import sinon, { type SinonStub } from 'sinon';
 import { stubRentalDao, TEST_BOAT, TEST_RENTAL } from '.';
-import { stubBoatDao } from '..';
-import { Boat } from '../../src/model/boat';
-import { Rental } from '../../src/model/rental';
+import { type Boat } from '../../src/model/boat';
+import { type Rental } from '../../src/model/rental';
 import { BoatService } from '../../src/services/boat.service';
+import { stubBoatDao } from '../stubs/boat.stub';
 
 const SANDBOX = sinon.createSandbox();
 

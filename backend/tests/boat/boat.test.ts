@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import sinon, { SinonStub } from 'sinon';
-import { stubBoatDao } from '..';
+import sinon, { type SinonStub } from 'sinon';
 import { Boat, MotorBoat, SailBoat } from '../../src/model/boat';
+import { stubBoatDao } from '../stubs/boat.stub';
 
 const SANDBOX = sinon.createSandbox();
 

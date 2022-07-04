@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Rental } from '../../src/model/rental';
-import { Boat } from '../../src/model/boat';
-import { User } from '../../src/model/user';
+import { type Boat } from '../../src/model/boat';
+import { type User } from '../../src/model/user';
 
 describe('Test Rental', () => {
   let rental: Rental;

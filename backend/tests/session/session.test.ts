@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { SessionService } from '../../src/services/session.service';
 import { Session } from '../../src/model/session';
-import { User } from '../../src/model/user';
+import { type User } from '../../src/model/user';
 
 describe('Test Session', () => {
   describe('Test Session.isExpired()', () => {

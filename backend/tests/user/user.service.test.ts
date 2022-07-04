@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import sinon, { SinonStub } from 'sinon';
+import sinon, { type SinonStub } from 'sinon';
 import { expect } from 'chai';
-import { User } from '../../src/model/user';
-import { stubUserDao, TEST_USER } from '..';
+import { type User } from '../../src/model/user';
 import { UserService } from '../../src/services/user.service';
+import { stubUserDao, TEST_USER } from '../stubs/user.stub';
 
 const SANDBOX = sinon.createSandbox();
 
