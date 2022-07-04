@@ -1,5 +1,5 @@
 import { Boat } from '../model/boat';
-import { BoatDao } from '../database/boat.dao';
+import { BoatDao } from '../persistence/boat.dao';
 import { ServerError } from '../util/error';
 import {
   type BoatDetailData,

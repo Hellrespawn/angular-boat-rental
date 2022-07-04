@@ -1,5 +1,5 @@
 import { type SinonSandbox, type SinonStub } from 'sinon';
-import { BoatDao } from '../../src/database/boat.dao';
+import { BoatDao } from '../../src/persistence/boat.dao';
 import { type Boat } from '../../src/model/boat';
 
 export function stubBoatDao(

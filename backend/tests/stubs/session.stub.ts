@@ -1,5 +1,5 @@
 import { type SinonSandbox, type SinonStub } from 'sinon';
-import { SessionDao } from '../../src/database/session.dao';
+import { SessionDao } from '../../src/persistence/session.dao';
 import { type Session } from '../../src/model/session';
 
 export function stubSessionDao(sandbox: SinonSandbox): {

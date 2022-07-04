@@ -1,8 +1,8 @@
 import * as argon2 from 'argon2';
-import { UserModel } from '../database/user.model';
-import { RentalDao } from '../database/rental.dao';
+import { UserModel } from '../persistence/user.model';
+import { RentalDao } from '../persistence/rental.dao';
 import { Rental } from './rental';
-import { SessionDao } from '../database/session.dao';
+import { SessionDao } from '../persistence/session.dao';
 import { Session } from './session';
 import { ServerError } from '../util/error';
 

@@ -1,6 +1,6 @@
 import { type BoatRequirements, type BoatType } from 'auas-common';
-import { BoatDao } from '../database/boat.dao';
-import { RentalDao } from '../database/rental.dao';
+import { BoatDao } from '../persistence/boat.dao';
+import { RentalDao } from '../persistence/rental.dao';
 import { ServerError } from '../util/error';
 import { Rental } from './rental';
 

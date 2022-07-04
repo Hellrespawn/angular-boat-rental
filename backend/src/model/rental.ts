@@ -1,4 +1,4 @@
-import { RentalModel } from '../database/rental.model';
+import { RentalModel } from '../persistence/rental.model';
 import { ServerError } from '../util/error';
 import { Boat } from './boat';
 import { User } from './user';

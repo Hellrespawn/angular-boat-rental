@@ -1,5 +1,5 @@
 import { type SinonSandbox, type SinonStub } from 'sinon';
-import { UserDao } from '../../src/database/user.dao';
+import { UserDao } from '../../src/persistence/user.dao';
 import { type User } from '../../src/model/user';
 
 export const TEST_USER = {

@@ -1,4 +1,4 @@
-import { RentalDao } from '../database/rental.dao';
+import { RentalDao } from '../persistence/rental.dao';
 
 import { ServerError } from '../util/error';
 import { BoatService } from './boat.service';

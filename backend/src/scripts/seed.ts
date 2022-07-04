@@ -1,7 +1,7 @@
-import { initSequelize } from '../database';
-import { BoatModel } from '../database/boat.model';
-import { RentalModel } from '../database/rental.model';
-import { UserModel } from '../database/user.model';
+import { initSequelize } from '../persistence';
+import { BoatModel } from '../persistence/boat.model';
+import { RentalModel } from '../persistence/rental.model';
+import { UserModel } from '../persistence/user.model';
 import { User } from '../model/user';
 
 const MOTORBOAT_PLACEHOLDER_PATH = 'motorboat-placeholder.jpg';

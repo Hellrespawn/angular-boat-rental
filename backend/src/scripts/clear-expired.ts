@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { initSequelize } from '../database';
+import { initSequelize } from '../persistence';
 import { SessionService } from '../services/session.service';
 
 async function checkSession(): Promise<void> {

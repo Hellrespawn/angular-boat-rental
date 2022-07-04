@@ -1,4 +1,4 @@
-import { SessionDao } from '../database/session.dao';
+import { SessionDao } from '../persistence/session.dao';
 import { Session } from '../model/session';
 import { Cache } from '../util/cache';
 import { ErrorType, ServerError } from '../util/error';

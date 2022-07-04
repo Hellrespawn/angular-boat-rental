@@ -1,4 +1,4 @@
-import { UserDao } from '../database/user.dao';
+import { UserDao } from '../persistence/user.dao';
 import { User } from '../model/user';
 import { ServerError } from '../util/error';
 

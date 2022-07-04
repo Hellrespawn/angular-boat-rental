@@ -6,7 +6,7 @@ import { Server } from 'http';
 import express, { Application } from 'express';
 import cookieParser from 'cookie-parser';
 
-import { initSequelize } from './database';
+import { initSequelize } from './persistence';
 import { ROUTERS } from './routes';
 import { addCorsHeaders } from './middleware/cors';
 import { authenticator } from './middleware/auth';

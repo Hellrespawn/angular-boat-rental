@@ -1,5 +1,5 @@
 import { randomBytes } from 'crypto';
-import { SessionModel } from '../database/session.model';
+import { SessionModel } from '../persistence/session.model';
 import { SessionService } from '../services/session.service';
 import { User } from './user';
 

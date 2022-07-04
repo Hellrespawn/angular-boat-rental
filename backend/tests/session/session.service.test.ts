@@ -3,7 +3,7 @@ import sinon, { type SinonStub } from 'sinon';
 import { type User } from '../../src/model/user';
 import { expect } from 'chai';
 import { SessionService } from '../../src/services/session.service';
-import { SessionDao } from '../../src/database/session.dao';
+import { SessionDao } from '../../src/persistence/session.dao';
 import { Session } from '../../src/model/session';
 import { stubUserService } from '.';
 import { TEST_USER } from '../stubs/user.stub';

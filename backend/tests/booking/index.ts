@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { type SinonSandbox, type SinonStub } from 'sinon';
-import { RentalDao } from '../../src/database/rental.dao';
+import { RentalDao } from '../../src/persistence/rental.dao';
 import { MotorBoat } from '../../src/model/boat';
 import { Rental } from '../../src/model/rental';
 import { type User } from '../../src/model/user';
