@@ -46,7 +46,11 @@ export function getBoatRouter(): Router {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         req.body = JSON.parse(req.body.data);
       } catch (error) {
-        res.status(400).json({ error: 'Malformed JSON string!' });
+        res.status(400).json({
+          error: 'Malformed JSON string!',
+          source: req.body,
+          originalError: (error as Error).message,
+        });
         return;
       }
 
