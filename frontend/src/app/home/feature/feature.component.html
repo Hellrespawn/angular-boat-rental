@@ -8,8 +8,6 @@
 
     <div class="spacer"></div>
 
-    <a routerLink="{{ buttonHref }}" mat-button color="primary">{{
-      buttonText
-    }}</a>
+    <a (click)="callback()" mat-button color="primary">{{ buttonText }}</a>
   </div>
 </div>

@@ -6,9 +6,9 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./feature.component.scss'],
 })
 export class HomeFeatureComponent {
-  @Input() public badgeText = '';
-  @Input() public buttonHref = '/';
-  @Input() public buttonText = 'More information';
+  @Input() public badgeText?: string;
+  @Input() public buttonText!: string;
+  @Input() public callback!: () => void;
   @Input() public imageSource = '/assets/notfound.jpg';
   @Input() public imageOrder: 'first' | 'last' = 'first';
   constructor() {}

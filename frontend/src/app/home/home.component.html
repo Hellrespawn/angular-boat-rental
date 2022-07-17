@@ -1,8 +1,9 @@
-<app-shortcuts></app-shortcuts>
+<h2>The Netherlands' best boat rental!</h2>
 
 <app-home-feature
   badgeText="From €200 per day!"
   buttonText="Rent a boat now!"
+  [callback]="canalCallback.bind(this)"
   imageSource="/assets/home/feature-canal.jpg"
 >
   <h2>Discover Amsterdam's canals</h2>
@@ -20,6 +21,7 @@
 <app-home-feature
   badgeText="Order now!"
   buttonText="Rent our party boats!"
+  [callback]="partyBoatCallback.bind(this)"
   imageOrder="last"
   imageSource="/assets/home/feature-partyboat.jpg"
 >
@@ -35,6 +37,7 @@
 </app-home-feature>
 <app-home-feature
   buttonText="Sail away, sail away..."
+  [callback]="sailboatCallback.bind(this)"
   imageSource="/assets/home/feature-sailboat.jpg"
 >
   <h2>Rent a sailboat</h2>

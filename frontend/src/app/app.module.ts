@@ -34,7 +34,6 @@ import { MatCardModule } from '@angular/material/card';
 import { HomeComponent } from './home/home.component';
 import { HomeFeatureComponent } from './home/feature/feature.component';
 import { FeatureBadgeComponent } from './home/feature/badge/badge.component';
-import { ShortcutsComponent } from './home/shortcuts/shortcuts.component';
 import { HeaderComponent } from './header/header.component';
 import { NavbarComponent } from './header/navbar/navbar.component';
 import { BoatDetailsComponent } from './booking/boat-card/boat-details/boat-details.component';
@@ -60,7 +59,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     HeaderComponent,
     NavbarComponent,
     FooterComponent,
-    ShortcutsComponent,
     HomeComponent,
     HomeFeatureComponent,
     HeaderComponent,
