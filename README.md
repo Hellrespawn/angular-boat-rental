@@ -12,3 +12,14 @@ I have stripped most of their code out of the project and reimplemented it mysel
 - MySQL
 
 See `backend/README.md` and `frontend/README.md` for further instructions.
+
+## Image attribution
+
+- Background: [grayscale photograph of body of water](https://unsplash.com/photos/COE-CIGj8VA)
+- Logo: <https://svgsilh.com/image/2027800.html>
+- Boat not found: [body of water under sky](https://unsplash.com/photos/6ArTTluciuA)
+- Canal Feature: [landscape of boats on a river](https://unsplash.com/photos/lJKm-eB280s)
+- Party Boat Feature: [people riding on white boat on sea during daytime](https://unsplash.com/photos/zk_6h5I4T5Q)
+- Sailboat Feature: [white sail boat on body of wate](https://unsplash.com/photos/-BcnpZHZJx4)(sic)
+- Motorboat Placeholder: [white and red boat on water during daytime](https://unsplash.com/photos/y0Br6D28Lkg)
+- Sailboat Placeholder: [white sailboat on sea under blue sky during daytime](https://unsplash.com/photos/exxNNGUWOb0)
