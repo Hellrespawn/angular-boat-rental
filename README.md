@@ -23,3 +23,9 @@ See `backend/README.md` and `frontend/README.md` for further instructions.
 - Sailboat Feature: [white sail boat on body of wate](https://unsplash.com/photos/-BcnpZHZJx4)(sic)
 - Motorboat Placeholder: [white and red boat on water during daytime](https://unsplash.com/photos/y0Br6D28Lkg)
 - Sailboat Placeholder: [white sailboat on sea under blue sky during daytime](https://unsplash.com/photos/exxNNGUWOb0)
+
+## To Development
+
+- TODO Mock payment screen
+- TODO Finish user panel
+- TODO Administer users

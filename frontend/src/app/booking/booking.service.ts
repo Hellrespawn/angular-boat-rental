@@ -118,7 +118,7 @@ export class BookingService {
    * Creates a rental and returns an observable with the id of the created
    * Rental. Resets the filter state.
    */
-  public createRental(boatId: number): Observable<number> {
+  public createRental(boatRegistrationNumber: number): Observable<number> {
     const dateRange = this.dateRange.getValue();
 
     if (!dateRange) {
@@ -128,12 +128,12 @@ export class BookingService {
     const { dateStart, dateEnd } = dateRange;
 
     return this.httpClient
-      .post<{ id: number }>('/api/rentals', {
-        boatId,
+      .post<{ orderNumber: number }>('/api/rentals', {
+        boatRegistrationNumber,
         dateStart: dateStart,
         dateEnd: dateEnd,
       })
-      .pipe(map(({ id }) => id))
+      .pipe(map(({ orderNumber }) => orderNumber))
       .pipe(tap(this.reset.bind(this)));
   }
 
