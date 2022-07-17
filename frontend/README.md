@@ -1,4 +1,4 @@
-# angular-boat-rental
+# angular-boat-rental frontend
 
 **NOTE**: This project is published for reference only. There is no license and all rights are reserved.
 
@@ -11,4 +11,16 @@ I have stripped most of their code out of the project and reimplemented it mysel
 - Node (LTS)
 - MySQL
 
-See `backend/README.md` and `frontend/README.md` for further instructions.
+## Installation
+
+1. Clone the repository and navigate to the `backend`-folder.
+1. Run `npm install`
+
+## Use
+
+- Run `npm start` to start the server.
+- ~~Run `npm test` to run the test suite.~~ There are currently no frontend tests.
+
+## Nice-to-haves
+
+- More in-depth exploration of frontend tests and TDD for Angular/frontend in general.

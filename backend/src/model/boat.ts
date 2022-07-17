@@ -40,29 +40,21 @@ export abstract class Boat {
       maxSpeedInKmH,
       sailAreaInM2,
     }).forEach(([key, value]) => {
-      if (value) {
+      if (value !== undefined) {
         this.validateGreaterThanZero(key, value);
       }
     });
 
     if (boatType === 'motor') {
-      if (maxSpeedInKmH === undefined) {
-        throw new ServerError('maxSpeedInKmH was undefined for MotorBoat!');
-      }
-
       return new MotorBoat(
         registrationNumber,
         pricePerDay,
         imageRoute || 'motorboat-placeholder.jpg',
         lengthInM,
         maxPassengers,
-        maxSpeedInKmH,
+        maxSpeedInKmH!, // Validated by validateBoatData
         name
       );
-    }
-
-    if (sailAreaInM2 === undefined) {
-      throw new ServerError('sailAreaInM2 was undefined for SailBoat!');
     }
 
     return new SailBoat(
@@ -71,7 +63,7 @@ export abstract class Boat {
       imageRoute || 'sailboat-placeholder.jpg',
       lengthInM,
       maxPassengers,
-      sailAreaInM2,
+      sailAreaInM2!, // Validated by validateBoatData
       name
     );
   }
@@ -187,7 +179,6 @@ export class MotorBoat extends Boat {
       maxPassengers,
       name
     );
-    // TODO Validate new MotorBoat
   }
 
   public getBoatData(): BoatData {
@@ -224,7 +215,6 @@ export class SailBoat extends Boat {
       maxPassengers,
       name
     );
-    // TODO Validate new SailBoat
   }
 
   public getBoatData(): BoatData {

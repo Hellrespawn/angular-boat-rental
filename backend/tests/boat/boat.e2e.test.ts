@@ -26,7 +26,7 @@ const NEW_BOAT = {
 
 const IMAGE_PATH = path.join(__dirname, '..', '..', 'doc', 'test.jpg');
 
-describe.only('Test Boat end-to-end', () => {
+describe('Test Boat end-to-end', () => {
   const endpoint = '/boats';
 
   let boatDaoSaveStub: SinonStub<[newBoat: Boat], Promise<void>>;

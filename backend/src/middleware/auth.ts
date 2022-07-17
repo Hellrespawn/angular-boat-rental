@@ -25,7 +25,6 @@ export async function authenticator(
   const session = await SessionService.getInstance().getBySessionId(sessionId);
 
   if (session) {
-    // TODO Check atomic update in authenticator
     // eslint-disable-next-line require-atomic-updates
     req.currentUser = session.user;
     req.currentSession = session;

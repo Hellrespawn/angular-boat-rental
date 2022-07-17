@@ -78,8 +78,6 @@ describe('Test Rental & Booking end-to-end', () => {
         })
         .expect(400);
 
-      console.log(res.body);
-
       expect(res.body).to.have.property(
         'error',
         'Rental period must be at least 3 days!'
