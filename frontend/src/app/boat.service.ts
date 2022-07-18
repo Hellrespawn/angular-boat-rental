@@ -76,7 +76,7 @@ export class BoatService {
    * @param dateRange
    * @returns Array of BoatOverviewData
    */
-  public getBoatOverviewData(
+  public getOverviewData(
     dateRange?: DateRange
   ): Observable<BoatOverviewData[]> {
     let route = '/boats/overview';
@@ -97,7 +97,7 @@ export class BoatService {
   /**
    * Retrieves detailed data from the backend for boat ${id}
    */
-  public getBoatDetailData(id: number): Observable<BoatDetailData> {
+  public getDetailData(id: number): Observable<BoatDetailData> {
     return this.httpClient
       .get<{ boat: BoatDetailData }>(`/api/boats/${id}/detail`)
       .pipe(
@@ -119,7 +119,7 @@ export class BoatService {
       );
   }
 
-  public deleteBoat(registrationNumber: number): Observable<void> {
+  public delete(registrationNumber: number): Observable<void> {
     return this.httpClient
       .delete<void>(`/api/boats/${registrationNumber}`)
       .pipe(

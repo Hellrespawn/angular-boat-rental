@@ -14,21 +14,18 @@ export function getBoatRouter(): Router {
   const boatController = BoatController.getInstance();
   const router = Router();
 
-  router.get(
-    '/overview',
-    boatController.getBoatsOverviewData.bind(boatController)
-  );
+  router.get('/overview', boatController.getOverviewData.bind(boatController));
 
   // Get all available boats between dates.
   router.get(
     '/overview/available/:dateStart/:dateEnd',
-    boatController.getAvailableBoatsOverviewData.bind(boatController)
+    boatController.getAvailableOverviewData.bind(boatController)
   );
 
   router.get(
     '/:id/detail',
     validateIdInUrlParams(),
-    boatController.getBoatDetailData.bind(boatController)
+    boatController.getDetailData.bind(boatController)
   );
 
   router.get(

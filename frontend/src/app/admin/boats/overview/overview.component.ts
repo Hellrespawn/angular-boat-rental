@@ -24,7 +24,7 @@ export class AdminBoatOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.boatService
-      .getBoatOverviewData()
+      .getOverviewData()
       .subscribe((boats) => (this.boats = boats));
   }
 
@@ -33,7 +33,7 @@ export class AdminBoatOverviewComponent implements OnInit {
   public requirementsToString = this.boatService.requirementsToString;
 
   public delete(boat: BoatOverviewData): void {
-    this.boatService.deleteBoat(boat.registrationNumber).subscribe(() => {
+    this.boatService.delete(boat.registrationNumber).subscribe(() => {
       this.boats!.splice(this.boats!.indexOf(boat), 1);
       this.notificationService.notifySuccess(
         `Deleted boat ${boat.registrationNumber}${boat.name ? ' - ' : ''}${

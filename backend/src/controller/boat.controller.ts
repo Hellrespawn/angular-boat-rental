@@ -70,12 +70,9 @@ export class BoatController {
    * @param req
    * @param res
    */
-  public async getBoatsOverviewData(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  public async getOverviewData(req: Request, res: Response): Promise<void> {
     try {
-      const boats = await this.boatService.getBoatsOverviewData();
+      const boats = await this.boatService.getOverviewData();
       res.status(200).json({ boats });
     } catch (error) {
       console.error(error);
@@ -89,14 +86,14 @@ export class BoatController {
    * @param req
    * @param res
    */
-  public async getAvailableBoatsOverviewData(
+  public async getAvailableOverviewData(
     req: Request,
     res: Response
   ): Promise<void> {
     try {
       const [dateStart, dateEnd] = this.getAndValidateDates(req);
 
-      const boats = await this.boatService.getAvailableBoatsOverviewData(
+      const boats = await this.boatService.getAvailableOverviewData(
         new Date(dateStart),
         new Date(dateEnd)
       );
@@ -112,11 +109,11 @@ export class BoatController {
    * @param req
    * @param res
    */
-  public async getBoatDetailData(req: Request, res: Response): Promise<void> {
+  public async getDetailData(req: Request, res: Response): Promise<void> {
     try {
       // ID is checked by middleware in route.
       const id = parseInt(req.params.id);
-      const boat = await this.boatService.getBoatDetailData(id);
+      const boat = await this.boatService.getDetailData(id);
       if (boat) {
         res.status(200).json({ boat });
       } else {

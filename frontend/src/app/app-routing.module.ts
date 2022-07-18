@@ -12,6 +12,7 @@ import { UserSettingsComponent } from './user/settings/settings.component';
 import { RegisterComponent } from './register/register.component';
 import { AdminBoatAddComponent } from './admin/boats/add/add.component';
 import { AdminBoatOverviewComponent } from './admin/boats/overview/overview.component';
+import { AdminUserOverviewComponent } from './admin/users/overview/overview.component';
 
 const routes: Routes = [
   { path: 'home', title: 'Home', component: HomeComponent },
@@ -36,6 +37,11 @@ const routes: Routes = [
     path: 'admin/boats/overview',
     title: 'Boats',
     component: AdminBoatOverviewComponent,
+  },
+  {
+    path: 'admin/users/overview',
+    title: 'Boats',
+    component: AdminUserOverviewComponent,
   },
 
   { path: 'register', title: 'Register', component: RegisterComponent },

@@ -4,7 +4,11 @@ import { ServerError } from '../util/error';
 import { type Request, type Response } from 'express';
 import { JSONSchemaType } from 'ajv';
 import { UserService } from '../services/user.service';
-import { type NewUserData } from 'auas-common';
+import {
+  ToggleBlockedResponse,
+  type NewUserData,
+  type UserOverviewData,
+} from 'auas-common';
 
 export const NEW_USER_SCHEMA: JSONSchemaType<NewUserData> = {
   type: 'object',
@@ -71,6 +75,7 @@ export class UserController {
 
     try {
       await this.userService.delete(id);
+      res.end();
     } catch (error) {
       ServerError.respond(error, res);
     }
@@ -90,6 +95,30 @@ export class UserController {
     try {
       const rental = await this.rentalService.getNextRentalByUserId(id);
       res.json({ rental });
+    } catch (error) {
+      ServerError.respond(error, res);
+    }
+  }
+
+  public async getOverviewData(req: Request, res: Response): Promise<void> {
+    try {
+      const users: UserOverviewData[] =
+        await this.userService.getOverviewData();
+      res.json({ users });
+    } catch (error) {
+      ServerError.respond(error, res);
+    }
+  }
+
+  public async toggleBlocked(req: Request, res: Response): Promise<void> {
+    try {
+      const id = parseInt(req.params.id);
+
+      const wasBlocked: ToggleBlockedResponse = {
+        wasBlocked: await this.userService.toggleBlocked(id),
+      };
+
+      res.json(wasBlocked);
     } catch (error) {
       ServerError.respond(error, res);
     }

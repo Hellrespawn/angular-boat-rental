@@ -39,3 +39,7 @@ You can also run `npm run reset-database`, which sequentially runs `drop`, `sync
 - `pauljansen@test.com`
 
 These users all have `abcdef1A` as password.
+
+## Nice-to-haves
+
+- Paginate API results for `BoatOverviewData`, `UserOverviewData`

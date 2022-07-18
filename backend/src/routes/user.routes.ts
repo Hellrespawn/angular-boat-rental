@@ -24,11 +24,24 @@ export function getUserRouter(): Router {
     userController.getNextRental.bind(userController)
   );
 
+  router.get(
+    '/overview',
+    requireAdminRights,
+    userController.getOverviewData.bind(userController)
+  );
+
   router.delete(
     '/:id',
     validateIdInUrlParams(),
     requireAdminRights,
     userController.delete.bind(userController)
+  );
+
+  router.patch(
+    '/:id/blocked/toggle',
+    validateIdInUrlParams(),
+    requireAdminRights,
+    userController.toggleBlocked.bind(userController)
   );
 
   return router;

@@ -49,7 +49,7 @@ export class CheckComponent implements OnInit {
 
     if (!isNaN(id)) {
       this.boatService
-        .getBoatDetailData(id)
+        .getDetailData(id)
         .subscribe((boat) => (this.boat = boat));
     }
   }

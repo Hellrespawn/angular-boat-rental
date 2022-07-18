@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { NewUserData } from 'auas-common';
 import { expect } from 'chai';
 import sinon, { type SinonStub } from 'sinon';
 import request from 'supertest';
@@ -15,7 +16,8 @@ describe('Test User end-to-end', () => {
   >;
   let saveStub: SinonStub<[User], Promise<void>>;
   beforeEach(async () => {
-    ({ userDaoGetByEmailStub, saveStub } = stubUserDao(SANDBOX));
+    ({ userDaoGetByEmailStub, userDaoSaveStub: saveStub } =
+      stubUserDao(SANDBOX));
   });
 
   afterEach(() => {
@@ -23,7 +25,17 @@ describe('Test User end-to-end', () => {
   });
 
   it('Registers a new user', async () => {
-    const res = await request(app).post('/users/register').send(TEST_USER);
+    const { firstName, lastName, license, emailAddress, password } = TEST_USER;
+
+    const newUserData: NewUserData = {
+      firstName,
+      lastName,
+      license,
+      emailAddress,
+      password,
+    };
+
+    const res = await request(app).post('/users/register').send(newUserData);
 
     expect(res.status).to.equal(200);
     expect(saveStub.callCount).to.equal(1);

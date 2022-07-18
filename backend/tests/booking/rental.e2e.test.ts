@@ -15,8 +15,8 @@ describe('Test Rental & Booking end-to-end', () => {
   beforeEach(async () => {
     stubRentalDao(SANDBOX, [TEST_RENTAL]);
     stubBoatDao(SANDBOX, TEST_BOAT);
-    stubUserDao(SANDBOX, { id: 1, ...TEST_USER } as User);
-    stubAuth(SANDBOX, { id: 1, ...TEST_USER } as User);
+    stubUserDao(SANDBOX, { ...TEST_USER } as User);
+    stubAuth(SANDBOX, { ...TEST_USER } as User);
   });
 
   afterEach(() => {

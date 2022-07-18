@@ -76,7 +76,7 @@ describe('Test BoatService', () => {
         },
       ];
 
-      const boats = await service.getBoatsOverviewData();
+      const boats = await service.getOverviewData();
 
       expect(boats).to.deep.equal(expected);
     });
@@ -98,14 +98,14 @@ describe('Test BoatService', () => {
         },
       ];
 
-      let boats = await service.getAvailableBoatsOverviewData(
+      let boats = await service.getAvailableOverviewData(
         new Date('2022-01-01'),
         new Date('2022-01-10')
       );
 
       expect(boats).to.deep.equal([]);
 
-      boats = await service.getAvailableBoatsOverviewData(
+      boats = await service.getAvailableOverviewData(
         new Date('2022-02-01'),
         new Date('2022-02-10')
       );
@@ -128,7 +128,7 @@ describe('Test BoatService', () => {
         lengthInM: TEST_BOAT.lengthInM,
       };
 
-      const boat = await service.getBoatDetailData(1);
+      const boat = await service.getDetailData(1);
 
       expect(boat).to.deep.equal(expected);
     });

@@ -22,7 +22,7 @@ export class BoatDetailsComponent implements OnInit {
 
   private getBoat(): void {
     this.boatService
-      .getBoatDetailData(this.data.registrationNumber)
+      .getDetailData(this.data.registrationNumber)
       .subscribe((boat) => (this.boat = boat));
   }
 

@@ -162,7 +162,7 @@ export class BookingService {
 
     this.boatSubscription = this.dateRange.subscribe((dateRange) =>
       this.boatService
-        .getBoatOverviewData(dateRange ?? undefined)
+        .getOverviewData(dateRange ?? undefined)
         .subscribe((boats) =>
           this.boats.next(
             boats.map((boat) => {

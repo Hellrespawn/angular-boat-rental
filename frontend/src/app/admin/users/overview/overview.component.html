@@ -1,0 +1,59 @@
+<div *ngIf="!users || !users.length" class="custom-card with-padding">
+  <h2>Something went wrong, please try again!</h2>
+</div>
+
+<div
+  *ngIf="users && users.length"
+  class="custom-card with-padding vertical admin-table"
+>
+  <div id="top">
+    <h2>Boats:</h2>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Email Address</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>License</th>
+        <th>Blocked</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.id }}</td>
+        <td>{{ user.emailAddress }}</td>
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <!-- TODO checkmark or cross here -->
+        <td>
+          <mat-icon *ngIf="user.license">check</mat-icon>
+        </td>
+
+        <td>
+          <button *ngIf="user.admin" mat-button disabled>
+            <mat-icon>admin_panel_settings</mat-icon>
+          </button>
+
+          <button *ngIf="!user.admin" mat-button (click)="toggleBlock(user)">
+            <mat-icon color="warn" *ngIf="user.blocked">block</mat-icon>
+            <mat-icon *ngIf="!user.blocked">block</mat-icon>
+          </button>
+        </td>
+
+        <td>
+          <button *ngIf="user.admin" mat-button disabled>
+            <mat-icon>admin_panel_settings</mat-icon>
+          </button>
+
+          <button *ngIf="!user.admin" mat-button (click)="delete(user)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

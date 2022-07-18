@@ -2,8 +2,8 @@
 import { JSONSchemaType } from 'ajv';
 import { expect } from 'chai';
 import { Request, Response } from 'express';
+import sinon from 'sinon';
 import { SinonSpy } from 'sinon';
-import sinon from 'ts-sinon';
 import { Middleware } from '../../src/middleware';
 import { Validator } from '../../src/util/validator';
 

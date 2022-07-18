@@ -52,6 +52,7 @@ import { RegisterComponent } from './register/register.component';
 import { AdminBoatOverviewComponent } from './admin/boats/overview/overview.component';
 import { AdminBoatAddComponent } from './admin/boats/add/add.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AdminUserOverviewComponent } from './admin/users/overview/overview.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     RegisterComponent,
     AdminBoatOverviewComponent,
     AdminBoatAddComponent,
+    AdminUserOverviewComponent,
   ],
   imports: [
     BrowserModule,

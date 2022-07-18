@@ -1,4 +1,5 @@
 import { User } from '../model/user';
+import { ServerError } from '../util/error';
 import { UserModel } from './user.model';
 
 export class UserDao {
@@ -30,6 +31,23 @@ export class UserDao {
 
   public delete(id: number): Promise<number> {
     return UserModel.destroy({ where: { id } });
+  }
+
+  public async updateBlocked(id: number, blocked: boolean): Promise<void> {
+    const model = await UserModel.findOne({ where: { id } });
+
+    if (!model) {
+      throw new ServerError(`There is no user with id ${id}`);
+    }
+
+    model.blocked = blocked;
+
+    await model.save();
+  }
+
+  public async getAll(): Promise<User[]> {
+    const models = await UserModel.findAll();
+    return models.map((model) => User.fromModel(model));
   }
 
   public async getById(id: number): Promise<User | null> {

@@ -9,19 +9,24 @@ const SANDBOX = sinon.createSandbox();
 
 describe('Test UserService', () => {
   let userDaoCountStub: SinonStub<[], Promise<number>>;
+  let userDaoGetAllStub: SinonStub<[], Promise<User[]>>;
   let userDaoGetByEmailStub: SinonStub<
     [emailAddress: string],
     Promise<User | null>
   >;
-  let saveStub: SinonStub<[User], Promise<void>>;
+  let userDaoSaveStub: SinonStub<[User], Promise<void>>;
 
   let service: UserService;
 
   beforeEach(async () => {
     service = UserService.getInstance();
 
-    ({ userDaoCountStub, userDaoGetByEmailStub, saveStub } =
-      stubUserDao(SANDBOX));
+    ({
+      userDaoGetAllStub,
+      userDaoCountStub,
+      userDaoGetByEmailStub,
+      userDaoSaveStub,
+    } = stubUserDao(SANDBOX));
   });
 
   afterEach(() => {
@@ -41,7 +46,7 @@ describe('Test UserService', () => {
         password
       );
 
-      expect(saveStub.callCount).to.equal(1);
+      expect(userDaoSaveStub.callCount).to.equal(1);
     });
 
     it('Rejects user with same email-address', async () => {
@@ -66,7 +71,7 @@ describe('Test UserService', () => {
         );
       }
 
-      expect(saveStub.callCount).to.equal(0);
+      expect(userDaoSaveStub.callCount).to.equal(0);
     });
 
     it('Gives first user admin privileges', async () => {
@@ -81,9 +86,9 @@ describe('Test UserService', () => {
         password
       );
 
-      expect(saveStub.callCount).to.equal(1);
+      expect(userDaoSaveStub.callCount).to.equal(1);
 
-      const user = saveStub.getCall(0).args[0];
+      const user = userDaoSaveStub.getCall(0).args[0];
 
       expect(user.admin).to.be.true;
     });
@@ -102,11 +107,43 @@ describe('Test UserService', () => {
         password
       );
 
-      expect(saveStub.callCount).to.equal(1);
+      expect(userDaoSaveStub.callCount).to.equal(1);
 
-      const user = saveStub.getCall(0).args[0];
+      const user = userDaoSaveStub.getCall(0).args[0];
 
       expect(user.admin).to.be.false;
+    });
+  });
+
+  describe('Test UserService.getOverviewData', () => {
+    it('Correctly transforms users', async () => {
+      userDaoGetAllStub.returns(Promise.resolve([TEST_USER as User]));
+
+      const expected = [
+        {
+          id: 1,
+          emailAddress: 'test@test.com',
+          firstName: 'Stef',
+          lastName: 'Korporaal',
+          license: false,
+          blocked: false,
+          admin: false,
+        },
+      ];
+
+      const actual = await service.getOverviewData();
+
+      console.log(actual);
+
+      expect(actual).to.deep.equal(expected);
+    });
+
+    it('Does not include password', async () => {
+      userDaoGetAllStub.returns(Promise.resolve([TEST_USER as User]));
+
+      const actual = await service.getOverviewData();
+
+      expect(actual).does.not.have.property('password');
     });
   });
 });

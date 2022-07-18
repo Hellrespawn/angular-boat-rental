@@ -1,0 +1,38 @@
+.admin-table {
+  #top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  thead {
+    background-color: #fffddd;
+  }
+
+  thead th {
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+  }
+
+  thead th {
+    text-align: left;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #ddddff;
+  }
+
+  th,
+  td {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+}

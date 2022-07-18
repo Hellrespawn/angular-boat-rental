@@ -49,7 +49,7 @@ export class BoatService {
    * @param registrationNumber the id of the desired boat
    * @returns A type intersection of BoatOverviewData and BoatDetailData
    */
-  public async getBoatDetailData(
+  public async getDetailData(
     registrationNumber: number
   ): Promise<BoatDetailData | null> {
     const boat = await this.getByRegistrationNumber(registrationNumber);
@@ -76,7 +76,7 @@ export class BoatService {
    *
    * @returns an array of BoatOverviewData
    */
-  public async getBoatsOverviewData(): Promise<BoatOverviewData[]> {
+  public async getOverviewData(): Promise<BoatOverviewData[]> {
     const boats = await this.getAll();
 
     return boats.map((boat) => this.boatInstanceToOverviewData(boat));
@@ -90,7 +90,7 @@ export class BoatService {
    * @returns an array of BoatOverviewData of boats available between
    * those dates.
    */
-  public async getAvailableBoatsOverviewData(
+  public async getAvailableOverviewData(
     dateStart: Date,
     dateEnd: Date
   ): Promise<BoatOverviewData[]> {
