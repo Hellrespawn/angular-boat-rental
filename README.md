@@ -28,4 +28,3 @@ See `backend/README.md` and `frontend/README.md` for further instructions.
 
 - TODO Mock payment screen
 - TODO Finish user panel
-- TODO Send request to delete session on logout
