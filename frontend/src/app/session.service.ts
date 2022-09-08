@@ -35,12 +35,19 @@ export class SessionService {
   public login(email: string, password: string): Observable<string> {
     const loginData: LoginData = { email, password };
 
-    return this.doLoginRequest(loginData).pipe(
-      map((data) => {
-        this.handleSuccessfulLogin(data);
-        return data.firstName;
-      })
-    );
+    return this.httpClient
+      .post<SessionData>('/api/login', loginData)
+      .pipe(
+        catchError((res: { error: { error: string } }) => {
+          throw this.handleFailedLogin(res.error.error);
+        })
+      )
+      .pipe(
+        map((data) => {
+          this.handleSuccessfulLogin(data);
+          return data.firstName;
+        })
+      );
   }
 
   /**
@@ -88,14 +95,6 @@ export class SessionService {
     localStorage.removeItem(SessionService.storageKey);
   }
 
-  private doLoginRequest(loginData: LoginData): Observable<SessionData> {
-    return this.httpClient.post<SessionData>('/api/login', loginData).pipe(
-      catchError((_) => {
-        throw 'Something went wrong, check your credentials!';
-      })
-    );
-  }
-
   private doLogoutRequest(): Observable<void> {
     return this.httpClient.delete<void>('/api/logout');
   }
@@ -108,5 +107,19 @@ export class SessionService {
     this.loadSessionData();
 
     this.notificationService.notifySuccess(`Welkom, je bent ingelogd!`);
+  }
+
+  private handleFailedLogin(error: string): Error {
+    if (error.includes('Invalid credentials')) {
+      return new Error('Something went wrong, check your credentials!');
+    }
+
+    if (error.includes('This account is blocked')) {
+      return new Error(
+        'Your account is blocked, contact an administrator to resolve this issue.'
+      );
+    }
+
+    return new Error('Something went wrong!');
   }
 }

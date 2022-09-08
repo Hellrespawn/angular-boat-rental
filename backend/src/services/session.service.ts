@@ -3,6 +3,7 @@ import { Session } from '../model/session';
 import { Cache } from '../util/cache';
 import { ErrorType, ServerError } from '../util/error';
 import { UserService } from './user.service';
+import { User } from '../model/user';
 
 export class SessionService {
   public static MaxSessionAge = 14;
@@ -38,7 +39,11 @@ export class SessionService {
 
     if (!user || !(await user.verifyPassword(password))) {
       // Single error, so as to not provide more information than necessary.
-      throw new ServerError('Invalid Credentials', ErrorType.Forbidden);
+      throw ServerError.createForbiddenError();
+    }
+
+    if (user.blocked) {
+      throw ServerError.createBlockedError();
     }
 
     const session = Session.createSessionForUser(user);
@@ -116,5 +121,24 @@ export class SessionService {
 
   public clearCache(): void {
     this.cache.clear();
+  }
+
+  public async delete(session: Session): Promise<void> {
+    await this.sessionDao.delete(session);
+  }
+
+  public async deleteForUser(user: User): Promise<number> {
+    const sessions = await this.sessionDao.getSessionsByUserId(user.id);
+
+    let count = 0;
+
+    await Promise.all(
+      sessions.map(async (session) => {
+        await this.sessionDao.delete(session);
+        count++;
+      })
+    );
+
+    return count;
   }
 }

@@ -17,6 +17,14 @@ export class ServerError extends Error {
     this.errorType = errorType ?? ErrorType.Client;
   }
 
+  public static createForbiddenError(): ServerError {
+    return new ServerError('Invalid credentials', ErrorType.Forbidden);
+  }
+
+  public static createBlockedError(): ServerError {
+    return new ServerError('This account is blocked', ErrorType.Forbidden);
+  }
+
   /**
    * Handles response for ServerError or generic error
    * @param error

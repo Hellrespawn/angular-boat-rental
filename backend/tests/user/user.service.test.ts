@@ -4,6 +4,9 @@ import { expect } from 'chai';
 import { type User } from '../../src/model/user';
 import { UserService } from '../../src/services/user.service';
 import { stubUserDao, TEST_USER } from '../stubs/user.stub';
+import { stubSessionDao } from '../stubs/session.stub';
+import { Session } from '../../src/model/session';
+import { SessionService } from '../../src/services/session.service';
 
 const SANDBOX = sinon.createSandbox();
 
@@ -16,10 +19,10 @@ describe('Test UserService', () => {
   >;
   let userDaoSaveStub: SinonStub<[User], Promise<void>>;
 
-  let service: UserService;
+  let userService: UserService;
 
   beforeEach(async () => {
-    service = UserService.getInstance();
+    userService = UserService.getInstance();
 
     ({
       userDaoGetAllStub,
@@ -38,7 +41,7 @@ describe('Test UserService', () => {
       const { firstName, lastName, license, emailAddress, password } =
         TEST_USER;
 
-      await service.register(
+      await userService.register(
         firstName,
         lastName,
         license,
@@ -56,7 +59,7 @@ describe('Test UserService', () => {
       userDaoGetByEmailStub.returns(Promise.resolve({ emailAddress } as User));
 
       try {
-        await service.register(
+        await userService.register(
           firstName,
           lastName,
           license,
@@ -78,7 +81,7 @@ describe('Test UserService', () => {
       const { firstName, lastName, license, emailAddress, password } =
         TEST_USER;
 
-      await service.register(
+      await userService.register(
         firstName,
         lastName,
         license,
@@ -99,7 +102,7 @@ describe('Test UserService', () => {
       const { firstName, lastName, license, emailAddress, password } =
         TEST_USER;
 
-      await service.register(
+      await userService.register(
         firstName,
         lastName,
         license,
@@ -131,7 +134,7 @@ describe('Test UserService', () => {
         },
       ];
 
-      const actual = await service.getOverviewData();
+      const actual = await userService.getOverviewData();
 
       console.log(actual);
 
@@ -141,9 +144,34 @@ describe('Test UserService', () => {
     it('Does not include password', async () => {
       userDaoGetAllStub.returns(Promise.resolve([TEST_USER as User]));
 
-      const actual = await service.getOverviewData();
+      const actual = await userService.getOverviewData();
 
       expect(actual).does.not.have.property('password');
+    });
+  });
+
+  describe('Test UserService.toggleBlocked', () => {
+    let sessionDaoDeleteStub: SinonStub<[Session], Promise<boolean>>;
+    let sessionService: SessionService;
+
+    beforeEach(() => {
+      ({ sessionDaoDeleteStub } = stubSessionDao(SANDBOX));
+      sessionService = SessionService.getInstance();
+    });
+
+    it('Deletes sessions when a user is blocked.', async () => {
+      const session = await sessionService.login(
+        TEST_USER.emailAddress,
+        TEST_USER.password
+      );
+
+      expect(sessionService.getBySessionId(session.sessionId)).to.deep.equal(
+        session
+      );
+
+      await userService.toggleBlocked(TEST_USER.id);
+
+      expect(sessionService.getBySessionId(session.sessionId)).to.equal(null);
     });
   });
 });

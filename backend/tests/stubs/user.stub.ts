@@ -52,5 +52,6 @@ export function stubUserDao(
     userDaoGetByEmailStub,
     userDaoGetByIdStub,
     userDaoSaveStub,
+    // TODO stub updateBlocked
   };
 }

@@ -54,10 +54,8 @@ export class LoginComponent {
 
             this.router.navigate([from ?? '/']);
           },
-          error: () => {
-            this.notificationService.notifyError(
-              'Something went wrong! Please check your credentials.'
-            );
+          error: (error: Error) => {
+            this.notificationService.notifyError(error.message);
           },
         });
     } else {

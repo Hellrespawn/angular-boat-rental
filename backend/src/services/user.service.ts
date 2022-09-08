@@ -2,11 +2,15 @@ import { UserDao } from '../persistence/user.dao';
 import { User } from '../model/user';
 import { ServerError } from '../util/error';
 import { type UserOverviewData } from 'auas-common';
+import { SessionService } from './session.service';
 
 export class UserService {
   private static instance?: UserService;
 
-  private constructor(private userDao = UserDao.getInstance()) {
+  private constructor(
+    private userDao = UserDao.getInstance(),
+    private sessionService = SessionService.getInstance()
+  ) {
     // Intentionally left blank
   }
 
@@ -78,9 +82,18 @@ export class UserService {
       throw new ServerError(`There is no user with id ${id}`);
     }
 
-    await this.userDao.updateBlocked(id, !user.blocked);
+    if (user.admin) {
+      throw new ServerError('Unable to block administrator.');
+    }
 
-    return !user.blocked;
+    await this.userDao.updateBlocked(id, !user.blocked);
+    user.blocked = !user.blocked;
+
+    if (user.blocked) {
+      await this.sessionService.deleteForUser(user);
+    }
+
+    return user.blocked;
   }
 
   private UserToUserOverviewData(user: User): UserOverviewData {
